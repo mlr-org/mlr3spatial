@@ -1,14 +1,11 @@
-# Create demo raster files in any size
-# Default is 500 MB
-
-library(raster)
-
+#' @export
 demo_raster = function(x, cells, dimension) {
   data = matrix(c(rnorm(cells/2, 0, 1), rnorm(cells/2, 1, 1)),
                 nrow = dimension)
   raster(data, xmn = 0, xmx = dimension, ymn = 0, ymx = dimension)
 }
 
+#' @export
 demo_stack = function(size = 1000000000, layers=5) {
   dimension = floor(sqrt(size/8/layers))
   if(dimension %% 2 == 1) {
@@ -24,10 +21,3 @@ demo_stack = function(size = 1000000000, layers=5) {
 
   do.call("stack", c(response, predictors))
 }
-
-# 500MB File
-stack = demo_stack()
-
-writeRaster(stack, "inst/demo_stack_500mb.tif", overwrite = TRUE)
-
-rm(stack)
