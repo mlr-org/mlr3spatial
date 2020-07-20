@@ -33,13 +33,13 @@ library(mlr3)
 library(mlr3raster)
 library(data.table)
 
-stack = demo_stack()
+stack = demo_stack(size = 1000000000, layers=5)
 writeRaster(stack, "demo_stack_500mb.tif")
 rm(stack)
 ```
 
 `demo_stack` generates a raster stack with 5 layers (4 predictor
-variables and 1 response variable) with a total size of 1GB. The file is
+variables and 1 response variable) with a total size of 500MB. The file is
 written to disk and the stack is removed to free up memory.
 
 ``` r
