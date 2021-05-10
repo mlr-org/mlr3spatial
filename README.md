@@ -1,6 +1,9 @@
 # mlr3spatial
 
 <!-- badges: start -->
+[![CRAN Status](https://www.r-pkg.org/badges/version-ago/mlr3spatial)](https://cran.r-project.org/package=mlr3spatial)
+[![Coverage status](https://codecov.io/gh/mlr-org/mlr3spatial/branch/main/graph/badge.svg)](https://codecov.io/github/mlr-org/mlr3spatial?branch=main)
+[![CodeFactor](https://www.codefactor.io/repository/github/mlr-org/mlr3spatial/badge)](https://www.codefactor.io/repository/github/mlr-org/mlr3spatial)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
