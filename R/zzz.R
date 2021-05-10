@@ -3,7 +3,7 @@
 #' @importFrom mlr3learners LearnerClassifSVM
 #' @importFrom R6 R6Class is.R6
 #' @references
-#' \cite{mlr3raster}{pkg::citation}
+#' \cite{mlr3spatial}{pkg::citation}
 "_PACKAGE"
 
 .onLoad = function(libname, pkgname) {

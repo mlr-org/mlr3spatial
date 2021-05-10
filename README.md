@@ -36,7 +36,7 @@ The package offers functions to create demo raster files in any size.
 ``` r
 library(raster)
 library(mlr3)
-library(mlr3raster)
+library(mlr3spatial)
 library(data.table)
 
 stack = demo_stack(size = 1000000000, layers=5)
