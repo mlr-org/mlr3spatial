@@ -1,11 +1,11 @@
-Package: mlr3raster
-Title: Parallel raster prediction for mlr3
+Package: mlr3spatial
+Title: Parallel spatial prediction for 'mlr3'
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Marc",
-             family = "Becker",
-             role = c("aut", "cre"),
-             email = "marcbecker@posteo.de")
+           family = "Becker",
+           role = c("aut", "cre"),
+           email = "marcbecker@posteo.de")
 Description: Parallel raster prediction for mlr3.
 License: LGPL-3
 Depends:
@@ -20,3 +20,4 @@ Imports:
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
+Roxygen: list(markdown = TRUE)
