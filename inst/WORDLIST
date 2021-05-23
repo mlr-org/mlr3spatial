@@ -1,5 +1,8 @@
+aut
+autoplot
 blogdown
 bookdown
+CamelCase
 ccache
 ci
 citeproc
@@ -8,8 +11,11 @@ codecov
 CommandLineTools
 config
 cran
+cre
 cron
 CRON
+cyclocomp
+de
 dev
 dsl
 env
@@ -22,6 +28,8 @@ ghactions
 github
 harfbuzz
 https
+jimhester
+lgr
 libcurl
 libfribidi
 libgdal
@@ -33,8 +41,13 @@ libs
 LIBS
 libsodium
 libudunits
+linter
+linters
+lintr
 macOS
 MacOSX
+marcbecker
+mlr
 Ncpus
 noreply
 openssl
@@ -43,6 +56,7 @@ pandoc
 pkgdown
 PKGDOWN
 pkgType
+posteo
 proj
 repo
 repos
@@ -50,12 +64,15 @@ requireNamespace
 rgl
 RGL
 ropensci
+Roxygen
+RoxygenNote
 Rprofile
 Rscript
 sdk
 SDKROOT
 SDKs
 sudo
+testthat
 tinytex
 ubuntu
 udunits
