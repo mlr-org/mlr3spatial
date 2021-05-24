@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://mlr3spatiotempcv.mlr-org.com/index.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3spatiotempcv.mlr-org.com/reference/LearnerClassifSVMParallel.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3spatiotempcv.mlr-org.com/reference/PredictionRaster.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3spatiotempcv.mlr-org.com/reference/PredictionRasterClassif.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3spatiotempcv.mlr-org.com/reference/PredictionRasterRegr.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3spatiotempcv.mlr-org.com/reference/mlr3spatial-package.html</loc>
+  </url>
+</urlset>
