@@ -6,6 +6,7 @@ CamelCase
 ccache
 ci
 citeproc
+cloneable
 CMD
 codecov
 CommandLineTools
@@ -16,6 +17,7 @@ cron
 CRON
 cyclocomp
 de
+descrip
 dev
 dsl
 env

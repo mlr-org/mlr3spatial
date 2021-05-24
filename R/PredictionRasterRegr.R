@@ -1,3 +1,5 @@
+#' Demo title
+#' @description demo descrip
 #' @export
 PredictionRasterRegr = R6::R6Class("PredictionRasterRegr",
   inherit = PredictionRaster,
@@ -7,7 +9,7 @@ PredictionRasterRegr = R6::R6Class("PredictionRasterRegr",
     }
   ),
   private = list(
-   .classify = function(pred) {
+    .classify = function(pred) {
       pred
     }
   )
