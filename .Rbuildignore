@@ -6,3 +6,4 @@
 ^\.lintr$
 ^\.github$
 ^tic\.R$
+^\.ccache$
