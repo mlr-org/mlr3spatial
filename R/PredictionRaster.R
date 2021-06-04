@@ -19,30 +19,21 @@ PredictionRaster = R6::R6Class("PredictionRaster",
       # Calculate block size
       tr = blockSize(stack, chunksize = chunksize * 1e+06, n = 4, minblocks = 1)
 
-      # Initialize target raster
-<<<<<<< HEAD
+      # Initialize template raster
       template_raster = terra::rast(ext(stack), res = res(stack), crs = crs(stack))
       
       # `target_raster` could replace `raster::blockSize`
       target_raster = terra::writeStart(template_raster, filename=filename,  overwrite=TRUE)
 
       terra::readStart(stack)
-=======
-      template_raster = raster(extent(stack), res = res(stack), crs = crs(stack))
-      target_raster = writeStart(template_raster, filename = filename, overwrite = TRUE)
->>>>>>> main
 
       lg$info("Start raster prediction")
       lg$info("Prediction is executed in %i MB chunks", chunksize)
 
-<<<<<<< HEAD
-      for(i in 1:tr$n) {
-=======
       for (i in 1:tr$n) {
         new_data = as.data.table(as.data.frame(
           getValues(stack, row = tr$row[i], nrows = tr$nrows[i])
         ))
->>>>>>> main
 
         new_data = as.data.table(terra::readValues(stack, row=tr$row[i], nrows=tr$nrows[i], dataframe = TRUE))
 
@@ -58,19 +49,11 @@ PredictionRaster = R6::R6Class("PredictionRaster",
 
         lg$info("Chunk %i of %i finished", i, tr$n)
       }
-<<<<<<< HEAD
-      
-      lg$info("Finished raster prediction in %i seconds", as.integer(difftime(start_time, Sys.time(), units = "secs")*(-1)))
-
-      terra::readStop(stack)
-      terra::writeStop(template_raster)
-=======
       writeStop(target_raster)
       lg$info(
         "Finished raster prediction in %i seconds",
         as.integer(difftime(start_time, Sys.time(), units = "secs") * (-1))
       )
->>>>>>> main
     }
   ),
   private = list(
