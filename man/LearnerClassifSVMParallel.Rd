@@ -4,18 +4,18 @@
 \alias{LearnerClassifSVMParallel}
 \title{Parallel Prediction SVM Classification Learner}
 \description{
-Proof of concept for parallel prediction intergrated into the [mlr3::Learner]
+Proof of concept for parallel prediction intergrated into the \link[mlr3:Learner]{mlr3::Learner}
 class. The SVM classification learner is extended with the
-`predict_newdata_parallel` method which splits `newdata` into `n` parts and
-execudes the prediction in parallel. `n` is equal to the number of available
+\code{predict_newdata_parallel} method which splits \code{newdata} into \code{n} parts and
+execudes the prediction in parallel. \code{n} is equal to the number of available
 cores.
 }
 \note{
-The `predict_newdata_parallel` method is not useful for learning algorithms
-with an integrated parallel predict function. For example, the `ranger`
+The \code{predict_newdata_parallel} method is not useful for learning algorithms
+with an integrated parallel predict function. For example, the \code{ranger}
 learner predicts newdata internally on all available cores. Therefore, a new
-learner property (`parallel_predict`) should indicate if
-`predict_newdata_parallel` should be called at all.
+learner property (\code{parallel_predict}) should indicate if
+\code{predict_newdata_parallel} should be called at all.
 }
 \section{Super classes}{
 \code{\link[mlr3:Learner]{mlr3::Learner}} -> \code{\link[mlr3:LearnerClassif]{mlr3::LearnerClassif}} -> \code{\link[mlr3learners:LearnerClassifSVM]{mlr3learners::LearnerClassifSVM}} -> \code{LearnerClassifSVMParallel}

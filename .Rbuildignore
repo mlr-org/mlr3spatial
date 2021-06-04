@@ -2,4 +2,8 @@
 ^renv\.lock$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^demo_stack_500mb.tif$
+^\.pre-commit-config\.yaml$
+^\.lintr$
+^\.github$
+^tic\.R$
+^\.ccache$

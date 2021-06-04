@@ -1,5 +1,5 @@
 library(mlr3)
-#library(mlr3raster)
+library(mlr3spatial)
 library(mlr3learners)
 library(terra)
 library(data.table)
