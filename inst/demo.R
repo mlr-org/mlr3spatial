@@ -1,7 +1,7 @@
 library(mlr3)
-library(mlr3raster)
+#library(mlr3raster)
 library(mlr3learners)
-library(raster)
+library(terra)
 library(data.table)
 library(tictoc)
 
@@ -11,11 +11,12 @@ writeRaster(stack, "inst/demo_stack_500mb.tif", overwrite = TRUE)
 rm(stack)
 
 # Build model
-data = as.data.table(sampleRandom(stack("inst/demo_stack_500mb.tif"), 500))
-names(data) = paste0("var", 1:5)
-data = data[, var1:=as.factor(var1)]
+data = as.data.table(spatSample(rast("inst/demo_stack_500mb.tif"), 500, method = "random"))
+#names(data) = paste0("var", 1:5)
+#data = data[, var1:=as.factor(var1)]
+data = data[, dem_1 := as.factor(dem_1)]
 
-task = TaskClassif$new(id = "raster", backend = data, target = "var1", positive = "1")
+task = TaskClassif$new(id = "raster", backend = data, target = "dem_1", positive = "1")
 
 learner_svm = LearnerClassifSVMParallel$new()
 learner_svm$train(task, row_ids = 1:250)
@@ -23,9 +24,8 @@ prediction = learner_svm$predict(task, row_ids = 251:500)
 prediction$score(msr("classif.acc"))
 
 # Prediction raster
-data_stack = stack("inst/demo_stack_500mb.tif")
-names(data_stack) = paste0("var", 1:5)
-data_stack = dropLayer(data_stack, 1)
+data_stack = rast("inst/demo_stack_500mb.tif")
+data_stack = subset(data_stack, c(2,3,4,5))
 
 # Benchmark
 ## Sequential execution

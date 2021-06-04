@@ -2,3 +2,4 @@
 ^renv\.lock$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^demo_stack_500mb.tif$

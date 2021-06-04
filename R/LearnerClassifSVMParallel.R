@@ -39,7 +39,7 @@ LearnerClassifSVMParallel = R6Class("LearnerClassifSVMParallel",
         future.packages = c("mlr3", "mlr3raster"))
 
       res = do.call("c", res)
-
+      
       res$response
     }
   ))
