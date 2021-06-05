@@ -9,15 +9,15 @@ Authors@R:
 Description: Parallel raster prediction for mlr3.
 License: LGPL-3
 Depends:
-    R (>= 3.1.0)
+    mlr3 (>= 0.11.0),
+    R (>= 3.1.0),
+    terra (>= 1.2-10)
 Imports:
-    checkmate,
-    data.table,
-    lgr (>= 0.3.0),
-    mlr3,
-    mlr3learners,
-    R6,
-    raster
+    checkmate (>= 2.0.0),
+    data.table (>= 1.14.0),
+    lgr (>= 0.4.2),
+    mlr3learners (>= 0.4.5),
+    R6 (>= 2.5.0)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1

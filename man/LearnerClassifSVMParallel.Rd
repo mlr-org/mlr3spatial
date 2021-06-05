@@ -4,10 +4,10 @@
 \alias{LearnerClassifSVMParallel}
 \title{Parallel Prediction SVM Classification Learner}
 \description{
-Proof of concept for parallel prediction intergrated into the \link[mlr3:Learner]{mlr3::Learner}
+Proof of concept for parallel prediction integrated into the \link[mlr3:Learner]{mlr3::Learner}
 class. The SVM classification learner is extended with the
 \code{predict_newdata_parallel} method which splits \code{newdata} into \code{n} parts and
-execudes the prediction in parallel. \code{n} is equal to the number of available
+executes the prediction in parallel. \code{n} is equal to the number of available
 cores.
 }
 \note{
@@ -31,6 +31,7 @@ learner property (\code{parallel_predict}) should indicate if
 \if{html}{
 \out{<details ><summary>Inherited methods</summary>}
 \itemize{
+\item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="base_learner">}\href{../../mlr3/html/Learner.html#method-base_learner}{\code{mlr3::Learner$base_learner()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="format">}\href{../../mlr3/html/Learner.html#method-format}{\code{mlr3::Learner$format()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="help">}\href{../../mlr3/html/Learner.html#method-help}{\code{mlr3::Learner$help()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="predict">}\href{../../mlr3/html/Learner.html#method-predict}{\code{mlr3::Learner$predict()}}\out{</span>}
@@ -45,6 +46,7 @@ learner property (\code{parallel_predict}) should indicate if
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LearnerClassifSVMParallel$new()}\if{html}{\out{</div>}}
 }
@@ -54,10 +56,19 @@ learner property (\code{parallel_predict}) should indicate if
 \if{html}{\out{<a id="method-predict_newdata_parallel"></a>}}
 \if{latex}{\out{\hypertarget{method-predict_newdata_parallel}{}}}
 \subsection{Method \code{predict_newdata_parallel()}}{
+Predicts \code{newdata} in chunks.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LearnerClassifSVMParallel$predict_newdata_parallel(newdata)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{newdata}}{(\code{data.frame()})\cr
+New data to predict on}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
