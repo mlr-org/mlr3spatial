@@ -42,7 +42,7 @@ The package offers functions to create demo raster files in any size.
 library(mlr3spatial)
 
 stack = demo_stack(size = 500, layers=5)
-writeRaster(stack, "demo_stack_500mb.tif")
+writeRaster(stack, "demo_stack_500mb.tif", overwrite = TRUE)
 rm(stack)
 ```
 
@@ -68,7 +68,7 @@ learner_svm$train(task)
 A mlr3 `task` is created and a classification svm is fitted with the randomly sampled raster cells.
 
 ```{r, eval = FALSE}
-data_predict = subset(stack, 2:5)
+data_predict = subset(stack, 1:4)
 prediction_raster = PredictionRaster$new(data_predict, chunksize = 100)
 ```
 

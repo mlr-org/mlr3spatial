@@ -48,14 +48,10 @@ chunk size.
 The package offers functions to create demo raster files in any size.
 
 ``` r
-library(terra)
-library(raster)
-library(mlr3)
 library(mlr3spatial)
-library(data.table)
 
-stack = demo_stack(size = 1000000000, layers=5)
-writeRaster(stack, "demo_stack_500mb.tif")
+stack = demo_stack(size = 500, layers=5)
+writeRaster(stack, "demo_stack_500mb.tif", overwrite = TRUE)
 rm(stack)
 ```
 
@@ -64,9 +60,9 @@ variables and 1 response variable) with a total size of 500MB. The file
 is written to disk and the stack is removed to free up memory.
 
 ``` r
-data = as.data.table(spatSample(rast("demo_stack_500mb.tif"), 500))
-names(data) = paste0("var", 1:5)
-data = data[, var1:=as.factor(var1)]
+stack = rast("demo_stack_500mb.tif")
+data_train = as.data.table(spatSample(stack, 500))
+data_train[, y:=as.factor(y)]
 ```
 
 In order to fit a model, 500 raster cells are randomly sampled. The
@@ -74,27 +70,22 @@ response variable returned by `demo_stack` is located in the first
 column of `data`.
 
 ``` r
-task = TaskClassif$new(id = "raster", backend = data, target = "var1", positive = "1")
+task = as_task_classif(data_train, target = "y", positive = "1")
 
 learner_svm = LearnerClassifSVMParallel$new()
-learner_svm$train(task, row_ids = 1:500)
+learner_svm$train(task)
 ```
 
 A mlr3 `task` is created and a classification svm is fitted with the
 randomly sampled raster cells.
 
 ``` r
-data_stack = rast("inst/demo_stack_500mb.tif")
-names(data_stack) = paste0("var", 1:5)
-data_stack = subset(data_stack, 2:5)
-
-reclassify_table = data.table(task = c(0,1), raster = c(10, 11))
-pred = PredictionRasterClassif$new(data_stack, task, reclassify_table)
-pred$chunksize = 100
+data_predict = subset(stack, 1:4)
+prediction_raster = PredictionRaster$new(data_predict, chunksize = 100)
 ```
 
-The `PredictionRasterClassif` class controls the splitting of the raster
-stack into chunks. The most important parameter is the `chunksize` which
+The `PredictionRaster` class controls the splitting of the raster stack
+into chunks. The most important parameter is the `chunksize` which
 controls size of processed raster chunks. The automatic detection of
 this parameter is error-prone since different `future` plans and `mlr3`
 learners will consume a highly varying amount of memory.
@@ -102,7 +93,7 @@ learners will consume a highly varying amount of memory.
 ``` r
 future::plan("multisession")
 
-ras = pred$predict(learner_svm)
+ras = prediction_raster$predict(learner_svm)
 ```
 
 Execute the raster prediction in parallel.
