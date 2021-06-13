@@ -109,3 +109,30 @@ inst/*
 *.tif
 
 inst/doc
+# Created by https://www.toptal.com/developers/gitignore/api/r
+# Edit at https://www.toptal.com/developers/gitignore?templates=r
+### R ###
+### R.Bookdown Stack ###
+# R package: bookdown caching files
+/*_files/
+# End of https://www.toptal.com/developers/gitignore/api/r
+docs/
+# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode
+# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode
+### VisualStudioCode ###
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
+# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode
+# Created by https://www.toptal.com/developers/gitignore/api/macos
+# Edit at https://www.toptal.com/developers/gitignore?templates=macos
+### macOS ###
+Icon
+
+
+# End of https://www.toptal.com/developers/gitignore/api/macos
+# Created by https://www.toptal.com/developers/gitignore/api/windows
+# Edit at https://www.toptal.com/developers/gitignore?templates=windows
+### Windows ###
+# End of https://www.toptal.com/developers/gitignore/api/windows
