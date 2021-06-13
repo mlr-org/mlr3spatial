@@ -28,7 +28,7 @@ LearnerClassifSVMParallel = R6Class("LearnerClassifSVMParallel",
 
     #' @description
     #' Predicts `newdata` in chunks.
-    #' 
+    #'
     #' @param newdata (`data.frame()`)\cr
     #' New data to predict on
     predict_newdata_parallel = function(newdata) {
@@ -37,7 +37,7 @@ LearnerClassifSVMParallel = R6Class("LearnerClassifSVMParallel",
       n = future::availableCores()
       nr = nrow(newdata)
 
-      split_ids = rep(1:n, each=nr/n, length.out=nr)
+      split_ids = rep(1:n, each = nr / n, length.out = nr)
       newdata = split(newdata, split_ids)
 
       res = future.apply::future_lapply(
@@ -51,7 +51,7 @@ LearnerClassifSVMParallel = R6Class("LearnerClassifSVMParallel",
       res = do.call("c", res)
       res$response
     }
-  ))
+))
 
 # wrapper for parallelization
 split_predict = function(newdata, self) {

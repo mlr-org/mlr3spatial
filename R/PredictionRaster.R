@@ -1,8 +1,8 @@
 #' @title Prediction Raster
-#' 
-#' @description 
+#'
+#' @description
 #' This class handles raster predictions.
-#' 
+#'
 #' @export
 PredictionRaster = R6::R6Class("PredictionRaster",
   public = list(
@@ -29,16 +29,18 @@ PredictionRaster = R6::R6Class("PredictionRaster",
       self$chunksize = assert_int(chunksize, lower = 1)
     },
 
-    #' @description 
+    #' @description
     #' Predicts raster with [mlr3::Learner].
     #'
     #' @param learner ([mlr3::Learner]).
     #' @param filename (`character`)\cr
-    #' Output file path. 
+    #' Output file path.
     predict = function(learner, filename = tempfile(fileext = ".grd")) {
-      assert_learner(learner)
-      assert_names(learner$state$train_task$feature_names, identical.to = names(self$stack))
-      assert_path_for_output(filename)
+
+      mlr3::assert_learner(learner)
+      checkmate::assert_names(learner$state$train_task$feature_names, identical.to = names(self$stack))
+      checkmate::assert_path_for_output(filename, overwrite = TRUE)
+
       stack = self$stack
       chunksize = self$chunksize
       start_time = Sys.time()
@@ -48,17 +50,17 @@ PredictionRaster = R6::R6Class("PredictionRaster",
 
       # initialize template raster
       template_raster = terra::rast(ext(stack), res = res(stack), crs = crs(stack))
-      
+
       # open files for reading and writing
-      writeStart(template_raster, filename=filename, overwrite=TRUE)
-      readStart(stack)
+      terra::writeStart(template_raster, filename = filename, overwrite = TRUE)
+      terra::readStart(stack)
 
       lg$info("Start raster prediction")
       lg$info("Prediction is executed in %i MB chunks", chunksize)
 
       for (i in 1:tr$n) {
         # read chunk of raster values
-        new_data = as.data.table(readValues(stack, row=tr$row[i], nrows=tr$nrows[i], dataframe = TRUE))
+        new_data = as.data.table(terra::readValues(stack, row = tr$row[i], nrows = tr$nrows[i], dataframe = TRUE))
 
         # predict chunk
         pred = if ("parallel_predict" %in% learner$properties) {
@@ -66,24 +68,24 @@ PredictionRaster = R6::R6Class("PredictionRaster",
         } else {
           learner$predict_newdata(new_data)
         }
-        
+
         # reclassify predictions to integer values
         if (learner$state$train_task$task_type == "classif") {
           reclassify_table = data.table(task = task$class_names, raster = seq_along(task$class_names))
           pred = reclassify_table$raster[match(pred, reclassify_table$task)]
           self$reclassify_table = reclassify_table
         }
-        
-        writeValues(template_raster, pred, tr$row[i], tr$nrows[i])
+
+        terra::writeValues(template_raster, pred, tr$row[i], tr$nrows[i])
 
         lg$info("Chunk %i of %i finished", i, tr$n)
       }
 
-      writeStop(template_raster)
-      readStop(stack)
+      terra::writeStop(template_raster)
+      terra::readStop(stack)
       lg$info("Finished raster prediction in %i seconds",
         as.integer(difftime(start_time, Sys.time(), units = "secs") * (-1))
       )
-    }    
+    }
   )
 )
