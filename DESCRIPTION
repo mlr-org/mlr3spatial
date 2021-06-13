@@ -18,6 +18,11 @@ Imports:
     lgr (>= 0.4.2),
     mlr3learners (>= 0.4.5),
     R6 (>= 2.5.0)
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: 
+    knitr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1

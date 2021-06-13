@@ -1,0 +1,80 @@
+---
+title: "poc"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{poc}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Example
+
+The package offers functions to create demo raster files in any size.
+
+`demo_stack` generates a raster stack with 5 layers (4 predictor variables and 1 response variable) with a total size of 500MB. 
+The file is written to disk and the stack is removed to free up memory.
+
+```{r}
+pkgload::load_all()
+
+stack = demo_stack(size = 500, layers = 5)
+# FIXME: is only 241 MB for me? and like 2 GB in mem
+terra::writeRaster(stack, "demo_stack_500mb.tif", overwrite = TRUE)
+rm(stack)
+```
+
+In order to fit a model, 500 raster cells are randomly sampled.
+The binary response variable in `demo_stack` is located in the first column of `data` and needs to be of type `"factor"`.
+
+```{r}
+stack = terra::rast("demo_stack_500mb.tif")
+data_train = as.data.table(spatSample(stack, 500))
+data_train[, y := as.factor(y)]
+```
+
+A mlr3 classification `task` is created and an SVM learner is fitted with the randomly sampled raster cells.
+This SVM learner is a modified version of the default SVM learner with a modified, parallelized predict function.
+
+```{r}
+task = as_task_classif(data_train, target = "y", positive = "1")
+
+learner_svm = LearnerClassifSVMParallel$new()
+learner_svm$train(task)
+```
+
+The `PredictionRaster` class controls the splitting of the raster stack into chunks.
+The most important parameter is the `chunksize` which controls size of processed raster chunks.
+
+The automatic detection of this parameter is error-prone since different {future} plans and {mlr3} learners will consume a highly varying amount of memory.
+
+Note that the prediction is not executed at this point, the object is just constructed.
+
+```{r}
+data_predict = subset(stack, 1:4)
+prediction_raster = PredictionRaster$new(data_predict, chunksize = 100)
+```
+
+Parallel execution.
+
+```{r}
+future::plan("multisession", workers = 4)
+
+ras = prediction_raster$predict(learner_svm, filename = "pred.grd")
+ras
+```
+
+Sequential execution.
+
+```{r}
+future::plan("sequential")
+
+ras = prediction_raster$predict(learner_svm, filename = "pred.grd")
+ras
+```
