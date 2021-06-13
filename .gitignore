@@ -136,3 +136,7 @@ Icon
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows
 ### Windows ###
 # End of https://www.toptal.com/developers/gitignore/api/windows
+
+*.grd
+*.gri
+*.xml
