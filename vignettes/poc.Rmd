@@ -47,6 +47,11 @@ task = as_task_classif(data_train, target = "y", positive = "1")
 
 learner_svm = LearnerClassifSVMParallel$new()
 learner_svm$train(task)
+
+LearnerClassifRangerParallel
+
+learner_rf = LearnerClassifRangerParallel$new()
+learner_rf$train(task)
 ```
 
 The `PredictionRaster` class controls the splitting of the raster stack into chunks.
@@ -58,23 +63,42 @@ Note that the prediction is not executed at this point, the object is just const
 
 ```{r}
 data_predict = subset(stack, 1:4)
-prediction_raster = PredictionRaster$new(data_predict, chunksize = 100)
+prediction_raster = PredictionRaster$new(data_predict, chunksize = 200)
 ```
 
-Parallel execution.
+## Parallel execution
 
 ```{r}
-future::plan("multisession", workers = 4)
+future::plan("multisession", workers = 8)
+```
 
+### SVM
+
+```{r}
 ras = prediction_raster$predict(learner_svm, filename = "pred.grd")
 ras
 ```
 
-Sequential execution.
+### RF
+
+```{r}
+ras_rf = prediction_raster$predict(learner_rf, filename = "pred.grd")
+ras_rf
+```
+
+## Sequential execution
 
 ```{r}
 future::plan("sequential")
+```
 
+### SVM
+
+```{r}
 ras = prediction_raster$predict(learner_svm, filename = "pred.grd")
 ras
 ```
+
+
+
+

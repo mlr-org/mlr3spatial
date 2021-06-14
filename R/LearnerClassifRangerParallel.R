@@ -1,0 +1,60 @@
+#' @title Parallel Prediction Ranger Classification Learner
+#'
+#' @description
+#' Proof of concept for parallel prediction integrated into the [mlr3::Learner]
+#' class. The Ranger classification learner is extended with the
+#' `predict_newdata_parallel` method which splits `newdata` into `n` parts and
+#' executes the prediction in parallel. `n` is equal to the number of available
+#' cores.
+#'
+#' @note
+#' The `predict_newdata_parallel` method is not useful for learning algorithms
+#' with an integrated parallel predict function. For example, the `ranger`
+#' learner predicts newdata internally on all available cores. Therefore, a new
+#' learner property (`parallel_predict`) should indicate if
+#' `predict_newdata_parallel` should be called at all.
+#'
+#' @export
+LearnerClassifRangerParallel = R6Class("LearnerClassifRangerParallel",
+  inherit = mlr3learners::LearnerClassifRanger,
+  public = list(
+
+    #' @description
+    #' Creates a new instance of this [R6][R6::R6Class] class.
+    initialize = function() {
+      super$initialize()
+      self$properties = c(self$properties, "parallel_predict")
+    },
+
+    #' @description
+    #' Predicts `newdata` in chunks.
+    #'
+    #' @param newdata (`data.frame()`)\cr
+    #' New data to predict on
+    predict_newdata_parallel = function(newdata) {
+      newdata = as.data.table(assert_data_frame(newdata, min.rows = 1L))
+
+      n = future::availableCores()
+      nr = nrow(newdata)
+
+      split_ids = rep(1:n, each = nr / n, length.out = nr)
+      newdata = split(newdata, split_ids)
+
+      res = future.apply::future_lapply(
+        newdata,
+        split_predict,
+        self,
+        future.globals = TRUE,
+        future.scheduling = structure(TRUE, ordering = "random"),
+        future.packages = c("mlr3", "mlr3spatial"),
+        future.seed = TRUE)
+
+      res = do.call("c", res)
+      res$response
+    }
+))
+
+# wrapper for parallelization
+split_predict = function(newdata, self) {
+  self$predict_newdata(newdata)
+}
