@@ -1,8 +1,8 @@
-#' @title Parallel Prediction SVM Classification Learner
+#' @title Parallel Prediction Ranger Classification Learner
 #'
 #' @description
 #' Proof of concept for parallel prediction integrated into the [mlr3::Learner]
-#' class. The SVM classification learner is extended with the
+#' class. The Ranger classification learner is extended with the
 #' `predict_newdata_parallel` method which splits `newdata` into `n` parts and
 #' executes the prediction in parallel. `n` is equal to the number of available
 #' cores.
@@ -15,8 +15,8 @@
 #' `predict_newdata_parallel` should be called at all.
 #'
 #' @export
-LearnerClassifSVMParallel = R6Class("LearnerClassifSVMParallel",
-  inherit = LearnerClassifSVM,
+LearnerClassifRangerParallel = R6Class("LearnerClassifRangerParallel",
+  inherit = mlr3learners::LearnerClassifRanger,
   public = list(
 
     #' @description

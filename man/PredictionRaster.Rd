@@ -2,14 +2,19 @@
 % Please edit documentation in R/PredictionRaster.R
 \name{PredictionRaster}
 \alias{PredictionRaster}
-\title{Demo title}
+\title{Prediction Raster}
 \description{
-demo descrip
+This class handles raster predictions.
 }
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{raster_size}}{Returns raster size in memory}
+\item{\code{stack}}{(\link[terra:SpatRaster-class]{terra::SpatRaster}).}
+
+\item{\code{chunksize}}{(\code{integer(1)})\cr
+Size of raster chunks in megabyte.}
+
+\item{\code{reclassify_table}}{(\code{\link[data.table:data.table]{data.table::data.table()}})}
 }
 \if{html}{\out{</div>}}
 }
@@ -25,19 +30,42 @@ demo descrip
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{PredictionRaster$new(stack, task)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{PredictionRaster$new(stack, chunksize = 100)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{stack}}{(\link[terra:SpatRaster-class]{terra::SpatRaster})\cr
+Raster stack of features.}
+
+\item{\code{chunksize}}{(\code{integer(1)})\cr
+Size of raster chunks in megabyte.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-predict"></a>}}
 \if{latex}{\out{\hypertarget{method-predict}{}}}
 \subsection{Method \code{predict()}}{
+Predicts raster with \link[mlr3:Learner]{mlr3::Learner}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{PredictionRaster$predict(learner, filename = tempfile(fileext = ".grd"))}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner}).}
+
+\item{\code{filename}}{(\code{character})\cr
+Output file path.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
