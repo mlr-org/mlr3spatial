@@ -51,6 +51,12 @@ PredictionRaster = R6::R6Class("PredictionRaster",
       # initialize template raster
       template_raster = terra::rast(ext(stack), res = res(stack), crs = crs(stack))
 
+      # hack because terra hardcodes everything and does only cat its options...
+      # (might not be so efficient though)
+      # mem_info = terra:::.mem_info(template_raster)
+      # mem = as.numeric(mem_info[c("memfrac")])
+      # tr = as.numeric(tail(mem_info, 1))
+
       # open files for reading and writing
       terra::writeStart(template_raster, filename = filename, overwrite = TRUE)
       terra::readStart(stack)
@@ -84,7 +90,7 @@ PredictionRaster = R6::R6Class("PredictionRaster",
       terra::writeStop(template_raster)
       terra::readStop(stack)
       lg$info("Finished raster prediction in %i seconds",
-        as.integer(difftime(start_time, Sys.time(), units = "secs") * (-1))
+        as.integer(difftime(start_time, Sys.time(), units = "auto") * (-1))
       )
     }
   )
