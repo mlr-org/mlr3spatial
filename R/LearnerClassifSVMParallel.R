@@ -46,7 +46,8 @@ LearnerClassifSVMParallel = R6Class("LearnerClassifSVMParallel",
         self,
         future.globals = TRUE,
         future.scheduling = structure(TRUE, ordering = "random"),
-        future.packages = c("mlr3", "mlr3spatial"))
+        future.packages = c("mlr3", "mlr3spatial"),
+        future.seed = TRUE)
 
       res = do.call("c", res)
       res$response
