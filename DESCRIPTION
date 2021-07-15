@@ -8,6 +8,7 @@ Authors@R:
            email = "marcbecker@posteo.de")
 Description: Parallel raster prediction for mlr3.
 License: LGPL-3
+URL: https://github.com/mlr-org/mlr3spatial
 Depends:
     mlr3 (>= 0.11.0),
     R (>= 3.1.0),
