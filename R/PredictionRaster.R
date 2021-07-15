@@ -66,7 +66,8 @@ PredictionRaster = R6::R6Class("PredictionRaster",
 
       for (i in 1:tr$n) {
         # read chunk of raster values
-        new_data = as.data.table(terra::readValues(stack, row = tr$row[i], nrows = tr$nrows[i], dataframe = TRUE))
+        new_data = as.data.table(terra::readValues(stack, row = tr$row[i],
+          nrows = tr$nrows[i], dataframe = TRUE))
 
         # predict chunk
         pred = if ("parallel_predict" %in% learner$properties) {

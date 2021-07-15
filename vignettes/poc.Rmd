@@ -24,13 +24,14 @@ The file is written to disk and the stack is removed to free up memory.
 ```{r}
 pkgload::load_all()
 
-stack = demo_stack(size = 500, layers = 5)
-# FIXME: is only 241 MB for me? and like 2 GB in mem
+# see https://github.com/rspatial/terra/issues/30 for "Error in (function (x)  : attempt to apply non-function"
+stack = demo_stack(size = 500, layers = 2)
+# FIXME: is only 241 MB for me? and like 1,3 GB in mem
 terra::writeRaster(stack, "demo_stack_500mb.tif", overwrite = TRUE)
 rm(stack)
 ```
 
-In order to fit a model, 500 raster cells are randomly sampled.
+In order to fit a (small) model, 500 raster cells are randomly sampled.
 The binary response variable in `demo_stack` is located in the first column of `data` and needs to be of type `"factor"`.
 
 ```{r}
@@ -63,6 +64,8 @@ Note that the prediction is not executed at this point, the object is just const
 
 ```{r}
 data_predict = subset(stack, 1:4)
+
+# TBD: can we write learner_svm$predict(newdata = spatial_data_predict, chunksize = 200, filename = "pred.grd") somehow?
 prediction_raster = PredictionRaster$new(data_predict, chunksize = 200)
 ```
 
@@ -81,9 +84,11 @@ ras
 
 ### RF
 
+RF in non-native parallel mode is very slow.
+
 ```{r}
-ras_rf = prediction_raster$predict(learner_rf, filename = "pred.grd")
-ras_rf
+# ras_rf = prediction_raster$predict(learner_rf, filename = "pred.grd")
+# ras_rf
 ```
 
 ## Sequential execution
@@ -99,6 +104,11 @@ ras = prediction_raster$predict(learner_svm, filename = "pred.grd")
 ras
 ```
 
+### RF
 
+```{r}
+ras_rf = prediction_raster$predict(learner_rf, filename = "pred.grd")
+ras_rf
+```
 
 

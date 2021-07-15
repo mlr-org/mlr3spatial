@@ -11,6 +11,13 @@ Parallel raster prediction for mlr3.
 \references{
 \cite{mlr3spatial}{pkg::citation}
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/mlr-org/mlr3spatial}
+}
+
+}
 \author{
 \strong{Maintainer}: Marc Becker \email{marcbecker@posteo.de}
 

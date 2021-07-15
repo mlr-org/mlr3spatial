@@ -8,9 +8,9 @@
 #'
 #' @export
 demo_raster = function(dimension) {
-  assert_int(dimension, lower = 2)
-  data = matrix(c(stats::rnorm(floor(dimension^2 / 2), 0, 1),
-    stats::rnorm(ceiling(dimension^2 / 2), 1, 1)), nrow = dimension)
+  checkmate::assert_int(dimension, lower = 2)
+  data = matrix(c(stats::rnorm(floor(dimension^2 / 2), 0, 10),
+    stats::rnorm(ceiling(dimension^2 / 2), 1, 1)), nrow = dimension, byrow = TRUE)
   terra::rast(data)
 }
 
@@ -26,14 +26,15 @@ demo_raster = function(dimension) {
 #'
 #' @export
 demo_stack = function(size = 500, layers = 5) {
-  assert_int(size, lower = 1)
-  assert_int(layers, lower = 1)
+  checkmate::assert_int(size, lower = 1)
+  checkmate::assert_int(layers, lower = 1)
 
   dimension = floor(sqrt(size / layers * 1e+06 / 8))
   raster_features = replicate(layers - 1, demo_raster(dimension))
-  raster_response = rast(matrix(c(rep(0, floor(dimension^2 / 2)),
+  raster_response = terra::rast(matrix(c(rep(0, floor(dimension^2 / 2)),
     rep(1, ceiling(dimension^2 / 2))), nrow = dimension))
-  raster = rast(c(raster_features, list(raster_response)))
+
+  raster = terra::rast(c(raster_features, list(raster_response)))
   names(raster) = c(paste0("x_", 1:(layers - 1)), "y")
   raster
 }
