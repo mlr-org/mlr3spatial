@@ -1,4 +1,4 @@
-url: https://mlr3spatiotempcv.mlr-org.com
+url: https://mlr3spatial.mlr-org.com
 
 template:
   package: mlr3pkgdowntemplate
@@ -38,3 +38,4 @@ navbar:
     rss:
       icon: fa-rss
       href: https://mlr-org.com/
+
