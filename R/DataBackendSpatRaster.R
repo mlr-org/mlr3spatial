@@ -1,8 +1,8 @@
-#' @title DataBackend for SpatRaster 
-#' 
-#' @description 
+#' @title DataBackend for SpatRaster
+#'
+#' @description
 #' A [mlr3::DataBackend] for `SpatRaster` (\CRANpkg{terra}).
-#' 
+#'
 #' @param rows `integer()`\cr
 #'   Row indices. Row indices start with 1 in the upper left corner in the
 #'   raster, increase from left to right and then from top to bottom. The last
@@ -10,35 +10,35 @@
 #'   cells in the raster.
 #' @param cols `character()`\cr
 #'   Column names.
-#' 
+#'
 #' @section Read mode:
 #' * Block mode reads complete rows of the raster file and subsets the requested
 #'   cells. Faster than cell mode if we iterate the whole raster file.
-#' 
+#'
 #' * Cell mode reads individual cells. Faster than block mode if only a few
 #'   cells are sampled.
-#' 
+#'
 #' Block mode is activated if `$data(rows)` is called with a increasing integer
-#' sequence e.g. `200:300`. 
-#' 
-#' @export 
+#' sequence e.g. `200:300`.
+#'
+#' @export
 DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
   inherit = DataBackend, cloneable = FALSE,
   public = list(
 
-    #' @description 
+    #' @description
     #'
     #' Creates a backend for a `SpatRaster`.
     #'
     #' @param data (`SpatRaster`)\cr
     #'    A raster object.
-    #' 
+    #'
     initialize = function(data) {
       private$.data = assert_class(data, "SpatRaster")
       self$data_formats = "data.table"
     },
 
-    data = function(rows, cols, data_format) {
+    data = function(rows, cols, data_format = "data.table") {
       stack = private$.data
 
       if (isTRUE(all.equal(rows, rows[1]:rows[length(rows)]))) {
@@ -61,9 +61,9 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
     },
 
     finalize = function() {
-  
+
     },
-    
+
     head = function(n = 6L) {
       as.data.table(terra::head(private$.data, n))
     },
@@ -132,7 +132,7 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
 
   private = list(
     .calculate_hash = function() {
-       mlr3misc::calculate_hash(self$compact_seq, private$.data)
+      mlr3misc::calculate_hash(self$compact_seq, private$.data)
     }
   )
 )

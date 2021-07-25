@@ -81,7 +81,7 @@ A raster object.}
 \if{latex}{\out{\hypertarget{method-data}{}}}
 \subsection{Method \code{data()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendSpatRaster$data(rows, cols, data_format)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{DataBackendSpatRaster$data(rows, cols, data_format = "data.table")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
