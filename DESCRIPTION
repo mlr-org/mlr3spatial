@@ -19,6 +19,11 @@ Imports:
     mlr3learners,
     R6,
     raster
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: 
+    knitr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
