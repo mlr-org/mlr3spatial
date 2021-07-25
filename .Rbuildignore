@@ -10,3 +10,6 @@
 ^.*\.tif$
 ^codemeta\.json$
 pkgdown
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

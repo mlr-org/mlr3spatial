@@ -109,3 +109,4 @@ CRAN-RELEASE
 inst/*
 *.tif
 inst/doc
+docs
