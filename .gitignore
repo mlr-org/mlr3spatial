@@ -107,4 +107,4 @@ $RECYCLE.BIN/
 CRAN-RELEASE
 inst/*
 *.tif
-
+inst/doc

@@ -8,3 +8,4 @@
 ^tic\.R$
 ^\.ccache$
 ^.*\.tif$
+^codemeta\.json$
