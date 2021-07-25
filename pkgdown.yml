@@ -3,8 +3,8 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   poc: poc.html
-last_built: 2021-07-25T14:51Z
+last_built: 2021-07-25T15:33Z
 urls:
-  reference: https://mlr3spatiotempcv.mlr-org.com/reference
-  article: https://mlr3spatiotempcv.mlr-org.com/articles
+  reference: https://mlr3spatial.mlr-org.com/reference
+  article: https://mlr3spatial.mlr-org.com/articles
 

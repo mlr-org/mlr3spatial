@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://mlr3spatiotempcv.mlr-org.com/index.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/index.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatiotempcv.mlr-org.com/reference/LearnerClassifSVMParallel.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/reference/LearnerClassifSVMParallel.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatiotempcv.mlr-org.com/reference/PredictionRaster.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/reference/PredictionRaster.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatiotempcv.mlr-org.com/reference/PredictionRasterClassif.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/reference/PredictionRasterClassif.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatiotempcv.mlr-org.com/reference/PredictionRasterRegr.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/reference/PredictionRasterRegr.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatiotempcv.mlr-org.com/reference/mlr3spatial-package.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/reference/mlr3spatial-package.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatiotempcv.mlr-org.com/articles/poc.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/articles/poc.html</loc>
   </url>
 </urlset>
