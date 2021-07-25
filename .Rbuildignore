@@ -9,3 +9,4 @@
 ^\.ccache$
 ^.*\.tif$
 ^codemeta\.json$
+pkgdown

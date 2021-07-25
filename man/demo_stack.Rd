@@ -10,7 +10,7 @@ demo_stack(size = 500, layers = 5)
 \item{size}{(\code{integer(1)})\cr
 Size of raster stack in megabyte.}
 
-\item{layer}{(\code{integer(1)})\cr
+\item{layers}{(\code{integer(1)})\cr
 Number of layers.}
 }
 \description{
