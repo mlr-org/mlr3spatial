@@ -136,15 +136,15 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Approach 1: no dedicated DataBackend, i.e. user needs to convert into a DT somehow</span>
 <span class="va">stack</span> <span class="op">=</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu">rast</span><span class="op">(</span><span class="st">"demo_stack_500mb.tif"</span><span class="op">)</span>
-<span class="va">data_train</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html">as.data.table</a></span><span class="op">(</span><span class="fu">spatSample</span><span class="op">(</span><span class="va">stack</span>, <span class="fl">500</span><span class="op">)</span><span class="op">)</span>
-<span class="va">data_train</span><span class="op">[</span>, <span class="va">y</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/factor.html">as.factor</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">]</span>
+<span class="va">data_train</span> <span class="op">=</span> <span class="fu">as.data.table</span><span class="op">(</span><span class="fu">spatSample</span><span class="op">(</span><span class="va">stack</span>, <span class="fl">500</span><span class="op">)</span><span class="op">)</span>
+<span class="va">data_train</span><span class="op">[</span>, <span class="va">y</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">]</span>
 
 <span class="co"># Approach 2: dedicated DataBackend for 'SpatRaster'</span></code></pre></div>
 <p>A mlr3 classification <code>task</code> is created and an SVM learner is fitted with the randomly sampled raster cells.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_classif.html">as_task_classif</a></span><span class="op">(</span><span class="va">data_train</span>, target <span class="op">=</span> <span class="st">"y"</span>, positive <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">task</span> <span class="op">=</span> <span class="fu">as_task_classif</span><span class="op">(</span><span class="va">data_train</span>, target <span class="op">=</span> <span class="st">"y"</span>, positive <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span>
 
-<span class="va">learner_svm</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html">lrn</a></span><span class="op">(</span><span class="st">"classif.svm"</span><span class="op">)</span>
+<span class="va">learner_svm</span> <span class="op">=</span> <span class="fu">lrn</span><span class="op">(</span><span class="st">"classif.svm"</span><span class="op">)</span>
 <span class="va">learner_svm</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></code></pre></div>
 <p>The <code>PredictionRaster</code> class controls the splitting of the raster stack into chunks. The most important parameter is the <code>chunksize</code> which controls size of processed raster chunks.</p>
 <p>The automatic detection of this parameter is error-prone since different {future} plans and {mlr3} learners will consume a highly varying amount of memory.</p>
@@ -154,7 +154,7 @@
 <h2 class="hasAnchor">
 <a href="#prediction" class="anchor"></a>Prediction</h2>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">data_predict</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/subset.html">subset</a></span><span class="op">(</span><span class="va">stack</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">data_predict</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">stack</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>
 
 <span class="co"># Approach 1: S3 dispatch</span>
 <span class="va">learner_svm</span><span class="op">$</span><span class="fu">predict_newdata</span><span class="op">(</span>newdata <span class="op">=</span> <span class="va">spatial_data_predict</span>, task <span class="op">=</span> <span class="va">task</span>, chunksize <span class="op">=</span> <span class="fl">200</span>, filename <span class="op">=</span> <span class="st">"pred.grd"</span><span class="op">)</span>

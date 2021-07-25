@@ -114,67 +114,18 @@
 <a href="#mlr3spatial" class="anchor"></a>mlr3spatial</h1></div>
 <!-- badges: start -->
 
-<p>This package is <strong>not</strong> ready for production use and only a proof of concept for now. For spatiotemporal resampling support see <a href="https://github.com/mlr-org/mlr3spatiotempcv">mlr3spatiotempcv</a>.</p>
+<p>This package is <strong>NOT</strong> ready for production use and only a proof of concept for now. For spatiotemporal resampling within mlr3 see <a href="https://github.com/mlr-org/mlr3spatiotempcv">{mlr3spatiotempcv}</a>.</p>
 </div>
-<div id="proof-of-concept" class="section level1">
+<div id="package-scope" class="section level1">
 <h1 class="hasAnchor">
-<a href="#proof-of-concept" class="anchor"></a>Proof of Concept</h1>
-<div id="introduction" class="section level2">
-<h2 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>The prediction of large raster files is an error-prone and time consuming task in R.</p>
+<a href="#package-scope" class="anchor"></a>Package scope</h1>
+<p>The handling of large spatial objects (terra, raster, stars) in ML is an error-prone and time consuming task.</p>
 <p>This package aims to</p>
 <ol>
-<li>Allow raster prediction with mlr3 learners</li>
-<li>Predict raster files in chunks to prevent memory related errors</li>
-<li>Speed up the prediction process by predicting the chunks in parallel</li>
+<li>Simplify Task and Prediction handling of spatial objects within the mlr3 ecosystem</li>
+<li>Prediction of spatial objects in chunks to prevent memory overflow</li>
+<li>(optional) Speeding up the prediction process by predicting in parallel, making use of the built-in parallelization in the mlr3 ecosystem (via future)</li>
 </ol>
-</div>
-<div id="methods" class="section level2">
-<h2 class="hasAnchor">
-<a href="#methods" class="anchor"></a>Methods</h2>
-<p>The size of raster files in memory can be easily calculated with <code>number of cells * number of layers * 8</code> since one raster cell allocates 8 bytes. However, the memory usage during the prediction process highly varies between different <code>futures</code> and the used learning algorithm. For example, the <code>multisession</code> future generates multiple R sessions and creates copy of the variables for each session. It is even harder to predict how much memory the learning algorithm will need for the prediction. Therefore, we decided that the chunk size should be manually set by user to avoid an error-prone automatic detection of the optimal chunk size.</p>
-</div>
-<div id="example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
-<p>The package offers functions to create demo raster files in any size.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster">raster</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3.mlr-org.com">mlr3</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3spatial.mlr-org.com">mlr3spatial</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com">data.table</a></span><span class="op">)</span>
-
-<span class="va">stack</span> <span class="op">=</span> <span class="fu">demo_stack</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1000000000</span>, layers<span class="op">=</span><span class="fl">5</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/writeRaster.html">writeRaster</a></span><span class="op">(</span><span class="va">stack</span>, <span class="st">"demo_stack_500mb.tif"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span><span class="va">stack</span><span class="op">)</span></code></pre></div>
-<p><code>demo_stack</code> generates a raster stack with 5 layers (4 predictor variables and 1 response variable) with a total size of 500MB. The file is written to disk and the stack is removed to free up memory.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">data</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html">as.data.table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/sampleRandom.html">sampleRandom</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html">stack</a></span><span class="op">(</span><span class="st">"demo_stack_500mb.tif"</span><span class="op">)</span>, <span class="fl">500</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"var"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
-<span class="va">data</span> <span class="op">=</span> <span class="va">data</span><span class="op">[</span>, <span class="va">var1</span><span class="op">:=</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/factor.html">as.factor</a></span><span class="op">(</span><span class="va">var1</span><span class="op">)</span><span class="op">]</span></code></pre></div>
-<p>In order to fit a model, 500 raster cells are randomly sampled. The response variable returned by <code>demo_stack</code> is located in the first column of <code>data</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">task</span> <span class="op">=</span> <span class="va"><a href="https://mlr3.mlr-org.com/reference/TaskClassif.html">TaskClassif</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"raster"</span>, backend <span class="op">=</span> <span class="va">data</span>, target <span class="op">=</span> <span class="st">"var1"</span>, positive <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span>
-
-<span class="va">learner_svm</span> <span class="op">=</span> <span class="va"><a href="reference/LearnerClassifSVMParallel.html">LearnerClassifSVMParallel</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
-<span class="va">learner_svm</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span>, row_ids <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">500</span><span class="op">)</span></code></pre></div>
-<p>A mlr3 <code>task</code> is created and a classification svm is fitted with the randomly sampled raster cells.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">data_stack</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html">stack</a></span><span class="op">(</span><span class="st">"inst/demo_stack_500mb.tif"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span><span class="op">(</span><span class="va">data_stack</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"var"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
-<span class="va">data_stack</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/addLayer.html">dropLayer</a></span><span class="op">(</span><span class="va">data_stack</span>, <span class="fl">1</span><span class="op">)</span>
-
-<span class="va">reclassify_table</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span>task <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>, raster <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">11</span><span class="op">)</span><span class="op">)</span>
-<span class="va">pred</span> <span class="op">=</span> <span class="va"><a href="reference/PredictionRasterClassif.html">PredictionRasterClassif</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">data_stack</span>, <span class="va">task</span>, <span class="va">reclassify_table</span><span class="op">)</span>
-<span class="va">pred</span><span class="op">$</span><span class="va">chunksize</span> <span class="op">=</span> <span class="fl">100</span></code></pre></div>
-<p>The <code>PredictionRasterClassif</code> class controls the splitting of the raster stack into chunks. The most important parameter is the <code>chunksize</code> which controls size of processed raster chunks. The automatic detection of this parameter is error-prone since different <code>future</code> plans and <code>mlr3</code> learners will consume a highly varying amount of memory.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">future</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/future/man/plan.html">plan</a></span><span class="op">(</span><span class="st">"multisession"</span><span class="op">)</span>
-
-<span class="va">ras</span> <span class="op">=</span> <span class="va">pred</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">learner_svm</span><span class="op">)</span></code></pre></div>
-<p>Execute the raster prediction in parallel.</p>
-</div>
 </div>
 
   </div>
@@ -208,7 +159,6 @@
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://github.com/mlr-org/mlr3spatial/actions"><img src="https://github.com/mlr-org/mlr3spatial/workflows/tic/badge.svg?branch=main" alt="tic"></a></li>
-<li><a href="https://cran.r-project.org/package=mlr3spatial"><img src="https://www.r-pkg.org/badges/version-ago/mlr3spatial" alt="CRAN Status"></a></li>
 <li><a href="https://codecov.io/github/mlr-org/mlr3spatial?branch=main"><img src="https://codecov.io/gh/mlr-org/mlr3spatial/branch/main/graph/badge.svg" alt="Coverage status"></a></li>
 <li><a href="https://www.codefactor.io/repository/github/mlr-org/mlr3spatial"><img src="https://www.codefactor.io/repository/github/mlr-org/mlr3spatial/badge" alt="CodeFactor"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
