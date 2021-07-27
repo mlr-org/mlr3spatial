@@ -20,15 +20,15 @@ URL: https://mlr3spatial.mlr-org.com,
 BugReports: https://github.com/mlr-org/mlr3spatial/issues
 Depends:
     mlr3 (>= 0.11.0),
-    R (>= 3.1.0),
-    terra (>= 1.2-10)
+    R (>= 3.1.0)
 Imports:
     checkmate (>= 2.0.0),
     data.table (>= 1.14.0),
     lgr (>= 0.4.2),
     mlr3learners (>= 0.4.5),
     mlr3misc,
-    R6 (>= 2.5.0)
+    R6 (>= 2.5.0),
+    terra (>= 1.2-10)
 Suggests:
     knitr,
     raster,
