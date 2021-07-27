@@ -1,13 +1,23 @@
 Package: mlr3spatial
-Title: Parallel spatial prediction for 'mlr3'
+Title: Support for spatial objects within the 'mlr3' ecosystem
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "Marc",
-           family = "Becker",
-           role = c("aut", "cre"),
-           email = "marcbecker@posteo.de")
-Description: Parallel raster prediction for mlr3.
+    c(person(given = "Marc",
+             family = "Becker",
+             role = c("aut", "cre"),
+             email = "marcbecker@posteo.de",
+             comment = c(ORCID = "0000-0002-8115-0400")),
+      person(given = "Patrick",
+             family = "Schratz",
+             role = "aut",
+             email = "patrick.schratz@gmail.com",
+             comment = c(ORCID = "0000-0003-0748-6624")))
+Description: Extends the mlr3 ML framework with methods for data storage
+    and prediction for spatial objects (terra, raster, stars packages)
 License: LGPL-3
+URL: https://mlr3spatial.mlr-org.com,
+    https://github.com/mlr-org/mlr3spatial
+BugReports: https://github.com/mlr-org/mlr3spatial/issues
 Depends:
     mlr3 (>= 0.11.0),
     R (>= 3.1.0),
@@ -20,11 +30,14 @@ Imports:
     mlr3misc,
     R6 (>= 2.5.0)
 Suggests:
+    knitr,
+    raster,
+    rmarkdown,
     testthat (>= 3.0.0)
-Remotes:
-    mlr-org/mlr3@parallel_predict
+VignetteBuilder: 
+    knitr
 Config/testthat/edition: 3
-Config/testthat/parallel: false
+Config/testthat/parallel: true
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1

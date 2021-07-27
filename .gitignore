@@ -7,7 +7,6 @@
 
 # User-specific files
 .Ruserdata
-.Rprofile
 
 # Example code in package build process
 *-Ex.R
@@ -49,6 +48,8 @@ docs/
 
 # Icon must end with two \r
 Icon
+
+
 
 # Thumbnails
 ._*
@@ -107,4 +108,5 @@ $RECYCLE.BIN/
 CRAN-RELEASE
 inst/*
 *.tif
-
+inst/doc
+docs

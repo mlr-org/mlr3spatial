@@ -1,32 +1,32 @@
 test_that("DataBackendSpatRaster works", {
   # prepare raster stack
-  stack = rast("demo_500.tif")
+  stack = rast(spatraster)
   value = data.table(ID = c(0, 1), y = c("negative", "positive"))
   setCats(stack, layer = "y", value = value)
   colnames = names(stack)
 
   backend = DataBackendSpatRaster$new(stack)
-  
+
   # head
   data = backend$head(10L)
   expect_data_table(data, nrow = 10L, ncol = 5L)
   expect_names(names(data), identical.to = colnames)
 
-  # distinct 
+  # distinct
   expect_equal(backend$distinct(rows = NULL, cols = "y"), list(y = c("negative", "positive")))
   data = backend$distinct(rows = 1:100, cols = c("x_1", "y"))
   expect_names(names(data), identical.to = c("x_1", "y"))
-  expect_numeric(data$x_1)  
+  expect_numeric(data$x_1)
   expect_factor(data$y, levels = c("negative", "positive"))
 
   # data
   # [01] [02] [03] [04]
   # [05] [06] [07] [08]
   # [09] [10] [11] [12]
-  raster = rast(nrow = 3, ncol = 4)
-  raster[] = 1:12
-  names(raster) = "y"
-  backend = DataBackendSpatRaster$new(raster)
+  spatraster = rast(nrow = 3, ncol = 4)
+  spatraster[] = 1:12
+  names(spatraster) = "y"
+  backend = DataBackendSpatRaster$new(spatraster)
 
   # [x] [x] [x] [x]
   # [ ] [ ] [ ] [ ]

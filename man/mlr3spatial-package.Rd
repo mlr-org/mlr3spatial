@@ -4,14 +4,29 @@
 \name{mlr3spatial-package}
 \alias{mlr3spatial}
 \alias{mlr3spatial-package}
-\title{mlr3spatial: Parallel spatial prediction for 'mlr3'}
+\title{mlr3spatial: Support for spatial objects within the 'mlr3' ecosystem}
 \description{
-Parallel raster prediction for mlr3.
+Extends the mlr3 ML framework with methods for data storage
+    and prediction for spatial objects (terra, raster, stars packages)
 }
 \references{
 \cite{mlr3spatial}{pkg::citation}
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://mlr3spatial.mlr-org.com}
+  \item \url{https://github.com/mlr-org/mlr3spatial}
+  \item Report bugs at \url{https://github.com/mlr-org/mlr3spatial/issues}
+}
+
+}
 \author{
-\strong{Maintainer}: Marc Becker \email{marcbecker@posteo.de}
+\strong{Maintainer}: Marc Becker \email{marcbecker@posteo.de} (\href{https://orcid.org/0000-0002-8115-0400}{ORCID})
+
+Authors:
+\itemize{
+  \item Patrick Schratz \email{patrick.schratz@gmail.com} (\href{https://orcid.org/0000-0003-0748-6624}{ORCID})
+}
 
 }
