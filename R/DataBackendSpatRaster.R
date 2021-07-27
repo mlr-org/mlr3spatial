@@ -44,6 +44,7 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
       if (isTRUE(all.equal(rows, rows[1]:rows[length(rows)]))) {
         # block read
         readStart(stack)
+        on.exit(readStop(stack))
         # determine rows to read
         cells = rowColFromCell(stack, rows)
         row = cells[1, 1]
@@ -51,17 +52,13 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
         res = as.data.table(readValues(stack, row = row, nrows = nrows, dataframe = TRUE))
         # subset cells and features
         res = res[cells[1, 2]:(cells[1, 2] + length(rows) - 1), cols, with = FALSE]
-        readStop(stack)
+       
       } else {
         # cell read
         cells = rowColFromCell(stack, rows)
         res = rbindlist(apply(cells, 1, function(x) stack[x[1], x[2]][cols]))
       }
       res
-    },
-
-    finalize = function() {
-  
     },
     
     head = function(n = 6L) {
