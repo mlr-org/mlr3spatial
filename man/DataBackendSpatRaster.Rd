@@ -36,6 +36,9 @@ Number of rows (observations).}
 
 \item{\code{ncol}}{(\code{integer(1)})\cr
 Number of columns (variables).}
+
+\item{\code{stack}}{(\code{integer(1)})\cr
+Returns SpatRaster.}
 }
 \if{html}{\out{</div>}}
 }
@@ -105,6 +108,9 @@ cells in the raster.}
 
 \item{\code{cols}}{\code{character()}\cr
 Column names.}
+
+\item{\code{data_format}}{(\code{character(1)})\cr
+Desired data format, e.g. \code{"data.table"} or \code{"Matrix"}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -153,6 +159,9 @@ cells in the raster.}
 
 \item{\code{cols}}{\code{character()}\cr
 Column names.}
+
+\item{\code{na_rm}}{\code{logical(1)}\cr
+Whether to remove NAs or not.}
 }
 \if{html}{\out{</div>}}
 }
@@ -167,12 +176,18 @@ Named \code{list()} of distinct values.
 Returns the number of missing values per column in the specified slice
 of data. Non-existing rows and columns are silently ignored.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendSpatRaster$missings(row, cols)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{DataBackendSpatRaster$missings(rows, cols)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{rows}}{\code{integer()}\cr
+Row indices. Row indices start with 1 in the upper left corner in the
+raster, increase from left to right and then from top to bottom. The last
+cell is in the bottom right corner and the row index equals the number of
+cells in the raster.}
+
 \item{\code{cols}}{\code{character()}\cr
 Column names.}
 }

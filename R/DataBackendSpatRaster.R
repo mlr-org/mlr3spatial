@@ -20,7 +20,7 @@
 #'
 #' Block mode is activated if `$data(rows)` is called with a increasing integer
 #' sequence e.g. `200:300`.
-#' @importFrom terra readStart readStop rowColFromCell readValues head unique
+#' @importFrom terra readStart readStop rowColFromCell readValues head unique cats
 #' @export
 DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
   inherit = mlr3::DataBackend, cloneable = FALSE,
@@ -50,6 +50,8 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
     #' Rows are guaranteed to be returned in the same order as `rows`, columns
     #' may be returned in an arbitrary order.
     #' Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.
+    #' @param data_format (`character(1)`)\cr
+    #'  Desired data format, e.g. `"data.table"` or `"Matrix"`.
     data = function(rows, cols, data_format = "data.table") {
       stack = private$.data
 
@@ -89,6 +91,8 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
     #' specified. If `na_rm` is `TRUE`, missing values are removed from the
     #' returned vectors of distinct values. Non-existing rows and columns are
     #' silently ignored.
+    #' @param na_rm `logical(1)`\cr
+    #'   Whether to remove NAs or not.
     #'
     #' @return Named `list()` of distinct values.
     distinct = function(rows, cols, na_rm = TRUE) {
@@ -99,7 +103,7 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
         stack = terra::subset(private$.data, cols)
         if (all(terra::is.factor(stack))) {
           # fastest
-          res = as.list(map_dtc(cats(stack), function(layer) as.data.table(layer)[, 2]))
+          res = as.list(map_dtc(terra::cats(stack), function(layer) as.data.table(layer)[, 2]))
         } else {
           # fast
           # bug: terra does not respect categorical raster layers
@@ -118,7 +122,7 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
     #' of data. Non-existing rows and columns are silently ignored.
     #'
     #' @return Total of missing values per column (named `numeric()`).
-    missings = function(row, cols) {
+    missings = function(rows, cols) {
       set_names(rep(0, self$ncol), self$colnames)
     }
   ),
@@ -152,6 +156,8 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
       terra::nlyr(private$.data) + 1
     },
 
+    #' @field stack (`integer(1)`)\cr
+    #' Returns SpatRaster.
     stack = function(rhs) {
       assert_ro_binding(rhs)
       private$.data
