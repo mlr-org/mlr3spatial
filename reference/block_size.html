@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Parallel Prediction SVM Classification Learner — LearnerClassifSVMParallel • mlr3spatial</title>
+<title>Split Raster Into Chunks — block_size • mlr3spatial</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -47,12 +47,8 @@
 
 
 
-<meta property="og:title" content="Parallel Prediction SVM Classification Learner — LearnerClassifSVMParallel" />
-<meta property="og:description" content="Proof of concept for parallel prediction intergrated into the mlr3::Learner
-class. The SVM classification learner is extended with the
-predict_newdata_parallel method which splits newdata into n parts and
-execudes the prediction in parallel. n is equal to the number of available
-cores." />
+<meta property="og:title" content="Split Raster Into Chunks — block_size" />
+<meta property="og:description" content="Splits raster into chunks." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -154,76 +150,30 @@ cores." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Parallel Prediction SVM Classification Learner</h1>
-    <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/LearnerClassifSVMParallel.R'><code>R/LearnerClassifSVMParallel.R</code></a></small>
-    <div class="hidden name"><code>LearnerClassifSVMParallel.Rd</code></div>
+    <h1>Split Raster Into Chunks</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/helper.R'><code>R/helper.R</code></a></small>
+    <div class="hidden name"><code>block_size.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Proof of concept for parallel prediction intergrated into the <a href='https://mlr3.mlr-org.com/reference/Learner.html'>mlr3::Learner</a>
-class. The SVM classification learner is extended with the
-<code>predict_newdata_parallel</code> method which splits <code>newdata</code> into <code>n</code> parts and
-execudes the prediction in parallel. <code>n</code> is equal to the number of available
-cores.</p>
+    <p>Splits raster into chunks.</p>
     </div>
 
+    <pre class="usage"><span class='fu'>block_size</span><span class='op'>(</span><span class='va'>raster</span>, <span class='va'>chunksize</span><span class='op'>)</span></pre>
 
-
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p>The <code>predict_newdata_parallel</code> method is not useful for learning algorithms
-with an integrated parallel predict function. For example, the <code>ranger</code>
-learner predicts newdata internally on all available cores. Therefore, a new
-learner property (<code>parallel_predict</code>) should indicate if
-<code>predict_newdata_parallel</code> should be called at all.</p>
-    <h2 class="hasAnchor" id="super-classes"><a class="anchor" href="#super-classes"></a>Super classes</h2>
-
-    <p><code><a href='https://mlr3.mlr-org.com/reference/Learner.html'>mlr3::Learner</a></code> -&gt; <code><a href='https://mlr3.mlr-org.com/reference/LearnerClassif.html'>mlr3::LearnerClassif</a></code> -&gt; <code><a href='https://mlr3learners.mlr-org.com/reference/mlr_learners_classif.svm.html'>mlr3learners::LearnerClassifSVM</a></code> -&gt; <code>LearnerClassifSVMParallel</code></p>
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Public methods</h3>
-
-<ul>
-<li><p><a href='#method-new'><code>LearnerClassifSVMParallel$new()</code></a></p></li>
-<li><p><a href='#method-predict_newdata_parallel'><code>LearnerClassifSVMParallel$predict_newdata_parallel()</code></a></p></li>
-<li><p><a href='#method-clone'><code>LearnerClassifSVMParallel$clone()</code></a></p></li>
-</ul>
-<p><details ><summary>Inherited methods</summary>
-<ul>
-<li><p><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="format"><a href='../../mlr3/html/Learner.html#method-format'><code>mlr3::Learner$format()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="help"><a href='../../mlr3/html/Learner.html#method-help'><code>mlr3::Learner$help()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="predict"><a href='../../mlr3/html/Learner.html#method-predict'><code>mlr3::Learner$predict()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="predict_newdata"><a href='../../mlr3/html/Learner.html#method-predict_newdata'><code>mlr3::Learner$predict_newdata()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="print"><a href='../../mlr3/html/Learner.html#method-print'><code>mlr3::Learner$print()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="reset"><a href='../../mlr3/html/Learner.html#method-reset'><code>mlr3::Learner$reset()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="train"><a href='../../mlr3/html/Learner.html#method-train'><code>mlr3::Learner$train()</code></a></span></p></li>
-</ul>
-</details>
-
-<hr>
-<a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
-
-<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>LearnerClassifSVMParallel</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
-
-<p><hr>
-<a id="method-predict_newdata_parallel"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>predict_newdata_parallel()</code></h3>
-
-<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>LearnerClassifSVMParallel</span><span class='op'>$</span><span class='fu'>predict_newdata_parallel</span><span class='op'>(</span><span class='va'>newdata</span><span class='op'>)</span></pre><p></div></p>
-
-<p><hr>
-<a id="method-clone"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>clone()</code></h3>
-<p>The objects of this class are cloneable with this method.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>LearnerClassifSVMParallel</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre><p></div></p>
-
-<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
-<p><div class="arguments"></p><dl>
-<dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
-
-</dl><p></div></p>
-
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>raster</th>
+      <td><p>(<a href='https://rdrr.io/pkg/terra/man/SpatRaster-class.html'>terra::SpatRaster</a>)<br />
+Raster to be split into chunks.</p></td>
+    </tr>
+    <tr>
+      <th>chunksize</th>
+      <td><p>Raster chunk size in megabyte.</p></td>
+    </tr>
+    </table>
 
 
   </div>
