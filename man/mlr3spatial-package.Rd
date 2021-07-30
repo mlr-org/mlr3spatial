@@ -4,10 +4,11 @@
 \name{mlr3spatial-package}
 \alias{mlr3spatial}
 \alias{mlr3spatial-package}
-\title{mlr3spatial: Support for spatial objects within the 'mlr3' ecosystem}
+\title{mlr3spatial: Support for Spatial Objects Within the 'mlr3' Ecosystem}
 \description{
-Extends the mlr3 ML framework with methods for data storage
-    and prediction for spatial objects (terra, raster, stars packages)
+Extends the mlr3 ML framework with methods for spatial
+    objects. Data storage and prediction are supported for packages
+    'terra', 'raster', and 'stars'.
 }
 \references{
 \cite{mlr3spatial}{pkg::citation}

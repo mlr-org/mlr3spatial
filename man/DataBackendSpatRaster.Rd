@@ -44,7 +44,6 @@ Number of columns (variables).}
 \itemize{
 \item \href{#method-new}{\code{DataBackendSpatRaster$new()}}
 \item \href{#method-data}{\code{DataBackendSpatRaster$data()}}
-\item \href{#method-finalize}{\code{DataBackendSpatRaster$finalize()}}
 \item \href{#method-head}{\code{DataBackendSpatRaster$head()}}
 \item \href{#method-distinct}{\code{DataBackendSpatRaster$distinct()}}
 \item \href{#method-missings}{\code{DataBackendSpatRaster$missings()}}
@@ -80,6 +79,17 @@ A raster object.}
 \if{html}{\out{<a id="method-data"></a>}}
 \if{latex}{\out{\hypertarget{method-data}{}}}
 \subsection{Method \code{data()}}{
+Returns a slice of the data.
+Calls \code{\link[dplyr:filter]{dplyr::filter()}} and \code{\link[dplyr:select]{dplyr::select()}} on the table and converts
+it to a \code{\link[data.table:data.table]{data.table::data.table()}}.
+
+The rows must be addressed as vector of primary key values, columns must be
+referred to via column names.
+Queries for rows with no matching row id and queries for columns with no matching
+column name are silently ignored.
+Rows are guaranteed to be returned in the same order as \code{rows}, columns
+may be returned in an arbitrary order.
+Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DataBackendSpatRaster$data(rows, cols, data_format = "data.table")}\if{html}{\out{</div>}}
 }
@@ -100,27 +110,34 @@ Column names.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-finalize"></a>}}
-\if{latex}{\out{\hypertarget{method-finalize}{}}}
-\subsection{Method \code{finalize()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendSpatRaster$finalize()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-head"></a>}}
 \if{latex}{\out{\hypertarget{method-head}{}}}
 \subsection{Method \code{head()}}{
+Retrieve the first \code{n} rows.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DataBackendSpatRaster$head(n = 6L)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{n}}{(\code{integer(1)})\cr
+Number of rows.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link[data.table:data.table]{data.table::data.table()}} of the first \code{n} rows.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-distinct"></a>}}
 \if{latex}{\out{\hypertarget{method-distinct}{}}}
 \subsection{Method \code{distinct()}}{
+Returns a named list of vectors of distinct values for each column
+specified. If \code{na_rm} is \code{TRUE}, missing values are removed from the
+returned vectors of distinct values. Non-existing rows and columns are
+silently ignored.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DataBackendSpatRaster$distinct(rows, cols, na_rm = TRUE)}\if{html}{\out{</div>}}
 }
@@ -139,11 +156,16 @@ Column names.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+Named \code{list()} of distinct values.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-missings"></a>}}
 \if{latex}{\out{\hypertarget{method-missings}{}}}
 \subsection{Method \code{missings()}}{
+Returns the number of missing values per column in the specified slice
+of data. Non-existing rows and columns are silently ignored.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DataBackendSpatRaster$missings(row, cols)}\if{html}{\out{</div>}}
 }
@@ -155,6 +177,9 @@ Column names.}
 Column names.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Total of missing values per column (named \code{numeric()}).
 }
 }
 }

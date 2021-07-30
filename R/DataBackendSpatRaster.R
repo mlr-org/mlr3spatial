@@ -20,10 +20,10 @@
 #'
 #' Block mode is activated if `$data(rows)` is called with a increasing integer
 #' sequence e.g. `200:300`.
-#'
+#' @importFrom terra readStart readStop rowColFromCell readValues head unique
 #' @export
 DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
-  inherit = DataBackend, cloneable = FALSE,
+  inherit = mlr3::DataBackend, cloneable = FALSE,
   public = list(
 
     #' @description
@@ -38,33 +38,59 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
       self$data_formats = "data.table"
     },
 
+    #' @description
+    #' Returns a slice of the data.
+    #' Calls [dplyr::filter()] and [dplyr::select()] on the table and converts
+    #' it to a [data.table::data.table()].
+    #'
+    #' The rows must be addressed as vector of primary key values, columns must be
+    #' referred to via column names.
+    #' Queries for rows with no matching row id and queries for columns with no matching
+    #' column name are silently ignored.
+    #' Rows are guaranteed to be returned in the same order as `rows`, columns
+    #' may be returned in an arbitrary order.
+    #' Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.
     data = function(rows, cols, data_format = "data.table") {
       stack = private$.data
 
       if (isTRUE(all.equal(rows, rows[1]:rows[length(rows)]))) {
         # block read
-        readStart(stack)
-        on.exit(readStop(stack))
+        terra::readStart(stack)
+        on.exit(terra::readStop(stack))
         # determine rows to read
-        cells = rowColFromCell(stack, rows)
+        cells = terra::rowColFromCell(stack, rows)
         row = cells[1, 1]
         nrows = cells[dim(cells)[1], 1] - cells[1, 1] + 1
-        res = as.data.table(readValues(stack, row = row, nrows = nrows, dataframe = TRUE))
+        res = as.data.table(terra::readValues(stack, row = row, nrows = nrows, dataframe = TRUE))
         # subset cells and features
         res = res[cells[1, 2]:(cells[1, 2] + length(rows) - 1), cols, with = FALSE]
-       
+
       } else {
         # cell read
-        cells = rowColFromCell(stack, rows)
+        cells = terra::rowColFromCell(stack, rows)
         res = rbindlist(apply(cells, 1, function(x) stack[x[1], x[2]][cols]))
       }
       res
     },
-    
+
+    #' @description
+    #' Retrieve the first `n` rows.
+    #'
+    #' @param n (`integer(1)`)\cr
+    #'   Number of rows.
+    #'
+    #' @return [data.table::data.table()] of the first `n` rows.
     head = function(n = 6L) {
       as.data.table(terra::head(private$.data, n))
     },
 
+    #' @description
+    #' Returns a named list of vectors of distinct values for each column
+    #' specified. If `na_rm` is `TRUE`, missing values are removed from the
+    #' returned vectors of distinct values. Non-existing rows and columns are
+    #' silently ignored.
+    #'
+    #' @return Named `list()` of distinct values.
     distinct = function(rows, cols, na_rm = TRUE) {
       assert_names(cols, type = "unique")
       cols = intersect(cols, self$colnames)
@@ -87,6 +113,11 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
       }
     },
 
+    #' @description
+    #' Returns the number of missing values per column in the specified slice
+    #' of data. Non-existing rows and columns are silently ignored.
+    #'
+    #' @return Total of missing values per column (named `numeric()`).
     missings = function(row, cols) {
       set_names(rep(0, self$ncol), self$colnames)
     }
