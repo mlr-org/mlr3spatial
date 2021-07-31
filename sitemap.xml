@@ -4,16 +4,16 @@
     <loc>https://mlr3spatial.mlr-org.com/index.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/reference/DataBackendSpatRaster.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/reference/LearnerClassifSVMParallel.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/reference/block_size.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/reference/PredictionRaster.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/reference/demo_raster.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/reference/PredictionRasterClassif.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/reference/demo_stack.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/reference/PredictionRasterRegr.html</loc>
   </url>
   <url>
     <loc>https://mlr3spatial.mlr-org.com/reference/mlr3spatial-package.html</loc>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate Demo Raster — demo_raster • mlr3spatial</title>
+<title>Demo title — PredictionRasterRegr • mlr3spatial</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -47,8 +47,8 @@
 
 
 
-<meta property="og:title" content="Generate Demo Raster — demo_raster" />
-<meta property="og:description" content="Generates a square demo terra::SpatRaster." />
+<meta property="og:title" content="Demo title — PredictionRasterRegr" />
+<meta property="og:description" content="demo descrip" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -150,26 +150,52 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generate Demo Raster</h1>
-    <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/helper.R'><code>R/helper.R</code></a></small>
-    <div class="hidden name"><code>demo_raster.Rd</code></div>
+    <h1>Demo title</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/PredictionRasterRegr.R'><code>R/PredictionRasterRegr.R</code></a></small>
+    <div class="hidden name"><code>PredictionRasterRegr.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Generates a square demo <a href='https://rdrr.io/pkg/terra/man/SpatRaster-class.html'>terra::SpatRaster</a>.</p>
+    <p>demo descrip</p>
     </div>
 
-    <pre class="usage"><span class='fu'>demo_raster</span><span class='op'>(</span><span class='va'>dimension</span><span class='op'>)</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>dimension</th>
-      <td><p>(<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>)
-xy dimension of raster</p></td>
-    </tr>
-    </table>
+
+    <h2 class="hasAnchor" id="super-class"><a class="anchor" href="#super-class"></a>Super class</h2>
+
+    <p><code><a href='PredictionRaster.html'>mlr3spatial::PredictionRaster</a></code> -&gt; <code>PredictionRasterRegr</code></p>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
+    
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Public methods</h3>
+
+<ul>
+<li><p><a href='#method-new'><code>PredictionRasterRegr$new()</code></a></p></li>
+<li><p><a href='#method-clone'><code>PredictionRasterRegr$clone()</code></a></p></li>
+</ul>
+<p><details open ><summary>Inherited methods</summary>
+<ul>
+<li><p><span class="pkg-link" data-pkg="mlr3spatial" data-topic="PredictionRaster" data-id="predict"><a href='../../mlr3spatial/html/PredictionRaster.html#method-predict'><code>mlr3spatial::PredictionRaster$predict()</code></a></span></p></li>
+</ul>
+</details>
+
+<hr>
+<a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
+
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>PredictionRasterRegr</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>stack</span>, <span class='va'>task</span>, <span class='va'>reclassify_table</span><span class='op'>)</span></pre><p></div></p>
+
+<p><hr>
+<a id="method-clone"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>clone()</code></h3>
+<p>The objects of this class are cloneable with this method.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>PredictionRasterRegr</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre><p></div></p>
+
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
+<dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
+
+</dl><p></div></p>
+
 
 
   </div>
