@@ -2,7 +2,7 @@ test_that("DataBackendSpatRaster works", {
   # prepare raster stack
   stack = rast(spatraster)
   value = data.table(ID = c(0, 1), y = c("negative", "positive"))
-  setCats(stack, layer = "y", value = value)
+  terra::setCats(stack, layer = "y", value = value)
   colnames = names(stack)
 
   backend = DataBackendSpatRaster$new(stack)
@@ -18,29 +18,6 @@ test_that("DataBackendSpatRaster works", {
   expect_names(names(data), identical.to = c("x_1", "y"))
   expect_numeric(data$x_1)
   expect_factor(data$y, levels = c("negative", "positive"))
-
-  spatraster = rast(nrow = 3, ncol = 4)
-  spatraster[] = c(1:11, NA)
-  names(spatraster) = "y"
-  backend = as_data_backend(spatraster)
-  expect_equal(backend$distinct(rows = 1:12, cols = "y"), list(y = 1:11))
-  expect_equal(backend$distinct(rows = 1:12, cols = "y", na_rm = FALSE), list(y = c(1:11, NA)))
-
-  # terra does not add NA as a factor level
-  spatraster = rast(nrow = 2, ncol = 2)
-  spatraster[] = c(0, 1, NA, 0)
-  names(spatraster) = "y"
-  value = data.table(ID = c(0, 1), y = c("negative", "positive"))
-  setCats(spatraster, layer = "y", value = value)
-  backend = as_data_backend(spatraster)
-  expect_equal(levels(backend$distinct(rows = 1:4, cols = "y")[[1]]), c("negative", "positive"))
-
-  # missings
-  spatraster = rast(nrow = 2, ncol = 2)
-  spatraster[] = c(0, 1, NA, 0)
-  names(spatraster) = "y"
-  backend = as_data_backend(spatraster)
-  backend$missings(rows = 1:4, cols = "y")
 
   # data
   # [01] [02] [03] [04]

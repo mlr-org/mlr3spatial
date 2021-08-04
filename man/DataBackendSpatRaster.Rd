@@ -4,7 +4,7 @@
 \alias{DataBackendSpatRaster}
 \title{DataBackend for SpatRaster}
 \description{
-A \link[mlr3:DataBackend]{mlr3::DataBackend} for \code{SpatRaster} (\CRANpkg{terra}).
+A \link[mlr3:DataBackend]{mlr3::DataBackend} for \code{SpatRaster} (package \CRANpkg{terra}).
 }
 \section{Read mode}{
 
@@ -26,7 +26,8 @@ sequence e.g. \code{200:300}.
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
 \item{\code{rownames}}{(\code{integer()})\cr
-Returns vector of all distinct row identifiers, i.e. the contents of the primary key column.}
+Returns vector of all distinct row identifiers, i.e. the contents of the
+primary key column.}
 
 \item{\code{colnames}}{(\code{character()})\cr
 Returns vector of all column names.}
@@ -37,8 +38,8 @@ Number of rows (observations).}
 \item{\code{ncol}}{(\code{integer(1)})\cr
 Number of columns (variables).}
 
-\item{\code{stack}}{(\code{SpatRaster})\cr
-Raster stack.}
+\item{\code{stack}}{(\code{integer(1)})\cr
+Returns SpatRaster.}
 }
 \if{html}{\out{</div>}}
 }
@@ -82,12 +83,16 @@ A raster object.}
 \if{html}{\out{<a id="method-data"></a>}}
 \if{latex}{\out{\hypertarget{method-data}{}}}
 \subsection{Method \code{data()}}{
-Returns a slice of the raster in the specified format.
-Currently, the only supported formats are \code{"data.table"}.
-The rows must be addressed as vector of cells indices, columns must be referred to via layer names.
-Queries for rows with no matching row id and queries for columns with no matching column name are silently ignored.
-Rows are guaranteed to be returned in the same order as \code{rows}, columns may be returned in an arbitrary order.
-Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.
+Returns a slice of the data.
+Calls \code{\link[terra:xyCellFrom]{terra::rowColFromCell()}} and \code{\link[terra:readwrite]{terra::readValues()}} on the spatial
+object and converts it to a \code{\link[data.table:data.table]{data.table::data.table()}}.
+
+The rows must be addressed as vector of primary key values, columns must
+be referred to via column names. Queries for rows with no matching row id
+and queries for columns with no matching column name are silently
+ignored. Rows are guaranteed to be returned in the same order as \code{rows},
+columns may be returned in an arbitrary order. Duplicated row ids result
+in duplicated rows, duplicated column names lead to an exception.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DataBackendSpatRaster$data(rows, cols, data_format = "data.table")}\if{html}{\out{</div>}}
 }
@@ -105,7 +110,7 @@ cells in the raster.}
 Column names.}
 
 \item{\code{data_format}}{(\code{character(1)})\cr
-Desired data format. Currently only \code{"data.table"} supported.}
+Desired data format, e.g. \code{"data.table"} or \code{"Matrix"}.}
 }
 \if{html}{\out{</div>}}
 }

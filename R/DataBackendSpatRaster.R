@@ -1,7 +1,7 @@
 #' @title DataBackend for SpatRaster
 #'
 #' @description
-#' A [mlr3::DataBackend] for `SpatRaster` (\CRANpkg{terra}).
+#' A [mlr3::DataBackend] for `SpatRaster` (package \CRANpkg{terra}).
 #'
 #' @param rows `integer()`\cr
 #'   Row indices. Row indices start with 1 in the upper left corner in the
@@ -20,10 +20,10 @@
 #'
 #' Block mode is activated if `$data(rows)` is called with a increasing integer
 #' sequence e.g. `200:300`.
-#'
+#' @importFrom terra readStart readStop rowColFromCell readValues head unique cats
 #' @export
-DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
-  inherit = DataBackend, cloneable = FALSE,
+DataBackendSpatRaster = R6::R6Class("DataBackendSpatRaster",
+  inherit = mlr3::DataBackend, cloneable = FALSE,
   public = list(
 
     #' @description
@@ -39,42 +39,41 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
     },
 
     #' @description
-    #' Returns a slice of the raster in the specified format.
-    #' Currently, the only supported formats are `"data.table"`.
-    #' The rows must be addressed as vector of cells indices, columns must be referred to via layer names.
-    #' Queries for rows with no matching row id and queries for columns with no matching column name are silently ignored.
-    #' Rows are guaranteed to be returned in the same order as `rows`, columns may be returned in an arbitrary order.
-    #' Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.
+    #' Returns a slice of the data.
+    #' Calls [terra::rowColFromCell()] and [terra::readValues()] on the spatial
+    #' object and converts it to a [data.table::data.table()].
     #'
+    #' The rows must be addressed as vector of primary key values, columns must
+    #' be referred to via column names. Queries for rows with no matching row id
+    #' and queries for columns with no matching column name are silently
+    #' ignored. Rows are guaranteed to be returned in the same order as `rows`,
+    #' columns may be returned in an arbitrary order. Duplicated row ids result
+    #' in duplicated rows, duplicated column names lead to an exception.
     #' @param data_format (`character(1)`)\cr
-    #'   Desired data format. Currently only `"data.table"` supported.
+    #'  Desired data format, e.g. `"data.table"` or `"Matrix"`.
     data = function(rows, cols, data_format = "data.table") {
       stack = private$.data
-      rows = assert_integerish(rows, coerce = TRUE)
-      assert_names(cols, type = "unique")
-      assert_choice(data_format, self$data_formats)
-      cols = intersect(cols, names(private$.data))
 
       if (isTRUE(all.equal(rows, rows[1]:rows[length(rows)]))) {
         # block read
-        readStart(stack)
-        on.exit(readStop(stack))
+        terra::readStart(stack)
+        on.exit(terra::readStop(stack))
         # determine rows to read
-        cells = rowColFromCell(stack, rows)
+        cells = terra::rowColFromCell(stack, rows)
         row = cells[1, 1]
         nrows = cells[dim(cells)[1], 1] - cells[1, 1] + 1
-        res = as.data.table(readValues(stack, row = row, nrows = nrows, dataframe = TRUE))
+        res = as.data.table(terra::readValues(stack, row = row, nrows = nrows, dataframe = TRUE))
         # subset cells and features
         res = res[cells[1, 2]:(cells[1, 2] + length(rows) - 1), cols, with = FALSE]
-       
+
       } else {
         # cell read
-        cells = rowColFromCell(stack, rows)
+        cells = terra::rowColFromCell(stack, rows)
         res = rbindlist(apply(cells, 1, function(x) stack[x[1], x[2]][cols]))
       }
       res
     },
-    
+
     #' @description
     #' Retrieve the first `n` rows.
     #'
@@ -91,7 +90,6 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
     #' specified. If `na_rm` is `TRUE`, missing values are removed from the
     #' returned vectors of distinct values. Non-existing rows and columns are
     #' silently ignored.
-    #'
     #' @param na_rm `logical(1)`\cr
     #'   Whether to remove NAs or not.
     #'
@@ -104,20 +102,20 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
         stack = terra::subset(private$.data, cols)
         if (all(terra::is.factor(stack))) {
           # fastest
-          res = as.list(map_dtc(cats(stack), function(layer) as.data.table(layer)[, 2]))
+          res = as.list(map_dtc(terra::cats(stack), function(layer) {
+            as.data.table(layer)[, 2]
+          }))
         } else {
           # fast
           # bug: terra does not respect categorical raster layers
-          res = terra::unique(stack, incomparables = TRUE)
+          terra::unique(stack, incomparables = TRUE)
           set_names(res, names(stack))
         }
       } else {
         # slow
         data = self$data(rows, cols)
-        res = lapply(data, unique)
+        lapply(data, unique)
       }
-      if (na_rm) res = map(res, function(values) values[!is.na(values)])
-      res
     },
 
     #' @description
@@ -126,17 +124,14 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
     #'
     #' @return Total of missing values per column (named `numeric()`).
     missings = function(rows, cols) {
-      cols = intersect(cols, self$colnames)
-
-      stack = private$.data
-      res = freq(stack, value = NA)
-      set_names(res[, "count"], names(stack))[cols]
+      set_names(rep(0, self$ncol), self$colnames)
     }
   ),
 
   active = list(
     #' @field rownames (`integer()`)\cr
-    #' Returns vector of all distinct row identifiers, i.e. the contents of the primary key column.
+    #' Returns vector of all distinct row identifiers, i.e. the contents of the
+    #' primary key column.
     rownames = function(rhs) {
       assert_ro_binding(rhs)
       1:ncell(private$.data)
@@ -163,8 +158,8 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
       terra::nlyr(private$.data) + 1
     },
 
-    #' @field stack (`SpatRaster`)\cr
-    #' Raster stack.
+    #' @field stack (`integer(1)`)\cr
+    #' Returns SpatRaster.
     stack = function(rhs) {
       assert_ro_binding(rhs)
       private$.data
@@ -177,17 +172,3 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
     }
   )
 )
-
-#' @title Create a Data Backend
-#' 
-#' @description
-#' Wraps a [DataBackend] around `SpatRaster` objects.
-#' 
-#' @param data (`SpatRaster`)\cr
-#'    A `SpatRaster` object to create a [DataBackend] from.
-#' 
-#' @return [DataBackend].
-#' @export
-as_data_backend.SpatRaster = function(data, primary_key = NULL, ...) { # nolint
-  DataBackendSpatRaster$new(data)
-}

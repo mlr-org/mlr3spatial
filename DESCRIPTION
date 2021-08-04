@@ -1,7 +1,7 @@
 Package: mlr3spatial
-Title: Support for spatial objects within the 'mlr3' ecosystem
+Title: Support for Spatial Objects Within the 'mlr3' Ecosystem
 Version: 0.0.0.9000
-Authors@R: 
+Authors@R:
     c(person(given = "Marc",
              family = "Becker",
              role = c("aut", "cre"),
@@ -12,8 +12,9 @@ Authors@R:
              role = "aut",
              email = "patrick.schratz@gmail.com",
              comment = c(ORCID = "0000-0003-0748-6624")))
-Description: Extends the mlr3 ML framework with methods for data storage
-    and prediction for spatial objects (terra, raster, stars packages)
+Description: Extends the mlr3 ML framework with methods for spatial
+    objects. Data storage and prediction are supported for packages
+    'terra', 'raster', and 'stars'.
 License: LGPL-3
 URL: https://mlr3spatial.mlr-org.com,
     https://github.com/mlr-org/mlr3spatial
@@ -34,9 +35,7 @@ Suggests:
     raster,
     rmarkdown,
     testthat (>= 3.0.0)
-Remotes:
-    mlr-org/mlr3@parallel_predict
-VignetteBuilder: 
+VignetteBuilder:
     knitr
 Config/testthat/edition: 3
 Config/testthat/parallel: true
