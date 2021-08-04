@@ -1,6 +1,7 @@
 #' @import data.table
 #' @import checkmate
-#' @importFrom mlr3learners LearnerClassifSVM
+#' @import mlr3misc
+#' @import mlr3
 #' @importFrom R6 R6Class is.R6
 #' @references
 #' \cite{mlr3spatial}{pkg::citation}

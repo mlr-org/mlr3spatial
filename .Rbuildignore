@@ -7,7 +7,9 @@
 ^\.github$
 ^tic\.R$
 ^\.ccache$
+^.*\.tif$
 ^codemeta\.json$
+pkgdown
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
