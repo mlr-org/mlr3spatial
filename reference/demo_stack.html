@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Demo title — PredictionRaster • mlr3spatial</title>
+<title>Generate Demo Raster Stack — demo_stack • mlr3spatial</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -47,8 +47,8 @@
 
 
 
-<meta property="og:title" content="Demo title — PredictionRaster" />
-<meta property="og:description" content="demo descrip" />
+<meta property="og:title" content="Generate Demo Raster Stack — demo_stack" />
+<meta property="og:description" content="Generates a square demo terra::SpatRaster stack." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -150,56 +150,31 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Demo title</h1>
-    <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/PredictionRaster.R'><code>R/PredictionRaster.R</code></a></small>
-    <div class="hidden name"><code>PredictionRaster.Rd</code></div>
+    <h1>Generate Demo Raster Stack</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/helper.R'><code>R/helper.R</code></a></small>
+    <div class="hidden name"><code>demo_stack.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>demo descrip</p>
+    <p>Generates a square demo <a href='https://rdrr.io/pkg/terra/man/SpatRaster-class.html'>terra::SpatRaster</a> stack.</p>
     </div>
 
+    <pre class="usage"><span class='fu'>demo_stack</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>500</span>, layers <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span></pre>
 
-
-    <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
-
-    <p><div class="r6-active-bindings"></p><dl>
-<dt><code>raster_size</code></dt><dd><p>Returns raster size in memory</p></dd>
-
-</dl><p></div></p>
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Public methods</h3>
-
-<ul>
-<li><p><a href='#method-new'><code>PredictionRaster$new()</code></a></p></li>
-<li><p><a href='#method-predict'><code>PredictionRaster$predict()</code></a></p></li>
-<li><p><a href='#method-clone'><code>PredictionRaster$clone()</code></a></p></li>
-</ul>
-<p><hr>
-<a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
-
-<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>PredictionRaster</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>stack</span>, <span class='va'>task</span><span class='op'>)</span></pre><p></div></p>
-
-<p><hr>
-<a id="method-predict"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/stats/predict.html'>predict()</a></code></h3>
-
-<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>PredictionRaster</span><span class='op'>$</span><span class='fu'>predict</span><span class='op'>(</span><span class='va'>learner</span>, filename <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".grd"</span><span class='op'>)</span><span class='op'>)</span></pre><p></div></p>
-
-<p><hr>
-<a id="method-clone"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>clone()</code></h3>
-<p>The objects of this class are cloneable with this method.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>PredictionRaster</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre><p></div></p>
-
-<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
-<p><div class="arguments"></p><dl>
-<dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
-
-</dl><p></div></p>
-
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>size</th>
+      <td><p>(<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>)<br />
+Size of raster stack in megabyte.</p></td>
+    </tr>
+    <tr>
+      <th>layers</th>
+      <td><p>(<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>)<br />
+Number of layers.</p></td>
+    </tr>
+    </table>
 
 
   </div>
