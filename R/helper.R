@@ -33,8 +33,8 @@ demo_stack = function(size = 500, layers = 5) {
 
   dimension = floor(sqrt(size / layers * 1e+06 / 8))
   raster_features = replicate(layers - 1, demo_raster(dimension))
-  raster_response = rast(matrix(c(rep(0, floor(dimension^2 / 2)),
-    rep(1, ceiling(dimension^2 / 2))), nrow = dimension))
+  raster_response = rast(matrix(c(rep("FALSE", floor(dimension^2 / 2)),
+    rep("TRUE", ceiling(dimension^2 / 2))), nrow = dimension))
   raster = rast(c(raster_features, list(raster_response)))
   names(raster) = c(paste0("x_", 1:(layers - 1)), "y")
   raster
