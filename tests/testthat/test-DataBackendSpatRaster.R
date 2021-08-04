@@ -48,3 +48,7 @@ test_that("DataBackendSpatRaster works", {
   # [ ] [ ] [x] [ ]
   expect_equal(backend$data(rows = c(1, 3, 8, 11), cols = "y"), data.table(y = c(1, 3, 8, 11)))
 })
+
+
+# FIXME: test as_task_classif
+# FIXME: test printer
