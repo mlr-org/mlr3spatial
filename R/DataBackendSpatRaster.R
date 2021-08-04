@@ -1,7 +1,7 @@
 #' @title DataBackend for SpatRaster
 #'
 #' @description
-#' A [mlr3::DataBackend] for `SpatRaster` (\CRANpkg{terra}).
+#' A [mlr3::DataBackend] for `SpatRaster` (package \CRANpkg{terra}).
 #'
 #' @param rows `integer()`\cr
 #'   Row indices. Row indices start with 1 in the upper left corner in the
@@ -40,16 +40,15 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
 
     #' @description
     #' Returns a slice of the data.
-    #' Calls [dplyr::filter()] and [dplyr::select()] on the table and converts
-    #' it to a [data.table::data.table()].
+    #' Calls [terra::rowColFromCell()] and [terra::readValues()] on the spatial
+    #' object and converts it to a [data.table::data.table()].
     #'
-    #' The rows must be addressed as vector of primary key values, columns must be
-    #' referred to via column names.
-    #' Queries for rows with no matching row id and queries for columns with no matching
-    #' column name are silently ignored.
-    #' Rows are guaranteed to be returned in the same order as `rows`, columns
-    #' may be returned in an arbitrary order.
-    #' Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.
+    #' The rows must be addressed as vector of primary key values, columns must
+    #' be referred to via column names. Queries for rows with no matching row id
+    #' and queries for columns with no matching column name are silently
+    #' ignored. Rows are guaranteed to be returned in the same order as `rows`,
+    #' columns may be returned in an arbitrary order. Duplicated row ids result
+    #' in duplicated rows, duplicated column names lead to an exception.
     #' @param data_format (`character(1)`)\cr
     #'  Desired data format, e.g. `"data.table"` or `"Matrix"`.
     data = function(rows, cols, data_format = "data.table") {
@@ -103,7 +102,9 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
         stack = terra::subset(private$.data, cols)
         if (all(terra::is.factor(stack))) {
           # fastest
-          res = as.list(map_dtc(terra::cats(stack), function(layer) as.data.table(layer)[, 2]))
+          res = as.list(map_dtc(terra::cats(stack), function(layer) {
+            as.data.table(layer)[, 2]
+          }))
         } else {
           # fast
           # bug: terra does not respect categorical raster layers
@@ -129,7 +130,8 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
 
   active = list(
     #' @field rownames (`integer()`)\cr
-    #' Returns vector of all distinct row identifiers, i.e. the contents of the primary key column.
+    #' Returns vector of all distinct row identifiers, i.e. the contents of the
+    #' primary key column.
     rownames = function(rhs) {
       assert_ro_binding(rhs)
       1:ncell(private$.data)
