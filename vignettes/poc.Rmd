@@ -45,15 +45,17 @@ data_train = as.data.table(spatSample(stack, 500))
 data_train[, y := as.factor(y)]
 
 # Approach 2: dedicated DataBackend for 'SpatRaster'
+backend = DataBackendSpatRaster$new(stack)
 ```
 
 A mlr3 classification `task` is created and an SVM learner is fitted with the randomly sampled raster cells.
 
 ```{r}
-task = as_task_classif(data_train, target = "y", positive = "1")
+task = as_task_classif(backend, target = "y", positive = "TRUE")
+# task = TaskClassif$new("terra", backend, target = "y", positive = "TRUE")
 
 learner_svm = lrn("classif.svm")
-learner_svm$train(task)
+learner_svm$train(task, row_ids = 1:5000)
 ```
 
 The `PredictionRaster` class controls the splitting of the raster stack into chunks.
@@ -66,10 +68,10 @@ Note that the prediction is not executed at this point, the object is just const
 ## Prediction
 
 ```{r}
-data_predict = subset(stack, 1:4)
+data_predict = terra::subset(stack, 1:4)
 
 # Approach 1: S3 dispatch
-learner_svm$predict_newdata(newdata = spatial_data_predict, task = task, chunksize = 200, filename = "pred.grd")
+# learner_svm$predict_newdata(newdata = spatial_data_predict, task = task, chunksize = 200, filename = "pred.grd")
 
 # Approach 2: Standalone function
 predict_raster(task, learner, chunksize = 100L, filename = "target.tif")
