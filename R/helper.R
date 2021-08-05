@@ -57,13 +57,20 @@ block_size = function(raster, chunksize) {
   assert_class(raster, "SpatRaster")
   chunksize = assert_numeric(chunksize) * 1e+06
 
+  # browser()
+
   # one cell takes 8 byte memory
+  # FIXME: why not count nrows like ncol * nrow * nlyr?
+
+
+  # calculate memory size of a single row, i.e. how many memory does a single row need?
+  # this is determined by counting the cells of a row, i.e. the number of columns times the layers
   row_size = ncol(raster) * nlyr(raster) * 8
-  # number of rows in one block
-  nrow = chunksize / row_size
-  # start row indices
+  # how many rows can we process in a block? (1 block = chunksize arg)
+  nrow = ceiling(chunksize / row_size)
+  # sequence of row indices to read
   row = seq(1, nrow(raster), by = nrow)
-  # number of rows to read per block
+  # how many rows do we read in every block?
   nrows = rep(nrow, length(row))
   nrows[length(nrows)] = nrow(raster) - row[length(row)] + 1
 

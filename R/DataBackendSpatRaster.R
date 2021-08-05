@@ -62,6 +62,7 @@ DataBackendSpatRaster = R6::R6Class("DataBackendSpatRaster",
         cells = terra::rowColFromCell(stack, rows)
         row = cells[1, 1]
         nrows = cells[dim(cells)[1], 1] - cells[1, 1] + 1
+        # FIXME: How can we read values of layers 2 - INF?
         res = as.data.table(terra::readValues(stack, row = row, nrows = nrows, dataframe = TRUE))
         # subset cells and features
         res = res[cells[1, 2]:(cells[1, 2] + length(rows) - 1), cols, with = FALSE]
