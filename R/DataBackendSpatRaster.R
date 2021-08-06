@@ -98,6 +98,9 @@ DataBackendSpatRaster = R6::R6Class("DataBackendSpatRaster",
     distinct = function(rows, cols, na_rm = TRUE) {
       assert_names(cols, type = "unique")
       cols = terra::intersect(cols, self$colnames)
+      if (length(cols) == 0L) {
+        return(named_list(init = character()))
+      }
 
       if (is.null(rows)) {
         stack = terra::subset(private$.data, cols)
