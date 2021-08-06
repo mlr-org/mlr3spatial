@@ -16,13 +16,14 @@ predict_spatial = function(task, learner, chunksize = 100L, filename = NULL, ove
 
   # calculate block size
   # FIXME: obsolet when using mlr3 parallel predict?
-  bs = block_size(stack, chunksize)
+  # bs = block_size(stack, chunksize)
 
   # initialize target raster with only NA values using the same metadata as stored in the backend
   # arg `vals`: we need to set some dummy values, otherwise setValues() further down does not work
   # FIXME: do we need to init with nlyrs?!
   target_raster = terra::rast(terra::ext(stack), res = terra::res(stack),
-    nlyrs = terra::nlyr(stack), crs = terra::crs(stack), vals = NA)
+    # nlyrs = terra::nlyr(stack),
+    crs = terra::crs(stack), vals = NA)
   # terra::writeStart(target_raster, filename = filename, overwrite = overwrite)
   # browser()
 
@@ -52,7 +53,10 @@ predict_spatial = function(task, learner, chunksize = 100L, filename = NULL, ove
   # uses mlr3's new parallel predict when activated
   # we always want to predict all values, otherwise setValues() won't work, subset here is ONLY FOR TESTING
   # pred = learner$predict(task, row_ids = 1:100000)
+  # browser()
   pred = learner$predict(task)
+
+  # browser()
 
   terra::setValues(target_raster, pred$response)
   terra::writeRaster(target_raster, filename, overwrite = overwrite)
@@ -62,5 +66,24 @@ predict_spatial = function(task, learner, chunksize = 100L, filename = NULL, ove
 
   # terra::writeStop(target_raster)
   # lg$info("Finished raster prediction in %i seconds", as.integer(proc.time()[3] - start_time))
+
+}
+
+predict_spatial_newdata = function(newdata, learner, filename = NULL, overwrite = TRUE) {
+
+  if (is.null(filename)) {
+    filename = tempfile(fileext = ".tif")
+  }
+  assert_path_for_output(filename, overwrite = overwrite)
+
+  # read cell values from raster stack
+  # this is done implicitly also when predicting on a task internally, i.e. task$data() is called
+  terra::readStart(stack)
+  on.exit(terra::readStop(stack))
+  newdata = as.data.table(terra::readValues(stack, dataframe = TRUE))
+
+  # browser()
+
+  pred = learner$predict_newdata(newdata)
 
 }

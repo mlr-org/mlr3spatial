@@ -27,6 +27,7 @@ The file is written to disk and the stack is removed to free up memory.
 
 ```{r}
 pkgload::load_all()
+
 set.seed(42)
 
 # see https://github.com/rspatial/terra/issues/30 for "Error in (function (x)  : attempt to apply non-function" -> does NOT affect usage
@@ -58,15 +59,33 @@ Prediction happens on 12 Mio values (per layer), so 60 Mio values when predictin
 Takes ~ 32 seconds.
 
 ```{r}
-# FIXME: parallelization does not work?
 library(future)
-plan("multisession")
+# plan("multisession", workers = 2)
 time = Sys.time()
-predict_spatial(task, learner_svm)
+options(future.globals.onReference = "error")
+
+pred = with_future(future::multisession,
+  predict_spatial(task, learner_svm, filename = "target.tif"),
+  workers = 2)
+
 Sys.time() - time
 ```
 
-Takes ~ 1 min.
+
+```{r}
+library(future)
+# plan("multisession", workers = 2)
+time = Sys.time()
+options(future.globals.onReference = "error")
+
+pred = with_future(future::multisession,
+  predict_spatial_newdata(stack, learner_svm, filename = "target.tif"),
+  workers = 2
+)
+Sys.time() - time
+```
+
+Takes ~ 1,04 min.
 
 ```{r}
 library(future)
@@ -74,4 +93,27 @@ plan(sequential)
 time = Sys.time()
 pred = predict_spatial(task, learner_svm, filename = "target.tif")
 Sys.time() - time
+```
+
+## Native prediction
+
+~ 51 secs
+
+```{r}
+# fit e1071 svm
+svm_raw = e1071::svm(y ~ ., data = task$data()[sample(1:task$nrow, 500)], )
+
+time = Sys.time()
+terra_pred_ras = terra::predict(task$backend$stack, svm_raw)
+Sys.time() - time
+```
+
+## Compare
+
+
+```{r}
+# load mlr3 tif
+mlr3_pred_ras = terra::rast("target.tif")
+
+waldo::compare(mlr3_pred_ras, terra_pred_ras)
 ```
