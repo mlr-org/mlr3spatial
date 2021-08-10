@@ -1,89 +1,85 @@
-#' @importFrom terra rast ext res crs writeStart writeValues writeStop
+#' @title Predict on spatial objects with mlr3 learners
+#' @description
+#' This function allows to directly predict mlr3 learners on various spatial
+#' objects (see section "Supported Spatial Classes"). It returns an
+#' [mlr3::Prediction] object and (optionally) the same object that was used for
+#' the prediction.
+#' @param object `[SpatRaster, sf, RasterBrick]`
+#' @param learner [mlr3::Learner]\cr
+#'   Any [mlr3::Learner].
+#' @param filename `[character]`\cr
+#'   Filename of optional file to write prediction values into.
+#'   For raster-like inputs this can be a `.tif` file.
+#'   For {sf} objects, this could be a `.gpgk` or a `.shp` file.
+#' @param overwrite `[logical]`\cr
+#'   Should a possibly existing file on disk (referring to argument `filename`)
+#'   be overwritten?
+#'
+#' @details
+#' A direct prediction on a subset of a [mlr3::Task] object is not possible for
+#' \CRANpkg{terra} objects as \CRANpkg{terra} objects contain external pointers
+#' which are not compatible with future-based parallelization. Due to this, the
+#' values from the \CRANpkg{terra} object need to be extracted first into a
+#' `data.table`.
+#'
+#' @section Parallelization:
+#'
+#' For predictions which take > 10 seconds, parallelization could help speeding
+#' things up. {mlr3} supports parallel predictions since v0.12.0. This can be
+#' enabled by setting the `$parallel_predict = TRUE` flag in the learner and
+#' supplying a parallel future plan before executing the prediction, for example
+#' `future::plan(multisession, workers = 2)`. See the examples for more
+#' information.
+#'
+#' @section Spatial Classes support:
+#'
+#' Task and Prediction support for the following classes is planned:
+#'
+#' - {sf}
+#' - {stars}
+#' - {raster}
+#'
+#' @return mlr3::Prediction
+#' @examples
+#' if (mlr3misc::require_namespaces(c("terra", "future"), quietly = TRUE)) {
+#'   stack = demo_stack(size = 5, layers = 5)
+#'   backend = DataBackendSpatRaster$new(stack)
+#'   task = as_task_classif(backend, target = "y", positive = "TRUE")
+#'   # train
+#'   learner = lrn("classif.featureless")
+#'   learner$train(task, row_ids = sample(1:task$nrow, 500))
+#'   predict_spatial_newdata(learner, stack)
+#'
+#'   # parallel
+#'   learner$parallel_predict = TRUE
+#'   future::plan("multisession", workers = 2)
+#'   predict_spatial_newdata(learner, stack)
+#'   future::plan("sequential")
+#' }
 #' @export
-predict_spatial = function(task, learner, chunksize = 100L, filename = NULL, overwrite = TRUE) {
-  assert_learner(learner)
-  assert_task(task)
-  assert_int(chunksize)
-  stack = task$backend$stack
-  start_time = proc.time()[3]
-
-  if (is.null(filename)) {
-    filename = tempfile(fileext = ".tif")
-  }
-  assert_path_for_output(filename, overwrite = overwrite)
-
-  # browser()
-
-  # calculate block size
-  # FIXME: obsolet when using mlr3 parallel predict?
-  # bs = block_size(stack, chunksize)
-
-  # initialize target raster with only NA values using the same metadata as stored in the backend
-  # arg `vals`: we need to set some dummy values, otherwise setValues() further down does not work
-  # FIXME: do we need to init with nlyrs?!
-  target_raster = terra::rast(terra::ext(stack), res = terra::res(stack),
-    # nlyrs = terra::nlyr(stack),
-    crs = terra::crs(stack), vals = NA)
-  # terra::writeStart(target_raster, filename = filename, overwrite = overwrite)
-  # browser()
-
-  #### Marcs approach start ------
-  # lg$info("Start raster prediction")
-  # lg$info("Prediction is executed in %i MB chunks", chunksize)
-
-  # pred = learner$predict(task)
-  # terra::writeValues(target_raster, pred$response, row, nrows)
-
-  # FIXME: the final raster has like 12 mio values, we only predict 14k? how does the final raster still have 12 mio values?
-  # FIXME: if we do it in chunks we might get in trouble with the native mlr3 parallelism which also splits the prediction into chunks but does not account for memory?
-  # FIXME: shouldn't we sequence along task$nrow?
-  # mlr3misc::pmap(list(bs$row, bs$nrows, seq_along(task$nrow)), function(row, nrows, n) {
-  #   # Our task has 12496225 rows?
-  #   # we should have 708 (nrow) * 3535 (ncol) * 5 (nlyr) values here, no? instead the response is of length 708 only
-  #   pred = learner$predict(task, row_ids = row:(row + nrows - 1))
-  #   browser()
-  #   terra::writeValues(target_raster, pred$response, row, nrows)
-  #   lg$info("Chunk %i of %i finished", n, length(bs$row))
-  # })
-
-  #### Marcs approach end ------
-
-  #### pat-s approach start ------
-
-  # uses mlr3's new parallel predict when activated
-  # we always want to predict all values, otherwise setValues() won't work, subset here is ONLY FOR TESTING
-  # pred = learner$predict(task, row_ids = 1:100000)
-  # browser()
-  pred = learner$predict(task)
-
-  # browser()
-
-  terra::setValues(target_raster, pred$response)
-  terra::writeRaster(target_raster, filename, overwrite = overwrite)
-  return(invisible(pred))
-
-  #### pat-s approach end ------
-
-  # terra::writeStop(target_raster)
-  # lg$info("Finished raster prediction in %i seconds", as.integer(proc.time()[3] - start_time))
-
+predict_spatial_newdata = function(learner, object, filename = NULL, overwrite = FALSE) {
+  UseMethod("predict_spatial_newdata", object = object)
 }
 
-predict_spatial_newdata = function(newdata, learner, filename = NULL, overwrite = TRUE) {
-
-  if (is.null(filename)) {
-    filename = tempfile(fileext = ".tif")
-  }
-  assert_path_for_output(filename, overwrite = overwrite)
-
+#' @export
+predict_spatial_newdata.SpatRaster = function(learner, object, filename = NULL, overwrite = FALSE) {
   # read cell values from raster stack
-  # this is done implicitly also when predicting on a task internally, i.e. task$data() is called
-  terra::readStart(stack)
-  on.exit(terra::readStop(stack))
-  newdata = as.data.table(terra::readValues(stack, dataframe = TRUE))
+  if (!is.null(filename)) {
+    assert_path_for_output(filename, overwrite = overwrite)
+    # we need to init the values with a factor class, otherwise setting the
+    # values later on causes conversion troubles
+    target_raster = terra::rast(terra::ext(object), res = terra::res(object),
+      crs = terra::crs(object), vals = c("TRUE", "FALSE"))
+  }
+  terra::readStart(object)
+  newdata_pred = as.data.table(terra::readValues(object, dataframe = TRUE))
+  terra::readStop(object)
 
-  # browser()
+  pred = learner$predict_newdata(newdata_pred)
 
-  pred = learner$predict_newdata(newdata)
-
+  if (!is.null(filename)) {
+    target_raster = terra::setValues(target_raster, pred$response)
+    terra::writeRaster(target_raster, filename, overwrite = overwrite)
+  }
+  return(pred)
 }
