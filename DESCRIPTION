@@ -20,7 +20,7 @@ URL: https://mlr3spatial.mlr-org.com,
     https://github.com/mlr-org/mlr3spatial
 BugReports: https://github.com/mlr-org/mlr3spatial/issues
 Depends:
-    mlr3 (>= 0.11.0),
+    mlr3 (>= 0.12.0),
     R (>= 3.1.0)
 Imports:
     checkmate (>= 2.0.0),
@@ -31,6 +31,9 @@ Imports:
     R6 (>= 2.5.0),
     terra (>= 1.2-10)
 Suggests:
+    bench,
+    e1071,
+    future,
     knitr,
     raster,
     rmarkdown,
