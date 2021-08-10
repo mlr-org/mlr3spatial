@@ -1,11 +1,11 @@
 test_that("DataBackendSpatRaster works", {
   # prepare raster stack
-  stack = rast(spatraster)
+  # stack = rast(spatraster)
   value = data.table(ID = c(0, 1), y = c("negative", "positive"))
-  terra::setCats(stack, layer = "y", value = value)
-  colnames = names(stack)
+  terra::setCats(stack_classif, layer = "y", value = value)
+  colnames = names(stack_classif)
 
-  backend = DataBackendSpatRaster$new(stack)
+  backend = DataBackendSpatRaster$new(stack_classif)
 
   # head
   data = backend$head(10L)
