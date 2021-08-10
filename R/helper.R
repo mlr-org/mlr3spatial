@@ -7,7 +7,7 @@
 #' xy dimension of raster
 #'
 #' @importFrom terra rast
-#' @export
+#' @keywords internal
 demo_raster = function(dimension) {
   assert_int(dimension, lower = 2)
   data = matrix(c(stats::rnorm(floor(dimension^2 / 2), 0, 1),
@@ -15,65 +15,27 @@ demo_raster = function(dimension) {
   terra::rast(data)
 }
 
-#' @title Generate Demo Raster Stack
+#' @title Generate a dummy 'terra::SpatRaster'
 #'
 #' @description
 #' Generates a square demo [terra::SpatRaster] stack.
 #'
-#' @param size (`integer(1)`)\cr
-#' Size of raster stack in megabyte.
-#' @param layers (`integer(1)`)\cr
-#' Number of layers.
+#' @param size `[integer(1)]`\cr
+#'   Size of raster stack in megabyte (disk space).
+#' @param layers `[integer(1)]`\cr
+#'   Number of layers.
 #'
 #' @importFrom terra rast
 #' @export
-demo_stack = function(size = 500, layers = 5) {
+demo_stack = function(size = 50, layers = 5) {
   assert_int(size, lower = 1)
   assert_int(layers, lower = 1)
 
-  dimension = floor(sqrt(size / layers * 1e+06 / 8))
+  dimension = floor(sqrt(size / layers * 1e+06 / 4))
   raster_features = replicate(layers - 1, demo_raster(dimension))
   raster_response = rast(matrix(c(rep("FALSE", floor(dimension^2 / 2)),
     rep("TRUE", ceiling(dimension^2 / 2))), nrow = dimension))
   raster = rast(c(raster_features, list(raster_response)))
   names(raster) = c(paste0("x_", 1:(layers - 1)), "y")
   raster
-}
-
-
-#' @title Split Raster Into Chunks
-#'
-#' @description
-#' Splits raster into chunks.
-#'
-#' @param raster ([terra::SpatRaster])\cr
-#' Raster to be split into chunks.
-#' @param chunksize
-#' Raster chunk size in megabyte.
-#'
-#' @importFrom terra nlyr
-#' @export
-block_size = function(raster, chunksize) {
-  assert_class(raster, "SpatRaster")
-  chunksize = assert_numeric(chunksize) * 1e+06
-
-  # browser()
-
-  # one cell takes 8 byte memory
-  # FIXME: why not count nrows like ncol * nrow * nlyr?
-
-
-  # calculate memory size of a single row, i.e. how many memory does a single row need?
-  # this is determined by counting the cells of a row, i.e. the number of columns times the layers
-  row_size = ncol(raster) * nlyr(raster) * 8
-  # how many rows can we process in a block? (1 block = chunksize arg)
-  nrow = ceiling(chunksize / row_size)
-  # sequence of row indices to read
-  row = seq(1, nrow(raster), by = nrow)
-  # how many rows do we read in every block?
-  nrows = rep(nrow, length(row))
-  nrows[length(nrows)] = nrow(raster) - row[length(row)] + 1
-
-
-  return(list(row = row, nrows = nrows))
 }
