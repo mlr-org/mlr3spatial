@@ -7,9 +7,6 @@
     <loc>https://mlr3spatial.mlr-org.com/reference/DataBackendSpatRaster.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/reference/block_size.html</loc>
-  </url>
-  <url>
     <loc>https://mlr3spatial.mlr-org.com/reference/demo_raster.html</loc>
   </url>
   <url>
@@ -17,6 +14,12 @@
   </url>
   <url>
     <loc>https://mlr3spatial.mlr-org.com/reference/mlr3spatial-package.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3spatial.mlr-org.com/reference/predict_spatial_newdata.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3spatial.mlr-org.com/articles/benchmark.html</loc>
   </url>
   <url>
     <loc>https://mlr3spatial.mlr-org.com/articles/poc.html</loc>

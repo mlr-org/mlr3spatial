@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate Demo Raster Stack — demo_stack • mlr3spatial</title>
+<title>Generate a dummy 'terra::SpatRaster' — demo_stack • mlr3spatial</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -47,7 +47,7 @@
 
 
 
-<meta property="og:title" content="Generate Demo Raster Stack — demo_stack" />
+<meta property="og:title" content="Generate a dummy 'terra::SpatRaster' — demo_stack" />
 <meta property="og:description" content="Generates a square demo terra::SpatRaster stack." />
 <meta name="twitter:card" content="summary" />
 
@@ -109,7 +109,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/poc.html">poc</a>
+      <a href="../articles/benchmark.html">Benchmarking parallel predictions</a>
+    </li>
+    <li>
+      <a href="../articles/poc.html">Proof of Concept</a>
     </li>
   </ul>
 </li>
@@ -150,8 +153,8 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generate Demo Raster Stack</h1>
-    <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/helper.R'><code>R/helper.R</code></a></small>
+    <h1>Generate a dummy 'terra::SpatRaster'</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/data.R'><code>R/data.R</code></a></small>
     <div class="hidden name"><code>demo_stack.Rd</code></div>
     </div>
 
@@ -159,19 +162,19 @@
     <p>Generates a square demo <a href='https://rdrr.io/pkg/terra/man/SpatRaster-class.html'>terra::SpatRaster</a> stack.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>demo_stack</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>500</span>, layers <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>demo_stack</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>50</span>, layers <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>size</th>
-      <td><p>(<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>)<br />
-Size of raster stack in megabyte.</p></td>
+      <td><p><code>[integer(1)]</code><br />
+Size of raster stack in megabyte (disk space).</p></td>
     </tr>
     <tr>
       <th>layers</th>
-      <td><p>(<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>)<br />
+      <td><p><code>[integer(1)]</code><br />
 Number of layers.</p></td>
     </tr>
     </table>
