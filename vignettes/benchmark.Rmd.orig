@@ -7,12 +7,18 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  options(width = 120),
+  fig.path = figure/"
+)
+```
 
 For the speed comparison, we are using a somewhat larger `SpatRaster` object to actually showcase some differences.
 
-
-```r
+```{r benchmark}
 library(mlr3)
 library(mlr3learners)
 library(mlr3spatial)
@@ -57,20 +63,9 @@ bm$`gc/sec` = NULL
 bm$memory = NULL
 
 print(bm)
-#> # A tibble: 4 × 8
-#>   expression            min   median n_itr  n_gc total_time time           gc              
-#>   <bch:expr>       <bch:tm> <bch:tm> <int> <dbl>   <bch:tm> <list>         <list>          
-#> 1 mlr3-sequential     1.55m    1.56m     3    33      4.68m <bench_tm [3]> <tibble [3 × 3]>
-#> 2 terra-sequential    1.68m    1.71m     3    30      5.11m <bench_tm [3]> <tibble [3 × 3]>
-#> 3 mlr3-4-cores       46.63s   47.22s     3    15      2.38m <bench_tm [3]> <tibble [3 × 3]>
-#> 4 terra-4-cores       1.73m    1.75m     3    18      5.25m <bench_tm [3]> <tibble [3 × 3]>
 ```
 
-
-```r
+```{r plot-benchmark, fig.cap="Benchmark plot"}
 library(ggplot2)
 autoplot(bm, "ridge")
-#> Picking joint bandwidth of 0.00322
 ```
-
-![Benchmark plot](figure/plot-benchmark-1.png)
