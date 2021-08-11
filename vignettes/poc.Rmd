@@ -1,6 +1,8 @@
 ---
-title: "poc"
-output: rmarkdown::html_vignette
+title: "Proof of Concept"
+output: 
+  rmarkdown::html_vignette:
+    df_print: paged
 vignette: >
   %\VignetteIndexEntry{poc}
   %\VignetteEngine{knitr::rmarkdown}
@@ -11,66 +13,116 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  eval = FALSE
+  eval = TRUE
 )
 ```
 
 ## Load Data
 
-**Disclaimer**: Proof-of-concept with `eval=FALSE`, don't expect anything here to work.
-Implementation might live in other branches.
+The `SpatRaster` object which is created in the following is not included as a built-in dataset into the package due to its size. 
+It uses around 50 MB disk space and requires around 1.6 GB memory during creation.
+Creation is a one-time task and you can make use of it in future sessions.
 
-Example: terra package
+The `SpatRaster` consists of 3535 columns and rows and contains 5 layers with each layer representing a variable.
 
-`demo_stack` generates a raster stack with 5 layers (4 predictor variables and 1 response variable) with a total size of 500MB. 
-The file is written to disk and the stack is removed to free up memory.
+Do not worry about the `"Error in (function (x)  : attempt to apply non-function"` error you are seeing - this is an internal issue of the {terra} package during object creation and does not affect usage.
 
 ```{r}
-pkgload::load_all()
-
-# see https://github.com/rspatial/terra/issues/30 for "Error in (function (x)  : attempt to apply non-function"
-stack = demo_stack(size = 500, layers = 5)
-# FIXME: is only 241 MB for me? and like 1,3 GB in mem
-terra::writeRaster(stack, "demo_stack_500mb.tif", overwrite = TRUE)
-rm(stack)
+library("mlr3")
+library("mlr3spatial")
+library("mlr3learners")
+library("terra")
+library("e1071")
+# pkgload::load_all()
 ```
 
-In order to fit a (small) model, 500 raster cells are randomly sampled from the complete stack.
-The binary response variable in `demo_stack` is located in the first column of `data` and needs to be of type `"factor"`.
+A mlr3 classification `task` is created and an SVM learner is fitted with randomly sampled raster cells.
 
 ```{r}
-# Approach 1: no dedicated DataBackend, i.e. user needs to convert into a DT somehow
-stack = terra::rast("demo_stack_500mb.tif")
-data_train = as.data.table(spatSample(stack, 500))
-data_train[, y := as.factor(y)]
+if (!file.exists("demo-stack.tif")) {
+  stack = demo_stack(size = 100, layers = 5)
+  terra::writeRaster(stack, "demo-stack.tif", overwrite = TRUE)
+  rm(stack)
+  stack = terra::rast("demo-stack.tif")
+} else {
+  stack = terra::rast("demo-stack.tif")
+}
+backend = DataBackendSpatRaster$new(stack)
+task = as_task_classif(backend, target = "y", positive = "TRUE")
 
-# Approach 2: dedicated DataBackend for 'SpatRaster'
+print(task)
 ```
 
-A mlr3 classification `task` is created and an SVM learner is fitted with the randomly sampled raster cells.
-
 ```{r}
-task = as_task_classif(data_train, target = "y", positive = "1")
-
 learner_svm = lrn("classif.svm")
-learner_svm$train(task)
+# requires mlr3 > 0.12.0
+learner_svm$parallel_predict = TRUE
+set.seed(42)
+row_ids = sample(1:task$nrow, 500)
+learner_svm$train(task, row_ids = row_ids)
+
+print(learner_svm)
 ```
-
-The `PredictionRaster` class controls the splitting of the raster stack into chunks.
-The most important parameter is the `chunksize` which controls size of processed raster chunks.
-
-The automatic detection of this parameter is error-prone since different {future} plans and {mlr3} learners will consume a highly varying amount of memory.
-
-Note that the prediction is not executed at this point, the object is just constructed.
 
 ## Prediction
 
+For prediction `predict_spatial_newdata()` is used.
+This function can operate on {terra} objects but is also able to take a `data.frame` / `data.table` directly.
+It will return a `mlr3::Prediction()` object and, if argument `filename` is supplied, will also write a `.tif` file to disk.
+
+The following prediction will happen on ~ 12.5 Mio values ($3535^2$).
+We will compare the {mlr3spatial} prediction way with the "native" way of fitting an `e1071::svm()` model and predicting with `terra::predict()`.
+
+Due to the existence of a `SpatRaster` object within the Task, `future` parallelization is not possible directly as the `SpatRaster` object contains [external pointers](https://future.futureverse.org/articles/future-4-non-exportable-objects.html?q=pointers#package-terra).
+Hence we need to extract the raw values and from the object and do a prediction on a single `data.table` if we want to use future-based parallelization.
+
+### mlr3spatial
+
 ```{r}
-data_predict = subset(stack, 1:4)
+library(future)
+plan(multisession, workers = 2)
 
-# Approach 1: S3 dispatch
-learner_svm$predict_newdata(newdata = spatial_data_predict, task = task, chunksize = 200, filename = "pred.grd")
+file = tempfile("target", fileext = ".tif")
+pred = predict_spatial_newdata(learner_svm, stack, filename = file)
 
-# Approach 2: Standalone function
-predict_raster(task, learner, chunksize = 100L, filename = "target.tif")
+print(pred)
 ```
+
+## terra
+
+```{r}
+# fit e1071 svm
+set.seed(42)
+svm_raw = e1071::svm(y ~ ., data = task$data()[row_ids])
+
+terra_pred_ras = terra::predict(task$backend$stack, svm_raw, cores = 1, cpkgs = "e1071")
+
+print(terra_pred_ras)
+```
+
+## Output consistency
+
+{terra} returns an integer vector as it always converts factors into numerics internally (which looks like a bug).
+Also before we can do the comparison between the {mlr3spatial} and {terra} prediction, we need to load the created `target.tif` file from disk, as {mlr3spatial} returns a `mlr3::Prediction` object and not a `SpatRaster` into the current environment.
+
+```{r}
+# load mlr3 tif
+mlr3_pred_ras = terra::rast(file)
+
+# waldo::compare(head(mlr3_pred_ras), head(terra_pred_ras))
+```
+
+If we convert both to numerics
+
+```{r}
+mlr3_pred_int = as.numeric(as.data.frame(mlr3_pred_ras)$lyr.1)
+
+terra_pred_val = as.data.frame(terra_pred_ras)$lyr1
+
+all.equal(mlr3_pred_int, terra_pred_val)
+```
+
+```{r echo=FALSE}
+unlink(c("demo-stack.tif", "demo-stack.tif.aux.xml"))
+```
+

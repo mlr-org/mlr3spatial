@@ -1,0 +1,70 @@
+---
+title: "Benchmarking parallel predictions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{benchmark}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  options(width = 120)
+)
+```
+
+For the speed comparison, we are using a somewhat larger `SpatRaster` object to actually showcase some differences.
+
+```{r benchmark}
+library(mlr3)
+library(mlr3learners)
+library(mlr3spatial)
+library(future)
+library(bench)
+
+stack = demo_stack(size = 500, layers = 5)
+backend = DataBackendSpatRaster$new(stack)
+task = as_task_classif(backend, target = "y", positive = "TRUE")
+
+learner_svm = lrn("classif.svm")
+learner_svm$parallel_predict = TRUE
+set.seed(42)
+row_ids = sample(1:task$nrow, 500)
+learner_svm$train(task, row_ids = row_ids)
+
+set.seed(42)
+svm_raw = e1071::svm(y ~ ., data = task$data()[row_ids])
+
+bm = bench::mark(
+  "mlr3-sequential" = {
+    plan(multisession, workers = 1)
+    predict_spatial_newdata(learner_svm, stack)
+  },
+
+  "terra-sequential" = terra::predict(task$backend$stack, svm_raw, cores = 1, cpkgs = "e1071"),
+  # "raster-sequential" = raster::predict(task$backend$stack, svm_raw, cores = 1, cpkgs = "e1071"),
+
+  "mlr3-4-cores" = {
+    plan(multisession, workers = 4)
+    predict_spatial_newdata(learner_svm, stack)
+  },
+
+  "terra-4-cores" = terra::predict(task$backend$stack, svm_raw, cores = 4, cpkgs = "e1071"),
+
+  check = FALSE, filter_gc = FALSE, min_iterations = 3, memory = FALSE)
+
+bm$mem_alloc = NULL
+bm$`itr/sec` = NULL
+bm$result = NULL
+bm$`gc/sec` = NULL
+bm$memory = NULL
+
+print(bm)
+```
+
+```{r plot-benchmark, fig.cap="Benchmark plot"}
+library(ggplot2)
+autoplot(bm, "ridge")
+```

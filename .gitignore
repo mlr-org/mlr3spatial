@@ -1,3 +1,38 @@
+# File created using '.gitignore Generator' for Visual Studio Code: https://bit.ly/vscode-gig
+
+# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,macos,r
+# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,macos,r
+
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+### R ###
 # History files
 .Rhistory
 .Rapp.history
@@ -41,60 +76,14 @@ vignettes/*.pdf
 # pkgdown site
 docs/
 
-# General
-.DS_Store
-.AppleDouble
-.LSOverride
+# translation temp files
+po/*~
 
-# Icon must end with two \r
-Icon
+### R.Bookdown Stack ###
+# R package: bookdown caching files
+/*_files/
 
-
-
-# Thumbnails
-._*
-
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-.com.apple.timemachine.donotpresent
-
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
-
-# Windows thumbnail cache files
-Thumbs.db
-Thumbs.db:encryptable
-ehthumbs.db
-ehthumbs_vista.db
-
-# Dump file
-*.stackdump
-
-# Folder config file
-[Dd]esktop.ini
-
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
-
-# Windows Installer files
-*.cab
-*.msi
-*.msix
-*.msm
-*.msp
-
-# Windows shortcuts
-*.lnk
-
+### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -102,11 +91,17 @@ $RECYCLE.BIN/
 !.vscode/extensions.json
 *.code-workspace
 
+# Local History for Visual Studio Code
+.history/
 
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
 
-.vscode
-CRAN-RELEASE
-inst/*
+# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,macos,r
+
+# Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
+
 *.tif
-inst/doc
-docs
+*.xml

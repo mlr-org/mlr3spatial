@@ -13,3 +13,6 @@ pkgdown
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+attic/
+target*
+^.*\.xml$

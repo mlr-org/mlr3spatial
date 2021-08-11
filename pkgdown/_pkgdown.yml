@@ -17,7 +17,7 @@ authors:
 
 navbar:
   structure:
-    left:  [reference, news, book]
+    left:  [reference, news, book, articles]
     right: [github, mattermost, stackoverflow, rss]
   components:
     home: ~
@@ -39,3 +39,17 @@ navbar:
       icon: fa-rss
       href: https://mlr-org.com/
 
+
+reference:
+  - title: mlr3spatial
+    contents:
+      - mlr3spatial-package
+  - title: Helpers
+    contents:
+      - demo_stack
+  - title: Data Backends
+    contents:
+      - contains("Backend")
+  - title: Prediction
+    contents:
+      - contains("predict")

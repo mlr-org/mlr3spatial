@@ -1,11 +1,10 @@
 test_that("DataBackendSpatRaster works", {
-  # prepare raster stack
-  stack = rast(spatraster)
+  stack_classif = demo_stack(size = 5, layers = 5)
   value = data.table(ID = c(0, 1), y = c("negative", "positive"))
-  terra::setCats(stack, layer = "y", value = value)
-  colnames = names(stack)
+  terra::setCats(stack_classif, layer = "y", value = value)
+  colnames = names(stack_classif)
 
-  backend = DataBackendSpatRaster$new(stack)
+  backend = DataBackendSpatRaster$new(stack_classif)
 
   # head
   data = backend$head(10L)
@@ -48,3 +47,7 @@ test_that("DataBackendSpatRaster works", {
   # [ ] [ ] [x] [ ]
   expect_equal(backend$data(rows = c(1, 3, 8, 11), cols = "y"), data.table(y = c(1, 3, 8, 11)))
 })
+
+
+# FIXME: test as_task_classif
+# FIXME: test printer

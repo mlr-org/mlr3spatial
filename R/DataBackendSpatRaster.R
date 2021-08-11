@@ -20,9 +20,9 @@
 #'
 #' Block mode is activated if `$data(rows)` is called with a increasing integer
 #' sequence e.g. `200:300`.
-#' @importFrom terra readStart readStop rowColFromCell readValues head unique cats
+#' @importFrom terra readStart readStop rowColFromCell readValues head unique cats ncell intersect
 #' @export
-DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
+DataBackendSpatRaster = R6::R6Class("DataBackendSpatRaster",
   inherit = mlr3::DataBackend, cloneable = FALSE,
   public = list(
 
@@ -62,6 +62,7 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
         cells = terra::rowColFromCell(stack, rows)
         row = cells[1, 1]
         nrows = cells[dim(cells)[1], 1] - cells[1, 1] + 1
+        # FIXME: How can we read values of layers 2 - INF?
         res = as.data.table(terra::readValues(stack, row = row, nrows = nrows, dataframe = TRUE))
         # subset cells and features
         res = res[cells[1, 2]:(cells[1, 2] + length(rows) - 1), cols, with = FALSE]
@@ -96,15 +97,21 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
     #' @return Named `list()` of distinct values.
     distinct = function(rows, cols, na_rm = TRUE) {
       assert_names(cols, type = "unique")
-      cols = intersect(cols, self$colnames)
+      cols = terra::intersect(cols, self$colnames)
+      if (length(cols) == 0L) {
+        return(named_list(init = character()))
+      }
 
       if (is.null(rows)) {
         stack = terra::subset(private$.data, cols)
         if (all(terra::is.factor(stack))) {
           # fastest
-          res = as.list(map_dtc(terra::cats(stack), function(layer) {
-            as.data.table(layer)[, 2]
-          }))
+          # res = as.list(map_dtc(terra::cats(stack), function(layer) {
+          #   as.data.table(layer)[, 2]
+          # }))
+
+          res = terra::levels(stack)
+          res = stats::setNames(res, cols)
         } else {
           # fast
           # bug: terra does not respect categorical raster layers
@@ -134,7 +141,7 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
     #' primary key column.
     rownames = function(rhs) {
       assert_ro_binding(rhs)
-      1:ncell(private$.data)
+      1:terra::ncell(private$.data)
     },
 
     #' @field colnames (`character()`)\cr
@@ -148,7 +155,7 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
     #' Number of rows (observations).
     nrow = function(rhs) {
       assert_ro_binding(rhs)
-      ncell(private$.data)
+      terra::ncell(private$.data)
     },
 
     #' @field ncol (`integer(1)`)\cr
