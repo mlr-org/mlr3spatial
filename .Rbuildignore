@@ -15,4 +15,4 @@ pkgdown
 ^pkgdown$
 attic/
 target*
-*.tif
+^.*\.xml$

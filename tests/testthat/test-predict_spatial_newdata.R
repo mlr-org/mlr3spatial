@@ -1,6 +1,7 @@
 # SpatRaster -------------------------------------------------------------------
 
 test_that("sequential execution works", {
+  stack_classif = demo_stack(size = 5, layers = 5)
   backend = DataBackendSpatRaster$new(stack_classif)
   task = as_task_classif(backend, target = "y", positive = "TRUE")
   # train
@@ -11,6 +12,7 @@ test_that("sequential execution works", {
 })
 
 test_that("parallelization works", {
+  stack_classif = demo_stack(size = 5, layers = 5)
   backend = DataBackendSpatRaster$new(stack_classif)
   task = as_task_classif(backend, target = "y", positive = "TRUE")
   # train
@@ -26,6 +28,7 @@ test_that("parallelization works", {
 })
 
 test_that("supplying a filename works", {
+  stack_classif = demo_stack(size = 5, layers = 5)
   backend = DataBackendSpatRaster$new(stack_classif)
   task = as_task_classif(backend, target = "y", positive = "TRUE")
   learner = lrn("classif.featureless")

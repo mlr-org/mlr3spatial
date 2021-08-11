@@ -49,12 +49,6 @@
 #'   learner = lrn("classif.featureless")
 #'   learner$train(task, row_ids = sample(1:task$nrow, 500))
 #'   predict_spatial_newdata(learner, stack)
-#'
-#'   # parallel
-#'   learner$parallel_predict = TRUE
-#'   future::plan("multisession", workers = 2)
-#'   predict_spatial_newdata(learner, stack)
-#'   future::plan("sequential")
 #' }
 #' @export
 predict_spatial_newdata = function(learner, object, filename = NULL, overwrite = FALSE) {
