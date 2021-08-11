@@ -13,6 +13,6 @@ pkgdown
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
-demo-*
 attic/
 target*
+*.tif
