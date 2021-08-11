@@ -73,4 +73,4 @@ autoplot(bm, "ridge")
 #> Picking joint bandwidth of 0.00322
 ```
 
-![Benchmark plot](figure/plot-benchmark-1.png)
+![Benchmark plot](plot-benchmark-1.png)
