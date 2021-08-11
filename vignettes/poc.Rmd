@@ -121,3 +121,8 @@ terra_pred_val = as.data.frame(terra_pred_ras)$lyr1
 
 all.equal(mlr3_pred_int, terra_pred_val)
 ```
+
+```{r echo=FALSE}
+unlink(c("demo-stack.tif", "demo-stack.tif.aux.xml"))
+```
+
