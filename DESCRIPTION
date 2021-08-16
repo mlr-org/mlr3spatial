@@ -38,6 +38,7 @@ Suggests:
     raster,
     rgdal,
     rmarkdown,
+    sf,
     testthat (>= 3.0.0)
 VignetteBuilder:
     knitr
