@@ -3,6 +3,13 @@
 #' @description
 #' A [mlr3::DataBackend] for `RasterBrick` (package \CRANpkg{raster}).
 #'
+#' The \CRANpkg{raster} package cannot deal (easily) with factor features.
+#' Binary responses will always be converted to 0/1 values.
+#' Multiclass values are not supported.
+#' We highly recommend to use `DataBackendSpatRaster` which uses the official
+#' successor of the \CRANpkg{raster} package, package \CRANpkg{terra}.
+#' \CRANpkg{terra} is also faster than \CRANpkg{raster}.
+#'
 #' @param rows `integer()`\cr
 #'   Row indices. Row indices start with 1 in the upper left corner in the
 #'   raster, increase from left to right and then from top to bottom. The last
@@ -20,11 +27,20 @@
 #'
 #' Block mode is activated if `$data(rows)` is called with a increasing integer
 #' sequence e.g. `200:300`.
-#' @importFrom raster readStart readStop rowColFromCell readValues head unique cats ncell intersect
+#' @examples
+#' if (mlr3misc::require_namespaces("raster", quietly = TRUE)) {
+#'   stack = demo_stack_rasterbrick(size = 5, layers = 5)
+#'   backend = DataBackendRasterBrick$new(stack)
+#' }
 #' @export
 DataBackendRasterBrick = R6::R6Class("DataBackendRasterBrick",
   inherit = mlr3::DataBackend, cloneable = FALSE,
   public = list(
+
+    #' @field compact_seq `logical(1)`\cr
+    #' If `TRUE`, row ids are a natural sequence from 1 to `nrow(data)` (determined internally).
+    #' In this case, row lookup uses faster positional indices instead of equi joins.
+    compact_seq = FALSE,
 
     #' @description
     #'
@@ -32,15 +48,45 @@ DataBackendRasterBrick = R6::R6Class("DataBackendRasterBrick",
     #'
     #' @param data (`RasterBrick`)\cr
     #'    A raster object.
-    #'
-    initialize = function(data) {
-      private$.data = assert_class(data, "RasterBrick")
+    #' @param response ([`character`])\cr
+    #'   The name of the response variable. Only needed when `response_is_factor = TRUE`.
+    #' @param response_is_factor ([`character`])\cr
+    #'   When this backend should be used in a [mlr3::TaskClassif], set `response_is_factor = TRUE`.
+
+    # This is needed to convert the response to factor before passing it to
+    # TaskClassif - {raster} has no built-in support for factor layers
+    initialize = function(data, response, response_is_factor = FALSE) {
+
+      private$.brick = data
+      values_dt = as.data.table(raster::getValues(data))
+
+      if (response_is_factor) {
+        # raster does not support multiclass factors
+        levels = as.factor(as.character(values_dt[, ..response][[response]]))
+        assert_factor(levels, max.levels = 2)
+        values_dt[[response]] = levels
+      }
+
+      row_ids = seq_row(values_dt)
+
+      primary_key = "..row_id"
+      # FIXME: I think we can do this better?
+      values_dt = suppressWarnings(mlr3misc::insert_named(values_dt, list("..row_id" = row_ids)))
+
+      super$initialize(setkeyv(values_dt, primary_key), primary_key, data_formats = "data.table")
+      ii = match(primary_key, names(values_dt))
+      if (is.na(ii)) {
+        stopf("Primary key '%s' not in 'data'", primary_key)
+      }
+      private$.cache = set_names(replace(rep(NA, ncol(values_dt)), ii, FALSE), names(values_dt))
+
+      private$.data = assert_class(values_dt, "data.table")
       self$data_formats = "data.table"
     },
 
     #' @description
     #' Returns a slice of the data.
-    #' Calls [raster::rowColFromCell()] and [raster::readValues()] on the spatial
+    #' Calls [raster::rowColFromCell()] and [raster::getValues()] on the spatial
     #' object and converts it to a [data.table::data.table()].
     #'
     #' The rows must be addressed as vector of primary key values, columns must
@@ -52,27 +98,19 @@ DataBackendRasterBrick = R6::R6Class("DataBackendRasterBrick",
     #' @param data_format (`character(1)`)\cr
     #'  Desired data format, e.g. `"data.table"` or `"Matrix"`.
     data = function(rows, cols, data_format = "data.table") {
-      stack = private$.data
+      rows = assert_integerish(rows, coerce = TRUE)
+      assert_names(cols, type = "unique")
+      assert_choice(data_format, self$data_formats)
+      cols = intersect(cols, colnames(private$.data))
 
-      if (isTRUE(all.equal(rows, rows[1]:rows[length(rows)]))) {
-        # block read
-        raster::readStart(stack)
-        on.exit(raster::readStop(stack))
-        # determine rows to read
-        cells = raster::rowColFromCell(stack, rows)
-        row = cells[1, 1]
-        nrows = cells[dim(cells)[1], 1] - cells[1, 1] + 1
-        res = as.data.table(raster::getValues(stack, row = row, nrows = nrows))
-        # subset cells and features
-        res = res[cells[1, 2]:(cells[1, 2] + length(rows) - 1), cols, with = FALSE]
-
+      if (self$compact_seq) {
+        # https://github.com/Rdatatable/data.table/issues/3109
+        rows = keep_in_bounds(rows, 1L, nrow(private$.data))
+        data = private$.data[rows, cols, with = FALSE]
       } else {
-        # cell read
-        cells = raster::rowColFromCell(stack, rows)
-        res = data.table(apply(cells, 1, function(x) stack[x[1], x[2], cols]))
-        res = setNames(res, cols)
+        data = private$.data[list(rows), cols, with = FALSE, nomatch = NULL, on = self$primary_key]
       }
-      res
+      return(data)
     },
 
     #' @description
@@ -83,8 +121,7 @@ DataBackendRasterBrick = R6::R6Class("DataBackendRasterBrick",
     #'
     #' @return [data.table::data.table()] of the first `n` rows.
     head = function(n = 6L) {
-      # bogus
-      utils::head(as.data.table(raster::head(private$.data)), n)
+      head(private$.data, n)
     },
 
     #' @description
@@ -92,37 +129,17 @@ DataBackendRasterBrick = R6::R6Class("DataBackendRasterBrick",
     #' specified. If `na_rm` is `TRUE`, missing values are removed from the
     #' returned vectors of distinct values. Non-existing rows and columns are
     #' silently ignored.
+    #'
     #' @param na_rm `logical(1)`\cr
     #'   Whether to remove NAs or not.
     #'
     #' @return Named `list()` of distinct values.
     distinct = function(rows, cols, na_rm = TRUE) {
-      assert_names(cols, type = "unique")
-      cols = raster::intersect(cols, self$colnames)
-      if (length(cols) == 0L) {
-        return(named_list(init = character()))
-      }
-
+      cols = intersect(cols, colnames(private$.data))
       if (is.null(rows)) {
-        stack = raster::subset(private$.data, cols)
-        if (all(raster::is.factor(stack))) {
-          # fastest
-          # res = as.list(map_dtc(raster::cats(stack), function(layer) {
-          #   as.data.table(layer)[, 2]
-          # }))
-
-          res = raster::levels(stack)
-          res = stats::setNames(res, cols)
-        } else {
-          # fast
-          # bug: raster does not respect categorical raster layers
-          res = list(raster::unique(stack))
-          stats::setNames(res, cols)
-        }
+        set_names(lapply(cols, function(x) distinct_values(private$.data[[x]], drop = FALSE, na_rm = na_rm)), cols)
       } else {
-        # slow
-        data = self$data(rows, cols)
-        lapply(data, unique)
+        lapply(self$data(rows, cols), distinct_values, drop = TRUE, na_rm = na_rm)
       }
     },
 
@@ -132,51 +149,64 @@ DataBackendRasterBrick = R6::R6Class("DataBackendRasterBrick",
     #'
     #' @return Total of missing values per column (named `numeric()`).
     missings = function(rows, cols) {
-      set_names(rep(0, self$ncol), self$colnames)
+      missind = private$.cache
+      missind = missind[reorder_vector(names(missind), cols)]
+
+      # update cache
+      ii = which(is.na(missind))
+      if (length(ii)) {
+        missind[ii] = map_lgl(private$.data[, names(missind[ii]), with = FALSE], anyMissing)
+        private$.cache = insert_named(private$.cache, missind[ii])
+      }
+
+      # query required columns
+      query_cols = which(missind)
+      insert_named(
+        named_vector(names(missind), 0L),
+        map_int(self$data(rows, names(query_cols)), count_missing)
+      )
+
     }
   ),
 
   active = list(
     #' @field rownames (`integer()`)\cr
-    #' Returns vector of all distinct row identifiers, i.e. the contents of the
-    #' primary key column.
-    rownames = function(rhs) {
-      assert_ro_binding(rhs)
-      1:raster::ncell(private$.data)
+    #' Returns vector of all distinct row identifiers, i.e. the contents of the primary key column.
+    rownames = function() {
+      private$.data[[self$primary_key]]
     },
 
     #' @field colnames (`character()`)\cr
-    #' Returns vector of all column names.
-    colnames = function(rhs) {
-      assert_ro_binding(rhs)
-      names(private$.data)
+    #' Returns vector of all column names, including the primary key column.
+    colnames = function() {
+      colnames(private$.data)
     },
 
     #' @field nrow (`integer(1)`)\cr
     #' Number of rows (observations).
-    nrow = function(rhs) {
-      assert_ro_binding(rhs)
-      raster::ncell(private$.data)
+    nrow = function() {
+      nrow(private$.data)
     },
 
     #' @field ncol (`integer(1)`)\cr
-    #' Number of columns (variables).
-    ncol = function(rhs) {
-      assert_ro_binding(rhs)
-      raster::nlyr(private$.data) + 1
+    #' Number of columns (variables), including the primary key column.
+    ncol = function() {
+      ncol(private$.data)
     },
 
     #' @field stack (`integer(1)`)\cr
     #' Returns RasterBrick.
     stack = function(rhs) {
       assert_ro_binding(rhs)
-      private$.data
+      private$.brick
     }
   ),
 
   private = list(
     .calculate_hash = function() {
       mlr3misc::calculate_hash(self$compact_seq, private$.data)
-    }
+    },
+    .cache = NULL,
+    .brick = NULL
   )
 )

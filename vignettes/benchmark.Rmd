@@ -23,9 +23,9 @@ stack = demo_stack(size = 500, layers = 5)
 backend = DataBackendSpatRaster$new(stack)
 task = as_task_classif(backend, target = "y", positive = "TRUE")
 
-stack_raster = demo_stack(size = 500, layers = 5)
-backend_raster = DataBackendSpatRaster$new(stack)
-task_raster = as_task_classif(backend, target = "y", positive = "TRUE")
+stack_rasterbrick = demo_stack_rasterbrick(size = 50, layers = 5)
+backend_raster = DataBackendRasterBrick$new(stack_rasterbrick)
+task_rasterbrick = as_task_classif(backend, target = "y", positive = 1)
 
 learner_svm = lrn("classif.svm")
 learner_svm$parallel_predict = TRUE

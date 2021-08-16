@@ -42,7 +42,7 @@
 #' @return mlr3::Prediction
 #' @examples
 #' if (mlr3misc::require_namespaces(c("terra", "future"), quietly = TRUE)) {
-#'   stack = demo_stack(size = 5, layers = 5)
+#'   stack = demo_stack_spatraster(size = 5, layers = 5)
 #'   backend = DataBackendSpatRaster$new(stack)
 #'   task = as_task_classif(backend, target = "y", positive = "TRUE")
 #'   # train
@@ -74,6 +74,30 @@ predict_spatial_newdata.SpatRaster = function(learner, object, filename = NULL, 
   if (!is.null(filename)) {
     target_raster = terra::setValues(target_raster, pred$response)
     terra::writeRaster(target_raster, filename, overwrite = overwrite)
+  }
+  return(pred)
+}
+
+#' @export
+predict_spatial_newdata.RasterBrick = function(learner, object, filename = NULL, overwrite = FALSE) {
+  # read cell values from raster stack
+  if (!is.null(filename)) {
+    assert_path_for_output(filename, overwrite = overwrite)
+    # we need to init the values with a factor class, otherwise setting the
+    # values later on causes conversion troubles
+    target_raster = raster::raster(nrows = raster::nrow(object),
+      ncols = raster::ncol(object),
+      crs = raster::crs(object))
+  }
+  raster::readStart(object)
+  newdata_pred = as.data.table(raster::getValues(object))
+  raster::readStop(object)
+
+  pred = learner$predict_newdata(newdata_pred)
+
+  if (!is.null(filename)) {
+    target_raster = raster::setValues(target_raster, pred$response)
+    raster::writeRaster(target_raster, filename, overwrite = overwrite)
   }
   return(pred)
 }

@@ -1,22 +1,26 @@
 test_that("DataBackendRasterBrick works", {
-  stack_classif = demo_stack_raster(size = 5, layers = 5)
+  stack_classif = demo_stack_rasterbrick(size = 5, layers = 5)
   # value = data.table(ID = c(0, 1), y = c("negative", "positive"))
   # setValues(stack_classif, c("negative", "positive"), layer = 5)
   # raster::factorValues(stack_classif, layer = 5, v = value)
   colnames = names(stack_classif)
 
-  backend = DataBackendRasterBrick$new(stack_classif)
+  backend = DataBackendRasterBrick$new(stack_classif, "y")
+  backend_classif = DataBackendRasterBrick$new(stack_classif, "y", response_is_factor = TRUE)
 
   # head
   data = backend$head(10L)
-  expect_data_table(data, nrow = 10L, ncol = 5L)
-  expect_names(names(data), identical.to = colnames)
+  expect_data_table(data, nrow = 10L, ncol = 6L)
+  expect_names(names(data), identical.to = c(colnames, "..row_id"))
 
   # distinct
-  expect_equal(backend$distinct(rows = NULL, cols = "y"), list(y = c(0, 1)))
+  expect_equal(backend$distinct(rows = NULL, cols = "y"), list(y = c(1, 0)))
+  expect_equal(backend_classif$distinct(rows = NULL, cols = "y"), list(y = c("0", "1")))
   data = backend$distinct(rows = 1:100, cols = c("x_1", "y"))
   expect_names(names(data), identical.to = c("x_1", "y"))
-  expect_numeric(c(data$x_1, data$y))
+
+  data_classif = backend_classif$distinct(rows = 1:100, cols = c("x_1", "y"))
+  expect_character(c(data_classif$x_1, data_classif$y))
 
   # data
   # [01] [02] [03] [04]
@@ -25,7 +29,7 @@ test_that("DataBackendRasterBrick works", {
   raster = raster::brick(nrow = 3, ncol = 4)
   raster[] = 1:12
   names(raster) = "y"
-  backend = DataBackendRasterBrick$new(raster)
+  backend = DataBackendRasterBrick$new(raster, "y")
 
   # [x] [x] [x] [x]
   # [ ] [ ] [ ] [ ]

@@ -19,6 +19,12 @@ Block mode is activated if \verb{$data(rows)} is called with a increasing intege
 sequence e.g. \code{200:300}.
 }
 
+\examples{
+if (mlr3misc::require_namespaces("terra", quietly = TRUE)) {
+  stack = demo_stack_spatraster(size = 5, layers = 5)
+  backend = DataBackendSpatRaster$new(stack)
+}
+}
 \section{Super class}{
 \code{\link[mlr3:DataBackend]{mlr3::DataBackend}} -> \code{DataBackendSpatRaster}
 }

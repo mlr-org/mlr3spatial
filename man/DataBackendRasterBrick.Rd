@@ -5,6 +5,13 @@
 \title{DataBackend for RasterBrick}
 \description{
 A \link[mlr3:DataBackend]{mlr3::DataBackend} for \code{RasterBrick} (package \CRANpkg{raster}).
+
+The \CRANpkg{raster} package cannot deal (easily) with factor features.
+Binary responses will always be converted to 0/1 values.
+Multiclass values are not supported.
+We highly recommend to use \code{DataBackendSpatRaster} which uses the official
+successor of the \CRANpkg{raster} package, package \CRANpkg{terra}.
+\CRANpkg{terra} is also faster than \CRANpkg{raster}.
 }
 \section{Read mode}{
 
@@ -19,24 +26,38 @@ Block mode is activated if \verb{$data(rows)} is called with a increasing intege
 sequence e.g. \code{200:300}.
 }
 
+\examples{
+if (mlr3misc::require_namespaces("raster", quietly = TRUE)) {
+  stack = demo_stack_rasterbrick(size = 5, layers = 5)
+  backend = DataBackendRasterBrick$new(stack)
+}
+}
 \section{Super class}{
 \code{\link[mlr3:DataBackend]{mlr3::DataBackend}} -> \code{DataBackendRasterBrick}
+}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{compact_seq}}{\code{logical(1)}\cr
+If \code{TRUE}, row ids are a natural sequence from 1 to \code{nrow(data)} (determined internally).
+In this case, row lookup uses faster positional indices instead of equi joins.}
+}
+\if{html}{\out{</div>}}
 }
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
 \item{\code{rownames}}{(\code{integer()})\cr
-Returns vector of all distinct row identifiers, i.e. the contents of the
-primary key column.}
+Returns vector of all distinct row identifiers, i.e. the contents of the primary key column.}
 
 \item{\code{colnames}}{(\code{character()})\cr
-Returns vector of all column names.}
+Returns vector of all column names, including the primary key column.}
 
 \item{\code{nrow}}{(\code{integer(1)})\cr
 Number of rows (observations).}
 
 \item{\code{ncol}}{(\code{integer(1)})\cr
-Number of columns (variables).}
+Number of columns (variables), including the primary key column.}
 
 \item{\code{stack}}{(\code{integer(1)})\cr
 Returns RasterBrick.}
@@ -67,7 +88,7 @@ Returns RasterBrick.}
 \subsection{Method \code{new()}}{
 Creates a backend for a \code{RasterBrick}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendRasterBrick$new(data)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{DataBackendRasterBrick$new(data, response, response_is_factor = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -75,6 +96,12 @@ Creates a backend for a \code{RasterBrick}.
 \describe{
 \item{\code{data}}{(\code{RasterBrick})\cr
 A raster object.}
+
+\item{\code{response}}{(\code{\link{character}})\cr
+The name of the response variable. Only needed when \code{response_is_factor = TRUE}.}
+
+\item{\code{response_is_factor}}{(\code{\link{character}})\cr
+When this backend should be used in a \link[mlr3:TaskClassif]{mlr3::TaskClassif}, set \code{response_is_factor = TRUE}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -84,7 +111,7 @@ A raster object.}
 \if{latex}{\out{\hypertarget{method-data}{}}}
 \subsection{Method \code{data()}}{
 Returns a slice of the data.
-Calls \code{\link[raster:rowFromCell]{raster::rowColFromCell()}} and \code{\link[raster:readValues]{raster::readValues()}} on the spatial
+Calls \code{\link[raster:rowFromCell]{raster::rowColFromCell()}} and \code{\link[raster:getValues]{raster::getValues()}} on the spatial
 object and converts it to a \code{\link[data.table:data.table]{data.table::data.table()}}.
 
 The rows must be addressed as vector of primary key values, columns must

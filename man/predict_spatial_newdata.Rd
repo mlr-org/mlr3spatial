@@ -61,7 +61,7 @@ Task and Prediction support for the following classes is planned:
 
 \examples{
 if (mlr3misc::require_namespaces(c("terra", "future"), quietly = TRUE)) {
-  stack = demo_stack(size = 5, layers = 5)
+  stack = demo_stack_spatraster(size = 5, layers = 5)
   backend = DataBackendSpatRaster$new(stack)
   task = as_task_classif(backend, target = "y", positive = "TRUE")
   # train
