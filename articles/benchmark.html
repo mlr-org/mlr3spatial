@@ -122,58 +122,61 @@
     
     
 <p>For the speed comparison, we are using a somewhat larger <code>SpatRaster</code> object to actually showcase some differences.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3.mlr-org.com">mlr3</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3learners.mlr-org.com">mlr3learners</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3spatial.mlr-org.com">mlr3spatial</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/future">future</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-lib/bench">bench</a></span><span class="op">)</span>
-
-<span class="va">stack</span> <span class="op">=</span> <span class="fu"><a href="../reference/demo_stack.html">demo_stack</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">500</span>, layers <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
-<span class="va">backend</span> <span class="op">=</span> <span class="va"><a href="../reference/DataBackendSpatRaster.html">DataBackendSpatRaster</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">stack</span><span class="op">)</span>
-<span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_classif.html">as_task_classif</a></span><span class="op">(</span><span class="va">backend</span>, target <span class="op">=</span> <span class="st">"y"</span>, positive <span class="op">=</span> <span class="st">"TRUE"</span><span class="op">)</span>
-
-<span class="va">learner_svm</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html">lrn</a></span><span class="op">(</span><span class="st">"classif.svm"</span><span class="op">)</span>
-<span class="va">learner_svm</span><span class="op">$</span><span class="va">parallel_predict</span> <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span>
-<span class="va">row_ids</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">task</span><span class="op">$</span><span class="va">nrow</span>, <span class="fl">500</span><span class="op">)</span>
-<span class="va">learner_svm</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span>, row_ids <span class="op">=</span> <span class="va">row_ids</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span>
-<span class="va">svm_raw</span> <span class="op">=</span> <span class="fu">e1071</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">task</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="va">row_ids</span><span class="op">]</span><span class="op">)</span>
-
-<span class="va">bm</span> <span class="op">=</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span><span class="op">(</span>
-  <span class="st">"mlr3-sequential"</span> <span class="op">=</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/future/man/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-    <span class="fu"><a href="../reference/predict_spatial_newdata.html">predict_spatial_newdata</a></span><span class="op">(</span><span class="va">learner_svm</span>, <span class="va">stack</span><span class="op">)</span>
-  <span class="op">}</span>,
-
-  <span class="st">"terra-sequential"</span> <span class="op">=</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/predict.html">predict</a></span><span class="op">(</span><span class="va">task</span><span class="op">$</span><span class="va">backend</span><span class="op">$</span><span class="va">stack</span>, <span class="va">svm_raw</span>, cores <span class="op">=</span> <span class="fl">1</span>, cpkgs <span class="op">=</span> <span class="st">"e1071"</span><span class="op">)</span>,
-  <span class="co"># "raster-sequential" = raster::predict(task$backend$stack, svm_raw, cores = 1, cpkgs = "e1071"),</span>
-
-  <span class="st">"mlr3-4-cores"</span> <span class="op">=</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/future/man/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
-    <span class="fu"><a href="../reference/predict_spatial_newdata.html">predict_spatial_newdata</a></span><span class="op">(</span><span class="va">learner_svm</span>, <span class="va">stack</span><span class="op">)</span>
-  <span class="op">}</span>,
-
-  <span class="st">"terra-4-cores"</span> <span class="op">=</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/predict.html">predict</a></span><span class="op">(</span><span class="va">task</span><span class="op">$</span><span class="va">backend</span><span class="op">$</span><span class="va">stack</span>, <span class="va">svm_raw</span>, cores <span class="op">=</span> <span class="fl">4</span>, cpkgs <span class="op">=</span> <span class="st">"e1071"</span><span class="op">)</span>,
-
-  check <span class="op">=</span> <span class="cn">FALSE</span>, filter_gc <span class="op">=</span> <span class="cn">FALSE</span>, min_iterations <span class="op">=</span> <span class="fl">3</span>, memory <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="va">bm</span><span class="op">$</span><span class="va">mem_alloc</span> <span class="op">=</span> <span class="cn">NULL</span>
-<span class="va">bm</span><span class="op">$</span><span class="va">`itr/sec`</span> <span class="op">=</span> <span class="cn">NULL</span>
-<span class="va">bm</span><span class="op">$</span><span class="va">result</span> <span class="op">=</span> <span class="cn">NULL</span>
-<span class="va">bm</span><span class="op">$</span><span class="va">`gc/sec`</span> <span class="op">=</span> <span class="cn">NULL</span>
-<span class="va">bm</span><span class="op">$</span><span class="va">memory</span> <span class="op">=</span> <span class="cn">NULL</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">bm</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 4 × 8</span>
-<span class="co">#&gt;   expression            min   median n_itr  n_gc total_time time           gc              </span>
-<span class="co">#&gt;   &lt;bch:expr&gt;       &lt;bch:tm&gt; &lt;bch:tm&gt; &lt;int&gt; &lt;dbl&gt;   &lt;bch:tm&gt; &lt;list&gt;         &lt;list&gt;          </span>
-<span class="co">#&gt; 1 mlr3-sequential     1.55m    1.56m     3    33      4.68m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
-<span class="co">#&gt; 2 terra-sequential    1.68m    1.71m     3    30      5.11m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
-<span class="co">#&gt; 3 mlr3-4-cores       46.63s   47.22s     3    15      2.38m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
-<span class="co">#&gt; 4 terra-4-cores       1.73m    1.75m     3    18      5.25m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(mlr3)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(mlr3learners)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">library</span>(mlr3spatial)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="kw">library</span>(future)</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="kw">library</span>(bench)</span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a>stack =<span class="st"> </span><span class="kw">demo_stack</span>(<span class="dt">size =</span> <span class="dv">500</span>, <span class="dt">layers =</span> <span class="dv">5</span>)</span>
+<span id="cb1-8"><a href="#cb1-8"></a>backend =<span class="st"> </span>DataBackendSpatRaster<span class="op">$</span><span class="kw">new</span>(stack)</span>
+<span id="cb1-9"><a href="#cb1-9"></a>task =<span class="st"> </span><span class="kw">as_task_classif</span>(backend, <span class="dt">target =</span> <span class="st">"y"</span>, <span class="dt">positive =</span> <span class="st">"TRUE"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10"></a></span>
+<span id="cb1-11"><a href="#cb1-11"></a>stack_rasterbrick =<span class="st"> </span><span class="kw">demo_stack_rasterbrick</span>(<span class="dt">size =</span> <span class="dv">50</span>, <span class="dt">layers =</span> <span class="dv">5</span>)</span>
+<span id="cb1-12"><a href="#cb1-12"></a>backend_raster =<span class="st"> </span>DataBackendRasterBrick<span class="op">$</span><span class="kw">new</span>(stack_rasterbrick)</span>
+<span id="cb1-13"><a href="#cb1-13"></a>task_rasterbrick =<span class="st"> </span><span class="kw">as_task_classif</span>(backend, <span class="dt">target =</span> <span class="st">"y"</span>, <span class="dt">positive =</span> <span class="dv">1</span>)</span>
+<span id="cb1-14"><a href="#cb1-14"></a></span>
+<span id="cb1-15"><a href="#cb1-15"></a>learner_svm =<span class="st"> </span><span class="kw">lrn</span>(<span class="st">"classif.svm"</span>)</span>
+<span id="cb1-16"><a href="#cb1-16"></a>learner_svm<span class="op">$</span>parallel_predict =<span class="st"> </span><span class="ot">TRUE</span></span>
+<span id="cb1-17"><a href="#cb1-17"></a><span class="kw">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb1-18"><a href="#cb1-18"></a>row_ids =<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span>task<span class="op">$</span>nrow, <span class="dv">500</span>)</span>
+<span id="cb1-19"><a href="#cb1-19"></a>learner_svm<span class="op">$</span><span class="kw">train</span>(task, <span class="dt">row_ids =</span> row_ids)</span>
+<span id="cb1-20"><a href="#cb1-20"></a></span>
+<span id="cb1-21"><a href="#cb1-21"></a><span class="kw">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb1-22"><a href="#cb1-22"></a>svm_raw =<span class="st"> </span>e1071<span class="op">::</span><span class="kw">svm</span>(y <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> task<span class="op">$</span><span class="kw">data</span>()[row_ids])</span>
+<span id="cb1-23"><a href="#cb1-23"></a></span>
+<span id="cb1-24"><a href="#cb1-24"></a>bm =<span class="st"> </span>bench<span class="op">::</span><span class="kw">mark</span>(</span>
+<span id="cb1-25"><a href="#cb1-25"></a>  <span class="st">"mlr3-sequential"</span> =<span class="st"> </span>{</span>
+<span id="cb1-26"><a href="#cb1-26"></a>    <span class="kw">plan</span>(multisession, <span class="dt">workers =</span> <span class="dv">1</span>)</span>
+<span id="cb1-27"><a href="#cb1-27"></a>    <span class="kw">predict_spatial_newdata</span>(learner_svm, stack)</span>
+<span id="cb1-28"><a href="#cb1-28"></a>  },</span>
+<span id="cb1-29"><a href="#cb1-29"></a></span>
+<span id="cb1-30"><a href="#cb1-30"></a>  <span class="st">"terra-sequential"</span> =<span class="st"> </span>terra<span class="op">::</span><span class="kw">predict</span>(task<span class="op">$</span>backend<span class="op">$</span>stack, svm_raw, <span class="dt">cores =</span> <span class="dv">1</span>, <span class="dt">cpkgs =</span> <span class="st">"e1071"</span>),</span>
+<span id="cb1-31"><a href="#cb1-31"></a>  <span class="op">&lt;!--</span><span class="st"> </span><span class="co"># "raster-sequential" = raster::predict(task$backend$stack, svm_raw, cores = 1, cpkgs = "e1071"), --&gt;</span></span>
+<span id="cb1-32"><a href="#cb1-32"></a></span>
+<span id="cb1-33"><a href="#cb1-33"></a><span class="st">  "mlr3-4-cores"</span> =<span class="st"> </span>{</span>
+<span id="cb1-34"><a href="#cb1-34"></a>    <span class="kw">plan</span>(multisession, <span class="dt">workers =</span> <span class="dv">4</span>)</span>
+<span id="cb1-35"><a href="#cb1-35"></a>    <span class="kw">predict_spatial_newdata</span>(learner_svm, stack)</span>
+<span id="cb1-36"><a href="#cb1-36"></a>  },</span>
+<span id="cb1-37"><a href="#cb1-37"></a></span>
+<span id="cb1-38"><a href="#cb1-38"></a>  <span class="st">"terra-4-cores"</span> =<span class="st"> </span>terra<span class="op">::</span><span class="kw">predict</span>(task<span class="op">$</span>backend<span class="op">$</span>stack, svm_raw, <span class="dt">cores =</span> <span class="dv">4</span>, <span class="dt">cpkgs =</span> <span class="st">"e1071"</span>),</span>
+<span id="cb1-39"><a href="#cb1-39"></a></span>
+<span id="cb1-40"><a href="#cb1-40"></a>  <span class="dt">check =</span> <span class="ot">FALSE</span>, <span class="dt">filter_gc =</span> <span class="ot">FALSE</span>, <span class="dt">min_iterations =</span> <span class="dv">3</span>, <span class="dt">memory =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb1-41"><a href="#cb1-41"></a></span>
+<span id="cb1-42"><a href="#cb1-42"></a>bm<span class="op">$</span>mem_alloc =<span class="st"> </span><span class="ot">NULL</span></span>
+<span id="cb1-43"><a href="#cb1-43"></a>bm<span class="op">$</span><span class="st">`</span><span class="dt">itr/sec</span><span class="st">`</span> =<span class="st"> </span><span class="ot">NULL</span></span>
+<span id="cb1-44"><a href="#cb1-44"></a>bm<span class="op">$</span>result =<span class="st"> </span><span class="ot">NULL</span></span>
+<span id="cb1-45"><a href="#cb1-45"></a>bm<span class="op">$</span><span class="st">`</span><span class="dt">gc/sec</span><span class="st">`</span> =<span class="st"> </span><span class="ot">NULL</span></span>
+<span id="cb1-46"><a href="#cb1-46"></a>bm<span class="op">$</span>memory =<span class="st"> </span><span class="ot">NULL</span></span>
+<span id="cb1-47"><a href="#cb1-47"></a></span>
+<span id="cb1-48"><a href="#cb1-48"></a><span class="kw">print</span>(bm)</span>
+<span id="cb1-49"><a href="#cb1-49"></a><span class="co">#&gt; # A tibble: 4 × 8</span></span>
+<span id="cb1-50"><a href="#cb1-50"></a><span class="co">#&gt;   expression            min   median n_itr  n_gc total_time time           gc              </span></span>
+<span id="cb1-51"><a href="#cb1-51"></a><span class="co">#&gt;   &lt;bch:expr&gt;       &lt;bch:tm&gt; &lt;bch:tm&gt; &lt;int&gt; &lt;dbl&gt;   &lt;bch:tm&gt; &lt;list&gt;         &lt;list&gt;          </span></span>
+<span id="cb1-52"><a href="#cb1-52"></a><span class="co">#&gt; 1 mlr3-sequential     1.55m    1.56m     3    33      4.68m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span></span>
+<span id="cb1-53"><a href="#cb1-53"></a><span class="co">#&gt; 2 terra-sequential    1.68m    1.71m     3    30      5.11m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span></span>
+<span id="cb1-54"><a href="#cb1-54"></a><span class="co">#&gt; 3 mlr3-4-cores       46.63s   47.22s     3    15      2.38m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span></span>
+<span id="cb1-55"><a href="#cb1-55"></a><span class="co">#&gt; 4 terra-4-cores       1.73m    1.75m     3    18      5.25m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ggplot2</span><span class="op">)</span>
 <span class="fu">autoplot</span><span class="op">(</span><span class="va">bm</span>, <span class="st">"ridge"</span><span class="op">)</span>
