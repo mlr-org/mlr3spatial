@@ -11,13 +11,14 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  options(width = 120)
+  options(width = 120),
+  fig.path = "./"
 )
 ```
 
 For the speed comparison, we are using a somewhat larger `SpatRaster` object to actually showcase some differences.
 
-```{r benchmark}
+```{r prepare}
 library(mlr3)
 library(mlr3learners)
 library(mlr3spatial)
@@ -25,12 +26,12 @@ library(future)
 library(bench)
 
 # SpatRaster demo stack
-stack = demo_stack_spatraster(size = 500, layers = 5)
+stack = demo_stack_spatraster(size = 125, layers = 5)
 backend = DataBackendSpatRaster$new(stack)
 task = as_task_classif(backend, target = "y", positive = "TRUE")
 
 # RasterBrick demo stack
-stack_rasterbrick = demo_stack_rasterbrick(size = 500, layers = 5)
+stack_rasterbrick = demo_stack_rasterbrick(size = 125, layers = 5)
 backend_raster = DataBackendRasterBrick$new(stack_rasterbrick, response = "y", response_is_factor = TRUE)
 task_rasterbrick = as_task_classif(backend_raster, target = "y", positive = "1")
 
@@ -41,44 +42,42 @@ set.seed(42)
 row_ids = sample(1:task$nrow, 500)
 learner_svm$train(task, row_ids = row_ids)
 
+e1071svm = e1071::svm(y ~ ., task$data(rows = row_ids))
+
 # RasterBrick learner
 learner_svm_rasterbrick = lrn("classif.svm")
 learner_svm_rasterbrick$parallel_predict = TRUE
 set.seed(42)
 row_ids = sample(1:task_rasterbrick$nrow, 500)
 learner_svm_rasterbrick$train(task_rasterbrick, row_ids = row_ids)
+```
 
+```{r benchmark}
 bm = bench::mark(
-  "mlr3-sequential-terra" = {
+  "1-mlr3-terra-sequential" = {
     plan(multisession, workers = 1)
     predict_spatial_newdata(learner_svm, stack)
   },
 
-  "mlr3-sequential-raster" = {
+  "2-mlr3-raster-sequential" = {
     plan(multisession, workers = 1)
     predict_spatial_newdata(learner_svm_rasterbrick, stack_rasterbrick)
   },
 
-  "terra-sequential" = terra::predict(task$backend$stack, learner_svm$model, cores = 1, cpkgs = "e1071"),
-  "raster-sequential" = raster::predict(task_rasterbrick$backend$stack, learner_svm_rasterbrick$model),
+  "3-terra-sequential" = terra::predict(stack, e1071svm, cores = 1, cpkgs = "e1071"),
+  "4-raster-sequential" = raster::predict(stack_rasterbrick, e1071svm),
 
-  "mlr3-terra-4-cores" = {
+  "5-mlr3-terra-4-cores" = {
     plan(multisession, workers = 4)
     predict_spatial_newdata(learner_svm, stack)
   },
 
-  "mlr3-raster-4-cores" = {
+  "6-mlr3-raster-4-cores" = {
     plan(multisession, workers = 4)
     predict_spatial_newdata(learner_svm_rasterbrick, stack_rasterbrick)
   },
 
-  "terra-4-cores" = terra::predict(task$backend$stack, learner_svm$model, cores = 4, cpkgs = "e1071"),
-
-#  "raster-4-cores" = {
-#    raster::beginCluster(4, type = "PSOCK")
-#
-#    raster::clusterR(task_rasterbrick$backend$stack, raster::predict, args=list(model=learner_svm_rasterbrick$model))
-#  },
+  "7-terra-4-cores" = terra::predict(stack, e1071svm, cores = 4, cpkgs = "e1071"),
 
   check = FALSE, filter_gc = FALSE, min_iterations = 3, memory = FALSE)
 
@@ -94,4 +93,8 @@ print(bm)
 ```{r plot-benchmark, fig.cap="Benchmark plot"}
 library(ggplot2)
 autoplot(bm, "ridge")
+```
+
+```{r save-plot, echo = FALSE, message = FALSE}
+ggsave("plot-benchmark-1.png")
 ```
