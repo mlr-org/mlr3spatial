@@ -28,30 +28,53 @@ stack = demo_stack(size = 500, layers = 5)
 backend = DataBackendSpatRaster$new(stack)
 task = as_task_classif(backend, target = "y", positive = "TRUE")
 
+stack_rasterbrick = demo_stack_rasterbrick(size = 500, layers = 5)
+backend_raster = DataBackendRasterBrick$new(stack_rasterbrick, response = "y", response_is_factor = TRUE)
+task_rasterbrick = as_task_classif(backend_raster, target = "y", positive = "1")
+
 learner_svm = lrn("classif.svm")
 learner_svm$parallel_predict = TRUE
 set.seed(42)
 row_ids = sample(1:task$nrow, 500)
 learner_svm$train(task, row_ids = row_ids)
 
+learner_svm_rasterbrick = lrn("classif.svm")
+learner_svm_rasterbrick$parallel_predict = TRUE
 set.seed(42)
-svm_raw = e1071::svm(y ~ ., data = task$data()[row_ids])
+row_ids = sample(1:task_rasterbrick$nrow, 500)
+learner_svm_rasterbrick$train(task_rasterbrick, row_ids = row_ids)
 
 bm = bench::mark(
-  "mlr3-sequential" = {
+  "mlr3-sequential-terra" = {
     plan(multisession, workers = 1)
     predict_spatial_newdata(learner_svm, stack)
   },
 
-  "terra-sequential" = terra::predict(task$backend$stack, svm_raw, cores = 1, cpkgs = "e1071"),
-  # "raster-sequential" = raster::predict(task$backend$stack, svm_raw, cores = 1, cpkgs = "e1071"),
+  "mlr3-sequential-raster" = {
+    plan(multisession, workers = 1)
+    predict_spatial_newdata(learner_svm_rasterbrick, stack_rasterbrick)
+  },
 
-  "mlr3-4-cores" = {
+  "terra-sequential" = terra::predict(task$backend$stack, learner_svm$model, cores = 1, cpkgs = "e1071"),
+  "raster-sequential" = raster::predict(task_rasterbrick$backend$stack, learner_svm_rasterbrick$model),
+
+  "mlr3-terra-4-cores" = {
     plan(multisession, workers = 4)
     predict_spatial_newdata(learner_svm, stack)
   },
 
-  "terra-4-cores" = terra::predict(task$backend$stack, svm_raw, cores = 4, cpkgs = "e1071"),
+  "mlr3-raster-4-cores" = {
+    plan(multisession, workers = 4)
+    predict_spatial_newdata(learner_svm_rasterbrick, stack_rasterbrick)
+  },
+
+  "terra-4-cores" = terra::predict(task$backend$stack, learner_svm$model, cores = 4, cpkgs = "e1071"),
+
+  "raster-4-cores" = {
+    beginCluster(4, type = "PSOCK")
+
+    clusterR(task_rasterbrick$backend$stack, raster::predict, args=list(model=svm_raw_rasterbrick))
+  },
 
   check = FALSE, filter_gc = FALSE, min_iterations = 3, memory = FALSE)
 

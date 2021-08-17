@@ -1,5 +1,5 @@
 test_that("DataBackendSpatRaster works", {
-  stack_classif = demo_stack(size = 5, layers = 5)
+  stack_classif = demo_stack_spatraster(size = 5, layers = 5)
   value = data.table(ID = c(0, 1), y = c("negative", "positive"))
   terra::setCats(stack_classif, layer = "y", value = value)
   colnames = names(stack_classif)

@@ -21,6 +21,11 @@
 #' Block mode is activated if `$data(rows)` is called with a increasing integer
 #' sequence e.g. `200:300`.
 #' @importFrom terra readStart readStop rowColFromCell readValues head unique cats ncell intersect
+#' @examples
+#' if (mlr3misc::require_namespaces("terra", quietly = TRUE)) {
+#'   stack = demo_stack_spatraster(size = 5, layers = 5)
+#'   backend = DataBackendSpatRaster$new(stack)
+#' }
 #' @export
 DataBackendSpatRaster = R6::R6Class("DataBackendSpatRaster",
   inherit = mlr3::DataBackend, cloneable = FALSE,

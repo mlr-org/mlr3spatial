@@ -40,7 +40,7 @@ A mlr3 classification `task` is created and an SVM learner is fitted with random
 
 ```{r}
 if (!file.exists("demo-stack.tif")) {
-  stack = demo_stack(size = 100, layers = 5)
+  stack = demo_stack_spatraster(size = 100, layers = 5)
   terra::writeRaster(stack, "demo-stack.tif", overwrite = TRUE)
   rm(stack)
   stack = terra::rast("demo-stack.tif")
