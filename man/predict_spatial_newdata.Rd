@@ -2,9 +2,36 @@
 % Please edit documentation in R/predict_spatial.R
 \name{predict_spatial_newdata}
 \alias{predict_spatial_newdata}
+\alias{predict_spatial_newdata.SpatRaster}
+\alias{predict_spatial_newdata.RasterBrick}
+\alias{predict_spatial_newdata.sf}
 \title{Predict on spatial objects with mlr3 learners}
 \usage{
 predict_spatial_newdata(
+  learner,
+  object,
+  filename = NULL,
+  overwrite = FALSE,
+  quiet = FALSE
+)
+
+\method{predict_spatial_newdata}{SpatRaster}(
+  learner,
+  object,
+  filename = NULL,
+  overwrite = FALSE,
+  quiet = FALSE
+)
+
+\method{predict_spatial_newdata}{RasterBrick}(
+  learner,
+  object,
+  filename = NULL,
+  overwrite = FALSE,
+  quiet = FALSE
+)
+
+\method{predict_spatial_newdata}{sf}(
   learner,
   object,
   filename = NULL,

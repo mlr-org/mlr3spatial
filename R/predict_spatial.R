@@ -58,6 +58,7 @@ predict_spatial_newdata = function(learner, object, filename = NULL, overwrite =
 }
 
 #' @export
+#' @rdname predict_spatial_newdata
 predict_spatial_newdata.SpatRaster = function(learner, object, filename = NULL, overwrite = FALSE, quiet = FALSE) {
   # read cell values from raster stack
   if (!is.null(filename)) {
@@ -81,6 +82,7 @@ predict_spatial_newdata.SpatRaster = function(learner, object, filename = NULL, 
 }
 
 #' @export
+#' @rdname predict_spatial_newdata
 predict_spatial_newdata.RasterBrick = function(learner, object, filename = NULL, overwrite = FALSE, quiet = FALSE) {
   # read cell values from raster stack
   if (!is.null(filename)) {
@@ -105,6 +107,7 @@ predict_spatial_newdata.RasterBrick = function(learner, object, filename = NULL,
 }
 
 #' @export
+#' @rdname predict_spatial_newdata
 predict_spatial_newdata.sf = function(learner, object, filename = NULL, overwrite = FALSE, quiet = FALSE) {
 
   if (!is.null(filename)) {
