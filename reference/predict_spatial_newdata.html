@@ -232,7 +232,7 @@ information.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='fu'>mlr3misc</span><span class='fu'>::</span><span class='fu'><a href='https://mlr3misc.mlr-org.com/reference/require_namespaces.html'>require_namespaces</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"terra"</span>, <span class='st'>"future"</span><span class='op'>)</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='va'>stack</span> <span class='op'>=</span> <span class='fu'><a href='demo_stack.html'>demo_stack</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>5</span>, layers <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
+  <span class='va'>stack</span> <span class='op'>=</span> <span class='fu'><a href='demo_stack_spatraster.html'>demo_stack_spatraster</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>5</span>, layers <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
   <span class='va'>backend</span> <span class='op'>=</span> <span class='va'><a href='DataBackendSpatRaster.html'>DataBackendSpatRaster</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>stack</span><span class='op'>)</span>
   <span class='va'>task</span> <span class='op'>=</span> <span class='fu'>as_task_classif</span><span class='op'>(</span><span class='va'>backend</span>, target <span class='op'>=</span> <span class='st'>"y"</span>, positive <span class='op'>=</span> <span class='st'>"TRUE"</span><span class='op'>)</span>
   <span class='co'># train</span>
@@ -242,13 +242,13 @@ information.</p>
 <span class='op'>}</span>
 </div><div class='output co'>#&gt; &lt;PredictionClassif&gt; for 250000 observations:
 #&gt;     row_ids truth response
-#&gt;           1 FALSE     TRUE
-#&gt;           2 FALSE     TRUE
-#&gt;           3 FALSE     TRUE
+#&gt;           1 FALSE    FALSE
+#&gt;           2 FALSE    FALSE
+#&gt;           3 FALSE    FALSE
 #&gt; ---                       
-#&gt;      249998  TRUE     TRUE
-#&gt;      249999  TRUE     TRUE
-#&gt;      250000  TRUE     TRUE</div></pre>
+#&gt;      249998  TRUE    FALSE
+#&gt;      249999  TRUE    FALSE
+#&gt;      250000  TRUE    FALSE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

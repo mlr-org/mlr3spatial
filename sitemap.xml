@@ -4,6 +4,9 @@
     <loc>https://mlr3spatial.mlr-org.com/index.html</loc>
   </url>
   <url>
+    <loc>https://mlr3spatial.mlr-org.com/reference/DataBackendRasterBrick.html</loc>
+  </url>
+  <url>
     <loc>https://mlr3spatial.mlr-org.com/reference/DataBackendSF.html</loc>
   </url>
   <url>
@@ -13,10 +16,13 @@
     <loc>https://mlr3spatial.mlr-org.com/reference/as_data_backend.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/reference/demo_raster.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/reference/demo_spatraster.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/reference/demo_stack.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/reference/demo_stack_rasterbrick.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3spatial.mlr-org.com/reference/demo_stack_spatraster.html</loc>
   </url>
   <url>
     <loc>https://mlr3spatial.mlr-org.com/reference/mlr3spatial-package.html</loc>
