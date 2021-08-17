@@ -25,7 +25,7 @@ The raw raster object can be returned via the active binding \code{.$stack()}.
 \examples{
 if (mlr3misc::require_namespaces("raster", quietly = TRUE)) {
   stack = demo_stack_rasterbrick(size = 5, layers = 5)
-  backend = DataBackendRasterBrick$new(stack)
+  backend = DataBackendRasterBrick$new(stack, response = "y", response_is_factor = TRUE)
 }
 }
 \section{Super class}{
@@ -37,6 +37,12 @@ if (mlr3misc::require_namespaces("raster", quietly = TRUE)) {
 \item{\code{compact_seq}}{\code{logical(1)}\cr
 If \code{TRUE}, row ids are a natural sequence from 1 to \code{nrow(data)} (determined internally).
 In this case, row lookup uses faster positional indices instead of equi joins.}
+
+\item{\code{response}}{(\code{\link{character}})\cr
+The name of the response variable given during construction.}
+
+\item{\code{response_is_factor}}{(\code{\link{character}})\cr
+Whether \code{response_is_factor = TRUE} was set during construction.}
 }
 \if{html}{\out{</div>}}
 }

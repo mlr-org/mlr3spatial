@@ -30,7 +30,7 @@
 #' @examples
 #' if (mlr3misc::require_namespaces("raster", quietly = TRUE)) {
 #'   stack = demo_stack_rasterbrick(size = 5, layers = 5)
-#'   backend = DataBackendRasterBrick$new(stack)
+#'   backend = DataBackendRasterBrick$new(stack, response = "y", response_is_factor = TRUE)
 #' }
 #' @export
 DataBackendRasterBrick = R6::R6Class("DataBackendRasterBrick",
@@ -41,6 +41,14 @@ DataBackendRasterBrick = R6::R6Class("DataBackendRasterBrick",
     #' If `TRUE`, row ids are a natural sequence from 1 to `nrow(data)` (determined internally).
     #' In this case, row lookup uses faster positional indices instead of equi joins.
     compact_seq = FALSE,
+
+    #' @field response ([`character`])\cr
+    #'   The name of the response variable given during construction.
+    response = NULL,
+
+    #' @field response_is_factor ([`character`])\cr
+    #'   Whether `response_is_factor = TRUE` was set during construction.
+    response_is_factor = NULL,
 
     #' @description
     #'
@@ -56,6 +64,10 @@ DataBackendRasterBrick = R6::R6Class("DataBackendRasterBrick",
     # This is needed to convert the response to factor before passing it to
     # TaskClassif - {raster} has no built-in support for factor layers
     initialize = function(data, response, response_is_factor = FALSE) {
+
+      # needed by as_sf_backend.RasterBrick
+      self$response_is_factor = response_is_factor
+      self$response = response
 
       private$.brick = data
       values_dt = as.data.table(raster::getValues(data))
