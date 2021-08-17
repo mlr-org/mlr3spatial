@@ -2,7 +2,7 @@
 % Please edit documentation in R/DataBackendRasterBrick.R
 \name{DataBackendRasterBrick}
 \alias{DataBackendRasterBrick}
-\title{DataBackend for RasterBrick}
+\title{DataBackend for RasterBrick objects}
 \description{
 A \link[mlr3:DataBackend]{mlr3::DataBackend} for \code{RasterBrick} (package \CRANpkg{raster}).
 
@@ -12,20 +12,16 @@ Multiclass values are not supported.
 We highly recommend to use \code{DataBackendSpatRaster} which uses the official
 successor of the \CRANpkg{raster} package, package \CRANpkg{terra}.
 \CRANpkg{terra} is also faster than \CRANpkg{raster}.
-}
-\section{Read mode}{
 
-\itemize{
-\item Block mode reads complete rows of the raster file and subsets the requested
-cells. Faster than cell mode if we iterate the whole raster file.
-\item Cell mode reads individual cells. Faster than block mode if only a few
-cells are sampled.
-}
+To workaround the factor handling limitation and add compatibility with the
+mlr3 task semantics, users need to set \code{response_is_factor = TRUE} if the
+backend should be used within a classification task.
 
-Block mode is activated if \verb{$data(rows)} is called with a increasing integer
-sequence e.g. \code{200:300}.
-}
+Internally, {mlr3spatial} extracts all values from the raster object and
+stores these in a \code{data.table}.
 
+The raw raster object can be returned via the active binding \code{.$stack()}.
+}
 \examples{
 if (mlr3misc::require_namespaces("raster", quietly = TRUE)) {
   stack = demo_stack_rasterbrick(size = 5, layers = 5)

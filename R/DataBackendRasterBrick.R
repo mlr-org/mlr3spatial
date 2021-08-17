@@ -1,4 +1,4 @@
-#' @title DataBackend for RasterBrick
+#' @title DataBackend for RasterBrick objects
 #'
 #' @description
 #' A [mlr3::DataBackend] for `RasterBrick` (package \CRANpkg{raster}).
@@ -10,6 +10,15 @@
 #' successor of the \CRANpkg{raster} package, package \CRANpkg{terra}.
 #' \CRANpkg{terra} is also faster than \CRANpkg{raster}.
 #'
+#' To workaround the factor handling limitation and add compatibility with the
+#' mlr3 task semantics, users need to set `response_is_factor = TRUE` if the
+#' backend should be used within a classification task.
+#'
+#' Internally, {mlr3spatial} extracts all values from the raster object and
+#' stores these in a `data.table`.
+#'
+#' The raw raster object can be returned via the active binding `.$stack()`.
+#'
 #' @param rows `integer()`\cr
 #'   Row indices. Row indices start with 1 in the upper left corner in the
 #'   raster, increase from left to right and then from top to bottom. The last
@@ -18,15 +27,6 @@
 #' @param cols `character()`\cr
 #'   Column names.
 #'
-#' @section Read mode:
-#' * Block mode reads complete rows of the raster file and subsets the requested
-#'   cells. Faster than cell mode if we iterate the whole raster file.
-#'
-#' * Cell mode reads individual cells. Faster than block mode if only a few
-#'   cells are sampled.
-#'
-#' Block mode is activated if `$data(rows)` is called with a increasing integer
-#' sequence e.g. `200:300`.
 #' @examples
 #' if (mlr3misc::require_namespaces("raster", quietly = TRUE)) {
 #'   stack = demo_stack_rasterbrick(size = 5, layers = 5)
