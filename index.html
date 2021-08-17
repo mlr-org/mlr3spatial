@@ -71,10 +71,10 @@
 <li>
       <a href="articles/benchmark.html">Benchmarking parallel predictions</a>
     </li>
-    <li>
-      <a href="articles/poc.html">Proof of Concept</a>
-    </li>
   </ul>
+</li>
+<li>
+  <a href="articles/mlr3spatial.html">Get started</a>
 </li>
         <li>
   <a href="https://github.com/mlr-org/mlr3spatial/">
@@ -112,26 +112,29 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-
 <div id="mlr3spatial" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#mlr3spatial" class="anchor"></a>mlr3spatial</h1></div>
 <!-- badges: start -->
 
-<p>This package is <strong>NOT</strong> ready for production use and only a proof of concept for now. For spatiotemporal resampling within mlr3 see <a href="https://github.com/mlr-org/mlr3spatiotempcv">{mlr3spatiotempcv}</a>.</p>
+<p>This package is <strong>NOT</strong> yet ready for production use. Functions may change without notice!</p>
+<div id="package-scope" class="section level2">
+<h2 class="hasAnchor">
+<a href="#package-scope" class="anchor"></a>Package scope</h2>
+<p>The handling of (large) spatial objects ({terra}, {raster}, {stars}, {sf}) in ML is an error-prone and time consuming task. Users often need to extract the “raw” values from the spatial objects, train a model, predict and then recreate the spatial object again. {mlr3spatial} tries to help here by</p>
+<ul>
+<li>Providing <code>DataBackend</code> classes for various spatial classes ({terra}, {raster}, {stars}, {sf}) which can be used to easily create {mlr3} <a href="https://mlr3.mlr-org.com/reference/Task.html">Tasks</a>
+</li>
+<li>Support for direct predictions to spatial objects ({terra}, {raster}, {stars}, {sf}), returning both a {mlr3} <a href="https://mlr3.mlr-org.com/reference/Prediction.html">Prediction</a> object and the respective spatial object</li>
+<li>Speeding up predictions by making use of {mlr3} built-in future-based parallelization</li>
+</ul>
 </div>
-<div id="package-scope" class="section level1">
-<h1 class="hasAnchor">
-<a href="#package-scope" class="anchor"></a>Package scope</h1>
-<p>The handling of large spatial objects (terra, raster, stars) in ML is an error-prone and time consuming task.</p>
-<p>This package aims to</p>
-<ol>
-<li>Simplify Task and Prediction handling of spatial objects within the mlr3 ecosystem</li>
-<li>Prediction of spatial objects in chunks to prevent memory overflow</li>
-<li>(optional) Speeding up the prediction process by predicting in parallel, making use of the built-in parallelization in the mlr3 ecosystem (via future)</li>
-</ol>
+<div id="spatiotemporal-resampling--cross-validation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#spatiotemporal-resampling--cross-validation" class="anchor"></a>Spatiotemporal resampling / cross-validation</h2>
+<p>For spatiotemporal resampling within mlr3 see <a href="https://github.com/mlr-org/mlr3spatiotempcv">{mlr3spatiotempcv}</a>.</p>
 </div>
-
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -165,7 +168,7 @@
 <li><a href="https://github.com/mlr-org/mlr3spatial/actions"><img src="https://github.com/mlr-org/mlr3spatial/workflows/tic/badge.svg?branch=main" alt="tic"></a></li>
 <li><a href="https://codecov.io/github/mlr-org/mlr3spatial?branch=main"><img src="https://codecov.io/gh/mlr-org/mlr3spatial/branch/main/graph/badge.svg" alt="Coverage status"></a></li>
 <li><a href="https://www.codefactor.io/repository/github/mlr-org/mlr3spatial"><img src="https://www.codefactor.io/repository/github/mlr-org/mlr3spatial/badge" alt="CodeFactor"></a></li>
-<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle:experimental"></a></li>
 </ul>
 </div>
 </div>
