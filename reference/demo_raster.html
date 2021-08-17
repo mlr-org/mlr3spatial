@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate a dummy 'terra::SpatRaster' — demo_stack_spatraster • mlr3spatial</title>
+<title>Generate Demo Raster — demo_raster • mlr3spatial</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -47,8 +47,8 @@
 
 
 
-<meta property="og:title" content="Generate a dummy 'terra::SpatRaster' — demo_stack_spatraster" />
-<meta property="og:description" content="Generates a square demo terra::SpatRaster object." />
+<meta property="og:title" content="Generate Demo Raster — demo_raster" />
+<meta property="og:description" content="Generates a square demo terra::SpatRaster." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -153,45 +153,28 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generate a dummy 'terra::SpatRaster'</h1>
+    <h1>Generate Demo Raster</h1>
     <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/data.R'><code>R/data.R</code></a></small>
-    <div class="hidden name"><code>demo_stack_spatraster.Rd</code></div>
+    <div class="hidden name"><code>demo_raster.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Generates a square demo <a href='https://rdrr.io/pkg/terra/man/SpatRaster-class.html'>terra::SpatRaster</a> object.</p>
+    <p>Generates a square demo <a href='https://rdrr.io/pkg/terra/man/SpatRaster-class.html'>terra::SpatRaster</a>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>demo_stack_spatraster</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>50</span>, layers <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>demo_raster</span><span class='op'>(</span><span class='va'>dimension</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>size</th>
-      <td><p><code>[integer(1)]</code><br />
-Size of raster stack in megabyte (disk space).</p></td>
-    </tr>
-    <tr>
-      <th>layers</th>
-      <td><p><code>[integer(1)]</code><br />
-Number of layers.</p></td>
+      <th>dimension</th>
+      <td><p>(<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>)
+xy dimension of raster</p></td>
     </tr>
     </table>
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>demo_stack_spatraster</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>5</span>, layers <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; class       : SpatRaster 
-#&gt; dimensions  : 790, 790, 2  (nrow, ncol, nlyr)
-#&gt; resolution  : 0.001265823, 0.001265823  (x, y)
-#&gt; extent      : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
-#&gt; coord. ref. :  
-#&gt; sources     : memory  
-#&gt;               memory  
-#&gt; names       :       x_1,     y 
-#&gt; min values  : -4.638386, FALSE 
-#&gt; max values  :  5.637882,  TRUE </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
