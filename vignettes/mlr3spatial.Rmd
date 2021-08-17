@@ -1,0 +1,136 @@
+---
+title: "Getting started"
+output: 
+  rmarkdown::html_vignette:
+    df_print: paged
+vignette: >
+  %\VignetteIndexEntry{Getting started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = TRUE
+)
+```
+
+## Introduction
+
+{mlr3spatial} adds [mlr3::DataBackend]s for spatial classes ([terra::SpatRaster], [raster::brick], [sf::sf]).
+In addition, direct predictions to objects of these classes are supported.
+The direct return is a [mlr3::Prediction] object as for all other `predict()` returns in the {mlr3} ecosystem.
+Besides, the respective spatial objects can be written to disk and loaded into the session for further analysis.
+
+Essentially, {mlr3spatial} takes of the burden of converting spatial objects into a plain `data.table` and then coercing the predicted values back into the spatial object while making sure to not loose the spatial reference.
+
+There is one more goodie in the bag.
+Thanks to mlr3's ability to predict in parallel with any learner, {mlr3spatial} prediction can also make use of future-based parallelization and speed up the predictions of spatial objects.
+Often enough, spatial predictions are quite large (in the millions of values) and efficient parallelization can save some time here.
+See the vignette on ["Benchmarking parallel predictions"](https://mlr3spatial.mlr-org.com/articles/benchmark.html) for details.
+
+In the following, we showcase a step-by-step example how to handle a multi-layer raster object from package {terra}.
+
+## Use Case - {terra} objects
+
+### Data Preparation
+
+Spatial objects are not included as built-in datasets into the package due to their size. 
+Some helper functions like `demo_stack_spatraster()` are available to create such.
+
+The `SpatRaster` consists of 500 columns and rows and contains five layers with each layer representing a variable.
+
+The `"Error in (function (x)  : attempt to apply non-function"` error can be ignored - this is an internal issue of the {terra} package during object creation and does not affect usage.
+
+```{r}
+library("mlr3")
+library("mlr3spatial")
+library("mlr3learners")
+library("terra")
+library("e1071")
+```
+
+First, a {mlr3} classification `task` is created and a SVM learner is fitted with randomly sampled raster cells.
+
+```{r, error=TRUE}
+if (!file.exists("demo-stack.tif")) {
+  stack = demo_stack_spatraster(size = 5, layers = 5)
+  terra::writeRaster(stack, "demo-stack.tif", overwrite = TRUE)
+  rm(stack)
+  stack = terra::rast("demo-stack.tif")
+} else {
+  stack = terra::rast("demo-stack.tif")
+}
+backend = DataBackendSpatRaster$new(stack)
+task = as_task_classif(backend, target = "y", positive = "TRUE")
+
+print(task)
+```
+
+```{r}
+learner_svm = lrn("classif.svm")
+# requires mlr3 > 0.12.0
+learner_svm$parallel_predict = TRUE
+set.seed(42)
+row_ids = sample(1:task$nrow, 500)
+learner_svm$train(task, row_ids = row_ids)
+
+print(learner_svm)
+```
+
+### Prediction
+
+For prediction `predict_spatial_newdata()` is used.
+It will return a `mlr3::Prediction()` object and, if argument `filename` is supplied, will also write the spatial object to disk (for file types supported by the respective package).
+
+In the following, we will compare the way to conduct the prediction using {mlr3spatial} with the "native" way of fitting an `e1071::svm()` model and predicting with `terra::predict()`.
+
+#### mlr3spatial
+
+```{r}
+library(future)
+plan(sequential)
+
+file = tempfile("target", fileext = ".tif")
+pred = predict_spatial_newdata(learner_svm, stack, filename = file)
+
+print(pred)
+```
+
+#### terra
+
+```{r}
+svm_e1071 = e1071::svm(y ~ ., data = task$data(rows = row_ids))
+
+terra_pred_ras = terra::predict(stack, svm_e1071, cores = 1, cpkgs = "e1071")
+
+print(terra_pred_ras)
+```
+
+### Output consistency
+
+Now that we have executed two predictions, let's check if the returns are actually identical.
+
+Before we can do the comparison between the {mlr3spatial} and {terra} prediction, we need to load `target.tif` from disk (which got created during the mlr3 prediction), as {mlr3spatial} returns a `mlr3::Prediction` object and not a `SpatRaster`.
+
+```{r}
+mlr3_pred_ras = terra::rast(file)
+```
+
+{terra} returns an integer vector as it always converts factors into numerics internally during the prediction (which looks like a bug).
+Hence, we need to convert the {mlr3spatial} returns into numerics for a fair comparison.
+
+```{r}
+mlr3_pred_int = as.numeric(as.data.frame(mlr3_pred_ras)$lyr.1)
+
+terra_pred_val = as.data.frame(terra_pred_ras)$lyr1
+
+all.equal(mlr3_pred_int, terra_pred_val)
+```
+
+```{r echo=FALSE}
+unlink(c("demo-stack.tif", "demo-stack.tif.aux.xml"))
+```
+
