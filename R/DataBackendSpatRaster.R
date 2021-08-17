@@ -44,7 +44,7 @@ DataBackendSpatRaster = R6::R6Class("DataBackendSpatRaster",
     #'    A raster object.
     #'
     initialize = function(data) {
-      private$.spatraster = data
+      private$.spatraster = terra::wrap(data)
 
       terra::readStart(data)
       on.exit(terra::readStop(data))
@@ -181,7 +181,7 @@ DataBackendSpatRaster = R6::R6Class("DataBackendSpatRaster",
     #' Returns SpatRaster.
     stack = function(rhs) {
       assert_ro_binding(rhs)
-      private$.spatraster
+      terra::rast(private$.spatraster)
     }
   ),
 
