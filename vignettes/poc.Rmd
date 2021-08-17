@@ -4,7 +4,7 @@ output:
   rmarkdown::html_vignette:
     df_print: paged
 vignette: >
-  %\VignetteIndexEntry{poc}
+  %\VignetteIndexEntry{Proof of Concept}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -90,8 +90,10 @@ print(pred)
 ## terra
 
 ```{r}
+# fit e1071 svm
+svm_raw = e1071::svm(y ~ ., data = task$data()[row_ids])
+
 terra_pred_ras = terra::predict(task$backend$stack, svm_raw, cores = 1, cpkgs = "e1071")
-terra_pred_ras = terra::predict(task$backend$stack, learner_svm$model, cores = 1, cpkgs = "e1071")
 
 print(terra_pred_ras)
 ```
@@ -104,8 +106,6 @@ Also before we can do the comparison between the {mlr3spatial} and {terra} predi
 ```{r}
 # load mlr3 tif
 mlr3_pred_ras = terra::rast(file)
-
-# waldo::compare(head(mlr3_pred_ras), head(terra_pred_ras))
 ```
 
 If we convert both to numerics

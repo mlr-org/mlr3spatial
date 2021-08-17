@@ -2,7 +2,7 @@
 title: "Benchmarking parallel predictions"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{benchmark}
+  %\VignetteIndexEntry{Benchmarking parallel predictions}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -24,20 +24,24 @@ library(mlr3spatial)
 library(future)
 library(bench)
 
-stack = demo_stack(size = 500, layers = 5)
+# SpatRaster demo stack
+stack = demo_stack_spatraster(size = 500, layers = 5)
 backend = DataBackendSpatRaster$new(stack)
 task = as_task_classif(backend, target = "y", positive = "TRUE")
 
+# RasterBrick demo stack
 stack_rasterbrick = demo_stack_rasterbrick(size = 500, layers = 5)
 backend_raster = DataBackendRasterBrick$new(stack_rasterbrick, response = "y", response_is_factor = TRUE)
 task_rasterbrick = as_task_classif(backend_raster, target = "y", positive = "1")
 
+# SpatRaster learner
 learner_svm = lrn("classif.svm")
 learner_svm$parallel_predict = TRUE
 set.seed(42)
 row_ids = sample(1:task$nrow, 500)
 learner_svm$train(task, row_ids = row_ids)
 
+# RasterBrick learner
 learner_svm_rasterbrick = lrn("classif.svm")
 learner_svm_rasterbrick$parallel_predict = TRUE
 set.seed(42)
@@ -70,11 +74,11 @@ bm = bench::mark(
 
   "terra-4-cores" = terra::predict(task$backend$stack, learner_svm$model, cores = 4, cpkgs = "e1071"),
 
-  "raster-4-cores" = {
-    beginCluster(4, type = "PSOCK")
-
-    clusterR(task_rasterbrick$backend$stack, raster::predict, args=list(model=svm_raw_rasterbrick))
-  },
+#  "raster-4-cores" = {
+#    raster::beginCluster(4, type = "PSOCK")
+#
+#    raster::clusterR(task_rasterbrick$backend$stack, raster::predict, args=list(model=learner_svm_rasterbrick$model))
+#  },
 
   check = FALSE, filter_gc = FALSE, min_iterations = 3, memory = FALSE)
 
