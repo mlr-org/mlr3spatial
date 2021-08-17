@@ -31,6 +31,11 @@ DataBackendSpatRaster = R6::R6Class("DataBackendSpatRaster",
   inherit = mlr3::DataBackend, cloneable = FALSE,
   public = list(
 
+    #' @field compact_seq `logical(1)`\cr
+    #' If `TRUE`, row ids are a natural sequence from 1 to `nrow(data)` (determined internally).
+    #' In this case, row lookup uses faster positional indices instead of equi joins.
+    compact_seq = FALSE,
+
     #' @description
     #'
     #' Creates a backend for a `SpatRaster`.
@@ -39,13 +44,32 @@ DataBackendSpatRaster = R6::R6Class("DataBackendSpatRaster",
     #'    A raster object.
     #'
     initialize = function(data) {
-      private$.data = assert_class(data, "SpatRaster")
+      private$.spatraster = data
+
+      terra::readStart(data)
+      on.exit(terra::readStop(data))
+      values_dt = as.data.table(terra::readValues(data, dataframe = TRUE))
+
+      row_ids = seq_row(values_dt)
+
+      primary_key = "..row_id"
+      # FIXME: I think we can do this better?
+      values_dt = suppressWarnings(mlr3misc::insert_named(values_dt, list("..row_id" = row_ids)))
+
+      super$initialize(setkeyv(values_dt, primary_key), primary_key, data_formats = "data.table")
+      ii = match(primary_key, names(values_dt))
+      if (is.na(ii)) {
+        stopf("Primary key '%s' not in 'data'", primary_key)
+      }
+      private$.cache = set_names(replace(rep(NA, ncol(values_dt)), ii, FALSE), names(values_dt))
+
+      private$.data = assert_class(values_dt, "data.table")
       self$data_formats = "data.table"
     },
 
     #' @description
     #' Returns a slice of the data.
-    #' Calls [terra::rowColFromCell()] and [terra::readValues()] on the spatial
+    #' Calls [raster::rowColFromCell()] and [raster::getValues()] on the spatial
     #' object and converts it to a [data.table::data.table()].
     #'
     #' The rows must be addressed as vector of primary key values, columns must
@@ -57,27 +81,19 @@ DataBackendSpatRaster = R6::R6Class("DataBackendSpatRaster",
     #' @param data_format (`character(1)`)\cr
     #'  Desired data format, e.g. `"data.table"` or `"Matrix"`.
     data = function(rows, cols, data_format = "data.table") {
-      stack = private$.data
+      rows = assert_integerish(rows, coerce = TRUE)
+      assert_names(cols, type = "unique")
+      assert_choice(data_format, self$data_formats)
+      cols = intersect(cols, colnames(private$.data))
 
-      if (isTRUE(all.equal(rows, rows[1]:rows[length(rows)]))) {
-        # block read
-        terra::readStart(stack)
-        on.exit(terra::readStop(stack))
-        # determine rows to read
-        cells = terra::rowColFromCell(stack, rows)
-        row = cells[1, 1]
-        nrows = cells[dim(cells)[1], 1] - cells[1, 1] + 1
-        # FIXME: How can we read values of layers 2 - INF?
-        res = as.data.table(terra::readValues(stack, row = row, nrows = nrows, dataframe = TRUE))
-        # subset cells and features
-        res = res[cells[1, 2]:(cells[1, 2] + length(rows) - 1), cols, with = FALSE]
-
+      if (self$compact_seq) {
+        # https://github.com/Rdatatable/data.table/issues/3109
+        rows = keep_in_bounds(rows, 1L, nrow(private$.data))
+        data = private$.data[rows, cols, with = FALSE]
       } else {
-        # cell read
-        cells = terra::rowColFromCell(stack, rows)
-        res = rbindlist(apply(cells, 1, function(x) stack[x[1], x[2]][cols]))
+        data = private$.data[list(rows), cols, with = FALSE, nomatch = NULL, on = self$primary_key]
       }
-      res
+      return(data)
     },
 
     #' @description
@@ -88,7 +104,7 @@ DataBackendSpatRaster = R6::R6Class("DataBackendSpatRaster",
     #'
     #' @return [data.table::data.table()] of the first `n` rows.
     head = function(n = 6L) {
-      as.data.table(terra::head(private$.data, n))
+      head(private$.data, n)
     },
 
     #' @description
@@ -96,37 +112,17 @@ DataBackendSpatRaster = R6::R6Class("DataBackendSpatRaster",
     #' specified. If `na_rm` is `TRUE`, missing values are removed from the
     #' returned vectors of distinct values. Non-existing rows and columns are
     #' silently ignored.
+    #'
     #' @param na_rm `logical(1)`\cr
     #'   Whether to remove NAs or not.
     #'
     #' @return Named `list()` of distinct values.
     distinct = function(rows, cols, na_rm = TRUE) {
-      assert_names(cols, type = "unique")
-      cols = terra::intersect(cols, self$colnames)
-      if (length(cols) == 0L) {
-        return(named_list(init = character()))
-      }
-
+      cols = intersect(cols, colnames(private$.data))
       if (is.null(rows)) {
-        stack = terra::subset(private$.data, cols)
-        if (all(terra::is.factor(stack))) {
-          # fastest
-          # res = as.list(map_dtc(terra::cats(stack), function(layer) {
-          #   as.data.table(layer)[, 2]
-          # }))
-
-          res = terra::levels(stack)
-          res = stats::setNames(res, cols)
-        } else {
-          # fast
-          # bug: terra does not respect categorical raster layers
-          terra::unique(stack, incomparables = TRUE)
-          set_names(res, names(stack))
-        }
+        set_names(lapply(cols, function(x) distinct_values(private$.data[[x]], drop = FALSE, na_rm = na_rm)), cols)
       } else {
-        # slow
-        data = self$data(rows, cols)
-        lapply(data, unique)
+        lapply(self$data(rows, cols), distinct_values, drop = TRUE, na_rm = na_rm)
       }
     },
 
@@ -136,51 +132,64 @@ DataBackendSpatRaster = R6::R6Class("DataBackendSpatRaster",
     #'
     #' @return Total of missing values per column (named `numeric()`).
     missings = function(rows, cols) {
-      set_names(rep(0, self$ncol), self$colnames)
+      missind = private$.cache
+      missind = missind[reorder_vector(names(missind), cols)]
+
+      # update cache
+      ii = which(is.na(missind))
+      if (length(ii)) {
+        missind[ii] = map_lgl(private$.data[, names(missind[ii]), with = FALSE], anyMissing)
+        private$.cache = insert_named(private$.cache, missind[ii])
+      }
+
+      # query required columns
+      query_cols = which(missind)
+      insert_named(
+        named_vector(names(missind), 0L),
+        map_int(self$data(rows, names(query_cols)), count_missing)
+      )
+
     }
   ),
 
   active = list(
     #' @field rownames (`integer()`)\cr
-    #' Returns vector of all distinct row identifiers, i.e. the contents of the
-    #' primary key column.
-    rownames = function(rhs) {
-      assert_ro_binding(rhs)
-      1:terra::ncell(private$.data)
+    #' Returns vector of all distinct row identifiers, i.e. the contents of the primary key column.
+    rownames = function() {
+      private$.data[[self$primary_key]]
     },
 
     #' @field colnames (`character()`)\cr
-    #' Returns vector of all column names.
-    colnames = function(rhs) {
-      assert_ro_binding(rhs)
-      names(private$.data)
+    #' Returns vector of all column names, including the primary key column.
+    colnames = function() {
+      colnames(private$.data)
     },
 
     #' @field nrow (`integer(1)`)\cr
     #' Number of rows (observations).
-    nrow = function(rhs) {
-      assert_ro_binding(rhs)
-      terra::ncell(private$.data)
+    nrow = function() {
+      nrow(private$.data)
     },
 
     #' @field ncol (`integer(1)`)\cr
-    #' Number of columns (variables).
-    ncol = function(rhs) {
-      assert_ro_binding(rhs)
-      terra::nlyr(private$.data) + 1
+    #' Number of columns (variables), including the primary key column.
+    ncol = function() {
+      ncol(private$.data)
     },
 
     #' @field stack (`integer(1)`)\cr
     #' Returns SpatRaster.
     stack = function(rhs) {
       assert_ro_binding(rhs)
-      private$.data
+      private$.spatraster
     }
   ),
 
   private = list(
     .calculate_hash = function() {
       mlr3misc::calculate_hash(self$compact_seq, private$.data)
-    }
+    },
+    .spatraster = NULL,
+    .cache = NULL
   )
 )

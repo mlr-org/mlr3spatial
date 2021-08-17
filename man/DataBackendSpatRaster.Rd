@@ -28,21 +28,29 @@ if (mlr3misc::require_namespaces("terra", quietly = TRUE)) {
 \section{Super class}{
 \code{\link[mlr3:DataBackend]{mlr3::DataBackend}} -> \code{DataBackendSpatRaster}
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{compact_seq}}{\code{logical(1)}\cr
+If \code{TRUE}, row ids are a natural sequence from 1 to \code{nrow(data)} (determined internally).
+In this case, row lookup uses faster positional indices instead of equi joins.}
+}
+\if{html}{\out{</div>}}
+}
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
 \item{\code{rownames}}{(\code{integer()})\cr
-Returns vector of all distinct row identifiers, i.e. the contents of the
-primary key column.}
+Returns vector of all distinct row identifiers, i.e. the contents of the primary key column.}
 
 \item{\code{colnames}}{(\code{character()})\cr
-Returns vector of all column names.}
+Returns vector of all column names, including the primary key column.}
 
 \item{\code{nrow}}{(\code{integer(1)})\cr
 Number of rows (observations).}
 
 \item{\code{ncol}}{(\code{integer(1)})\cr
-Number of columns (variables).}
+Number of columns (variables), including the primary key column.}
 
 \item{\code{stack}}{(\code{integer(1)})\cr
 Returns SpatRaster.}
@@ -90,7 +98,7 @@ A raster object.}
 \if{latex}{\out{\hypertarget{method-data}{}}}
 \subsection{Method \code{data()}}{
 Returns a slice of the data.
-Calls \code{\link[terra:xyCellFrom]{terra::rowColFromCell()}} and \code{\link[terra:readwrite]{terra::readValues()}} on the spatial
+Calls \code{\link[raster:rowFromCell]{raster::rowColFromCell()}} and \code{\link[raster:getValues]{raster::getValues()}} on the spatial
 object and converts it to a \code{\link[data.table:data.table]{data.table::data.table()}}.
 
 The rows must be addressed as vector of primary key values, columns must

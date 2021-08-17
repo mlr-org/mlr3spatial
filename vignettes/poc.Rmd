@@ -33,7 +33,6 @@ library("mlr3spatial")
 library("mlr3learners")
 library("terra")
 library("e1071")
-# pkgload::load_all()
 ```
 
 A mlr3 classification `task` is created and an SVM learner is fitted with randomly sampled raster cells.
@@ -91,11 +90,8 @@ print(pred)
 ## terra
 
 ```{r}
-# fit e1071 svm
-set.seed(42)
-svm_raw = e1071::svm(y ~ ., data = task$data()[row_ids])
-
 terra_pred_ras = terra::predict(task$backend$stack, svm_raw, cores = 1, cpkgs = "e1071")
+terra_pred_ras = terra::predict(task$backend$stack, learner_svm$model, cores = 1, cpkgs = "e1071")
 
 print(terra_pred_ras)
 ```

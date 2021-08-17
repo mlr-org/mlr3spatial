@@ -2,21 +2,21 @@ test_that("DataBackendSpatRaster works", {
   stack_classif = demo_stack_spatraster(size = 5, layers = 5)
   value = data.table(ID = c(0, 1), y = c("negative", "positive"))
   terra::setCats(stack_classif, layer = "y", value = value)
-  colnames = names(stack_classif)
+  colnames = c(names(stack_classif), "..row_id")
 
   backend = DataBackendSpatRaster$new(stack_classif)
 
   # head
   data = backend$head(10L)
-  expect_data_table(data, nrow = 10L, ncol = 5L)
+  expect_data_table(data, nrows = 10L, ncols = 6L)
   expect_names(names(data), identical.to = colnames)
 
   # distinct
   expect_equal(backend$distinct(rows = NULL, cols = "y"), list(y = c("negative", "positive")))
-  data = backend$distinct(rows = 1:100, cols = c("x_1", "y"))
+  data = backend$distinct(rows = 100000:200000, cols = c("x_1", "y"))
   expect_names(names(data), identical.to = c("x_1", "y"))
   expect_numeric(data$x_1)
-  expect_factor(data$y, levels = c("negative", "positive"))
+  expect_factor(as.factor(data$y), levels = c("negative", "positive"))
 
   # data
   # [01] [02] [03] [04]
