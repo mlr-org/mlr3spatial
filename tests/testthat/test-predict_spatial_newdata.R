@@ -84,3 +84,40 @@ test_that("supplying a filename works", {
 
   unlink(c("foo.tif", "foo.tif.aux.xml"))
 })
+
+# sf ---------------------------------------------------------------------------
+
+test_that("sequential execution works", {
+  task = as_task_classif(backend_sf, target = "y", positive = "1")
+  # train
+  learner = lrn("classif.featureless")
+  learner$train(task, row_ids = sample(1:task$nrow, 50))
+  pred = predict_spatial_newdata(learner, sf_pred)
+  expect_r6(pred, "Prediction")
+})
+
+test_that("parallelization works", {
+  task = as_task_classif(backend_sf, target = "y", positive = "1")
+  # train
+  learner = lrn("classif.featureless")
+  learner$train(task, row_ids = sample(1:task$nrow, 50))
+
+  # parallel
+  learner$parallel_predict = TRUE
+  future::plan("multisession", workers = 2)
+  pred = predict_spatial_newdata(learner, sf_pred)
+  future::plan("sequential")
+  expect_r6(pred, "Prediction")
+})
+
+test_that("supplying a filename works", {
+  task = as_task_classif(backend_sf, target = "y", positive = "1")
+  learner = lrn("classif.featureless")
+  learner$train(task, row_ids = sample(1:task$nrow, 50))
+  pred = predict_spatial_newdata(learner, sf_pred, filename = "foo.gpkg", quiet = TRUE)
+  expect_file("foo.gpkg")
+
+  expect_error(predict_spatial_newdata(learner, sf_pred, filename = "foo.gpkg"))
+
+  unlink(c("foo.gpkg"))
+})

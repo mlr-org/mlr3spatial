@@ -4,7 +4,13 @@
 \alias{predict_spatial_newdata}
 \title{Predict on spatial objects with mlr3 learners}
 \usage{
-predict_spatial_newdata(learner, object, filename = NULL, overwrite = FALSE)
+predict_spatial_newdata(
+  learner,
+  object,
+  filename = NULL,
+  overwrite = FALSE,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{learner}{\link[mlr3:Learner]{mlr3::Learner}\cr
@@ -20,6 +26,10 @@ For {sf} objects, this could be a \code{.gpgk} or a \code{.shp} file.}
 \item{overwrite}{\verb{[logical]}\cr
 Should a possibly existing file on disk (referring to argument \code{filename})
 be overwritten?}
+
+\item{quiet}{\verb{[logical]}\cr
+Whether to suppress possible console output when invoking the writing
+methods of the respective spatial classes.}
 }
 \value{
 mlr3::Prediction

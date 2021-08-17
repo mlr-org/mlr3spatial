@@ -14,7 +14,9 @@
 #' @param overwrite `[logical]`\cr
 #'   Should a possibly existing file on disk (referring to argument `filename`)
 #'   be overwritten?
-#'
+#' @param quiet `[logical]`\cr
+#'   Whether to suppress possible console output when invoking the writing
+#'   methods of the respective spatial classes.
 #' @details
 #' A direct prediction on a subset of a [mlr3::Task] object is not possible for
 #' \CRANpkg{terra} objects as \CRANpkg{terra} objects contain external pointers
@@ -51,12 +53,12 @@
 #'   predict_spatial_newdata(learner, stack)
 #' }
 #' @export
-predict_spatial_newdata = function(learner, object, filename = NULL, overwrite = FALSE) {
+predict_spatial_newdata = function(learner, object, filename = NULL, overwrite = FALSE, quiet = FALSE) {
   UseMethod("predict_spatial_newdata", object = object)
 }
 
 #' @export
-predict_spatial_newdata.SpatRaster = function(learner, object, filename = NULL, overwrite = FALSE) {
+predict_spatial_newdata.SpatRaster = function(learner, object, filename = NULL, overwrite = FALSE, quiet = FALSE) {
   # read cell values from raster stack
   if (!is.null(filename)) {
     assert_path_for_output(filename, overwrite = overwrite)
@@ -79,7 +81,7 @@ predict_spatial_newdata.SpatRaster = function(learner, object, filename = NULL, 
 }
 
 #' @export
-predict_spatial_newdata.RasterBrick = function(learner, object, filename = NULL, overwrite = FALSE) {
+predict_spatial_newdata.RasterBrick = function(learner, object, filename = NULL, overwrite = FALSE, quiet = FALSE) {
   # read cell values from raster stack
   if (!is.null(filename)) {
     assert_path_for_output(filename, overwrite = overwrite)
@@ -98,6 +100,26 @@ predict_spatial_newdata.RasterBrick = function(learner, object, filename = NULL,
   if (!is.null(filename)) {
     target_raster = raster::setValues(target_raster, pred$response)
     raster::writeRaster(target_raster, filename, overwrite = overwrite)
+  }
+  return(pred)
+}
+
+#' @export
+predict_spatial_newdata.sf = function(learner, object, filename = NULL, overwrite = FALSE, quiet = FALSE) {
+
+  if (!is.null(filename)) {
+    assert_path_for_output(filename, overwrite = overwrite)
+  }
+  newdata_pred = as.data.table(object)
+  newdata_pred$geometry = NULL
+  attr(newdata_pred, "sf_column") = NULL
+  attr(newdata_pred, "agr") = NULL
+
+  pred = learner$predict_newdata(newdata_pred)
+
+  if (!is.null(filename)) {
+    sf_pred = sf::st_as_sf(data.frame(pred = pred$response, geometry = object$geometry))
+    sf::st_write(sf_pred, filename, quiet = quiet)
   }
   return(pred)
 }
