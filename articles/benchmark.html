@@ -121,7 +121,13 @@
 
     
     
-<p>For the speed comparison, we are using a somewhat larger <code>SpatRaster</code> object to actually showcase some differences.</p>
+<p>This benchmark was run on a MacBook Pro 2020 with the following specs</p>
+<ul>
+<li>Intel i7-1068NG7 (8) @ 2.30GHz</li>
+<li>32 GB DDR4 RAM</li>
+</ul>
+<p>Note that the differences between the parallel and sequential timings will increase for larger objects as the overhead for starting the parallel workers and collecting the results will decrease.</p>
+<p>It is not fully clear why the parallel approach of the {terra} package is slow than its sequential counterpart but it might relate to the single-core performance of the machine the benchmark was run on in combination with the overhead associated with starting the parallel cluster the way it is done in the {terra} package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3.mlr-org.com">mlr3</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3learners.mlr-org.com">mlr3learners</a></span><span class="op">)</span>
@@ -167,6 +173,7 @@
   <span class="op">}</span>,
 
   <span class="st">"3-terra-sequential"</span> <span class="op">=</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/predict.html">predict</a></span><span class="op">(</span><span class="va">stack</span>, <span class="va">e1071svm</span>, cores <span class="op">=</span> <span class="fl">1</span>, cpkgs <span class="op">=</span> <span class="st">"e1071"</span><span class="op">)</span>,
+
   <span class="st">"4-raster-sequential"</span> <span class="op">=</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/predict.html">predict</a></span><span class="op">(</span><span class="va">stack_rasterbrick</span>, <span class="va">e1071svm</span><span class="op">)</span>,
 
   <span class="st">"5-mlr3-terra-4-cores"</span> <span class="op">=</span> <span class="op">{</span>
@@ -181,7 +188,28 @@
 
   <span class="st">"7-terra-4-cores"</span> <span class="op">=</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/predict.html">predict</a></span><span class="op">(</span><span class="va">stack</span>, <span class="va">e1071svm</span>, cores <span class="op">=</span> <span class="fl">4</span>, cpkgs <span class="op">=</span> <span class="st">"e1071"</span><span class="op">)</span>,
 
+  <span class="st">"8-raster-4-cores"</span> <span class="op">=</span> <span class="op">{</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster">raster</a></span><span class="op">)</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">e1071</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/raster/man/cluster.html">beginCluster</a></span><span class="op">(</span><span class="fl">4</span>, type <span class="op">=</span> <span class="st">"PSOCK"</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/raster/man/cluster.html">clusterR</a></span><span class="op">(</span><span class="va">stack_rasterbrick</span>, <span class="va">predict</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">e1071svm</span><span class="op">)</span><span class="op">)</span>
+  <span class="op">}</span>,
+
   check <span class="op">=</span> <span class="cn">FALSE</span>, filter_gc <span class="op">=</span> <span class="cn">FALSE</span>, min_iterations <span class="op">=</span> <span class="fl">3</span>, memory <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="co">#&gt; Loading required package: sp</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'raster'</span>
+<span class="co">#&gt; The following object is masked from 'package:future':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     values</span>
+<span class="co">#&gt; The following object is masked from 'package:mlr3':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     resample</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'e1071'</span>
+<span class="co">#&gt; The following object is masked from 'package:raster':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     interpolate</span>
 
 <span class="va">bm</span><span class="op">$</span><span class="va">mem_alloc</span> <span class="op">=</span> <span class="cn">NULL</span>
 <span class="va">bm</span><span class="op">$</span><span class="va">`itr/sec`</span> <span class="op">=</span> <span class="cn">NULL</span>
@@ -190,21 +218,22 @@
 <span class="va">bm</span><span class="op">$</span><span class="va">memory</span> <span class="op">=</span> <span class="cn">NULL</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">bm</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 7 × 8</span>
+<span class="co">#&gt; # A tibble: 8 × 8</span>
 <span class="co">#&gt;   expression                    min   median n_itr  n_gc total_time time           gc              </span>
 <span class="co">#&gt;   &lt;bch:expr&gt;               &lt;bch:tm&gt; &lt;bch:tm&gt; &lt;int&gt; &lt;dbl&gt;   &lt;bch:tm&gt; &lt;list&gt;         &lt;list&gt;          </span>
-<span class="co">#&gt; 1 1-mlr3-terra-sequential     24.4s    25.3s     3    21      1.26m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
-<span class="co">#&gt; 2 2-mlr3-raster-sequential    29.3s    29.4s     3    13      1.48m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
-<span class="co">#&gt; 3 3-terra-sequential          26.7s      27s     3    13      1.35m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
-<span class="co">#&gt; 4 4-raster-sequential         24.2s    24.3s     3     9      1.22m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
-<span class="co">#&gt; 5 5-mlr3-terra-4-cores        15.3s    15.6s     3     5     47.33s &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
-<span class="co">#&gt; 6 6-mlr3-raster-4-cores       14.4s    14.5s     3     4      45.8s &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
-<span class="co">#&gt; 7 7-terra-4-cores             38.8s    39.7s     3     5         2m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span></code></pre></div>
+<span class="co">#&gt; 1 1-mlr3-terra-sequential     25.1s    26.3s     3    21       1.3m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
+<span class="co">#&gt; 2 2-mlr3-raster-sequential    22.7s    23.7s     3    11      1.18m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
+<span class="co">#&gt; 3 3-terra-sequential          26.6s    28.7s     3    17       1.4m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
+<span class="co">#&gt; 4 4-raster-sequential           24s    26.8s     3    12      1.33m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
+<span class="co">#&gt; 5 5-mlr3-terra-4-cores          18s      19s     3     7     59.58s &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
+<span class="co">#&gt; 6 6-mlr3-raster-4-cores       13.8s    14.5s     3     8     46.19s &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
+<span class="co">#&gt; 7 7-terra-4-cores             43.6s    46.5s     3    11      2.35m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
+<span class="co">#&gt; 8 8-raster-4-cores            20.7s    21.4s     3     1      1.06m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ggplot2</span><span class="op">)</span>
 <span class="fu">autoplot</span><span class="op">(</span><span class="va">bm</span>, <span class="st">"ridge"</span><span class="op">)</span>
 <span class="co">#&gt; Loading required namespace: tidyr</span>
-<span class="co">#&gt; Picking joint bandwidth of 0.00734</span></code></pre></div>
+<span class="co">#&gt; Picking joint bandwidth of 0.0154</span></code></pre></div>
 <div class="figure">
 <img src="plot-benchmark-1.png" alt=""><p class="caption">Benchmark plot</p>
 </div>
