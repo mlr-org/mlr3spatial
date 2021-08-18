@@ -9,7 +9,14 @@ vignette: >
 
 
 
-For the speed comparison, we are using a somewhat larger `SpatRaster` object to actually showcase some differences.
+This benchmark was run on a MacBook Pro 2020 with the following specs
+
+- Intel i7-1068NG7 (8) @ 2.30GHz
+- 32 GB DDR4 RAM
+
+Note that the differences between the parallel and sequential timings will increase for larger objects as the overhead for starting the parallel workers and collecting the results will decrease.
+
+It is not fully clear why the parallel approach of the {terra} package is slow than its sequential counterpart but it might relate to the single-core performance of the machine the benchmark was run on in combination with the overhead associated with starting the parallel cluster the way it is done in the {terra} package.
 
 
 ```r
@@ -60,6 +67,7 @@ bm = bench::mark(
   },
 
   "3-terra-sequential" = terra::predict(stack, e1071svm, cores = 1, cpkgs = "e1071"),
+
   "4-raster-sequential" = raster::predict(stack_rasterbrick, e1071svm),
 
   "5-mlr3-terra-4-cores" = {
@@ -74,7 +82,28 @@ bm = bench::mark(
 
   "7-terra-4-cores" = terra::predict(stack, e1071svm, cores = 4, cpkgs = "e1071"),
 
+  "8-raster-4-cores" = {
+    library(raster)
+    library(e1071)
+    beginCluster(4, type = "PSOCK")
+    clusterR(stack_rasterbrick, predict, args = list(model = e1071svm))
+  },
+
   check = FALSE, filter_gc = FALSE, min_iterations = 3, memory = FALSE)
+#> Loading required package: sp
+#> 
+#> Attaching package: 'raster'
+#> The following object is masked from 'package:future':
+#> 
+#>     values
+#> The following object is masked from 'package:mlr3':
+#> 
+#>     resample
+#> 
+#> Attaching package: 'e1071'
+#> The following object is masked from 'package:raster':
+#> 
+#>     interpolate
 
 bm$mem_alloc = NULL
 bm$`itr/sec` = NULL
@@ -83,16 +112,17 @@ bm$`gc/sec` = NULL
 bm$memory = NULL
 
 print(bm)
-#> # A tibble: 7 × 8
+#> # A tibble: 8 × 8
 #>   expression                    min   median n_itr  n_gc total_time time           gc              
 #>   <bch:expr>               <bch:tm> <bch:tm> <int> <dbl>   <bch:tm> <list>         <list>          
-#> 1 1-mlr3-terra-sequential     24.4s    25.3s     3    21      1.26m <bench_tm [3]> <tibble [3 × 3]>
-#> 2 2-mlr3-raster-sequential    29.3s    29.4s     3    13      1.48m <bench_tm [3]> <tibble [3 × 3]>
-#> 3 3-terra-sequential          26.7s      27s     3    13      1.35m <bench_tm [3]> <tibble [3 × 3]>
-#> 4 4-raster-sequential         24.2s    24.3s     3     9      1.22m <bench_tm [3]> <tibble [3 × 3]>
-#> 5 5-mlr3-terra-4-cores        15.3s    15.6s     3     5     47.33s <bench_tm [3]> <tibble [3 × 3]>
-#> 6 6-mlr3-raster-4-cores       14.4s    14.5s     3     4      45.8s <bench_tm [3]> <tibble [3 × 3]>
-#> 7 7-terra-4-cores             38.8s    39.7s     3     5         2m <bench_tm [3]> <tibble [3 × 3]>
+#> 1 1-mlr3-terra-sequential     25.1s    26.3s     3    21       1.3m <bench_tm [3]> <tibble [3 × 3]>
+#> 2 2-mlr3-raster-sequential    22.7s    23.7s     3    11      1.18m <bench_tm [3]> <tibble [3 × 3]>
+#> 3 3-terra-sequential          26.6s    28.7s     3    17       1.4m <bench_tm [3]> <tibble [3 × 3]>
+#> 4 4-raster-sequential           24s    26.8s     3    12      1.33m <bench_tm [3]> <tibble [3 × 3]>
+#> 5 5-mlr3-terra-4-cores          18s      19s     3     7     59.58s <bench_tm [3]> <tibble [3 × 3]>
+#> 6 6-mlr3-raster-4-cores       13.8s    14.5s     3     8     46.19s <bench_tm [3]> <tibble [3 × 3]>
+#> 7 7-terra-4-cores             43.6s    46.5s     3    11      2.35m <bench_tm [3]> <tibble [3 × 3]>
+#> 8 8-raster-4-cores            20.7s    21.4s     3     1      1.06m <bench_tm [3]> <tibble [3 × 3]>
 ```
 
 
@@ -100,7 +130,7 @@ print(bm)
 library(ggplot2)
 autoplot(bm, "ridge")
 #> Loading required namespace: tidyr
-#> Picking joint bandwidth of 0.00734
+#> Picking joint bandwidth of 0.0154
 ```
 
 ![Benchmark plot](./plot-benchmark-1.png)

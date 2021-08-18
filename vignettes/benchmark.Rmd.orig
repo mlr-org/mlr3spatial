@@ -16,7 +16,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-For the speed comparison, we are using a somewhat larger `SpatRaster` object to actually showcase some differences.
+This benchmark was run on a MacBook Pro 2020 with the following specs
+
+- Intel i7-1068NG7 (8) @ 2.30GHz
+- 32 GB DDR4 RAM
+
+Note that the differences between the parallel and sequential timings will increase for larger objects as the overhead for starting the parallel workers and collecting the results will decrease.
+
+It is not fully clear why the parallel approach of the {terra} package is slow than its sequential counterpart but it might relate to the single-core performance of the machine the benchmark was run on in combination with the overhead associated with starting the parallel cluster the way it is done in the {terra} package.
 
 ```{r prepare}
 library(mlr3)
@@ -65,6 +72,7 @@ bm = bench::mark(
   },
 
   "3-terra-sequential" = terra::predict(stack, e1071svm, cores = 1, cpkgs = "e1071"),
+
   "4-raster-sequential" = raster::predict(stack_rasterbrick, e1071svm),
 
   "5-mlr3-terra-4-cores" = {
@@ -78,6 +86,13 @@ bm = bench::mark(
   },
 
   "7-terra-4-cores" = terra::predict(stack, e1071svm, cores = 4, cpkgs = "e1071"),
+
+  "8-raster-4-cores" = {
+    library(raster)
+    library(e1071)
+    beginCluster(4, type = "PSOCK")
+    clusterR(stack_rasterbrick, predict, args = list(model = e1071svm))
+  },
 
   check = FALSE, filter_gc = FALSE, min_iterations = 3, memory = FALSE)
 
