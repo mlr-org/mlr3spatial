@@ -105,3 +105,4 @@ po/*~
 
 *.tif
 *.xml
+inst/doc
