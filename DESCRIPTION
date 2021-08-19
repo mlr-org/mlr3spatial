@@ -35,10 +35,13 @@ Suggests:
     e1071,
     future,
     knitr,
+    mapview,
+    ranger,
     raster,
     rgdal,
     rmarkdown,
     sf,
+    sp,
     testthat (>= 3.0.0)
 VignetteBuilder:
     knitr
