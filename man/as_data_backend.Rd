@@ -46,6 +46,9 @@ Also see \code{\link[data.table:as.data.table]{data.table::as.data.table()}}.}
 
 \item{...}{(\code{any})\cr
 Additional arguments passed to the respective \link[mlr3]{DataBackend} method.}
+
+\item{polygons}{\verb{[logical]}\cr
+Whether to convert to polygons instead of points.}
 }
 \value{
 \link{DataBackend}.

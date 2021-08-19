@@ -74,21 +74,10 @@ as_sf_backend.RasterBrick = function(data, primary_key = NULL, keep_rownames = F
 }
 
 #' @export
+#' @param polygons `[logical]`\cr
+#'   Whether to convert to polygons instead of points.
 #' @rdname as_data_backend
 as_sf_backend.DataBackendSpatRaster = function(data, primary_key = NULL, keep_rownames = FALSE, polygons = FALSE, ...) { # nolint
-  # FIXME: https://github.com/rspatial/terra/issues/306
-  # FIXME: https://github.com/rspatial/terra/issues/307
-  # FIXME: NOT WORKING!
-  # for some reasons (can't reproduce), we first need to read the values into a matrix
-  # and then coerce to a DT
-  # both, directly calling as.polygons() and reading as dataframe
-  # (readValues(dataframe = TRUE)) lead to NA's.
-  # tmp = terra::readValues(data$stack, mat = TRUE)
-  # tmp2 = as.data.table(tmp)
-  # spatvector = terra::as.polygons(data$stack, trun = FALSE, dissolve = FALSE)
-  # spatpoints = terra::as.points(data$stack)
-  # data = sf::st_as_sf(spatvector)
-  # data = sf::st_polygon(tmp2, crs = terra::crs(data$stack))
 
   assert_data_frame(data$head(), min.cols = 1L, col.names = "unique")
 
