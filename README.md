@@ -29,12 +29,14 @@ For spatiotemporal resampling within mlr3 see [{mlr3spatiotempcv}](https://githu
 
 <details>
   <summary>Do I need to use <code>TaskClassifST</code>/<code>TaskRegrST</code> with {mlr3spatial}?</summary>
+  <br>
   No, you can use `TaskClassif` and `TaskRegr`. However, their `*ST` equivalents will also work.
   When we introduced the `*ST` tasks, we had no support for spatial backends yet and there was a need to store the spatial information somewhere.
 </details>
 
 <details>
   <summary>Why is {mlr3spatial} faster when predicting than doing it directly via the spatial packages?</summary>
+  <br>
   {mlr3spatial} makes use of the parallel prediction heuristic within {mlr3}.
   This one makes use of the {future} and {data.table} packages for parallelization and data handling.
   If {mlr3spatial} is faster, than this way seems to be more efficient than the parallelization built into the respective other packages.
@@ -43,18 +45,21 @@ For spatiotemporal resampling within mlr3 see [{mlr3spatiotempcv}](https://githu
 
 <details>
   <summary>Can I make use of parallel predictions during nested resampling/tuning?</summary>
+  <br>
   In theory yes, {mlr3} supports nested parallelization via the {future} framework.
   Watch out for required resources when having multiple parallelized layers.
 </details>
 
 <details>
   <summary>Will {mlr3spatial} support spatial learners?</summary>
+  <br>
  Eventually. It is not yet clear whether these would live in {mlr3extralearners} or in {mlr3spatial}.
  So far there are none yet.
 </details>
 
 <details>
   <summary>Why can I only predict to "newdata" and not use a subset of the task?</summary>
+  <br>
   Most often spatial data is stored in TIFF, Geopackage or Shapefiles.
   Passing these as "newdata" directly into the `predict()` call is what is most often done in practice.
   When creating a spatial backend it is often hard to distinguish train and predict parts upfront.
@@ -64,6 +69,7 @@ For spatiotemporal resampling within mlr3 see [{mlr3spatiotempcv}](https://githu
 
 <details>
   <summary>Why are there two packages, {mlr3spatial} and {mlr3spatiotempcv}?</summary>
+  <br>
   {mlr3spatiotempcv} is solely devoted to resampling techniques.
   There are quite a few and keeping packages small is one of the development philosophies of the mlr3 framework.
   Also back in the days when {mlr3spatiotempcv} was developed it was not yet clear how we want to structure additional spatial components such as prediction support for spatial classes and so on.
