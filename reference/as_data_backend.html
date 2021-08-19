@@ -111,6 +111,9 @@
     <li>
       <a href="../articles/benchmark.html">Benchmarking parallel predictions</a>
     </li>
+    <li>
+      <a href="../articles/meuse.html">Vector data use case: `meuse` dataset</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -162,7 +165,31 @@
     <p>Converts to a <a href='DataBackendSF.html'>DataBackendSF</a>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as_sf_backend</span><span class='op'>(</span><span class='va'>data</span>, primary_key <span class='op'>=</span> <span class='cn'>NULL</span>, keep_rownames <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>as_sf_backend</span><span class='op'>(</span><span class='va'>data</span>, primary_key <span class='op'>=</span> <span class='cn'>NULL</span>, keep_rownames <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for SpatRaster</span>
+<span class='fu'>as_sf_backend</span><span class='op'>(</span><span class='va'>data</span>, primary_key <span class='op'>=</span> <span class='cn'>NULL</span>, keep_rownames <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for RasterBrick</span>
+<span class='fu'>as_sf_backend</span><span class='op'>(</span><span class='va'>data</span>, primary_key <span class='op'>=</span> <span class='cn'>NULL</span>, keep_rownames <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for DataBackendSpatRaster</span>
+<span class='fu'>as_sf_backend</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  primary_key <span class='op'>=</span> <span class='cn'>NULL</span>,
+  keep_rownames <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  polygons <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
+
+<span class='co'># S3 method for DataBackendRasterBrick</span>
+<span class='fu'>as_sf_backend</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  primary_key <span class='op'>=</span> <span class='cn'>NULL</span>,
+  keep_rownames <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  polygons <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -190,6 +217,11 @@ Also see <code><a href='https://Rdatatable.gitlab.io/data.table/reference/as.dat
       <th>...</th>
       <td><p>(<code>any</code>)<br />
 Additional arguments passed to the respective <a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>DataBackend</a> method.</p></td>
+    </tr>
+    <tr>
+      <th>polygons</th>
+      <td><p><code>[logical]</code><br />
+Whether to convert to polygons instead of points.</p></td>
     </tr>
     </table>
 

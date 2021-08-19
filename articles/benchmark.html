@@ -69,6 +69,9 @@
 <li>
       <a href="../articles/benchmark.html">Benchmarking parallel predictions</a>
     </li>
+    <li>
+      <a href="../articles/meuse.html">Vector data use case: `meuse` dataset</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -230,8 +233,8 @@
 <span class="co">#&gt; 7 7-terra-4-cores             43.6s    46.5s     3    11      2.35m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
 <span class="co">#&gt; 8 8-raster-4-cores            20.7s    21.4s     3     1      1.06m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ggplot2</span><span class="op">)</span>
-<span class="fu">autoplot</span><span class="op">(</span><span class="va">bm</span>, <span class="st">"ridge"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">bm</span>, <span class="st">"ridge"</span><span class="op">)</span>
 <span class="co">#&gt; Loading required namespace: tidyr</span>
 <span class="co">#&gt; Picking joint bandwidth of 0.0154</span></code></pre></div>
 <div class="figure">
