@@ -2,9 +2,33 @@
 % Please edit documentation in R/as_sf_backend.R
 \name{as_sf_backend}
 \alias{as_sf_backend}
+\alias{as_sf_backend.SpatRaster}
+\alias{as_sf_backend.RasterBrick}
+\alias{as_sf_backend.DataBackendSpatRaster}
+\alias{as_sf_backend.DataBackendRasterBrick}
 \title{Convert to sf backend}
 \usage{
 as_sf_backend(data, primary_key = NULL, keep_rownames = FALSE, ...)
+
+\method{as_sf_backend}{SpatRaster}(data, primary_key = NULL, keep_rownames = FALSE, ...)
+
+\method{as_sf_backend}{RasterBrick}(data, primary_key = NULL, keep_rownames = FALSE, ...)
+
+\method{as_sf_backend}{DataBackendSpatRaster}(
+  data,
+  primary_key = NULL,
+  keep_rownames = FALSE,
+  polygons = FALSE,
+  ...
+)
+
+\method{as_sf_backend}{DataBackendRasterBrick}(
+  data,
+  primary_key = NULL,
+  keep_rownames = FALSE,
+  polygons = FALSE,
+  ...
+)
 }
 \arguments{
 \item{data}{(\code{\link[=data.frame]{data.frame()}})\cr

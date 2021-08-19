@@ -2,6 +2,7 @@
 
 S3method(as_sf_backend,DataBackendRasterBrick)
 S3method(as_sf_backend,DataBackendSpatRaster)
+S3method(as_sf_backend,RasterBrick)
 S3method(as_sf_backend,SpatRaster)
 S3method(as_sf_backend,sf)
 S3method(predict_spatial_newdata,RasterBrick)
