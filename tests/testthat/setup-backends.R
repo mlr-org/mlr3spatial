@@ -7,3 +7,8 @@ backend_raster = DataBackendRasterBrick$new(stack_classif_raster, response = "y"
 
 backend_sf = as_sf_backend(backend_raster)
 sf_pred = sf::st_as_sf(raster::rasterToPoints(stack_classif_raster, spatial = TRUE))
+
+tif = system.file("tif/L7_ETMs.tif", package = "stars")
+l7data = stars::read_stars(tif)
+# l7data[ ,c('x', 'y')] <- list(NULL)
+backend_stars = as_stars_backend(l7data, quiet = TRUE)

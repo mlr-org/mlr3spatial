@@ -16,3 +16,4 @@ pkgdown
 attic/
 target*
 ^.*\.xml$
+^man-roxygen$

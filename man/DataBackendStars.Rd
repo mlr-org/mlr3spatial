@@ -85,7 +85,7 @@ Returns the sf geometry.}
 \subsection{Method \code{new()}}{
 Creates a backend for a \code{stars}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendStars$new(data, primary_key = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{DataBackendStars$new(data, primary_key = NULL, quiet = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -96,6 +96,9 @@ A raster object.}
 
 \item{\code{primary_key}}{(\code{character(1)} | \code{integer()})\cr
 Name of the primary key column, or integer vector of row ids.}
+
+\item{\code{quiet}}{\verb{[logical]}\cr
+Whether to suppress possible console output.}
 }
 \if{html}{\out{</div>}}
 }

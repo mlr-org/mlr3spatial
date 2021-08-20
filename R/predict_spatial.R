@@ -126,3 +126,37 @@ predict_spatial_newdata.sf = function(learner, object, filename = NULL, overwrit
   }
   return(pred)
 }
+
+#' @export
+#' @rdname predict_spatial_newdata
+predict_spatial_newdata.stars = function(learner, object, filename = NULL, overwrite = FALSE, quiet = FALSE) {
+
+  if (!is.null(filename)) {
+    assert_path_for_output(filename, overwrite = overwrite)
+  }
+  newdata_pred = as.data.table(split(object, "band"))
+
+  if (any(c("x", "y") %in% colnames(newdata_pred))) {
+    if (!quiet) {
+      messagef("Dropping coordinates 'x' and 'y' as they are
+        most likely coordinates. If you want to have these variables included,
+        duplicate them in the stars objects using a different name.
+        To silence this message, set 'quiet = TRUE'.", wrap = TRUE)
+    }
+    newdata_pred[, c("x", "y")] = list(NULL)
+  }
+
+  pred = learner$predict_newdata(newdata_pred)
+  # single band object
+  stars_pred = object[, , , 1]
+
+  stars::st_as_stars(dimensions = stars::st_dimensions(object))
+
+  names(stars_pred) = "pred"
+  stars_pred$pred = pred$response
+
+  if (!is.null(filename)) {
+    stars::write_stars(stars_pred, filename, quiet = quiet)
+  }
+  return(pred)
+}

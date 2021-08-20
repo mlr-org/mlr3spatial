@@ -2,6 +2,7 @@
 #' @import checkmate
 #' @import mlr3misc
 #' @import mlr3
+#' @importFrom utils globalVariables
 #' @importFrom R6 R6Class is.R6
 #' @section Learn mlr3:
 #' * Book on mlr3: \url{https://mlr3book.mlr-org.com}
@@ -31,17 +32,20 @@
 #' * Encapsulated evaluation: \CRANpkg{evaluate}, \CRANpkg{callr} (external process)
 #'
 #' @section Package Options:
-#' * `"mlr3.debug"`: If set to `TRUE`, parallelization via \CRANpkg{future} is disabled to simplify
-#'   debugging and provide more concise tracebacks.
-#'   Note that results computed with debug mode enabled use a different seeding mechanism and are not reproducible.
-#' * `"mlr3.allow_utf8_names"`: If set to `TRUE`, checks on the feature names are relaxed, allowing
-#'   non-ascii characters in column names. This is an experimental and temporal option to
-#'   pave the way for text analysis, and will likely be removed in a future version of the package.
-#'   analysis.
+#' * `"mlr3.debug"`: If set to `TRUE`, parallelization via \CRANpkg{future} is
+#' disabled to simplify debugging and provide more concise tracebacks. Note that
+#' results computed with debug mode enabled use a different seeding mechanism
+#' and are not reproducible.
+#' * `"mlr3.allow_utf8_names"`: If set to `TRUE`, checks on the feature names
+#' are relaxed, allowing non-ascii characters in column names. This is an
+#' experimental and temporal option to pave the way for text analysis, and will
+#' likely be removed in a future version of the package. analysis.
 #'
 #' @references
 #' `r tools::toRd(citation("mlr3spatial"))`
 "_PACKAGE"
+
+utils::globalVariables(c("..response"))
 
 .onLoad = function(libname, pkgname) {
   # nocov start
@@ -53,4 +57,4 @@
   }
 } # nocov end
 
-leanify_package() # nocov end
+leanify_package() # nocov

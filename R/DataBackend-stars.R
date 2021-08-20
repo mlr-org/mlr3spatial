@@ -45,12 +45,23 @@ DataBackendStars = R6::R6Class("DataBackendStars",
     #'
     #' @param primary_key (`character(1)` | `integer()`)\cr
     #'   Name of the primary key column, or integer vector of row ids.
-    initialize = function(data, primary_key = NULL) {
+    #' @template param-quiet
+    initialize = function(data, primary_key = NULL, quiet = FALSE) {
       # we need to convert the layer data into "wide" format
       private$.stars = data
       private$.coordinates = as.data.table(data)[, c("x", "y")]
 
       values_dt_wide = as.data.table(split(data, "band"))
+
+      if (any(c("x", "y") %in% colnames(values_dt_wide))) {
+        if (!quiet) {
+          messagef("Dropping coordinates 'x' and 'y' as they are
+            most likely coordinates. If you want to have these variables included,
+            duplicate them in the stars objects using a different name.
+            To silence this message, set 'quiet = TRUE'.", wrap = TRUE)
+        }
+        values_dt_wide[, c("x", "y")] = list(NULL)
+      }
 
       row_ids = seq_row(values_dt_wide)
 

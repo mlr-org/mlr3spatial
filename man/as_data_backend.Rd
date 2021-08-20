@@ -35,15 +35,45 @@ as_sf_backend(data, primary_key = NULL, keep_rownames = FALSE, ...)
   ...
 )
 
-as_stars_backend(data, primary_key = NULL, keep_rownames = FALSE, ...)
+as_stars_backend(
+  data,
+  primary_key = NULL,
+  keep_rownames = FALSE,
+  quiet = FALSE,
+  ...
+)
 
-\method{as_stars_backend}{SpatRaster}(data, primary_key = NULL, keep_rownames = FALSE, ...)
+\method{as_stars_backend}{SpatRaster}(
+  data,
+  primary_key = NULL,
+  keep_rownames = FALSE,
+  quiet = FALSE,
+  ...
+)
 
-\method{as_stars_backend}{RasterBrick}(data, primary_key = NULL, keep_rownames = FALSE, ...)
+\method{as_stars_backend}{RasterBrick}(
+  data,
+  primary_key = NULL,
+  keep_rownames = FALSE,
+  quiet = FALSE,
+  ...
+)
 
-\method{as_stars_backend}{DataBackendSpatRaster}(data, primary_key = NULL, keep_rownames = FALSE, ...)
+\method{as_stars_backend}{DataBackendSpatRaster}(
+  data,
+  primary_key = NULL,
+  keep_rownames = FALSE,
+  quiet = FALSE,
+  ...
+)
 
-\method{as_stars_backend}{DataBackendRasterBrick}(data, primary_key = NULL, keep_rownames = FALSE, ...)
+\method{as_stars_backend}{DataBackendRasterBrick}(
+  data,
+  primary_key = NULL,
+  keep_rownames = FALSE,
+  quiet = FALSE,
+  ...
+)
 }
 \arguments{
 \item{data}{(\code{\link[=data.frame]{data.frame()}})\cr
@@ -64,6 +94,9 @@ Additional arguments passed to the respective \link[mlr3]{DataBackend} method.}
 
 \item{polygons}{\verb{[logical]}\cr
 Whether to convert to polygons instead of points.}
+
+\item{quiet}{\verb{[logical]}\cr
+Whether to suppress possible console output.}
 }
 \value{
 \link{DataBackend}.

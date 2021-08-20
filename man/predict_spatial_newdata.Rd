@@ -5,6 +5,7 @@
 \alias{predict_spatial_newdata.SpatRaster}
 \alias{predict_spatial_newdata.RasterBrick}
 \alias{predict_spatial_newdata.sf}
+\alias{predict_spatial_newdata.stars}
 \title{Predict on spatial objects with mlr3 learners}
 \usage{
 predict_spatial_newdata(
@@ -32,6 +33,14 @@ predict_spatial_newdata(
 )
 
 \method{predict_spatial_newdata}{sf}(
+  learner,
+  object,
+  filename = NULL,
+  overwrite = FALSE,
+  quiet = FALSE
+)
+
+\method{predict_spatial_newdata}{stars}(
   learner,
   object,
   filename = NULL,
