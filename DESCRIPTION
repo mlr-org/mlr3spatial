@@ -1,6 +1,7 @@
 Package: mlr3spatial
 Title: Support for Spatial Objects Within the 'mlr3' Ecosystem
 Version: 0.0.0.9000
+Date: 2021-08-20
 Authors@R:
     c(person(given = "Marc",
              family = "Becker",
@@ -14,7 +15,7 @@ Authors@R:
              comment = c(ORCID = "0000-0003-0748-6624")))
 Description: Extends the mlr3 ML framework with methods for spatial
     objects. Data storage and prediction are supported for packages
-    'terra', 'raster', and 'stars'.
+    'terra', 'raster', 'sf' and 'stars'.
 License: LGPL-3
 URL: https://mlr3spatial.mlr-org.com,
     https://github.com/mlr-org/mlr3spatial
