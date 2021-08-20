@@ -74,3 +74,9 @@ For spatiotemporal resampling within mlr3 see [{mlr3spatiotempcv}](https://githu
   There are quite a few and keeping packages small is one of the development philosophies of the mlr3 framework.
   Also back in the days when {mlr3spatiotempcv} was developed it was not yet clear how we want to structure additional spatial components such as prediction support for spatial classes and so on.
 </details>
+
+## Articles
+
+- [Get Started](https://mlr3spatial.mlr-org.com/articles/mlr3spatial.html)
+- [Benchmarking parallel predictions](https://mlr3spatial.mlr-org.com/articles/benchmark.html)
+- [Vector data use case: `meuse` dataset](https://mlr3spatial.mlr-org.com/articles/meuse.html)
