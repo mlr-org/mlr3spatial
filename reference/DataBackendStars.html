@@ -235,7 +235,7 @@ Returns the sf geometry.</p></dd>
 <hr>
 <a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
 <p>Creates a backend for a <code>stars</code>.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>DataBackendStars</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>data</span>, primary_key <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>DataBackendStars</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>data</span>, primary_key <span class='op'>=</span> <span class='cn'>NULL</span>, quiet <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -244,6 +244,9 @@ A raster object.</p></dd>
 
 <dt><code>primary_key</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> | <code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>)<br />
 Name of the primary key column, or integer vector of row ids.</p></dd>
+
+<dt><code>quiet</code></dt><dd><p><code>[logical]</code><br />
+Whether to suppress possible console output.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
@@ -341,7 +344,10 @@ Column names.</p></dd>
   <span class='va'>l7data</span> <span class='op'>=</span> <span class='fu'>stars</span><span class='fu'>::</span><span class='fu'><a href='https://r-spatial.github.io/stars/reference/read_stars.html'>read_stars</a></span><span class='op'>(</span><span class='va'>tif</span><span class='op'>)</span>
   <span class='va'>backend</span> <span class='op'>=</span> <span class='va'>DataBackendStars</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>l7data</span><span class='op'>)</span>
 <span class='op'>}</span>
-</div></pre>
+</div><div class='output co'>#&gt; <span class='message'>Dropping coordinates 'x' and 'y' as they are most likely coordinates.</span>
+#&gt; <span class='message'>If you want to have these variables included, duplicate them in the</span>
+#&gt; <span class='message'>stars objects using a different name. To silence this message, set</span>
+#&gt; <span class='message'>'quiet = TRUE'.</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

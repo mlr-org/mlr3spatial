@@ -191,19 +191,49 @@
   <span class='va'>...</span>
 <span class='op'>)</span>
 
-<span class='fu'>as_stars_backend</span><span class='op'>(</span><span class='va'>data</span>, primary_key <span class='op'>=</span> <span class='cn'>NULL</span>, keep_rownames <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='fu'>as_stars_backend</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  primary_key <span class='op'>=</span> <span class='cn'>NULL</span>,
+  keep_rownames <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for SpatRaster</span>
-<span class='fu'>as_stars_backend</span><span class='op'>(</span><span class='va'>data</span>, primary_key <span class='op'>=</span> <span class='cn'>NULL</span>, keep_rownames <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='fu'>as_stars_backend</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  primary_key <span class='op'>=</span> <span class='cn'>NULL</span>,
+  keep_rownames <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for RasterBrick</span>
-<span class='fu'>as_stars_backend</span><span class='op'>(</span><span class='va'>data</span>, primary_key <span class='op'>=</span> <span class='cn'>NULL</span>, keep_rownames <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='fu'>as_stars_backend</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  primary_key <span class='op'>=</span> <span class='cn'>NULL</span>,
+  keep_rownames <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for DataBackendSpatRaster</span>
-<span class='fu'>as_stars_backend</span><span class='op'>(</span><span class='va'>data</span>, primary_key <span class='op'>=</span> <span class='cn'>NULL</span>, keep_rownames <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='fu'>as_stars_backend</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  primary_key <span class='op'>=</span> <span class='cn'>NULL</span>,
+  keep_rownames <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for DataBackendRasterBrick</span>
-<span class='fu'>as_stars_backend</span><span class='op'>(</span><span class='va'>data</span>, primary_key <span class='op'>=</span> <span class='cn'>NULL</span>, keep_rownames <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>as_stars_backend</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  primary_key <span class='op'>=</span> <span class='cn'>NULL</span>,
+  keep_rownames <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -236,6 +266,11 @@ Additional arguments passed to the respective <a href='https://mlr3.mlr-org.com/
       <th>polygons</th>
       <td><p><code>[logical]</code><br />
 Whether to convert to polygons instead of points.</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p><code>[logical]</code><br />
+Whether to suppress possible console output.</p></td>
     </tr>
     </table>
 
