@@ -1,10 +1,11 @@
-#' @title Convert to sf backend
+#' @title Convert to and between spatial DataBackends
 #' @description
-#' Converts to a [DataBackendSF].
+#' S3 dispatch methods for converting from and to various spatial [mlr3::DataBackend]s.
 #' @inheritParams mlr3::as_data_backend
 #' @inherit mlr3::as_data_backend description title
 #' @rdname as_data_backend
 #' @return [DataBackend].
+#' @seealso DataBackendSF DataBackendStars
 #' @export
 as_sf_backend = function(data, primary_key = NULL, keep_rownames = FALSE, ...) { # nolint
   UseMethod("as_sf_backend")
