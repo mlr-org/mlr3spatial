@@ -42,6 +42,7 @@ Suggests:
     rmarkdown,
     sf,
     sp,
+    stars,
     testthat (>= 3.0.0)
 VignetteBuilder:
     knitr
