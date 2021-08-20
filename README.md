@@ -68,6 +68,15 @@ For spatiotemporal resampling within mlr3 see [{mlr3spatiotempcv}](https://githu
 </details>
 
 <details>
+  <summary>Which DataBackend for raster images should I use - {raster}, {terra} or {stars}?</summary>
+  <br>
+  We try to refrain from making "use X or Y" suggestions within the mlr-org framework.
+  {terra} is the successor of the {raster} package from the same developer.
+  {stars} is package which also comes with support for multidimensional arrays and is from the same author as the {sf} package.
+  All packages have advantages and disadvantages - we recommend to browse all packages to make an educated decision which package to use in your analysis.
+</details>
+
+<details>
   <summary>Why are there two packages, {mlr3spatial} and {mlr3spatiotempcv}?</summary>
   <br>
   {mlr3spatiotempcv} is solely devoted to resampling techniques.
