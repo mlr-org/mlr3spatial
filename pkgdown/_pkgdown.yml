@@ -43,9 +43,9 @@ reference:
   - title: mlr3spatial
     contents:
       - mlr3spatial-package
-  - title: Helpers
+  - title: Demo Data
     contents:
-      - demo_stack
+      - contains("demo")
   - title: Data Backends
     contents:
       - contains("Backend")
