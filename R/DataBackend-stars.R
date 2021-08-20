@@ -21,9 +21,10 @@
 #' Block mode is activated if `$data(rows)` is called with a increasing integer
 #' sequence e.g. `200:300`.
 #' @examples
-#' if (mlr3misc::require_namespaces("terra", quietly = TRUE)) {
-#'   stack = demo_stack_stars(size = 5, layers = 5)
-#'   backend = DataBackendstars$new(stack)
+#' if (mlr3misc::require_namespaces("stars", quietly = TRUE)) {
+#'   tif = system.file("tif/L7_ETMs.tif", package = "stars")
+#'   l7data = stars::read_stars(tif)
+#'   backend = DataBackendStars$new(l7data)
 #' }
 #' @export
 DataBackendStars = R6::R6Class("DataBackendStars",
