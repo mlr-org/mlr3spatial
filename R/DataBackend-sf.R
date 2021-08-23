@@ -9,7 +9,7 @@
 #'   Column names.
 #'
 #' @export
-DataBackendSF = R6::R6Class("DataBackendSF",
+DataBackendSf = R6::R6Class("DataBackendSf",
   inherit = mlr3::DataBackend, cloneable = FALSE,
   public = list(
     #' @field compact_seq `logical(1)`\cr

@@ -1,4 +1,4 @@
-stack_classif_terra = demo_stack_spatraster(size = 5, layers = 5)
+stack_classif_terra = demo_stack_spatraster(size = 1, layers = 5)
 backend_terra = DataBackendSpatRaster$new(stack_classif_terra)
 
 stack_classif_raster = demo_stack_rasterbrick(size = 1, layers = 5)
@@ -12,3 +12,8 @@ tif = system.file("tif/L7_ETMs.tif", package = "stars")
 l7data = stars::read_stars(tif)
 # l7data[ ,c('x', 'y')] <- list(NULL)
 backend_stars = as_stars_backend(l7data, quiet = TRUE)
+backend_stars_classif = as_stars_backend(backend_terra, response = "y.1", response_is_factor = TRUE, quiet = TRUE)
+
+task_spatraster = TaskClassif$new("terra", backend_terra, target = "y")
+task_rasterbrick = TaskClassif$new("raster", backend_raster, target = "y")
+task_stars = TaskClassif$new("stars", backend_stars_classif, target = "y.1")

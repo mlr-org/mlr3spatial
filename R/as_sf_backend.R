@@ -3,9 +3,11 @@
 #' S3 dispatch methods for converting from and to various spatial [mlr3::DataBackend]s.
 #' @inheritParams mlr3::as_data_backend
 #' @inherit mlr3::as_data_backend description title
+#' @template param-response
+#' @template param-response-is-factor
 #' @rdname as_data_backend
 #' @return [DataBackend].
-#' @seealso DataBackendSF DataBackendStars
+#' @seealso DataBackendSf DataBackendStars
 #' @export
 as_sf_backend = function(data, primary_key = NULL, keep_rownames = FALSE, ...) { # nolint
   UseMethod("as_sf_backend")
@@ -23,7 +25,7 @@ as_sf_backend.sf = function(data, primary_key = NULL, keep_rownames = FALSE, ...
     }
   }
 
-  b = DataBackendSF$new(data, primary_key)
+  b = DataBackendSf$new(data, primary_key)
   b$compact_seq = FALSE
 
   return(b)
@@ -45,7 +47,7 @@ as_sf_backend.SpatRaster = function(data, primary_key = NULL, keep_rownames = FA
     }
   }
 
-  b = DataBackendSF$new(data, primary_key)
+  b = DataBackendSf$new(data, primary_key)
   b$compact_seq = FALSE
 
   return(b)
@@ -68,7 +70,7 @@ as_sf_backend.RasterBrick = function(data, primary_key = NULL, keep_rownames = F
     }
   }
 
-  b = DataBackendSF$new(data, primary_key)
+  b = DataBackendSf$new(data, primary_key)
   b$compact_seq = FALSE
 
   return(b)
@@ -98,7 +100,7 @@ as_sf_backend.DataBackendSpatRaster = function(data, primary_key = NULL, keep_ro
     }
   }
 
-  b = DataBackendSF$new(data, primary_key)
+  b = DataBackendSf$new(data, primary_key)
   b$compact_seq = FALSE
 
   return(b)
@@ -128,7 +130,7 @@ as_sf_backend.DataBackendRasterBrick = function(data, primary_key = NULL, keep_r
     }
   }
 
-  b = DataBackendSF$new(data, primary_key)
+  b = DataBackendSf$new(data, primary_key)
   b$compact_seq = FALSE
 
   return(b)

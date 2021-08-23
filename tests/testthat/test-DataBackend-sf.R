@@ -2,7 +2,7 @@ sf_data = sf::st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
 
 test_that("DataBackendDataTable construction", {
 
-  b = DataBackendSF$new(sf_data)
+  b = DataBackendSf$new(sf_data)
   expect_backend(b)
 
   b = as_sf_backend(sf_data)

@@ -39,6 +39,8 @@ as_stars_backend(
   data,
   primary_key = NULL,
   keep_rownames = FALSE,
+  response = NULL,
+  response_is_factor = FALSE,
   quiet = FALSE,
   ...
 )
@@ -103,6 +105,12 @@ Additional arguments passed to the respective \link[mlr3]{DataBackend} method.}
 \item{polygons}{\verb{[logical]}\cr
 Whether to convert to polygons instead of points.}
 
+\item{response}{(\code{\link{character}})\cr
+The name of the response variable. Only needed when \code{response_is_factor = TRUE}.}
+
+\item{response_is_factor}{(\code{\link{character}})\cr
+When this backend should be used in a \link[mlr3:TaskClassif]{mlr3::TaskClassif}, set \code{response_is_factor = TRUE}.}
+
 \item{quiet}{\verb{[logical]}\cr
 Whether to suppress possible console output.}
 }
@@ -113,5 +121,5 @@ Whether to suppress possible console output.}
 S3 dispatch methods for converting from and to various spatial \link[mlr3:DataBackend]{mlr3::DataBackend}s.
 }
 \seealso{
-DataBackendSF DataBackendStars
+DataBackendSf DataBackendStars
 }

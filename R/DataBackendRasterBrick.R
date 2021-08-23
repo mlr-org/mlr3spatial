@@ -56,10 +56,8 @@ DataBackendRasterBrick = R6::R6Class("DataBackendRasterBrick",
     #'
     #' @param data (`RasterBrick`)\cr
     #'    A raster object.
-    #' @param response ([`character`])\cr
-    #'   The name of the response variable. Only needed when `response_is_factor = TRUE`.
-    #' @param response_is_factor ([`character`])\cr
-    #'   When this backend should be used in a [mlr3::TaskClassif], set `response_is_factor = TRUE`.
+    #' @template param-response
+    #' @template param-response-is-factor
 
     # This is needed to convert the response to factor before passing it to
     # TaskClassif - {raster} has no built-in support for factor layers

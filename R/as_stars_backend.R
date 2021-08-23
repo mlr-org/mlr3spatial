@@ -2,7 +2,8 @@
 #' @rdname as_data_backend
 #' @template param-quiet
 #' @export
-as_stars_backend = function(data, primary_key = NULL, keep_rownames = FALSE, quiet = FALSE, ...) { # nolint
+as_stars_backend = function(data, primary_key = NULL, keep_rownames = FALSE,
+  response = NULL, response_is_factor = FALSE, quiet = FALSE, ...) { # nolint
   UseMethod("as_stars_backend")
 }
 

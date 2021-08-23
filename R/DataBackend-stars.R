@@ -53,10 +53,8 @@ DataBackendStars = R6::R6Class("DataBackendStars",
     #'
     #' @param primary_key (`character(1)` | `integer()`)\cr
     #'   Name of the primary key column, or integer vector of row ids.
-    #' @param response ([`character`])\cr
-    #'   The name of the response variable. Only needed when `response_is_factor = TRUE`.
-    #' @param response_is_factor ([`character`])\cr
-    #'   When this backend should be used in a [mlr3::TaskClassif], set `response_is_factor = TRUE`.
+    #' @template param-response
+    #' @template param-response-is-factor
     #' @template param-quiet
     initialize = function(data, primary_key = NULL, response, response_is_factor = FALSE, quiet = FALSE) {
       # we need to convert the layer data into "wide" format

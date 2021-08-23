@@ -21,10 +21,10 @@ test_that("parallelization works", {
 
   # parallel
   learner$parallel_predict = TRUE
-  future::plan("multisession", workers = 2)
-  pred = predict_spatial_newdata(learner, stack_classif)
-  future::plan("sequential")
-  expect_r6(pred, "Prediction")
+  with_future("multisession", workers = 2, {
+    pred = predict_spatial_newdata(learner, stack_classif)
+    expect_r6(pred, "Prediction")
+  })
 })
 
 test_that("supplying a filename works", {
@@ -64,10 +64,10 @@ test_that("parallelization works", {
 
   # parallel
   learner$parallel_predict = TRUE
-  future::plan("multisession", workers = 2)
-  pred = predict_spatial_newdata(learner, stack_classif)
-  future::plan("sequential")
-  expect_r6(pred, "Prediction")
+  with_future("multisession", workers = 2, {
+    pred = predict_spatial_newdata(learner, stack_classif)
+    expect_r6(pred, "Prediction")
+  })
 })
 
 test_that("supplying a filename works", {
@@ -104,10 +104,10 @@ test_that("parallelization works", {
 
   # parallel
   learner$parallel_predict = TRUE
-  future::plan("multisession", workers = 2)
-  pred = predict_spatial_newdata(learner, sf_pred)
-  future::plan("sequential")
-  expect_r6(pred, "Prediction")
+  with_future("multisession", workers = 2, {
+    pred = predict_spatial_newdata(learner, sf_pred)
+    expect_r6(pred, "Prediction")
+  })
 })
 
 test_that("supplying a filename works", {
@@ -141,10 +141,10 @@ test_that("parallelization works", {
 
   # parallel
   learner$parallel_predict = TRUE
-  future::plan("multisession", workers = 2)
-  pred = predict_spatial_newdata(learner, l7data, quiet = TRUE)
-  future::plan("sequential")
-  expect_r6(pred, "Prediction")
+  with_future("multisession", workers = 2, {
+    pred = predict_spatial_newdata(learner, l7data, quiet = TRUE)
+    expect_r6(pred, "Prediction")
+  })
 })
 
 test_that("supplying a filename works", {
