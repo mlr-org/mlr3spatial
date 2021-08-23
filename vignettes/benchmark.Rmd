@@ -25,6 +25,7 @@ library(mlr3learners)
 library(mlr3spatial)
 library(future)
 library(bench)
+library(stars)
 
 # SpatRaster demo stack
 stack = demo_stack_spatraster(size = 125, layers = 5)
@@ -36,6 +37,11 @@ stack_rasterbrick = demo_stack_rasterbrick(size = 125, layers = 5)
 backend_raster = DataBackendRasterBrick$new(stack_rasterbrick, response = "y", response_is_factor = TRUE)
 task_rasterbrick = as_task_classif(backend_raster, target = "y", positive = "1")
 
+# Stars demo stack
+stack_stars = stars::st_as_stars(stack_rasterbrick)
+backend_stars = as_stars_backend(stack_stars, quiet = TRUE, response = "y.1", response_is_factor = TRUE)
+task_stars =  as_task_classif(backend_stars, target = "y.1", positive = "1")
+
 # SpatRaster learner
 learner_svm = lrn("classif.svm")
 learner_svm$parallel_predict = TRUE
@@ -43,46 +49,69 @@ set.seed(42)
 row_ids = sample(1:task$nrow, 500)
 learner_svm$train(task, row_ids = row_ids)
 
-e1071svm = e1071::svm(y ~ ., task$data(rows = row_ids))
-
 # RasterBrick learner
 learner_svm_rasterbrick = lrn("classif.svm")
 learner_svm_rasterbrick$parallel_predict = TRUE
 set.seed(42)
 row_ids = sample(1:task_rasterbrick$nrow, 500)
 learner_svm_rasterbrick$train(task_rasterbrick, row_ids = row_ids)
+
+# Stars learner
+learner_svm_stars = lrn("classif.svm")
+learner_svm_stars$parallel_predict = TRUE
+set.seed(42)
+row_ids = sample(1:task_stars$nrow, 500)
+learner_svm_stars$train(task_stars, row_ids = row_ids)
+
+# non-mlr3 model
+e1071svm = e1071::svm(y ~ ., task$data(rows = row_ids))
 ```
 
 
 ```r
 bm = bench::mark(
-  "1-mlr3-terra-sequential" = {
+  "01-mlr3-terra-sequential" = {
     plan(multisession, workers = 1)
     predict_spatial_newdata(learner_svm, stack)
   },
 
-  "2-mlr3-raster-sequential" = {
+  "02-mlr3-raster-sequential" = {
     plan(multisession, workers = 1)
     predict_spatial_newdata(learner_svm_rasterbrick, stack_rasterbrick)
   },
 
-  "3-terra-sequential" = terra::predict(stack, e1071svm, cores = 1, cpkgs = "e1071"),
+  "03-mlr3-stars-sequential" = {
+    plan(multisession, workers = 1)
+    predict_spatial_newdata(learner_svm_stars, stack_stars, quiet = TRUE)
+  },
 
-  "4-raster-sequential" = raster::predict(stack_rasterbrick, e1071svm),
+  "04-terra-sequential" = terra::predict(stack, e1071svm, cores = 1, cpkgs = "e1071"),
 
-  "5-mlr3-terra-4-cores" = {
+  "05-raster-sequential" = raster::predict(stack_rasterbrick, e1071svm),
+
+  "06-stars-sequential" = {
+    stack_stars_df = as.data.frame(split(stack_stars, "band"))
+    predict(e1071svm, stack_stars_df)
+  },
+
+  "07-mlr3-terra-4-cores" = {
     plan(multisession, workers = 4)
     predict_spatial_newdata(learner_svm, stack)
   },
 
-  "6-mlr3-raster-4-cores" = {
+  "08-mlr3-raster-4-cores" = {
     plan(multisession, workers = 4)
     predict_spatial_newdata(learner_svm_rasterbrick, stack_rasterbrick)
   },
 
-  "7-terra-4-cores" = terra::predict(stack, e1071svm, cores = 4, cpkgs = "e1071"),
+  "09-mlr3-stars-4-cores" = {
+    plan(multisession, workers = 4)
+    predict_spatial_newdata(learner_svm_stars, stack_stars, quiet = TRUE)
+  },
 
-  "8-raster-4-cores" = {
+  "10-terra-4-cores" = terra::predict(stack, e1071svm, cores = 4, cpkgs = "e1071"),
+
+  "11-raster-4-cores" = {
     library(raster)
     library(e1071)
     beginCluster(4, type = "PSOCK")
@@ -112,17 +141,20 @@ bm$`gc/sec` = NULL
 bm$memory = NULL
 
 print(bm)
-#> # A tibble: 8 × 8
-#>   expression                    min   median n_itr  n_gc total_time time           gc              
-#>   <bch:expr>               <bch:tm> <bch:tm> <int> <dbl>   <bch:tm> <list>         <list>          
-#> 1 1-mlr3-terra-sequential     25.1s    26.3s     3    21       1.3m <bench_tm [3]> <tibble [3 × 3]>
-#> 2 2-mlr3-raster-sequential    22.7s    23.7s     3    11      1.18m <bench_tm [3]> <tibble [3 × 3]>
-#> 3 3-terra-sequential          26.6s    28.7s     3    17       1.4m <bench_tm [3]> <tibble [3 × 3]>
-#> 4 4-raster-sequential           24s    26.8s     3    12      1.33m <bench_tm [3]> <tibble [3 × 3]>
-#> 5 5-mlr3-terra-4-cores          18s      19s     3     7     59.58s <bench_tm [3]> <tibble [3 × 3]>
-#> 6 6-mlr3-raster-4-cores       13.8s    14.5s     3     8     46.19s <bench_tm [3]> <tibble [3 × 3]>
-#> 7 7-terra-4-cores             43.6s    46.5s     3    11      2.35m <bench_tm [3]> <tibble [3 × 3]>
-#> 8 8-raster-4-cores            20.7s    21.4s     3     1      1.06m <bench_tm [3]> <tibble [3 × 3]>
+#> # A tibble: 11 × 8
+#>    expression                     min   median n_itr  n_gc total_time time           gc              
+#>    <bch:expr>                <bch:tm> <bch:tm> <int> <dbl>   <bch:tm> <list>         <list>          
+#>  1 01-mlr3-terra-sequential     23.1s    23.7s     3    15      1.18m <bench_tm [3]> <tibble [3 × 3]>
+#>  2 02-mlr3-raster-sequential      21s    21.9s     3     9      1.08m <bench_tm [3]> <tibble [3 × 3]>
+#>  3 03-mlr3-stars-sequential     22.6s    22.7s     3    10      1.16m <bench_tm [3]> <tibble [3 × 3]>
+#>  4 04-terra-sequential          26.5s    27.1s     3     8      1.36m <bench_tm [3]> <tibble [3 × 3]>
+#>  5 05-raster-sequential         22.5s    23.2s     3     7      1.16m <bench_tm [3]> <tibble [3 × 3]>
+#>  6 06-stars-sequential          20.9s      21s     3     8      1.07m <bench_tm [3]> <tibble [3 × 3]>
+#>  7 07-mlr3-terra-4-cores        13.3s    13.7s     3     4     41.43s <bench_tm [3]> <tibble [3 × 3]>
+#>  8 08-mlr3-raster-4-cores       11.1s    11.2s     3     1     33.44s <bench_tm [3]> <tibble [3 × 3]>
+#>  9 09-mlr3-stars-4-cores        11.4s    11.5s     3     5     34.64s <bench_tm [3]> <tibble [3 × 3]>
+#> 10 10-terra-4-cores             33.3s      35s     3     5      1.73m <bench_tm [3]> <tibble [3 × 3]>
+#> 11 11-raster-4-cores            18.9s    22.4s     3     0      1.08m <bench_tm [3]> <tibble [3 × 3]>
 ```
 
 
@@ -130,7 +162,7 @@ print(bm)
 library(ggplot2)
 autoplot(bm, "ridge")
 #> Loading required namespace: tidyr
-#> Picking joint bandwidth of 0.0154
+#> Picking joint bandwidth of 0.00828
 ```
 
 ![Benchmark plot](./plot-benchmark-1.png)

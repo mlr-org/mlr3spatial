@@ -31,6 +31,7 @@ library(mlr3learners)
 library(mlr3spatial)
 library(future)
 library(bench)
+library(stars)
 
 # SpatRaster demo stack
 stack = demo_stack_spatraster(size = 125, layers = 5)
@@ -42,6 +43,11 @@ stack_rasterbrick = demo_stack_rasterbrick(size = 125, layers = 5)
 backend_raster = DataBackendRasterBrick$new(stack_rasterbrick, response = "y", response_is_factor = TRUE)
 task_rasterbrick = as_task_classif(backend_raster, target = "y", positive = "1")
 
+# Stars demo stack
+stack_stars = stars::st_as_stars(stack_rasterbrick)
+backend_stars = as_stars_backend(stack_stars, quiet = TRUE, response = "y.1", response_is_factor = TRUE)
+task_stars =  as_task_classif(backend_stars, target = "y.1", positive = "1")
+
 # SpatRaster learner
 learner_svm = lrn("classif.svm")
 learner_svm$parallel_predict = TRUE
@@ -49,45 +55,68 @@ set.seed(42)
 row_ids = sample(1:task$nrow, 500)
 learner_svm$train(task, row_ids = row_ids)
 
-e1071svm = e1071::svm(y ~ ., task$data(rows = row_ids))
-
 # RasterBrick learner
 learner_svm_rasterbrick = lrn("classif.svm")
 learner_svm_rasterbrick$parallel_predict = TRUE
 set.seed(42)
 row_ids = sample(1:task_rasterbrick$nrow, 500)
 learner_svm_rasterbrick$train(task_rasterbrick, row_ids = row_ids)
+
+# Stars learner
+learner_svm_stars = lrn("classif.svm")
+learner_svm_stars$parallel_predict = TRUE
+set.seed(42)
+row_ids = sample(1:task_stars$nrow, 500)
+learner_svm_stars$train(task_stars, row_ids = row_ids)
+
+# non-mlr3 model
+e1071svm = e1071::svm(y ~ ., task$data(rows = row_ids))
 ```
 
 ```{r benchmark}
 bm = bench::mark(
-  "1-mlr3-terra-sequential" = {
+  "01-mlr3-terra-sequential" = {
     plan(multisession, workers = 1)
     predict_spatial_newdata(learner_svm, stack)
   },
 
-  "2-mlr3-raster-sequential" = {
+  "02-mlr3-raster-sequential" = {
     plan(multisession, workers = 1)
     predict_spatial_newdata(learner_svm_rasterbrick, stack_rasterbrick)
   },
 
-  "3-terra-sequential" = terra::predict(stack, e1071svm, cores = 1, cpkgs = "e1071"),
+  "03-mlr3-stars-sequential" = {
+    plan(multisession, workers = 1)
+    predict_spatial_newdata(learner_svm_stars, stack_stars, quiet = TRUE)
+  },
 
-  "4-raster-sequential" = raster::predict(stack_rasterbrick, e1071svm),
+  "04-terra-sequential" = terra::predict(stack, e1071svm, cores = 1, cpkgs = "e1071"),
 
-  "5-mlr3-terra-4-cores" = {
+  "05-raster-sequential" = raster::predict(stack_rasterbrick, e1071svm),
+
+  "06-stars-sequential" = {
+    stack_stars_df = as.data.frame(split(stack_stars, "band"))
+    predict(e1071svm, stack_stars_df)
+  },
+
+  "07-mlr3-terra-4-cores" = {
     plan(multisession, workers = 4)
     predict_spatial_newdata(learner_svm, stack)
   },
 
-  "6-mlr3-raster-4-cores" = {
+  "08-mlr3-raster-4-cores" = {
     plan(multisession, workers = 4)
     predict_spatial_newdata(learner_svm_rasterbrick, stack_rasterbrick)
   },
 
-  "7-terra-4-cores" = terra::predict(stack, e1071svm, cores = 4, cpkgs = "e1071"),
+  "09-mlr3-stars-4-cores" = {
+    plan(multisession, workers = 4)
+    predict_spatial_newdata(learner_svm_stars, stack_stars, quiet = TRUE)
+  },
 
-  "8-raster-4-cores" = {
+  "10-terra-4-cores" = terra::predict(stack, e1071svm, cores = 4, cpkgs = "e1071"),
+
+  "11-raster-4-cores" = {
     library(raster)
     library(e1071)
     beginCluster(4, type = "PSOCK")
