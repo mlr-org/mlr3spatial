@@ -47,6 +47,8 @@ as_stars_backend(
   data,
   primary_key = NULL,
   keep_rownames = FALSE,
+  response = NULL,
+  response_is_factor = FALSE,
   quiet = FALSE,
   ...
 )
@@ -55,6 +57,8 @@ as_stars_backend(
   data,
   primary_key = NULL,
   keep_rownames = FALSE,
+  response = NULL,
+  response_is_factor = FALSE,
   quiet = FALSE,
   ...
 )
@@ -63,6 +67,8 @@ as_stars_backend(
   data,
   primary_key = NULL,
   keep_rownames = FALSE,
+  response = NULL,
+  response_is_factor = FALSE,
   quiet = FALSE,
   ...
 )
@@ -71,6 +77,8 @@ as_stars_backend(
   data,
   primary_key = NULL,
   keep_rownames = FALSE,
+  response = NULL,
+  response_is_factor = FALSE,
   quiet = FALSE,
   ...
 )

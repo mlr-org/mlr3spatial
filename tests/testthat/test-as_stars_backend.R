@@ -12,10 +12,11 @@ test_that("as_stars_backend from stars", {
 
 test_that("as_stars_backend from SpatRaster", {
   stack = demo_stack_spatraster(size = 1, layers = 5)
-  backend = as_stars_backend(stack, quiet = TRUE)
+  backend = as_stars_backend(stack, quiet = TRUE, response = "y.1", response_is_factor = TRUE)
 
   expect_data_table(backend$coordinates, max.cols = 2, min.cols = 2, any.missing = FALSE)
   expect_class(backend, "DataBackendStars")
+  expect_factor(backend$head()$y.1)
   expect_data_table(backend$head(), nrows = 6, ncols = 6)
   expect_names(colnames(backend$head()),
     identical.to = c("x_1", "x_2", "x_3", "x_4", "y.1", "..row_id"))
@@ -23,10 +24,11 @@ test_that("as_stars_backend from SpatRaster", {
 
 test_that("as_stars_backend from RasterBrick", {
   stack = demo_stack_rasterbrick(size = 1, layers = 5)
-  backend = as_stars_backend(stack, quiet = TRUE)
+  backend = as_stars_backend(stack, quiet = TRUE, response = "y.1", response_is_factor = TRUE)
 
   expect_data_table(backend$coordinates, max.cols = 2, min.cols = 2, any.missing = FALSE)
   expect_class(backend, "DataBackendStars")
+  expect_factor(backend$head()$y.1)
   expect_data_table(backend$head(), nrows = 6, ncols = 6)
   expect_names(colnames(backend$head()),
     identical.to = c("x_1", "x_2", "x_3", "x_4", "y.1", "..row_id"))
@@ -35,10 +37,12 @@ test_that("as_stars_backend from RasterBrick", {
 test_that("as_stars_backend from DataBackendSpatRaster", {
   stack = demo_stack_spatraster(size = 1, layers = 5)
   backend_spatraster = DataBackendSpatRaster$new(stack)
-  backend = as_stars_backend(backend_spatraster, quiet = TRUE)
+  backend = as_stars_backend(backend_spatraster, response = "y.1",
+    response_is_factor = TRUE, quiet = TRUE)
 
   expect_data_table(backend$coordinates, max.cols = 2, min.cols = 2, any.missing = FALSE)
   expect_class(backend, "DataBackendStars")
+  expect_factor(backend$head()$y.1)
   expect_data_table(backend$head(), nrows = 6, ncols = 6)
   expect_names(colnames(backend$head()),
     identical.to = c("x_1", "x_2", "x_3", "x_4", "y.1", "..row_id"))
@@ -47,10 +51,12 @@ test_that("as_stars_backend from DataBackendSpatRaster", {
 test_that("as_stars_backend from DataBackendRasterBrick", {
   stack = demo_stack_rasterbrick(size = 1, layers = 5)
   backend_rasterbrick = DataBackendRasterBrick$new(stack, response = "y")
-  backend = as_stars_backend(backend_rasterbrick, quiet = TRUE)
+  backend = as_stars_backend(backend_rasterbrick, response = "y.1",
+    response_is_factor = TRUE, quiet = TRUE)
 
   expect_data_table(backend$coordinates, max.cols = 2, min.cols = 2, any.missing = FALSE)
   expect_class(backend, "DataBackendStars")
+  expect_factor(backend$head()$y.1)
   expect_data_table(backend$head(), nrows = 6, ncols = 6)
   expect_names(colnames(backend$head()),
     identical.to = c("x_1", "x_2", "x_3", "x_4", "y.1", "..row_id"))

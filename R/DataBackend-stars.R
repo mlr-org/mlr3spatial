@@ -36,6 +36,14 @@ DataBackendStars = R6::R6Class("DataBackendStars",
     #' In this case, row lookup uses faster positional indices instead of equi joins.
     compact_seq = FALSE,
 
+    #' @field response ([`character`])\cr
+    #'   The name of the response variable given during construction.
+    response = NULL,
+
+    #' @field response_is_factor ([`character`])\cr
+    #'   Whether `response_is_factor = TRUE` was set during construction.
+    response_is_factor = NULL,
+
     #' @description
     #'
     #' Creates a backend for a `stars`.
@@ -45,8 +53,12 @@ DataBackendStars = R6::R6Class("DataBackendStars",
     #'
     #' @param primary_key (`character(1)` | `integer()`)\cr
     #'   Name of the primary key column, or integer vector of row ids.
+    #' @param response ([`character`])\cr
+    #'   The name of the response variable. Only needed when `response_is_factor = TRUE`.
+    #' @param response_is_factor ([`character`])\cr
+    #'   When this backend should be used in a [mlr3::TaskClassif], set `response_is_factor = TRUE`.
     #' @template param-quiet
-    initialize = function(data, primary_key = NULL, quiet = FALSE) {
+    initialize = function(data, primary_key = NULL, response, response_is_factor = FALSE, quiet = FALSE) {
       # we need to convert the layer data into "wide" format
       private$.stars = data
       private$.coordinates = as.data.table(data)[, c("x", "y")]
@@ -61,6 +73,10 @@ DataBackendStars = R6::R6Class("DataBackendStars",
             To silence this message, set 'quiet = TRUE'.", wrap = TRUE)
         }
         values_dt_wide[, c("x", "y")] = list(NULL)
+      }
+
+      if (response_is_factor) {
+        values_dt_wide[[response]] = as.factor(values_dt_wide[[response]])
       }
 
       row_ids = seq_row(values_dt_wide)

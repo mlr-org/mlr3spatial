@@ -35,6 +35,12 @@ if (mlr3misc::require_namespaces("stars", quietly = TRUE)) {
 \item{\code{compact_seq}}{\code{logical(1)}\cr
 If \code{TRUE}, row ids are a natural sequence from 1 to \code{nrow(data)} (determined internally).
 In this case, row lookup uses faster positional indices instead of equi joins.}
+
+\item{\code{response}}{(\code{\link{character}})\cr
+The name of the response variable given during construction.}
+
+\item{\code{response_is_factor}}{(\code{\link{character}})\cr
+Whether \code{response_is_factor = TRUE} was set during construction.}
 }
 \if{html}{\out{</div>}}
 }
@@ -85,7 +91,13 @@ Returns the sf geometry.}
 \subsection{Method \code{new()}}{
 Creates a backend for a \code{stars}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendStars$new(data, primary_key = NULL, quiet = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{DataBackendStars$new(
+  data,
+  primary_key = NULL,
+  response,
+  response_is_factor = FALSE,
+  quiet = FALSE
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -96,6 +108,12 @@ A raster object.}
 
 \item{\code{primary_key}}{(\code{character(1)} | \code{integer()})\cr
 Name of the primary key column, or integer vector of row ids.}
+
+\item{\code{response}}{(\code{\link{character}})\cr
+The name of the response variable. Only needed when \code{response_is_factor = TRUE}.}
+
+\item{\code{response_is_factor}}{(\code{\link{character}})\cr
+When this backend should be used in a \link[mlr3:TaskClassif]{mlr3::TaskClassif}, set \code{response_is_factor = TRUE}.}
 
 \item{\code{quiet}}{\verb{[logical]}\cr
 Whether to suppress possible console output.}
