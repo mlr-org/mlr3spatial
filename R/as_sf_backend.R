@@ -9,21 +9,14 @@
 #' @return [DataBackend].
 #' @seealso DataBackendSf DataBackendStars
 #' @export
-as_sf_backend = function(data, primary_key = NULL, keep_rownames = FALSE, ...) { # nolint
+as_sf_backend = function(data, primary_key = NULL, ...) { # nolint
   UseMethod("as_sf_backend")
 }
 
 #' @export
-as_sf_backend.sf = function(data, primary_key = NULL, keep_rownames = FALSE, ...) { # nolint
+as_sf_backend.sf = function(data, primary_key = NULL, ...) { # nolint
   assert_data_frame(data, min.cols = 1L, col.names = "unique")
   assert_class(data, "sf")
-  if (!isFALSE(keep_rownames)) {
-    if (isTRUE(keep_rownames)) {
-      keep_rownames = "..rownames"
-    } else {
-      assert_string(keep_rownames)
-    }
-  }
 
   b = DataBackendSf$new(data, primary_key)
   b$compact_seq = FALSE
@@ -33,19 +26,12 @@ as_sf_backend.sf = function(data, primary_key = NULL, keep_rownames = FALSE, ...
 
 #' @export
 #' @rdname as_data_backend
-as_sf_backend.SpatRaster = function(data, primary_key = NULL, keep_rownames = FALSE, ...) { # nolint
+as_sf_backend.SpatRaster = function(data, primary_key = NULL, ...) { # nolint
   spatvector = terra::as.polygons(data, trun = FALSE, dissolve = FALSE)
   data = sf::st_as_sf(spatvector)
 
   assert_data_frame(data, min.cols = 1L, col.names = "unique")
   assert_class(data, "sf")
-  if (!isFALSE(keep_rownames)) {
-    if (isTRUE(keep_rownames)) {
-      keep_rownames = "..rownames"
-    } else {
-      assert_string(keep_rownames)
-    }
-  }
 
   b = DataBackendSf$new(data, primary_key)
   b$compact_seq = FALSE
@@ -55,20 +41,13 @@ as_sf_backend.SpatRaster = function(data, primary_key = NULL, keep_rownames = FA
 
 #' @export
 #' @rdname as_data_backend
-as_sf_backend.RasterBrick = function(data, primary_key = NULL, keep_rownames = FALSE, ...) { # nolint
+as_sf_backend.RasterBrick = function(data, primary_key = NULL, ...) { # nolint
 
   rasterbrick = raster::rasterToPolygons(data)
   data = sf::st_as_sf(rasterbrick)
 
   assert_data_frame(data, min.cols = 1L, col.names = "unique")
   assert_class(data, "sf")
-  if (!isFALSE(keep_rownames)) {
-    if (isTRUE(keep_rownames)) {
-      keep_rownames = "..rownames"
-    } else {
-      assert_string(keep_rownames)
-    }
-  }
 
   b = DataBackendSf$new(data, primary_key)
   b$compact_seq = FALSE
@@ -80,7 +59,7 @@ as_sf_backend.RasterBrick = function(data, primary_key = NULL, keep_rownames = F
 #' @param polygons `[logical]`\cr
 #'   Whether to convert to polygons instead of points.
 #' @rdname as_data_backend
-as_sf_backend.DataBackendSpatRaster = function(data, primary_key = NULL, keep_rownames = FALSE, polygons = FALSE, ...) { # nolint
+as_sf_backend.DataBackendSpatRaster = function(data, primary_key = NULL, polygons = FALSE, ...) { # nolint
 
   assert_data_frame(data$head(), min.cols = 1L, col.names = "unique")
 
@@ -90,15 +69,7 @@ as_sf_backend.DataBackendSpatRaster = function(data, primary_key = NULL, keep_ro
     spatvector = terra::as.points(data$stack)
   }
   data = sf::st_as_sf(spatvector)
-
   assert_class(data, "sf")
-  if (!isFALSE(keep_rownames)) {
-    if (isTRUE(keep_rownames)) {
-      keep_rownames = "..rownames"
-    } else {
-      assert_string(keep_rownames)
-    }
-  }
 
   b = DataBackendSf$new(data, primary_key)
   b$compact_seq = FALSE
@@ -108,7 +79,7 @@ as_sf_backend.DataBackendSpatRaster = function(data, primary_key = NULL, keep_ro
 
 #' @export
 #' @rdname as_data_backend
-as_sf_backend.DataBackendRasterBrick = function(data, primary_key = NULL, keep_rownames = FALSE, polygons = FALSE, ...) { # nolint
+as_sf_backend.DataBackendRasterBrick = function(data, primary_key = NULL, polygons = FALSE, ...) { # nolint
   if (polygons) {
     vec = raster::rasterToPolygons(data$stack)
   } else {
@@ -122,13 +93,6 @@ as_sf_backend.DataBackendRasterBrick = function(data, primary_key = NULL, keep_r
 
   assert_data_frame(data, min.cols = 1L, col.names = "unique")
   assert_class(data, "sf")
-  if (!isFALSE(keep_rownames)) {
-    if (isTRUE(keep_rownames)) {
-      keep_rownames = "..rownames"
-    } else {
-      assert_string(keep_rownames)
-    }
-  }
 
   b = DataBackendSf$new(data, primary_key)
   b$compact_seq = FALSE

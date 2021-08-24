@@ -51,8 +51,7 @@ DataBackendStars = R6::R6Class("DataBackendStars",
     #' @param data (`stars`)\cr
     #'    A raster object.
     #'
-    #' @param primary_key (`character(1)` | `integer()`)\cr
-    #'   Name of the primary key column, or integer vector of row ids.
+    #' @template param-primary-key
     #' @template param-response
     #' @template param-response-is-factor
     #' @template param-quiet
@@ -208,7 +207,7 @@ DataBackendStars = R6::R6Class("DataBackendStars",
     #' Returns stars.
     stack = function(rhs) {
       assert_ro_binding(rhs)
-      terra::rast(private$.stars)
+      private$.stars
     },
     #' @field coordinates (`integer(1)`)\cr
     #' Returns the sf geometry.

@@ -1,10 +1,9 @@
-test_that("DataBackendSpatRaster works", {
+test_that("as_spatraster_backend from spatraster", {
   stack_classif = demo_stack_spatraster(size = 1, layers = 5)
   value = data.table(ID = c(0, 1), y = c("negative", "positive"))
   terra::setCats(stack_classif, layer = "y", value = value)
   colnames = c(names(stack_classif), "..row_id")
-
-  backend = DataBackendSpatRaster$new(stack_classif)
+  backend = as_spatraster_backend(stack_classif)
 
   # head
   data = backend$head(10L)
@@ -58,16 +57,4 @@ test_that("DataBackendSpatRaster works", {
   # [ ] [ ] [ ] [x]
   # [ ] [ ] [x] [ ]
   expect_equal(backend$data(rows = c(1, 3, 8, 11), cols = "y"), data.table(y = c(1, 3, 8, 11)))
-})
-
-test_that("$missing works", {
-
-  stack_classif = demo_stack_spatraster(size = 1, layers = 5)
-  stack_classif_na = terra::setValues(stack_classif,
-    c(NA, NA, runif(terra::ncell(stack_classif) * terra::nlyr(stack_classif) - 2)))
-  backend = DataBackendSpatRaster$new(stack_classif_na)
-
-  expect_integer(backend$missings(rows = 1:10, "x_1"), names = "named", lower = 2, upper = 2)
-  expect_integer(backend$missings(rows = 1:10, "x_2"), names = "named", lower = 0, upper = 0)
-
 })

@@ -81,7 +81,7 @@ Returns SpatRaster.}
 \subsection{Method \code{new()}}{
 Creates a backend for a \code{SpatRaster}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendSpatRaster$new(data)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{DataBackendSpatRaster$new(data, primary_key = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -89,6 +89,9 @@ Creates a backend for a \code{SpatRaster}.
 \describe{
 \item{\code{data}}{(\code{SpatRaster})\cr
 A raster object.}
+
+\item{\code{primary_key}}{(\code{character(1)} | \code{integer()})\cr
+Name of the primary key column, or integer vector of row ids.}
 }
 \if{html}{\out{</div>}}
 }

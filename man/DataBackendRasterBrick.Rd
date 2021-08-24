@@ -90,7 +90,12 @@ Returns RasterBrick.}
 \subsection{Method \code{new()}}{
 Creates a backend for a \code{RasterBrick}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendRasterBrick$new(data, response, response_is_factor = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{DataBackendRasterBrick$new(
+  data,
+  primary_key = NULL,
+  response,
+  response_is_factor = FALSE
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -98,6 +103,9 @@ Creates a backend for a \code{RasterBrick}.
 \describe{
 \item{\code{data}}{(\code{RasterBrick})\cr
 A raster object.}
+
+\item{\code{primary_key}}{(\code{character(1)} | \code{integer()})\cr
+Name of the primary key column, or integer vector of row ids.}
 
 \item{\code{response}}{(\code{\link{character}})\cr
 The name of the response variable. Only needed when \code{response_is_factor = TRUE}.}

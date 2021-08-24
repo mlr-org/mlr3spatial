@@ -15,6 +15,18 @@ test_that("DataBackendStars works", {
   data = backend$distinct(rows = 100000:200000, cols = c("X3", "X4"))
   expect_names(names(data), identical.to = c("X3", "X4"))
   expect_numeric(data$X3)
+
+  # colnames
+  expect_equal(backend$colnames, c("X1", "X2", "X3", "X4", "X5", "X6", "..row_id"))
+
+  # nrow
+  expect_equal(backend$nrow, 122848)
+
+  # ncol
+  expect_equal(backend$ncol, 7)
+
+  # stack
+  expect_class(backend$stack, "stars")
 })
 
 test_that("$missing works", {

@@ -54,4 +54,14 @@ test_that("as_sf_backend from DataBackendRasterBrick", {
   expect_data_table(backend$head(), nrows = 6, ncols = 6)
   expect_names(colnames(backend$head()),
     identical.to = c("x_1", "x_2", "x_3", "x_4", "y", "..row_id"))
+
+  stack = demo_stack_rasterbrick(size = 1, layers = 5)
+  backend_rasterbrick = DataBackendRasterBrick$new(stack, response = "y")
+  backend_poly = as_sf_backend(backend_rasterbrick, polygons = TRUE)
+
+  expect_class(backend_poly$coordinates, "sfc")
+  expect_class(backend_poly, "DataBackendSf")
+  expect_data_table(backend_poly$head(), nrows = 6, ncols = 6)
+  expect_names(colnames(backend_poly$head()),
+    identical.to = c("x_1", "x_2", "x_3", "x_4", "y", "..row_id"))
 })

@@ -34,10 +34,10 @@ DataBackendSf = R6::R6Class("DataBackendSf",
       attr(data, "sf_column") = NULL
       data = as.data.table(data)
 
-      if (is.character(primary_key)) {
+      if (is.character(primary_key)) { # nocov start
         assert_string(primary_key)
         assert_choice(primary_key, colnames(data))
-        assert_integer(data[[primary_key]], any.missing = FALSE, unique = TRUE)
+        assert_integer(data[[primary_key]], any.missing = FALSE, unique = TRUE) # nocov end
       } else {
         if (is.null(primary_key)) {
           row_ids = seq_row(data)
@@ -55,7 +55,7 @@ DataBackendSf = R6::R6Class("DataBackendSf",
       super$initialize(setkeyv(data, primary_key), primary_key, data_formats = "data.table")
       ii = match(primary_key, names(data))
       if (is.na(ii)) {
-        stopf("Primary key '%s' not in 'data'", primary_key)
+        stopf("Primary key '%s' not in 'data'", primary_key) # nocov
       }
       private$.cache = set_names(replace(rep(NA, ncol(data)), ii, FALSE), names(data))
     },
@@ -79,10 +79,10 @@ DataBackendSf = R6::R6Class("DataBackendSf",
       assert_choice(data_format, self$data_formats)
       cols = intersect(cols, colnames(private$.data))
 
-      if (self$compact_seq) {
+      if (self$compact_seq) { # nocov start
         # https://github.com/Rdatatable/data.table/issues/3109
         rows = keep_in_bounds(rows, 1L, nrow(private$.data))
-        data = private$.data[rows, cols, with = FALSE]
+        data = private$.data[rows, cols, with = FALSE] # nocov end
       } else {
         data = private$.data[list(rows), cols, with = FALSE, nomatch = NULL, on = self$primary_key]
       }

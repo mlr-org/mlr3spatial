@@ -56,12 +56,13 @@ DataBackendRasterBrick = R6::R6Class("DataBackendRasterBrick",
     #'
     #' @param data (`RasterBrick`)\cr
     #'    A raster object.
+    #' @template param-primary-key
     #' @template param-response
     #' @template param-response-is-factor
 
     # This is needed to convert the response to factor before passing it to
     # TaskClassif - {raster} has no built-in support for factor layers
-    initialize = function(data, response, response_is_factor = FALSE) {
+    initialize = function(data, primary_key = NULL, response, response_is_factor = FALSE) {
 
       # needed by as_sf_backend.RasterBrick
       self$response_is_factor = response_is_factor
@@ -113,10 +114,10 @@ DataBackendRasterBrick = R6::R6Class("DataBackendRasterBrick",
       assert_choice(data_format, self$data_formats)
       cols = intersect(cols, colnames(private$.data))
 
-      if (self$compact_seq) {
+      if (self$compact_seq) { # nocov start
         # https://github.com/Rdatatable/data.table/issues/3109
         rows = keep_in_bounds(rows, 1L, nrow(private$.data))
-        data = private$.data[rows, cols, with = FALSE]
+        data = private$.data[rows, cols, with = FALSE] # nocov end
       } else {
         data = private$.data[list(rows), cols, with = FALSE, nomatch = NULL, on = self$primary_key]
       }

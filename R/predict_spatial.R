@@ -136,12 +136,13 @@ predict_spatial_newdata.stars = function(learner, object, filename = NULL, overw
   }
   newdata_pred = as.data.table(split(object, "band"))
 
-  if (any(c("x", "y") %in% colnames(newdata_pred))) {
+  if (any(c("x", "y") %in% colnames(newdata_pred))) { # nocov start
     if (!quiet) {
       messagef("Dropping coordinates 'x' and 'y' as they are
         most likely coordinates. If you want to have these variables included,
         duplicate them in the stars objects using a different name.
         To silence this message, set 'quiet = TRUE'.", wrap = TRUE)
+      # nocov end
     }
     newdata_pred[, c("x", "y")] = list(NULL)
   }

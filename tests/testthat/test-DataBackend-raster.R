@@ -1,12 +1,10 @@
 test_that("DataBackendRasterBrick works", {
-  stack_classif = demo_stack_rasterbrick(size = 5, layers = 5)
-  # value = data.table(ID = c(0, 1), y = c("negative", "positive"))
-  # setValues(stack_classif, c("negative", "positive"), layer = 5)
-  # raster::factorValues(stack_classif, layer = 5, v = value)
+  stack_classif = demo_stack_rasterbrick(size = 1, layers = 5)
   colnames = names(stack_classif)
 
-  backend = DataBackendRasterBrick$new(stack_classif, "y")
-  backend_classif = DataBackendRasterBrick$new(stack_classif, "y", response_is_factor = TRUE)
+  backend = DataBackendRasterBrick$new(stack_classif, response = "y")
+  backend_classif = DataBackendRasterBrick$new(stack_classif, response = "y",
+    response_is_factor = TRUE)
 
   # head
   data = backend$head(10L)
@@ -22,6 +20,18 @@ test_that("DataBackendRasterBrick works", {
   data_classif = backend_classif$distinct(rows = 1:100, cols = c("x_1", "y"))
   expect_character(c(data_classif$x_1, data_classif$y))
 
+  # colnames
+  expect_equal(backend$colnames, c("x_1", "x_2", "x_3", "x_4", "y", "..row_id"))
+
+  # nrow
+  expect_equal(backend$nrow, 49729)
+
+  # ncol
+  expect_equal(backend$ncol, 6)
+
+  # stack
+  expect_class(backend$stack, "RasterBrick")
+
   # data
   # [01] [02] [03] [04]
   # [05] [06] [07] [08]
@@ -29,7 +39,7 @@ test_that("DataBackendRasterBrick works", {
   raster = raster::brick(nrow = 3, ncol = 4)
   raster[] = 1:12
   names(raster) = "y"
-  backend = DataBackendRasterBrick$new(raster, "y")
+  backend = DataBackendRasterBrick$new(raster, response = "y")
 
   # [x] [x] [x] [x]
   # [ ] [ ] [ ] [ ]
@@ -57,7 +67,7 @@ test_that("$missing works", {
   stack_classif = demo_stack_rasterbrick(size = 1, layers = 5)
   stack_classif_na = raster::setValues(stack_classif,
     c(NA, NA, runif(raster::ncell(stack_classif) * raster::nlayers(stack_classif) - 2)))
-  backend = DataBackendRasterBrick$new(stack_classif_na, "y")
+  backend = DataBackendRasterBrick$new(stack_classif_na, response = "y")
 
   expect_integer(backend$missings(rows = 1:10, "x_1"), names = "named", lower = 2, upper = 2)
   expect_integer(backend$missings(rows = 1:10, "x_2"), names = "named", lower = 0, upper = 0)
