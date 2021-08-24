@@ -190,6 +190,12 @@ sequence e.g. <code>200:300</code>.</p>
 If <code>TRUE</code>, row ids are a natural sequence from 1 to <code><a href='https://rdrr.io/r/base/nrow.html'>nrow(data)</a></code> (determined internally).
 In this case, row lookup uses faster positional indices instead of equi joins.</p></dd>
 
+<dt><code>response</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/character.html'>character</a></code>)<br />
+The name of the response variable given during construction.</p></dd>
+
+<dt><code>response_is_factor</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/character.html'>character</a></code>)<br />
+Whether <code>response_is_factor = TRUE</code> was set during construction.</p></dd>
+
 </dl><p></div></p>
     <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
 
@@ -235,7 +241,13 @@ Returns the sf geometry.</p></dd>
 <hr>
 <a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
 <p>Creates a backend for a <code>stars</code>.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>DataBackendStars</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>data</span>, primary_key <span class='op'>=</span> <span class='cn'>NULL</span>, quiet <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>DataBackendStars</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  primary_key <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>response</span>,
+  response_is_factor <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -244,6 +256,12 @@ A raster object.</p></dd>
 
 <dt><code>primary_key</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> | <code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>)<br />
 Name of the primary key column, or integer vector of row ids.</p></dd>
+
+<dt><code>response</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/character.html'>character</a></code>)<br />
+The name of the response variable. Only needed when <code>response_is_factor = TRUE</code>.</p></dd>
+
+<dt><code>response_is_factor</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/character.html'>character</a></code>)<br />
+When this backend should be used in a <a href='https://mlr3.mlr-org.com/reference/TaskClassif.html'>mlr3::TaskClassif</a>, set <code>response_is_factor = TRUE</code>.</p></dd>
 
 <dt><code>quiet</code></dt><dd><p><code>[logical]</code><br />
 Whether to suppress possible console output.</p></dd>
