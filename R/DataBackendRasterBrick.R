@@ -131,7 +131,7 @@ DataBackendRasterBrick = R6::R6Class("DataBackendRasterBrick",
     #'
     #' @return [data.table::data.table()] of the first `n` rows.
     head = function(n = 6L) {
-      head(private$.data, n)
+      utils::head(private$.data, n)
     },
 
     #' @description

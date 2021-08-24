@@ -28,8 +28,7 @@ Imports:
     data.table (>= 1.14.0),
     lgr (>= 0.4.2),
     mlr3misc,
-    R6 (>= 2.5.0),
-    utils
+    R6 (>= 2.5.0)
 Suggests:
     bench,
     e1071,

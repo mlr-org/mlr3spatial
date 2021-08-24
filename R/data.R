@@ -6,7 +6,6 @@
 #' @param dimension (`integer(1)`)
 #' xy dimension of raster
 #'
-#' @importFrom terra rast
 #' @keywords internal
 demo_spatraster = function(dimension) {
   assert_int(dimension, lower = 2)
@@ -25,7 +24,6 @@ demo_spatraster = function(dimension) {
 #' @param layers `[integer(1)]`\cr
 #'   Number of layers.
 #'
-#' @importFrom terra rast
 #' @examples
 #' demo_stack_spatraster(size = 5, layers = 2)
 #' @export
@@ -37,7 +35,7 @@ demo_stack_spatraster = function(size = 50, layers = 5) {
   raster_features = replicate(layers - 1, demo_spatraster(dimension))
   raster_response = terra::rast(matrix(c(rep("FALSE", floor(dimension^2 / 2)),
     rep("TRUE", ceiling(dimension^2 / 2))), nrow = dimension))
-  raster = rast(c(raster_features, list(raster_response)))
+  raster = terra::rast(c(raster_features, list(raster_response)))
   names(raster) = c(paste0("x_", 1:(layers - 1)), "y")
   raster
 }
