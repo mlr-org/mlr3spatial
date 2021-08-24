@@ -151,7 +151,7 @@
 
 <span class="co"># Stars demo stack</span>
 <span class="va">stack_stars</span> <span class="op">=</span> <span class="fu">stars</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_as_stars.html">st_as_stars</a></span><span class="op">(</span><span class="va">stack_rasterbrick</span><span class="op">)</span>
-<span class="va">backend_stars</span> <span class="op">=</span> <span class="fu"><a href="../reference/as_sf_backend.html">as_stars_backend</a></span><span class="op">(</span><span class="va">stack_stars</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span>, response <span class="op">=</span> <span class="st">"y.1"</span>, response_is_factor <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">backend_stars</span> <span class="op">=</span> <span class="fu"><a href="../reference/as_rasterbrick_backend.html">as_stars_backend</a></span><span class="op">(</span><span class="va">stack_stars</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span>, response <span class="op">=</span> <span class="st">"y.1"</span>, response_is_factor <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="va">task_stars</span> <span class="op">=</span>  <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_classif.html">as_task_classif</a></span><span class="op">(</span><span class="va">backend_stars</span>, target <span class="op">=</span> <span class="st">"y.1"</span>, positive <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span>
 
 <span class="co"># SpatRaster learner</span>
