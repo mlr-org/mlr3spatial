@@ -16,3 +16,18 @@ test_that("DataBackendStars works", {
   expect_names(names(data), identical.to = c("X3", "X4"))
   expect_numeric(data$X3)
 })
+
+test_that("$missing works", {
+  tif = system.file("tif/L7_ETMs.tif", package = "stars")
+  l7data = stars::read_stars(tif)
+  l7data_df = split(l7data, "band")
+  l7data_df$X1[1, 1] = NA
+  l7data_df$X1[3, 1] = NA
+  l7data_na = merge(l7data_df, name = "band")
+
+  backend = DataBackendStars$new(l7data_na, quiet = TRUE)
+
+  expect_integer(backend$missings(rows = 1:10, "X1"), names = "named", lower = 2, upper = 2)
+  expect_integer(backend$missings(rows = 1:10, "X2"), names = "named", lower = 0, upper = 0)
+
+})

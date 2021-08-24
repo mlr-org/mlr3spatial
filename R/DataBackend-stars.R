@@ -64,12 +64,12 @@ DataBackendStars = R6::R6Class("DataBackendStars",
       values_dt_wide = as.data.table(split(data, "band"))
 
       if (any(c("x", "y") %in% colnames(values_dt_wide))) {
-        if (!quiet) {
+        if (!quiet) { # nocov start
           messagef("Dropping coordinates 'x' and 'y' as they are
             most likely coordinates. If you want to have these variables included,
             duplicate them in the stars objects using a different name.
             To silence this message, set 'quiet = TRUE'.", wrap = TRUE)
-        }
+        } # nocov end
         values_dt_wide[, c("x", "y")] = list(NULL)
       }
 
@@ -86,12 +86,12 @@ DataBackendStars = R6::R6Class("DataBackendStars",
       super$initialize(setkeyv(values_dt_wide, primary_key), primary_key, data_formats = "data.table")
       ii = match(primary_key, names(values_dt_wide))
       if (is.na(ii)) {
-        stopf("Primary key '%s' not in 'data'", primary_key)
+        stopf("Primary key '%s' not in 'data'", primary_key) # nocov
       }
-      private$.cache = set_names(replace(rep(NA, ncol(values_dt_wide)), ii, FALSE), names(values_dt_wide))
 
       private$.data = assert_class(values_dt_wide, "data.table")
       self$data_formats = "data.table"
+      private$.cache = set_names(replace(rep(NA, ncol(values_dt_wide)), ii, FALSE), names(values_dt_wide))
     },
 
     #' @description
@@ -113,10 +113,10 @@ DataBackendStars = R6::R6Class("DataBackendStars",
       assert_choice(data_format, self$data_formats)
       cols = intersect(cols, colnames(private$.data))
 
-      if (self$compact_seq) {
+      if (self$compact_seq) { # nocov start
         # https://github.com/Rdatatable/data.table/issues/3109
         rows = keep_in_bounds(rows, 1L, nrow(private$.data))
-        data = private$.data[rows, cols, with = FALSE]
+        data = private$.data[rows, cols, with = FALSE] # nocov end
       } else {
         data = private$.data[list(rows), cols, with = FALSE, nomatch = NULL, on = self$primary_key]
       }
@@ -131,7 +131,7 @@ DataBackendStars = R6::R6Class("DataBackendStars",
     #'
     #' @return [data.table::data.table()] of the first `n` rows.
     head = function(n = 6L) {
-      head(private$.data, n)
+      utils::head(private$.data, n)
     },
 
     #' @description
@@ -223,7 +223,8 @@ DataBackendStars = R6::R6Class("DataBackendStars",
       mlr3misc::calculate_hash(self$compact_seq, private$.data)
     },
     .stars = NULL,
-    .cache = NULL,
-    .coordinates = NULL
+    .data = NULL,
+    .coordinates = NULL,
+    .cache = NULL
   )
 )
