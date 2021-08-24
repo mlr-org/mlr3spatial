@@ -88,10 +88,10 @@ DataBackendRasterBrick = R6::R6Class("DataBackendRasterBrick",
       if (is.na(ii)) {
         stopf("Primary key '%s' not in 'data'", primary_key)
       }
-      private$.cache = set_names(replace(rep(NA, ncol(values_dt)), ii, FALSE), names(values_dt))
 
       private$.data = assert_class(values_dt, "data.table")
       self$data_formats = "data.table"
+      private$.cache = set_names(replace(rep(NA, ncol(values_dt)), ii, FALSE), names(values_dt))
     },
 
     #' @description
@@ -216,6 +216,7 @@ DataBackendRasterBrick = R6::R6Class("DataBackendRasterBrick",
     .calculate_hash = function() {
       mlr3misc::calculate_hash(self$compact_seq, private$.data)
     },
+    .data = NULL,
     .cache = NULL,
     .brick = NULL
   )

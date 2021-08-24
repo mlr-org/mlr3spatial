@@ -22,3 +22,13 @@ test_that("DataBackendDataTable with 0 rows", {
   b = as_sf_backend(sf_data[integer(), ])
   expect_backend(b)
 })
+
+test_that("$missing works", {
+
+  sf_data[c(1, 2), "AREA"] = NA
+  b = DataBackendSf$new(sf_data)
+
+  expect_integer(b$missings(rows = 1:10, "AREA"), names = "named", lower = 2, upper = 2)
+  expect_integer(b$missings(rows = 1:10, "PERIMETER"), names = "named", lower = 0, upper = 0)
+
+})

@@ -181,6 +181,7 @@ DataBackendSf = R6::R6Class("DataBackendSf",
     .calculate_hash = function() {
       mlr3misc::calculate_hash(self$compact_seq, private$.data)
     },
+    .data = NULL,
     .cache = NULL,
     .coordinates = NULL
   )

@@ -52,6 +52,14 @@ test_that("DataBackendRasterBrick works", {
   expect_equal(backend$data(rows = c(1, 3, 8, 11), cols = "y"), data.table(y = c(1, 3, 8, 11)))
 })
 
+test_that("$missing works", {
 
-# FIXME: test as_task_classif
-# FIXME: test printer
+  stack_classif = demo_stack_rasterbrick(size = 1, layers = 5)
+  stack_classif_na = raster::setValues(stack_classif,
+    c(NA, NA, runif(raster::ncell(stack_classif) * raster::nlayers(stack_classif) - 2)))
+  backend = DataBackendRasterBrick$new(stack_classif_na, "y")
+
+  expect_integer(backend$missings(rows = 1:10, "x_1"), names = "named", lower = 2, upper = 2)
+  expect_integer(backend$missings(rows = 1:10, "x_2"), names = "named", lower = 0, upper = 0)
+
+})
