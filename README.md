@@ -13,12 +13,12 @@ Functions may change without notice!
 
 ## Package scope
 
-The handling of (large) spatial objects ({terra}, {raster}, {stars}, {sf}) in ML is an error-prone and time consuming task.
+The handling of (large) spatial objects ([{terra}](https://cran.r-project.org/web/packages/terra/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{stars}](https://cran.r-project.org/web/packages/stars/index.html), [{sf}](https://cran.r-project.org/web/packages/sf/index.html)) in ML is an error-prone and time consuming task.
 Users often need to extract the "raw" values from the spatial objects, train a model, predict and then recreate the spatial object again.
 {mlr3spatial} tries to help here by
 
-- Providing `DataBackend` classes for various spatial classes ({terra}, {raster}, {stars}, {sf}) which can be used to easily create {mlr3} [Tasks](https://mlr3.mlr-org.com/reference/Task.html)
-- Support for direct predictions to spatial objects ({terra}, {raster}, {stars}, {sf}), returning both a {mlr3} [Prediction](https://mlr3.mlr-org.com/reference/Prediction.html) object and the respective spatial object
+- Providing [`DataBackend`](https://mlr3.mlr-org.com/reference/DataBackend.html) classes for various spatial classes ([{terra}](https://cran.r-project.org/web/packages/terra/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{stars}](https://cran.r-project.org/web/packages/stars/index.html), [{sf}](https://cran.r-project.org/web/packages/sf/index.html)) which can be used to easily create {mlr3} [Tasks](https://mlr3.mlr-org.com/reference/Task.html)
+- Support for direct predictions to spatial objects ([{terra}](https://cran.r-project.org/web/packages/terra/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{stars}](https://cran.r-project.org/web/packages/stars/index.html), [{sf}](https://cran.r-project.org/web/packages/sf/index.html)), returning both a {mlr3} [`Prediction`](https://mlr3.mlr-org.com/reference/Prediction.html) object and the respective spatial object
 - Speeding up predictions by making use of {mlr3} built-in future-based parallelization
 
 ## Spatiotemporal resampling / cross-validation
