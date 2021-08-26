@@ -124,11 +124,11 @@
 <div id="package-scope" class="section level2">
 <h2 class="hasAnchor">
 <a href="#package-scope" class="anchor"></a>Package scope</h2>
-<p>The handling of (large) spatial objects ({terra}, {raster}, {stars}, {sf}) in ML is an error-prone and time consuming task. Users often need to extract the “raw” values from the spatial objects, train a model, predict and then recreate the spatial object again. {mlr3spatial} tries to help here by</p>
+<p>The handling of (large) spatial objects (<a href="https://cran.r-project.org/web/packages/terra/index.html">{terra}</a>, <a href="https://cran.r-project.org/web/packages/raster/index.html">{raster}</a>, <a href="https://cran.r-project.org/web/packages/stars/index.html">{stars}</a>, <a href="https://cran.r-project.org/web/packages/sf/index.html">{sf}</a>) in ML is an error-prone and time consuming task. Users often need to extract the “raw” values from the spatial objects, train a model, predict and then recreate the spatial object again. {mlr3spatial} tries to help here by</p>
 <ul>
-<li>Providing <code>DataBackend</code> classes for various spatial classes ({terra}, {raster}, {stars}, {sf}) which can be used to easily create {mlr3} <a href="https://mlr3.mlr-org.com/reference/Task.html">Tasks</a>
+<li>Providing <a href="https://mlr3.mlr-org.com/reference/DataBackend.html"><code>DataBackend</code></a> classes for various spatial classes (<a href="https://cran.r-project.org/web/packages/terra/index.html">{terra}</a>, <a href="https://cran.r-project.org/web/packages/raster/index.html">{raster}</a>, <a href="https://cran.r-project.org/web/packages/stars/index.html">{stars}</a>, <a href="https://cran.r-project.org/web/packages/sf/index.html">{sf}</a>) which can be used to easily create {mlr3} <a href="https://mlr3.mlr-org.com/reference/Task.html">Tasks</a>
 </li>
-<li>Support for direct predictions to spatial objects ({terra}, {raster}, {stars}, {sf}), returning both a {mlr3} <a href="https://mlr3.mlr-org.com/reference/Prediction.html">Prediction</a> object and the respective spatial object</li>
+<li>Support for direct predictions to spatial objects (<a href="https://cran.r-project.org/web/packages/terra/index.html">{terra}</a>, <a href="https://cran.r-project.org/web/packages/raster/index.html">{raster}</a>, <a href="https://cran.r-project.org/web/packages/stars/index.html">{stars}</a>, <a href="https://cran.r-project.org/web/packages/sf/index.html">{sf}</a>), returning both a {mlr3} <a href="https://mlr3.mlr-org.com/reference/Prediction.html"><code>Prediction</code></a> object and the respective spatial object</li>
 <li>Speeding up predictions by making use of {mlr3} built-in future-based parallelization</li>
 </ul>
 </div>
