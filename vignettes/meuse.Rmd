@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The following code showcases a very simple example how to use an `sf` object as a `DataBackend` and a direct input into `predict_spatial_newdata()`.
+The following code showcases a very simple example how to use an `sf` object as a `DataBackend` and a direct input into `predict_newdata()`.
 
 Here, the `meuse` dataset represents the use case for a spatial points dataset (= vector dataset).
 
@@ -52,7 +52,7 @@ learner$train(task)
 
 # set the output file and predict with the learner
 file = tempfile("out", fileext = ".gpkg")
-pred = predict_spatial_newdata(learner, newdata, filename = file)
+pred = learner$predict_newdata(newdata, filename = file)
 
 # calculate "Root Mean Square Error" (RMSE) measure
 pred$score(msr("regr.rmse"))
@@ -60,7 +60,7 @@ pred$score(msr("regr.rmse"))
 # calculate residuals
 pred_res = abs(pred$truth - pred$response)
 
-# read geopackage which was created during the `predict_spatial_newdata()` call
+# read geopackage which was created during the `predict_newdata()` call
 gpkg = st_read(file, quiet = TRUE)
 gpkg$pred = pred_res
 

@@ -82,7 +82,7 @@ print(learner_svm)
 
 ### Prediction
 
-For prediction `predict_spatial_newdata()` is used.
+For prediction `predict_newdata()` is used.
 It will return a `mlr3::Prediction()` object and, if argument `filename` is supplied, will also write the spatial object to disk (for file types supported by the respective package).
 
 In the following, we will compare the way to conduct the prediction using {mlr3spatial} with the "native" way of fitting an `e1071::svm()` model and predicting with `terra::predict()`.
@@ -94,7 +94,7 @@ library(future)
 plan(sequential)
 
 file = tempfile("target", fileext = ".tif")
-pred = predict_spatial_newdata(learner_svm, stack, filename = file)
+pred = learner_svm$predict_newdata(stack, filename = file)
 
 print(pred)
 ```

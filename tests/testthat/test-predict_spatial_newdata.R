@@ -1,18 +1,19 @@
 # SpatRaster -------------------------------------------------------------------
 
 test_that("sequential execution works", {
-  stack_classif = demo_stack_spatraster(size = 5, layers = 5)
+  stack_classif = demo_stack_spatraster(size = 1, layers = 5)
   backend = DataBackendSpatRaster$new(stack_classif)
   task = as_task_classif(backend, target = "y", positive = "TRUE")
   # train
   learner = lrn("classif.featureless")
   learner$train(task, row_ids = sample(1:task$nrow, 50))
-  pred = predict_spatial_newdata(learner, stack_classif)
+  pred = learner$predict_newdata(stack_classif)
+
   expect_r6(pred, "Prediction")
 })
 
 test_that("parallelization works", {
-  stack_classif = demo_stack_spatraster(size = 5, layers = 5)
+  stack_classif = demo_stack_spatraster(size = 1, layers = 5)
   backend = DataBackendSpatRaster$new(stack_classif)
   task = as_task_classif(backend, target = "y", positive = "TRUE")
   # train
@@ -22,21 +23,21 @@ test_that("parallelization works", {
   # parallel
   learner$parallel_predict = TRUE
   with_future("multisession", workers = 2, {
-    pred = predict_spatial_newdata(learner, stack_classif)
+    pred = learner$predict_newdata(stack_classif)
     expect_r6(pred, "Prediction")
   })
 })
 
 test_that("supplying a filename works", {
-  stack_classif = demo_stack_spatraster(size = 5, layers = 5)
+  stack_classif = demo_stack_spatraster(size = 1, layers = 5)
   backend = DataBackendSpatRaster$new(stack_classif)
   task = as_task_classif(backend, target = "y", positive = "TRUE")
   learner = lrn("classif.featureless")
   learner$train(task, row_ids = sample(1:task$nrow, 50))
-  pred = predict_spatial_newdata(learner, stack_classif, filename = "foo.tif")
+  pred = learner$predict_newdata(stack_classif, filename = "foo.tif")
   expect_file("foo.tif")
 
-  expect_error(predict_spatial_newdata(learner, stack_classif, filename = "foo.tif"))
+  expect_error(learner$predict_newdata(stack_classif, filename = "foo.tif"))
 
   unlink(c("foo.tif", "foo.tif.aux.xml"))
 })
@@ -44,18 +45,18 @@ test_that("supplying a filename works", {
 # RasterBrick -------------------------------------------------------------------
 
 test_that("sequential execution works", {
-  stack_classif = demo_stack_rasterbrick(size = 5, layers = 5)
+  stack_classif = demo_stack_rasterbrick(size = 1, layers = 5)
   backend = DataBackendRasterBrick$new(stack_classif, response = "y", response_is_factor = TRUE)
   task = as_task_classif(backend, target = "y", positive = "1")
   # train
   learner = lrn("classif.featureless")
   learner$train(task, row_ids = sample(1:task$nrow, 50))
-  pred = predict_spatial_newdata(learner, stack_classif)
+  pred = learner$predict_newdata(stack_classif)
   expect_r6(pred, "Prediction")
 })
 
 test_that("parallelization works", {
-  stack_classif = demo_stack_rasterbrick(size = 5, layers = 5)
+  stack_classif = demo_stack_rasterbrick(size = 1, layers = 5)
   backend = DataBackendRasterBrick$new(stack_classif, response = "y", response_is_factor = TRUE)
   task = as_task_classif(backend, target = "y", positive = "1")
   # train
@@ -65,22 +66,22 @@ test_that("parallelization works", {
   # parallel
   learner$parallel_predict = TRUE
   with_future("multisession", workers = 2, {
-    pred = predict_spatial_newdata(learner, stack_classif)
+    pred = learner$predict_newdata(stack_classif)
     expect_r6(pred, "Prediction")
   })
 })
 
 test_that("supplying a filename works", {
-  stack_classif = demo_stack_rasterbrick(size = 5, layers = 5)
+  stack_classif = demo_stack_rasterbrick(size = 1, layers = 5)
   backend = DataBackendRasterBrick$new(stack_classif, response = "y", response_is_factor = TRUE)
   task = as_task_classif(backend, target = "y", positive = "1")
   learner = lrn("classif.featureless")
   learner$train(task, row_ids = sample(1:task$nrow, 50))
   # warning: In .gd_SetProject(object, ...) : NOT UPDATED FOR PROJ >= 6
-  pred = suppressWarnings(predict_spatial_newdata(learner, stack_classif, filename = "foo.tif"))
+  pred = suppressWarnings(learner$predict_newdata(stack_classif, filename = "foo.tif"))
   expect_file("foo.tif")
 
-  expect_error(predict_spatial_newdata(learner, stack_classif, filename = "foo.tif"))
+  expect_error(learner$predict_newdata(stack_classif, filename = "foo.tif"))
 
   unlink(c("foo.tif", "foo.tif.aux.xml"))
 })
@@ -92,7 +93,7 @@ test_that("sequential execution works", {
   # train
   learner = lrn("classif.featureless")
   learner$train(task, row_ids = sample(1:task$nrow, 50))
-  pred = predict_spatial_newdata(learner, sf_pred)
+  pred = learner$predict_newdata(sf_pred)
   expect_r6(pred, "Prediction")
 })
 
@@ -105,7 +106,7 @@ test_that("parallelization works", {
   # parallel
   learner$parallel_predict = TRUE
   with_future("multisession", workers = 2, {
-    pred = predict_spatial_newdata(learner, sf_pred)
+    pred = learner$predict_newdata(sf_pred)
     expect_r6(pred, "Prediction")
   })
 })
@@ -114,10 +115,10 @@ test_that("supplying a filename works", {
   task = as_task_classif(backend_sf, target = "y", positive = "1")
   learner = lrn("classif.featureless")
   learner$train(task, row_ids = sample(1:task$nrow, 50))
-  pred = predict_spatial_newdata(learner, sf_pred, filename = "foo.gpkg", quiet = TRUE)
+  pred = learner$predict_newdata(sf_pred, filename = "foo.gpkg", quiet = TRUE)
   expect_file("foo.gpkg")
 
-  expect_error(predict_spatial_newdata(learner, sf_pred, filename = "foo.gpkg"))
+  expect_error(predict_newdata(sf_pred, filename = "foo.gpkg"))
 
   unlink(c("foo.gpkg"))
 })
@@ -129,7 +130,7 @@ test_that("sequential execution works", {
   # train
   learner = lrn("regr.featureless")
   learner$train(task, row_ids = sample(1:task$nrow, 50))
-  pred = predict_spatial_newdata(learner, l7data, quiet = TRUE)
+  pred = learner$predict_newdata(l7data, quiet = TRUE)
   expect_r6(pred, "Prediction")
 })
 
@@ -142,7 +143,7 @@ test_that("parallelization works", {
   # parallel
   learner$parallel_predict = TRUE
   with_future("multisession", workers = 2, {
-    pred = predict_spatial_newdata(learner, l7data, quiet = TRUE)
+    pred = learner$predict_newdata(l7data, quiet = TRUE)
     expect_r6(pred, "Prediction")
   })
 })
@@ -151,10 +152,10 @@ test_that("supplying a filename works", {
   task = as_task_regr(backend_stars, target = "X1")
   learner = lrn("regr.featureless")
   learner$train(task, row_ids = sample(1:task$nrow, 50))
-  pred = predict_spatial_newdata(learner, l7data, filename = "foo.tif", quiet = TRUE)
+  pred = learner$predict_newdata(l7data, filename = "foo.tif", quiet = TRUE)
   expect_file("foo.tif")
 
-  expect_error(predict_spatial_newdata(learner, l7data, filename = "foo.tif"))
+  expect_error(learner$predict_newdata(l7data, filename = "foo.tif"))
 
   unlink(c("foo.tif"))
 })

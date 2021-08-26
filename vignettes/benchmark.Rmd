@@ -72,17 +72,17 @@ e1071svm = e1071::svm(y ~ ., task$data(rows = row_ids))
 bm = bench::mark(
   "01-mlr3-terra-sequential" = {
     plan(multisession, workers = 1)
-    predict_spatial_newdata(learner_svm, stack)
+    learner_svm$predict_newdata(learner_svm, stack)
   },
 
   "02-mlr3-raster-sequential" = {
     plan(multisession, workers = 1)
-    predict_spatial_newdata(learner_svm_rasterbrick, stack_rasterbrick)
+    learner_svm_rasterbrick$predict_newdata(learner_svm_rasterbrick, stack_rasterbrick)
   },
 
   "03-mlr3-stars-sequential" = {
     plan(multisession, workers = 1)
-    predict_spatial_newdata(learner_svm_stars, stack_stars, quiet = TRUE)
+    learner_svm_stars$predict_newdata(learner_svm_stars, stack_stars, quiet = TRUE)
   },
 
   "04-terra-sequential" = terra::predict(stack, e1071svm, cores = 1, cpkgs = "e1071"),
@@ -91,22 +91,22 @@ bm = bench::mark(
 
   "06-stars-sequential" = {
     stack_stars_df = as.data.frame(split(stack_stars, "band"))
-    predict(e1071svm, stack_stars_df)
+    learner_svm_stars$predict(e1071svm, stack_stars_df)
   },
 
   "07-mlr3-terra-4-cores" = {
     plan(multisession, workers = 4)
-    predict_spatial_newdata(learner_svm, stack)
+    learner_svm$predict_newdata(learner_svm, stack)
   },
 
   "08-mlr3-raster-4-cores" = {
     plan(multisession, workers = 4)
-    predict_spatial_newdata(learner_svm_rasterbrick, stack_rasterbrick)
+    learner_svm_rasterbrick$predict_newdata(learner_svm_rasterbrick, stack_rasterbrick)
   },
 
   "09-mlr3-stars-4-cores" = {
     plan(multisession, workers = 4)
-    predict_spatial_newdata(learner_svm_stars, stack_stars, quiet = TRUE)
+    learner_svm_stars$predict_newdata(learner_svm_stars, stack_stars, quiet = TRUE)
   },
 
   "10-terra-4-cores" = terra::predict(stack, e1071svm, cores = 4, cpkgs = "e1071"),
