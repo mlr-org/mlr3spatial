@@ -192,7 +192,7 @@
 <div id="prediction" class="section level3">
 <h3 class="hasAnchor">
 <a href="#prediction" class="anchor"></a>Prediction</h3>
-<p>For prediction <code><a href="../reference/predict_spatial_newdata.html">predict_spatial_newdata()</a></code> is used. It will return a <code><a href="https://mlr3.mlr-org.com/reference/Prediction.html">mlr3::Prediction()</a></code> object and, if argument <code>filename</code> is supplied, will also write the spatial object to disk (for file types supported by the respective package).</p>
+<p>For prediction <code>predict_newdata()</code> is used. It will return a <code><a href="https://mlr3.mlr-org.com/reference/Prediction.html">mlr3::Prediction()</a></code> object and, if argument <code>filename</code> is supplied, will also write the spatial object to disk (for file types supported by the respective package).</p>
 <p>In the following, we will compare the way to conduct the prediction using {mlr3spatial} with the “native” way of fitting an <code><a href="https://rdrr.io/pkg/e1071/man/svm.html">e1071::svm()</a></code> model and predicting with <code><a href="https://rdrr.io/pkg/terra/man/predict.html">terra::predict()</a></code>.</p>
 <div id="mlr3spatial" class="section level4">
 <h4 class="hasAnchor">
@@ -207,7 +207,7 @@
 <span class="fu"><a href="https://future.futureverse.org/reference/plan.html">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span>
 
 <span class="va">file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span><span class="st">"target"</span>, fileext <span class="op">=</span> <span class="st">".tif"</span><span class="op">)</span>
-<span class="va">pred</span> <span class="op">=</span> <span class="fu"><a href="../reference/predict_spatial_newdata.html">predict_spatial_newdata</a></span><span class="op">(</span><span class="va">learner_svm</span>, <span class="va">stack</span>, filename <span class="op">=</span> <span class="va">file</span><span class="op">)</span>
+<span class="va">pred</span> <span class="op">=</span> <span class="va">learner_svm</span><span class="op">$</span><span class="fu">predict_newdata</span><span class="op">(</span><span class="va">stack</span>, filename <span class="op">=</span> <span class="va">file</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">pred</span><span class="op">)</span>
 <span class="co">#&gt; &lt;PredictionClassif&gt; for 250000 observations:</span>
@@ -218,7 +218,7 @@
 <span class="co">#&gt; ---                       </span>
 <span class="co">#&gt;      249998  TRUE     TRUE</span>
 <span class="co">#&gt;      249999  TRUE     TRUE</span>
-<span class="co">#&gt;      250000  TRUE    FALSE</span></code></pre></div>
+<span class="co">#&gt;      250000  TRUE     TRUE</span></code></pre></div>
 </div>
 <div id="terra" class="section level4">
 <h4 class="hasAnchor">

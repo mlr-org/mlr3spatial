@@ -181,17 +181,17 @@
 <code class="sourceCode R"><span class="va">bm</span> <span class="op">=</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span><span class="op">(</span>
   <span class="st">"01-mlr3-terra-sequential"</span> <span class="op">=</span> <span class="op">{</span>
     <span class="fu"><a href="https://future.futureverse.org/reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-    <span class="fu"><a href="../reference/predict_spatial_newdata.html">predict_spatial_newdata</a></span><span class="op">(</span><span class="va">learner_svm</span>, <span class="va">stack</span><span class="op">)</span>
+    <span class="va">learner_svm</span><span class="op">$</span><span class="fu">predict_newdata</span><span class="op">(</span><span class="va">learner_svm</span>, <span class="va">stack</span><span class="op">)</span>
   <span class="op">}</span>,
 
   <span class="st">"02-mlr3-raster-sequential"</span> <span class="op">=</span> <span class="op">{</span>
     <span class="fu"><a href="https://future.futureverse.org/reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-    <span class="fu"><a href="../reference/predict_spatial_newdata.html">predict_spatial_newdata</a></span><span class="op">(</span><span class="va">learner_svm_rasterbrick</span>, <span class="va">stack_rasterbrick</span><span class="op">)</span>
+    <span class="va">learner_svm_rasterbrick</span><span class="op">$</span><span class="fu">predict_newdata</span><span class="op">(</span><span class="va">learner_svm_rasterbrick</span>, <span class="va">stack_rasterbrick</span><span class="op">)</span>
   <span class="op">}</span>,
 
   <span class="st">"03-mlr3-stars-sequential"</span> <span class="op">=</span> <span class="op">{</span>
     <span class="fu"><a href="https://future.futureverse.org/reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-    <span class="fu"><a href="../reference/predict_spatial_newdata.html">predict_spatial_newdata</a></span><span class="op">(</span><span class="va">learner_svm_stars</span>, <span class="va">stack_stars</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+    <span class="va">learner_svm_stars</span><span class="op">$</span><span class="fu">predict_newdata</span><span class="op">(</span><span class="va">learner_svm_stars</span>, <span class="va">stack_stars</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
   <span class="op">}</span>,
 
   <span class="st">"04-terra-sequential"</span> <span class="op">=</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/predict.html">predict</a></span><span class="op">(</span><span class="va">stack</span>, <span class="va">e1071svm</span>, cores <span class="op">=</span> <span class="fl">1</span>, cpkgs <span class="op">=</span> <span class="st">"e1071"</span><span class="op">)</span>,
@@ -200,22 +200,22 @@
 
   <span class="st">"06-stars-sequential"</span> <span class="op">=</span> <span class="op">{</span>
     <span class="va">stack_stars_df</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/merge.html">split</a></span><span class="op">(</span><span class="va">stack_stars</span>, <span class="st">"band"</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/raster/man/predict.html">predict</a></span><span class="op">(</span><span class="va">e1071svm</span>, <span class="va">stack_stars_df</span><span class="op">)</span>
+    <span class="va">learner_svm_stars</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">e1071svm</span>, <span class="va">stack_stars_df</span><span class="op">)</span>
   <span class="op">}</span>,
 
   <span class="st">"07-mlr3-terra-4-cores"</span> <span class="op">=</span> <span class="op">{</span>
     <span class="fu"><a href="https://future.futureverse.org/reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
-    <span class="fu"><a href="../reference/predict_spatial_newdata.html">predict_spatial_newdata</a></span><span class="op">(</span><span class="va">learner_svm</span>, <span class="va">stack</span><span class="op">)</span>
+    <span class="va">learner_svm</span><span class="op">$</span><span class="fu">predict_newdata</span><span class="op">(</span><span class="va">learner_svm</span>, <span class="va">stack</span><span class="op">)</span>
   <span class="op">}</span>,
 
   <span class="st">"08-mlr3-raster-4-cores"</span> <span class="op">=</span> <span class="op">{</span>
     <span class="fu"><a href="https://future.futureverse.org/reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
-    <span class="fu"><a href="../reference/predict_spatial_newdata.html">predict_spatial_newdata</a></span><span class="op">(</span><span class="va">learner_svm_rasterbrick</span>, <span class="va">stack_rasterbrick</span><span class="op">)</span>
+    <span class="va">learner_svm_rasterbrick</span><span class="op">$</span><span class="fu">predict_newdata</span><span class="op">(</span><span class="va">learner_svm_rasterbrick</span>, <span class="va">stack_rasterbrick</span><span class="op">)</span>
   <span class="op">}</span>,
 
   <span class="st">"09-mlr3-stars-4-cores"</span> <span class="op">=</span> <span class="op">{</span>
     <span class="fu"><a href="https://future.futureverse.org/reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
-    <span class="fu"><a href="../reference/predict_spatial_newdata.html">predict_spatial_newdata</a></span><span class="op">(</span><span class="va">learner_svm_stars</span>, <span class="va">stack_stars</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+    <span class="va">learner_svm_stars</span><span class="op">$</span><span class="fu">predict_newdata</span><span class="op">(</span><span class="va">learner_svm_stars</span>, <span class="va">stack_stars</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
   <span class="op">}</span>,
 
   <span class="st">"10-terra-4-cores"</span> <span class="op">=</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/predict.html">predict</a></span><span class="op">(</span><span class="va">stack</span>, <span class="va">e1071svm</span>, cores <span class="op">=</span> <span class="fl">4</span>, cpkgs <span class="op">=</span> <span class="st">"e1071"</span><span class="op">)</span>,

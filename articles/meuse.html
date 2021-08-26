@@ -130,7 +130,7 @@
 
     
     
-<p>The following code showcases a very simple example how to use an <code>sf</code> object as a <code>DataBackend</code> and a direct input into <code><a href="../reference/predict_spatial_newdata.html">predict_spatial_newdata()</a></code>.</p>
+<p>The following code showcases a very simple example how to use an <code>sf</code> object as a <code>DataBackend</code> and a direct input into <code>predict_newdata()</code>.</p>
 <p>Here, the <code>meuse</code> dataset represents the use case for a spatial points dataset (= vector dataset).</p>
 <p>Note that this examples omits hyperparameter tuning when training the model and also does not perform a cross-validation for performance estimation. Both should be done in a real-world scenario.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -165,9 +165,9 @@
 
 <span class="co"># set the output file and predict with the learner</span>
 <span class="va">file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span><span class="st">"out"</span>, fileext <span class="op">=</span> <span class="st">".gpkg"</span><span class="op">)</span>
-<span class="va">pred</span> <span class="op">=</span> <span class="fu"><a href="../reference/predict_spatial_newdata.html">predict_spatial_newdata</a></span><span class="op">(</span><span class="va">learner</span>, <span class="va">newdata</span>, filename <span class="op">=</span> <span class="va">file</span><span class="op">)</span>
-<span class="co">#&gt; Writing layer `out3f9129a0e27e' to data source </span>
-<span class="co">#&gt;   `/tmp/RtmpvKAY7F/out3f9129a0e27e.gpkg' using driver `GPKG'</span>
+<span class="va">pred</span> <span class="op">=</span> <span class="va">learner</span><span class="op">$</span><span class="fu">predict_newdata</span><span class="op">(</span><span class="va">newdata</span>, filename <span class="op">=</span> <span class="va">file</span><span class="op">)</span>
+<span class="co">#&gt; Writing layer `out3fc7a3ae9dc' to data source </span>
+<span class="co">#&gt;   `/tmp/RtmpPnEuuL/out3fc7a3ae9dc.gpkg' using driver `GPKG'</span>
 <span class="co">#&gt; Writing 52 features with 1 fields and geometry type Point.</span>
 
 <span class="co"># calculate "Root Mean Square Error" (RMSE) measure</span>
@@ -178,7 +178,7 @@
 <span class="co"># calculate residuals</span>
 <span class="va">pred_res</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">pred</span><span class="op">$</span><span class="va">truth</span> <span class="op">-</span> <span class="va">pred</span><span class="op">$</span><span class="va">response</span><span class="op">)</span>
 
-<span class="co"># read geopackage which was created during the `predict_spatial_newdata()` call</span>
+<span class="co"># read geopackage which was created during the `predict_newdata()` call</span>
 <span class="va">gpkg</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="va">file</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="va">gpkg</span><span class="op">$</span><span class="va">pred</span> <span class="op">=</span> <span class="va">pred_res</span>
 
