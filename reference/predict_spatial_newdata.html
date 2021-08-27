@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Predict on spatial objects with mlr3 learners — predict_newdata_s3.SpatRaster • mlr3spatial</title>
+<title>Predict on spatial objects with mlr3 learners — predict_spatial_newdata • mlr3spatial</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -47,10 +47,10 @@
 
 
 
-<meta property="og:title" content="Predict on spatial objects with mlr3 learners — predict_newdata_s3.SpatRaster" />
+<meta property="og:title" content="Predict on spatial objects with mlr3 learners — predict_spatial_newdata" />
 <meta property="og:description" content="This function allows to directly predict mlr3 learners on various spatial
-xs (see section &quot;Supported Spatial Classes&quot;). It returns an
-mlr3::Prediction x and (optionally) the same x that was used for
+objects (see section &quot;Supported Spatial Classes&quot;). It returns an
+mlr3::Prediction object and (optionally) the same object that was used for
 the prediction." />
 <meta name="twitter:card" content="summary" />
 
@@ -161,72 +161,103 @@ the prediction." />
     <div class="page-header">
     <h1>Predict on spatial objects with mlr3 learners</h1>
     <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/predict_spatial.R'><code>R/predict_spatial.R</code></a></small>
-    <div class="hidden name"><code>predict_newdata_s3.Rd</code></div>
+    <div class="hidden name"><code>predict_spatial_newdata.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>This function allows to directly predict mlr3 learners on various spatial
-xs (see section "Supported Spatial Classes"). It returns an
-<a href='https://mlr3.mlr-org.com/reference/Prediction.html'>mlr3::Prediction</a> x and (optionally) the same x that was used for
+objects (see section "Supported Spatial Classes"). It returns an
+<a href='https://mlr3.mlr-org.com/reference/Prediction.html'>mlr3::Prediction</a> object and (optionally) the same object that was used for
 the prediction.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for SpatRaster</span>
-<span class='fu'>predict_newdata_s3</span><span class='op'>(</span><span class='va'>x</span>, task <span class='op'>=</span> <span class='cn'>NULL</span>, self <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>predict_spatial_newdata</span><span class='op'>(</span>
+  <span class='va'>learner</span>,
+  <span class='va'>object</span>,
+  filename <span class='op'>=</span> <span class='cn'>NULL</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
+
+<span class='co'># S3 method for SpatRaster</span>
+<span class='fu'>predict_spatial_newdata</span><span class='op'>(</span>
+  <span class='va'>learner</span>,
+  <span class='va'>object</span>,
+  filename <span class='op'>=</span> <span class='cn'>NULL</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for RasterBrick</span>
-<span class='fu'>predict_newdata_s3</span><span class='op'>(</span><span class='va'>x</span>, task <span class='op'>=</span> <span class='cn'>NULL</span>, self <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='fu'>predict_spatial_newdata</span><span class='op'>(</span>
+  <span class='va'>learner</span>,
+  <span class='va'>object</span>,
+  filename <span class='op'>=</span> <span class='cn'>NULL</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for sf</span>
-<span class='fu'>predict_newdata_s3</span><span class='op'>(</span><span class='va'>x</span>, task <span class='op'>=</span> <span class='cn'>NULL</span>, self <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='fu'>predict_spatial_newdata</span><span class='op'>(</span>
+  <span class='va'>learner</span>,
+  <span class='va'>object</span>,
+  filename <span class='op'>=</span> <span class='cn'>NULL</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for stars</span>
-<span class='fu'>predict_newdata_s3</span><span class='op'>(</span><span class='va'>x</span>, task <span class='op'>=</span> <span class='cn'>NULL</span>, self <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>predict_spatial_newdata</span><span class='op'>(</span>
+  <span class='va'>learner</span>,
+  <span class='va'>object</span>,
+  filename <span class='op'>=</span> <span class='cn'>NULL</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p><code>[SpatRaster, sf, RasterBrick]</code><br />
-Object to predict on which is treated as "newdata".</p></td>
+      <th>learner</th>
+      <td><p><a href='https://mlr3.mlr-org.com/reference/Learner.html'>mlr3::Learner</a><br />
+Any <a href='https://mlr3.mlr-org.com/reference/Learner.html'>mlr3::Learner</a>.</p></td>
     </tr>
     <tr>
-      <th>task</th>
-      <td><p>(Task) For internal use only.</p></td>
+      <th>object</th>
+      <td><p><code>[SpatRaster, sf, RasterBrick]</code></p></td>
     </tr>
     <tr>
-      <th>self</th>
-      <td><p>(<code>any</code>)<br />
-For internal use only.</p></td>
+      <th>filename</th>
+      <td><p><code>[character]</code><br />
+Filename of optional file to write prediction values into.
+For raster-like inputs this can be a <code>.tif</code> file.
+For sf objects, this could be a <code>.gpgk</code> or a <code>.shp</code> file.</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Passed down to the respective predict method. See section
-"Additional arguments".</p></td>
+      <th>overwrite</th>
+      <td><p><code>[logical]</code><br />
+Should a possibly existing file on disk (referring to argument <code>filename</code>)
+be overwritten?</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p><code>[logical]</code><br />
+Whether to suppress possible console output when invoking the writing
+methods of the respective spatial classes.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>mlr3::Prediction</p>
-    <h2 class="hasAnchor" id="additional-arguments"><a class="anchor" href="#additional-arguments"></a>Additional arguments</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    
-
-<ul>
-<li><p><code>filename</code> <code>[character]</code><br />
-Filename of optional file to write prediction values into.
-For raster-like inputs this can be a <code>.tif</code> file.
-For sf xs, this could be a <code>.gpgk</code> or a <code>.shp</code> file.</p></li>
-<li><p><code>overwrite</code> <code>[logical]</code><br />
-Should a possibly existing file on disk (referring to argument <code>filename</code>)
-be overwritten?</p></li>
-<li><p><code>quiet</code> <code>[logical]</code><br />
-Whether to suppress possible console output when invoking the writing
-methods of the respective spatial classes.</p></li>
-</ul>
-
+    <p>A direct prediction on a subset of a <a href='https://mlr3.mlr-org.com/reference/Task.html'>mlr3::Task</a> object is not possible for
+<a href='https://CRAN.R-project.org/package=terra'><span class="pkg">terra</span></a> objects as <a href='https://CRAN.R-project.org/package=terra'><span class="pkg">terra</span></a> objects contain external pointers
+which are not compatible with future-based parallelization. Due to this, the
+values from the <a href='https://CRAN.R-project.org/package=terra'><span class="pkg">terra</span></a> object need to be extracted first into a
+<code>data.table</code>.</p>
     <h2 class="hasAnchor" id="parallelization"><a class="anchor" href="#parallelization"></a>Parallelization</h2>
 
     
@@ -238,6 +269,17 @@ enabled by setting the <code>$parallel_predict = TRUE</code> flag in the learner
 supplying a parallel future plan before executing the prediction, for example
 <code><a href='https://future.futureverse.org/reference/plan.html'>future::plan(multisession, workers = 2)</a></code>. See the examples for more
 information.</p>
+    <h2 class="hasAnchor" id="spatial-classes-support"><a class="anchor" href="#spatial-classes-support"></a>Spatial Classes support</h2>
+
+    
+
+
+<p>Task and Prediction support for the following classes is planned:</p><ul>
+<li><p>sf</p></li>
+<li><p>stars</p></li>
+<li><p>raster</p></li>
+</ul>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='fu'>mlr3misc</span><span class='fu'>::</span><span class='fu'><a href='https://mlr3misc.mlr-org.com/reference/require_namespaces.html'>require_namespaces</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"terra"</span>, <span class='st'>"future"</span><span class='op'>)</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
@@ -247,7 +289,7 @@ information.</p>
   <span class='co'># train</span>
   <span class='va'>learner</span> <span class='op'>=</span> <span class='fu'>lrn</span><span class='op'>(</span><span class='st'>"classif.featureless"</span><span class='op'>)</span>
   <span class='va'>learner</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>task</span>, row_ids <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='va'>task</span><span class='op'>$</span><span class='va'>nrow</span>, <span class='fl'>500</span><span class='op'>)</span><span class='op'>)</span>
-  <span class='va'>learner</span><span class='op'>$</span><span class='fu'>predict_newdata</span><span class='op'>(</span><span class='va'>stack</span><span class='op'>)</span>
+  <span class='fu'>predict_spatial_newdata</span><span class='op'>(</span><span class='va'>learner</span>, <span class='va'>stack</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div><div class='output co'>#&gt; &lt;PredictionClassif&gt; for 250000 observations:
 #&gt;     row_ids truth response
