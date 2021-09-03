@@ -22,7 +22,7 @@
 #' sequence e.g. `200:300`.
 #'
 #' @export
-DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
+DataBackendSpatial = R6Class("DataBackendSpatial",
   inherit = DataBackend, cloneable = FALSE,
   public = list(
 
@@ -34,7 +34,16 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
     #'    A raster object.
     #'
     initialize = function(data) {
-      private$.data = assert_class(data, "SpatRaster")
+      assert_class(data, "SpatRaster")
+      # FIXME: use inMemory function
+      # write raster to disk
+      if (all(data@ptr$inMemory)) {
+        filename = tempfile(fileext = ".tif")
+        writeRaster(data, filename = filename)
+        data = rast(filename)
+      }
+      private$.data = sources(assert_class(data, "SpatRaster"))$source
+      private$.categories = cats(stack)
       self$data_formats = "data.table"
     },
 
@@ -49,11 +58,11 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
     #' @param data_format (`character(1)`)\cr
     #'   Desired data format. Currently only `"data.table"` supported.
     data = function(rows, cols, data_format = "data.table") {
-      stack = private$.data
+      stack = self$stack
       rows = assert_integerish(rows, coerce = TRUE)
       assert_names(cols, type = "unique")
       assert_choice(data_format, self$data_formats)
-      cols = intersect(cols, names(private$.data))
+      cols = intersect(cols, names(self$stack))
 
       if (isTRUE(all.equal(rows, rows[1]:rows[length(rows)]))) {
         # block read
@@ -83,7 +92,7 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
     #'
     #' @return [data.table::data.table()] of the first `n` rows.
     head = function(n = 6L) {
-      as.data.table(terra::head(private$.data, n))
+      as.data.table(terra::head(self$stack, n))
     },
 
     #' @description
@@ -98,16 +107,16 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
     #' @return Named `list()` of distinct values.
     distinct = function(rows, cols, na_rm = TRUE) {
       assert_names(cols, type = "unique")
+      if (length(cols) == 0) return(NULL)
       cols = intersect(cols, self$colnames)
 
       if (is.null(rows)) {
-        stack = terra::subset(private$.data, cols)
+        stack = terra::subset(self$stack, cols)
         if (all(terra::is.factor(stack))) {
           # fastest
           res = as.list(map_dtc(cats(stack), function(layer) as.data.table(layer)[, 2]))
         } else {
           # fast
-          # bug: terra does not respect categorical raster layers
           res = terra::unique(stack, incomparables = TRUE)
           set_names(res, names(stack))
         }
@@ -128,7 +137,7 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
     missings = function(rows, cols) {
       cols = intersect(cols, self$colnames)
 
-      stack = private$.data
+      stack = self$stack
       res = freq(stack, value = NA)
       set_names(res[, "count"], names(stack))[cols]
     }
@@ -139,42 +148,50 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
     #' Returns vector of all distinct row identifiers, i.e. the contents of the primary key column.
     rownames = function(rhs) {
       assert_ro_binding(rhs)
-      1:ncell(private$.data)
+      1:ncell(self$stack)
     },
 
     #' @field colnames (`character()`)\cr
     #' Returns vector of all column names.
     colnames = function(rhs) {
       assert_ro_binding(rhs)
-      names(private$.data)
+      names(self$stack)
     },
 
     #' @field nrow (`integer(1)`)\cr
     #' Number of rows (observations).
     nrow = function(rhs) {
       assert_ro_binding(rhs)
-      ncell(private$.data)
+      ncell(self$stack)
     },
 
     #' @field ncol (`integer(1)`)\cr
     #' Number of columns (variables).
     ncol = function(rhs) {
       assert_ro_binding(rhs)
-      terra::nlyr(private$.data) + 1
+      terra::nlyr(self$stack) + 1
     },
 
     #' @field stack (`SpatRaster`)\cr
     #' Raster stack.
     stack = function(rhs) {
       assert_ro_binding(rhs)
-      private$.data
+      stack = rast(private$.data)
+      imap(private$.categories, function(category, n) {
+        if (nrow(category) > 0) {
+          setCats(stack, layer = n, value = category)
+        }
+      })
+      stack
     }
   ),
 
   private = list(
     .calculate_hash = function() {
-      mlr3misc::calculate_hash(self$compact_seq, private$.data)
-    }
+      mlr3misc::calculate_hash(self$compact_seq, self$stack)
+    },
+
+    .categories = NULL
   )
 )
 
@@ -189,5 +206,5 @@ DataBackendSpatRaster = R6Class("DataBackendSpatRaster",
 #' @return [DataBackend].
 #' @export
 as_data_backend.SpatRaster = function(data, primary_key = NULL, ...) { # nolint
-  DataBackendSpatRaster$new(data)
+  DataBackendSpatial$new(data)
 }

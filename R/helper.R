@@ -1,3 +1,23 @@
+#' @description 
+#' Writes square raster to disk in chunks. Internal helper function.
+write_raster = function(data) {
+  # create temp file
+  browser()
+  filename = tempfile(fileext = ".tif")
+  target_raster = rast(ncols = nrow(data), nrows = nrow(data), xmin = 0, xmax = nrow(data), ymin = 0, ymax = nrow(data))
+  # calculate block size
+  bs = block_size(target_raster, 100)
+  # initialize target raster
+  writeStart(target_raster, filename = filename)
+  # write values in chunks
+  pmap(list(bs$row, bs$nrows), function(row, nrows) {
+    terra::writeValues(target_raster, data[row:(row+nrows-1), 1:nrow(data)], row, nrows)
+  })
+  writeStop(target_raster)
+  rast(filename)
+}
+
+
 #' @title Generate Demo Raster
 #'
 #' @description
@@ -10,7 +30,7 @@
 demo_raster = function(dimension) {
   assert_int(dimension, lower = 2)
   data = matrix(c(stats::rnorm(floor(dimension^2 / 2), 0, 1), stats::rnorm(ceiling(dimension^2 / 2), 1, 1)), nrow = dimension)
-  terra::rast(data)
+  write_raster(data)
 }
 
 #' @title Generate Demo Raster Stack
@@ -30,7 +50,8 @@ demo_stack = function(size = 500, layers = 5) {
 
   dimension = floor(sqrt(size / layers * 1e+06 / 8))
   raster_features = replicate(layers - 1, demo_raster(dimension))
-  raster_response = rast(matrix(c(rep(0, floor(dimension^2 / 2)), rep(1, ceiling(dimension^2 / 2))), nrow = dimension))
+  data_response = matrix(c(rep(0, floor(dimension^2 / 2)), rep(1, ceiling(dimension^2 / 2))), nrow = dimension)
+  raster_response = write_raster(data_response)
   raster = rast(c(raster_features, list(raster_response)))
   names(raster) = c(paste0("x_", 1:(layers - 1)), "y")
   raster
