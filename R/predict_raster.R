@@ -1,5 +1,5 @@
 #' @export
-predict_raster = function(task, learner, chunksize = 100L, filename) {
+predict_raster = function(task, learner, chunksize = 100L, filename = tempfile(fileext = ".tif")) {
   assert_learner(learner)
   assert_task(task)
   assert_int(chunksize)
@@ -11,8 +11,8 @@ predict_raster = function(task, learner, chunksize = 100L, filename) {
   bs = block_size(stack, chunksize)
 
   # initialize target raster
-  target_raster = terra::rast(ext(stack), res = res(stack), crs = crs(stack))
-  writeStart(target_raster, filename = filename)
+  target_raster = terra::rast(terra::ext(stack), res = terra::res(stack), crs = terra::crs(stack))
+  terra::writeStart(target_raster, filename = filename)
 
   lg$info("Start raster prediction")
   lg$info("Prediction is executed in %i MB chunks", chunksize)
@@ -23,6 +23,7 @@ predict_raster = function(task, learner, chunksize = 100L, filename) {
     lg$info("Chunk %i of %i finished", n, length(bs$row))
   })
 
-  writeStop(target_raster)
+  terra::writeStop(target_raster)
   lg$info("Finished raster prediction in %i seconds", as.integer(proc.time()[3] - start_time))
+  target_raster
 }
