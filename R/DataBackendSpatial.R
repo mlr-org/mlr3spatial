@@ -39,11 +39,12 @@ DataBackendSpatial = R6Class("DataBackendSpatial",
       # write raster to disk
       if (all(data@ptr$inMemory)) {
         filename = tempfile(fileext = ".tif")
-        writeRaster(data, filename = filename)
-        data = rast(filename)
+        terra::writeRaster(data, filename = filename)
+        data = terra::rast(filename)
       }
-      private$.data = sources(assert_class(data, "SpatRaster"))$source
-      private$.categories = cats(stack)
+      private$.data = terra::sources(assert_class(data, "SpatRaster"))$source
+      private$.categories = terra::cats(data)
+      private$.layer_names = names(data)
       self$data_formats = "data.table"
     },
 
@@ -62,28 +63,28 @@ DataBackendSpatial = R6Class("DataBackendSpatial",
       rows = assert_integerish(rows, coerce = TRUE)
       assert_names(cols, type = "unique")
       assert_choice(data_format, self$data_formats)
-      cols = intersect(cols, names(self$stack))
+      cols = terra::intersect(cols, names(self$stack))
 
       if (isTRUE(all.equal(rows, rows[1]:rows[length(rows)]))) {
         # block read
-        readStart(stack)
-        on.exit(readStop(stack))
+        terra::readStart(stack)
+        on.exit(terra::readStop(stack))
         # determine rows to read
-        cells = rowColFromCell(stack, rows)
+        cells = terra::rowColFromCell(stack, rows)
         row = cells[1, 1]
         nrows = cells[dim(cells)[1], 1] - cells[1, 1] + 1
-        res = as.data.table(readValues(stack, row = row, nrows = nrows, dataframe = TRUE))
+        res = as.data.table(terra::readValues(stack, row = row, nrows = nrows, dataframe = TRUE))
         # subset cells and features
         res = res[cells[1, 2]:(cells[1, 2] + length(rows) - 1), cols, with = FALSE]
-       
+
       } else {
         # cell read
-        cells = rowColFromCell(stack, rows)
+        cells = terra::rowColFromCell(stack, rows)
         res = rbindlist(apply(cells, 1, function(x) stack[x[1], x[2]][cols]))
       }
       res
     },
-    
+
     #' @description
     #' Retrieve the first `n` rows.
     #'
@@ -107,14 +108,16 @@ DataBackendSpatial = R6Class("DataBackendSpatial",
     #' @return Named `list()` of distinct values.
     distinct = function(rows, cols, na_rm = TRUE) {
       assert_names(cols, type = "unique")
-      if (length(cols) == 0) return(NULL)
+      if (length(cols) == 0) {
+        return(NULL)
+      }
       cols = intersect(cols, self$colnames)
 
       if (is.null(rows)) {
         stack = terra::subset(self$stack, cols)
         if (all(terra::is.factor(stack))) {
           # fastest
-          res = as.list(map_dtc(cats(stack), function(layer) as.data.table(layer)[, 2]))
+          res = as.list(map_dtc(terra::cats(stack), function(layer) as.data.table(layer)[, 2]))
         } else {
           # fast
           res = terra::unique(stack, incomparables = TRUE)
@@ -135,10 +138,10 @@ DataBackendSpatial = R6Class("DataBackendSpatial",
     #'
     #' @return Total of missing values per column (named `numeric()`).
     missings = function(rows, cols) {
-      cols = intersect(cols, self$colnames)
+      cols = terra::intersect(cols, self$colnames)
 
       stack = self$stack
-      res = freq(stack, value = NA)
+      res = terra::freq(stack, value = NA)
       set_names(res[, "count"], names(stack))[cols]
     }
   ),
@@ -148,7 +151,7 @@ DataBackendSpatial = R6Class("DataBackendSpatial",
     #' Returns vector of all distinct row identifiers, i.e. the contents of the primary key column.
     rownames = function(rhs) {
       assert_ro_binding(rhs)
-      1:ncell(self$stack)
+      1:terra::ncell(self$stack)
     },
 
     #' @field colnames (`character()`)\cr
@@ -162,7 +165,7 @@ DataBackendSpatial = R6Class("DataBackendSpatial",
     #' Number of rows (observations).
     nrow = function(rhs) {
       assert_ro_binding(rhs)
-      ncell(self$stack)
+      terra::ncell(self$stack)
     },
 
     #' @field ncol (`integer(1)`)\cr
@@ -176,10 +179,11 @@ DataBackendSpatial = R6Class("DataBackendSpatial",
     #' Raster stack.
     stack = function(rhs) {
       assert_ro_binding(rhs)
-      stack = rast(private$.data)
+      stack = terra::rast(private$.data)
+      names(stack) = private$.layer_names
       imap(private$.categories, function(category, n) {
         if (nrow(category) > 0) {
-          setCats(stack, layer = n, value = category)
+          terra::setCats(stack, layer = n, value = category)
         }
       })
       stack
@@ -191,18 +195,19 @@ DataBackendSpatial = R6Class("DataBackendSpatial",
       mlr3misc::calculate_hash(self$compact_seq, self$stack)
     },
 
-    .categories = NULL
+    .categories = NULL,
+    .layer_names = NULL
   )
 )
 
 #' @title Create a Data Backend
-#' 
+#'
 #' @description
 #' Wraps a [DataBackend] around `SpatRaster` objects.
-#' 
+#'
 #' @param data (`SpatRaster`)\cr
 #'    A `SpatRaster` object to create a [DataBackend] from.
-#' 
+#'
 #' @return [DataBackend].
 #' @export
 as_data_backend.SpatRaster = function(data, primary_key = NULL, ...) { # nolint
