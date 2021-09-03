@@ -2,7 +2,6 @@
 #' @import checkmate
 #' @import mlr3misc
 #' @import mlr3
-#' @import terra
 #' @importFrom R6 R6Class is.R6
 #' @references
 #' \cite{mlr3spatial}{pkg::citation}

@@ -1,20 +1,20 @@
-#' @description 
+#' @description
 #' Writes square raster to disk in chunks. Internal helper function.
 write_raster = function(data) {
   # create temp file
-  browser()
   filename = tempfile(fileext = ".tif")
-  target_raster = rast(ncols = nrow(data), nrows = nrow(data), xmin = 0, xmax = nrow(data), ymin = 0, ymax = nrow(data))
+  target_raster = terra::rast(ncols = terra::nrow(data), nrows = terra::nrow(data),
+    xmin = 0, xmax = terra::nrow(data), ymin = 0, ymax = terra::nrow(data))
   # calculate block size
   bs = block_size(target_raster, 100)
   # initialize target raster
-  writeStart(target_raster, filename = filename)
+  terra::writeStart(target_raster, filename = filename)
   # write values in chunks
   pmap(list(bs$row, bs$nrows), function(row, nrows) {
-    terra::writeValues(target_raster, data[row:(row+nrows-1), 1:nrow(data)], row, nrows)
+    terra::writeValues(target_raster, data[row:(row + nrows - 1), 1:terra::nrow(data)], row, nrows)
   })
-  writeStop(target_raster)
-  rast(filename)
+  terra::writeStop(target_raster)
+  terra::rast(filename)
 }
 
 
@@ -52,7 +52,7 @@ demo_stack = function(size = 500, layers = 5) {
   raster_features = replicate(layers - 1, demo_raster(dimension))
   data_response = matrix(c(rep(0, floor(dimension^2 / 2)), rep(1, ceiling(dimension^2 / 2))), nrow = dimension)
   raster_response = write_raster(data_response)
-  raster = rast(c(raster_features, list(raster_response)))
+  raster = terra::rast(c(raster_features, list(raster_response)))
   names(raster) = c(paste0("x_", 1:(layers - 1)), "y")
   raster
 }
@@ -73,14 +73,14 @@ block_size = function(raster, chunksize) {
   chunksize = assert_numeric(chunksize) * 1e+06
 
   # one cell takes 8 byte memory
-  row_size = ncol(raster) * nlyr(raster) * 8
+  row_size = terra::ncol(raster) * terra::nlyr(raster) * 8
   # number of rows in one block
   nrow = chunksize / row_size
   # start row indices
   row = seq(1, nrow(raster), by = nrow)
   # number of rows to read per block
   nrows = rep(nrow, length(row))
-  nrows[length(nrows)] = nrow(raster) - row[length(row)] + 1
+  nrows[length(nrows)] = terra::nrow(raster) - row[length(row)] + 1
 
 
   return(list(row = row, nrows = nrows))
