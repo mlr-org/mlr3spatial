@@ -1,8 +1,8 @@
-# stack_classif = demo_stack(size = 10)
-# value = data.table(ID = c(0, 1), y = c("negative", "positive"))
-# terra::setCats(stack_classif, layer = "y", value = value)
-# colnames = names(stack_classif)
-# terra::writeRaster(stack_classif, "demo.tif", overwrite = TRUE)
+stack_classif = demo_stack(size = 1000)
+value = data.table(ID = c(0, 1), y = c("negative", "positive"))
+terra::setCats(stack_classif, layer = "y", value = value)
+colnames = names(stack_classif)
+terra::writeRaster(stack_classif, "demo.tif", overwrite = TRUE)
 
 test_that("predict_raster sequential works", {
   stack_classif = terra::rast("demo.tif")
@@ -53,8 +53,13 @@ test_that("parallelization works", {
   learner$parallel_predict = TRUE
   # 42s mit size = 1000
   # multicore works, multisession throws external pointer failure
-  system.time(with_future("multisession", workers = 4, {
+  system.time(with_future("multicore", workers = 2, {
     pred = predict_raster(task, learner, chunksize = 1000L)
     expect_class(pred, "SpatRaster")
   }))
 })
+
+learner$parallel_predict = TRUE
+system.time(with_future("multisession", workers = 4, {
+  learner$predict(task, row_ids = 1:task$nrow)
+}))

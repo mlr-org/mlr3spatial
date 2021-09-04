@@ -57,7 +57,7 @@ demo_stack = function(size = 500, layers = 5) {
   assert_int(size, lower = 1)
   assert_int(layers, lower = 1)
 
-  dimension = floor(sqrt(size / layers * 1e+06 / 8))
+  dimension = floor(sqrt(size / layers * 1e+06 / 4))
   raster_features = replicate(layers - 1, demo_raster(dimension))
   data_response = matrix(c(rep(0, floor(dimension^2 / 2)), rep(1, ceiling(dimension^2 / 2))), nrow = dimension)
   raster_response = write_raster(data_response)
