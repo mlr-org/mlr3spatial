@@ -33,7 +33,7 @@ See the vignette on ["Benchmarking parallel predictions"](https://mlr3spatial.ml
 
 In the following, we showcase a step-by-step example how to handle a multi-layer raster object from package {terra}.
 
-## Use Case - {terra} objects
+## Use Case - {stars} objects
 
 ### Data Preparation
 
@@ -48,7 +48,7 @@ The `"Error in (function (x)  : attempt to apply non-function"` error can be ign
 library("mlr3")
 library("mlr3spatial")
 library("mlr3learners")
-library("terra")
+library("stars")
 library("e1071")
 ```
 
@@ -88,7 +88,8 @@ In the following, we will compare the way to conduct the prediction using {mlr3s
 #### mlr3spatial
 
 ```{r}
-ras = predict_spatial(task, learner_svm)
+ras = predict_spatial(task, learner_svm, format = "stars")
+names(ras) = "cadmium"
 
 print(ras)
 ```
@@ -111,7 +112,7 @@ colnames(stars_stack) = task$feature_names
 stars_pred = predict(svm_e1071, stars_stack)
 
 # subset stars object to one band only
-stars_pred_ras = stack[,,,1]
+stars_pred_ras = stack[, , , 1]
 # rename the layer name
 names(stars_pred_ras) = "pred"
 # assign predictions
@@ -125,7 +126,19 @@ print(stars_pred_ras)
 Now that we have executed two predictions, we would like to verify that these are actually identical.
 
 ```{r}
-all.equal(as.numeric(stars_pred_ras$pred), as.numeric(values(ras)))
+all.equal(as.numeric(stars_pred_ras$pred), as.numeric(ras$cadmium))
 ```
 
-We see some very minor differences which most likely relate to rounding.
+The rounding differences are caused by a bug in {terra}.
+
+### Visualization
+
+Finally we can plot the predictions.
+The colour vector is extract from the viridis color palette via `dput(viridis::viridis_pal()(12))`.
+
+```{r}
+plot(ras, col = c("#440154FF", "#482173FF", "#433E85FF", "#38598CFF", "#2D708EFF",
+  "#25858EFF", "#1E9B8AFF", "#2BB07FFF", "#51C56AFF", "#85D54AFF",
+  "#C2DF23FF", "#FDE725FF"))
+```
+
