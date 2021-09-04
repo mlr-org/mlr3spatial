@@ -7,11 +7,12 @@
 #' xy dimension of raster
 #'
 #' @keywords internal
-demo_spatraster = function(dimension) {
+demo_raster = function(dimension) {
+  assert_int(dimension, lower = 2)
   assert_int(dimension, lower = 2)
   data = matrix(c(stats::rnorm(floor(dimension^2 / 2), 0, 1),
     stats::rnorm(ceiling(dimension^2 / 2), 1, 1)), nrow = dimension)
-  terra::rast(data)
+  write_raster(data)
 }
 
 #' @title Generate a dummy 'terra::SpatRaster'
@@ -32,9 +33,9 @@ demo_stack_spatraster = function(size = 50, layers = 5) {
   assert_int(layers, lower = 1)
 
   dimension = floor(sqrt(size / layers * 1e+06 / 4))
-  raster_features = replicate(layers - 1, demo_spatraster(dimension))
-  raster_response = terra::rast(matrix(c(rep("FALSE", floor(dimension^2 / 2)),
-    rep("TRUE", ceiling(dimension^2 / 2))), nrow = dimension))
+  raster_features = replicate(layers - 1, demo_raster(dimension))
+  data_response = matrix(c(rep(0, floor(dimension^2 / 2)), rep(1, ceiling(dimension^2 / 2))), nrow = dimension)
+  raster_response = write_raster(data_response)
   raster = terra::rast(c(raster_features, list(raster_response)))
   names(raster) = c(paste0("x_", 1:(layers - 1)), "y")
   raster

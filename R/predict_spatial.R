@@ -53,111 +53,36 @@
 #'   predict_spatial_newdata(learner, stack)
 #' }
 #' @export
-predict_spatial_newdata = function(learner, object, filename = NULL, overwrite = FALSE, quiet = FALSE) {
-  UseMethod("predict_spatial_newdata", object = object)
-}
-
 #' @export
-#' @rdname predict_spatial_newdata
-predict_spatial_newdata.SpatRaster = function(learner, object, filename = NULL, overwrite = FALSE, quiet = FALSE) {
-  # read cell values from raster stack
-  if (!is.null(filename)) {
-    assert_path_for_output(filename, overwrite = overwrite)
-    # we need to init the values with a factor class, otherwise setting the
-    # values later on causes conversion troubles
-    target_raster = terra::rast(terra::ext(object), res = terra::res(object),
-      crs = terra::crs(object), vals = c("TRUE", "FALSE"))
-  }
-  terra::readStart(object)
-  newdata_pred = as.data.table(terra::readValues(object, dataframe = TRUE))
-  terra::readStop(object)
+predict_spatial = function(task, learner, chunksize = 100L) {
+  assert_class(task$backend, "DataBackendSpatial")
+  assert_learner(learner)
+  assert_task(task)
+  assert_int(chunksize)
+  stack = task$backend$stack
+  start_time = proc.time()[3]
 
-  pred = learner$predict_newdata(newdata_pred)
+  # calculate block size
+  bs = block_size(stack, chunksize)
 
-  if (!is.null(filename)) {
-    target_raster = terra::setValues(target_raster, pred$response)
-    terra::writeRaster(target_raster, filename, overwrite = overwrite)
-  }
-  return(pred)
-}
+  # initialize target raster
+  target_raster = terra::rast(terra::ext(stack), res = terra::res(stack), crs = terra::crs(stack))
+  terra::writeStart(target_raster, filename = tempfile(fileext = ".tif"), overwrite = TRUE)
 
-#' @export
-#' @rdname predict_spatial_newdata
-predict_spatial_newdata.RasterBrick = function(learner, object, filename = NULL, overwrite = FALSE, quiet = FALSE) {
-  # read cell values from raster stack
-  if (!is.null(filename)) {
-    assert_path_for_output(filename, overwrite = overwrite)
-    # we need to init the values with a factor class, otherwise setting the
-    # values later on causes conversion troubles
-    target_raster = raster::raster(nrows = raster::nrow(object),
-      ncols = raster::ncol(object),
-      crs = raster::crs(object))
-  }
-  raster::readStart(object)
-  newdata_pred = as.data.table(raster::getValues(object))
-  raster::readStop(object)
+  lg$info("Start raster prediction")
+  lg$info("Prediction is executed in %i MB chunks, %i chunk(s) in total, %i values per chunk",
+    chunksize, length(bs$cells_seq), terra::ncell(task$backend$stack))
 
-  pred = learner$predict_newdata(newdata_pred)
+  pmap(list(bs$cells_seq, bs$cells_to_read, seq_along(bs$cells_seq)), function(cells_seq, cells_to_read, n) {
 
-  if (!is.null(filename)) {
-    target_raster = raster::setValues(target_raster, pred$response)
-    raster::writeRaster(target_raster, filename, overwrite = overwrite)
-  }
-  return(pred)
-}
+    pred = learner$predict(task, row_ids = cells_seq:((cells_seq + cells_to_read - 1)))
+    terra::writeValues(target_raster, pred$response,
+      terra::rowFromCell(task$backend$stack, cells_seq),
+      terra::rowFromCell(task$backend$stack, cells_to_read))
+    lg$info("Chunk %i of %i finished", n, length(bs$cells_seq))
+  })
 
-#' @export
-#' @rdname predict_spatial_newdata
-predict_spatial_newdata.sf = function(learner, object, filename = NULL, overwrite = FALSE, quiet = FALSE) {
-
-  if (!is.null(filename)) {
-    assert_path_for_output(filename, overwrite = overwrite)
-  }
-  newdata_pred = as.data.table(object)
-  newdata_pred$geometry = NULL
-  attr(newdata_pred, "sf_column") = NULL
-  attr(newdata_pred, "agr") = NULL
-
-  pred = learner$predict_newdata(newdata_pred)
-
-  if (!is.null(filename)) {
-    sf_pred = sf::st_as_sf(data.frame(pred = pred$response, geometry = object$geometry))
-    sf::st_write(sf_pred, filename, quiet = quiet)
-  }
-  return(pred)
-}
-
-#' @export
-#' @rdname predict_spatial_newdata
-predict_spatial_newdata.stars = function(learner, object, filename = NULL, overwrite = FALSE, quiet = FALSE) {
-
-  if (!is.null(filename)) {
-    assert_path_for_output(filename, overwrite = overwrite)
-  }
-  newdata_pred = as.data.table(split(object, "band"))
-
-  if (any(c("x", "y") %in% colnames(newdata_pred))) { # nocov start
-    if (!quiet) {
-      messagef("Dropping coordinates 'x' and 'y' as they are
-        most likely coordinates. If you want to have these variables included,
-        duplicate them in the stars objects using a different name.
-        To silence this message, set 'quiet = TRUE'.", wrap = TRUE)
-      # nocov end
-    }
-    newdata_pred[, c("x", "y")] = list(NULL)
-  }
-
-  pred = learner$predict_newdata(newdata_pred)
-  # single band object
-  stars_pred = object[, , , 1]
-
-  stars::st_as_stars(dimensions = stars::st_dimensions(object))
-
-  names(stars_pred) = "pred"
-  stars_pred$pred = pred$response
-
-  if (!is.null(filename)) {
-    stars::write_stars(stars_pred, filename, quiet = quiet)
-  }
-  return(pred)
+  terra::writeStop(target_raster)
+  lg$info("Finished raster prediction in %i seconds", as.integer(proc.time()[3] - start_time))
+  target_raster
 }
