@@ -21,6 +21,10 @@
 #' Block mode is activated if `$data(rows)` is called with a increasing integer
 #' sequence e.g. `200:300`.
 #'
+#' @importFrom terra writeRaster writeStart writeStop rast cats sources
+#'   intersect readStart readStop rowColFromCell readValues head unique ncell
+#'   nlyr ncol
+#'
 #' @export
 DataBackendSpatial = R6Class("DataBackendSpatial",
   inherit = DataBackend, cloneable = FALSE,
@@ -35,6 +39,13 @@ DataBackendSpatial = R6Class("DataBackendSpatial",
     #'
     initialize = function(data) {
 
+      if (inherits(data, "stars")) {
+        # we need to go stars -> raster -> terra
+        data = terra::rast(as(data, "Raster"))
+        DataBackendSpatial$new(data)
+      } else if (inherits(data, "Raster")) {
+        data = terra::rast(data)
+      }
       assert_class(data, "SpatRaster")
       # FIXME: use inMemory function
       # write raster to disk
