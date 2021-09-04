@@ -55,24 +55,21 @@ library("e1071")
 First, a {mlr3} classification `task` is created and a SVM learner is fitted with randomly sampled raster cells.
 
 ```{r, error=TRUE}
-if (!file.exists("demo-stack.tif")) {
-  stack = demo_stack_spatraster(size = 5, layers = 5)
-  terra::writeRaster(stack, "demo-stack.tif", overwrite = TRUE)
-  rm(stack)
-  stack = terra::rast("demo-stack.tif")
-} else {
-  stack = terra::rast("demo-stack.tif")
-}
-backend = DataBackendSpatRaster$new(stack)
-task = as_task_classif(backend, target = "y", positive = "TRUE")
+tif = system.file("tif/L7_ETMs.tif", package = "stars")
+stack = stars::read_stars(tif)
+
+backend = as_data_backend(stack)
+task = as_task_regr(backend, target = "layer.1")
 
 print(task)
 ```
 
+For large raster files with millions of values it helps to predict in parallel.
+To enable this, set `learner$parallel_predict = TRUE` and initiate a parallel plan via {future}.
+This required {mlr3} >= 0.12.0.
+
 ```{r}
-learner_svm = lrn("classif.svm")
-# requires mlr3 > 0.12.0
-learner_svm$parallel_predict = TRUE
+learner_svm = lrn("regr.svm")
 set.seed(42)
 row_ids = sample(1:task$nrow, 500)
 learner_svm$train(task, row_ids = row_ids)
@@ -82,55 +79,53 @@ print(learner_svm)
 
 ### Prediction
 
-For prediction `predict_spatial_newdata()` is used.
-It will return a `mlr3::Prediction()` object and, if argument `filename` is supplied, will also write the spatial object to disk (for file types supported by the respective package).
+For prediction `predict_spatial()` is used.
+It will return a raster file which contains the predictions.
+Users can select which R spatial format the returned raster should have.
 
 In the following, we will compare the way to conduct the prediction using {mlr3spatial} with the "native" way of fitting an `e1071::svm()` model and predicting with `terra::predict()`.
 
 #### mlr3spatial
 
 ```{r}
-library(future)
-plan(sequential)
+ras = predict_spatial(task, learner_svm)
 
-file = tempfile("target", fileext = ".tif")
-pred = predict_spatial_newdata(learner_svm, stack, filename = file)
-
-print(pred)
+print(ras)
 ```
 
-#### terra
+#### stars
+
+Since the layers are merged in a {stars} object, one first need to split them up and convert them into a regular data.table.
+Next, the column names need to be adjusted to match the ones of the training data.
+Afterwards, the `data.frame` generic of `predict()` can be called.
+Finally, the predictions need to be injected into a stars object again.
+
+(All of these steps are happening internally in {mlr3spatial}).
 
 ```{r}
-svm_e1071 = e1071::svm(y ~ ., data = task$data(rows = row_ids))
+svm_e1071 = e1071::svm(layer.1 ~ ., data = task$data(rows = row_ids))
+stars_stack = as.data.table(split(stack, "band"))
+stars_stack[, c("x", "y", "X1")] = NULL
+colnames(stars_stack) = task$feature_names
 
-terra_pred_ras = terra::predict(stack, svm_e1071, cores = 1, cpkgs = "e1071")
+stars_pred = predict(svm_e1071, stars_stack)
 
-print(terra_pred_ras)
+# subset stars object to one band only
+stars_pred_ras = stack[,,,1]
+# rename the layer name
+names(stars_pred_ras) = "pred"
+# assign predictions
+stars_pred_ras$pred = stars_pred
+
+print(stars_pred_ras)
 ```
 
 ### Output consistency
 
-Now that we have executed two predictions, let's check if the returns are actually identical.
-
-Before we can do the comparison between the {mlr3spatial} and {terra} prediction, we need to load `target.tif` from disk (which got created during the mlr3 prediction), as {mlr3spatial} returns a `mlr3::Prediction` object and not a `SpatRaster`.
+Now that we have executed two predictions, we would like to verify that these are actually identical.
 
 ```{r}
-mlr3_pred_ras = terra::rast(file)
+all.equal(as.numeric(stars_pred_ras$pred), as.numeric(values(ras)))
 ```
 
-{terra} returns an integer vector as it always converts factors into numerics internally during the prediction (which looks like a bug).
-Hence, we need to convert the {mlr3spatial} returns into numerics for a fair comparison.
-
-```{r}
-mlr3_pred_int = as.numeric(as.data.frame(mlr3_pred_ras)$lyr.1)
-
-terra_pred_val = as.data.frame(terra_pred_ras)$lyr1
-
-all.equal(mlr3_pred_int, terra_pred_val)
-```
-
-```{r echo=FALSE}
-unlink(c("demo-stack.tif", "demo-stack.tif.aux.xml"))
-```
-
+We see some very minor differences which most likely relate to rounding.
