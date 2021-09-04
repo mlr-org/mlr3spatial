@@ -53,8 +53,7 @@
 #'   predict_spatial_newdata(learner, stack)
 #' }
 #' @export
-#' @export
-predict_spatial = function(task, learner, chunksize = 100L) {
+predict_spatial = function(task, learner, chunksize = 100L, format = "terra") {
   assert_class(task$backend, "DataBackendSpatial")
   assert_learner(learner)
   assert_task(task)
@@ -70,7 +69,7 @@ predict_spatial = function(task, learner, chunksize = 100L) {
   terra::writeStart(target_raster, filename = tempfile(fileext = ".tif"), overwrite = TRUE)
 
   lg$info("Start raster prediction")
-  lg$info("Prediction is executed in %i MB chunks, %i chunk(s) in total, %i values per chunk",
+  lg$info("Prediction is executed with a chunksize of %i, %i chunk(s) in total, %i values per chunk",
     chunksize, length(bs$cells_seq), terra::ncell(task$backend$stack))
 
   pmap(list(bs$cells_seq, bs$cells_to_read, seq_along(bs$cells_seq)), function(cells_seq, cells_to_read, n) {
@@ -84,5 +83,12 @@ predict_spatial = function(task, learner, chunksize = 100L) {
 
   terra::writeStop(target_raster)
   lg$info("Finished raster prediction in %i seconds", as.integer(proc.time()[3] - start_time))
-  target_raster
+
+  target_raster = switch(format,
+    "terra" = target_raster,
+    "stars" = stars::st_as_stars(target_raster),
+    "raster" = as(target_raster, "Raster")
+  )
+
+  return(target_raster)
 }

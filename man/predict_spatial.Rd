@@ -4,7 +4,7 @@
 \alias{predict_spatial}
 \title{Predict on spatial objects with mlr3 learners}
 \usage{
-predict_spatial(task, learner, chunksize = 100L)
+predict_spatial(task, learner, chunksize = 100L, format = "terra")
 }
 \arguments{
 \item{learner}{\link[mlr3:Learner]{mlr3::Learner}\cr

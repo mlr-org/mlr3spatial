@@ -35,14 +35,6 @@ DataBackendSpatial = R6Class("DataBackendSpatial",
     #'
     initialize = function(data) {
 
-      if (inherits(data, "stars")) {
-        # we need to go stars -> raster -> terra
-        data = terra::rast(as(data, "Raster"))
-        # data =
-      } else if (inherits(data, "RasterBrick") | inherits(data, "Raster")) {
-        data = terra::rast(data)
-      }
-
       assert_class(data, "SpatRaster")
       # FIXME: use inMemory function
       # write raster to disk
