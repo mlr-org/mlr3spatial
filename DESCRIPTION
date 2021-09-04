@@ -28,7 +28,8 @@ Imports:
     data.table (>= 1.14.0),
     lgr (>= 0.4.2),
     mlr3misc,
-    R6 (>= 2.5.0)
+    R6 (>= 2.5.0),
+    terra (>= 1.3-22)
 Suggests:
     bench,
     e1071,
@@ -44,9 +45,7 @@ Suggests:
     rmarkdown,
     rpart,
     sf,
-    sp,
     stars,
-    terra (>= 1.3-22),
     testthat (>= 3.0.0)
 VignetteBuilder:
     knitr
