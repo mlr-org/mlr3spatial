@@ -43,14 +43,19 @@
 #'
 #' @return mlr3::Prediction
 #' @examples
-#' if (mlr3misc::require_namespaces(c("terra", "future"), quietly = TRUE)) {
-#'   stack = demo_stack_spatraster(size = 5, layers = 5)
-#'   backend = DataBackendSpatRaster$new(stack)
-#'   task = as_task_classif(backend, target = "y", positive = "TRUE")
+#' if (mlr3misc::require_namespaces("terra", quietly = TRUE)) {
+#'   stack = demo_stack_spatraster(size = 1)
+#'   value = data.table(ID = c(0, 1), y = c("negative", "positive"))
+#'   terra::setCats(stack, layer = "y", value = value)
+#'
+#'   # create backend
+#'   backend = as_data_backend(stack)
+#'   task = as_task_classif(backend, target = "y", positive = "positive")
 #'   # train
 #'   learner = lrn("classif.featureless")
 #'   learner$train(task, row_ids = sample(1:task$nrow, 500))
-#'   predict_spatial_newdata(learner, stack)
+#'   ras = predict_spatial(task, learner)
+#'   ras
 #' }
 #' @export
 predict_spatial = function(task, learner, chunksize = 100L, format = "terra") {
