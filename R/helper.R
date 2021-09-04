@@ -5,7 +5,6 @@ write_raster = function(data) {
   # create temp file
   filename = tempfile(fileext = ".tif")
   target_raster = terra::rast(data)
-  # browser()
   # calculate block size
   bs = block_size(target_raster, 100)
   # initialize target raster
@@ -38,7 +37,6 @@ block_size = function(raster, chunksize) {
 
   # row_size in bites; one cell takes 8 byte memory
   row_size = terra::ncol(raster) * terra::nlyr(raster) * 8
-  # # browser()
   # Hom many rows can be processed in one block?
   nrow_block = chunksize / row_size
   # How many cells are this?
