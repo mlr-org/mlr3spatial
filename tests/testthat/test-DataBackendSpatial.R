@@ -68,7 +68,7 @@ test_that("DataBackendSpatial works", {
 
 # stars input ------------------------------------------------------------------
 
-test_that("DataBackendSpatial works", {
+test_that("DataBackendSpatial + stars", {
   backend = DataBackendSpatial$new(l7data)
 
   # head
@@ -87,7 +87,7 @@ test_that("DataBackendSpatial works", {
 
 # brick input ------------------------------------------------------------------
 
-test_that("DataBackendSpatial works", {
+test_that("DataBackendSpatial + raster", {
   backend = DataBackendSpatial$new(stack_brick)
 
   # head
