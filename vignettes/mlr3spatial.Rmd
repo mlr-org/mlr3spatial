@@ -134,7 +134,7 @@ The rounding differences are caused by a bug in {terra}.
 ### Visualization
 
 Finally we can plot the predictions.
-The colour vector is extract from the viridis color palette via `dput(viridis::viridis_pal()(12))`.
+The color vector is extract from the viridis color palette via `dput(viridis::viridis_pal()(12))`.
 
 ```{r}
 plot(ras, col = c("#440154FF", "#482173FF", "#433E85FF", "#38598CFF", "#2D708EFF",

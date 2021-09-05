@@ -24,7 +24,7 @@
 #' @importFrom terra writeRaster writeStart writeStop rast cats sources
 #'   intersect readStart readStop rowColFromCell readValues head unique ncell
 #'   nlyr ncol
-#'
+#' @importFrom methods as
 #' @export
 DataBackendSpatial = R6Class("DataBackendSpatial",
   inherit = DataBackend, cloneable = FALSE,
@@ -34,8 +34,12 @@ DataBackendSpatial = R6Class("DataBackendSpatial",
     #'
     #' Creates a backend for a `SpatRaster`.
     #'
-    #' @param data (`SpatRaster`)\cr
-    #'    A raster object.
+    #' @param data (`Spatial object`)\cr
+    #'    Supported objects:
+    #'    - `"Spatraster"` (terra)
+    #'    - `"stars"` (stars)
+    #'    - `"RasterBrick"` (raster)
+    #'    - `"Raster"` (raster)
     #'
     initialize = function(data) {
 
@@ -219,6 +223,9 @@ DataBackendSpatial = R6Class("DataBackendSpatial",
 #'
 #' @param data (`SpatRaster`)\cr
 #'    A `SpatRaster` object to create a [DataBackend] from.
+#' @template param-primary-key
+#' @param ... (`any`)\cr
+#'   Not used.
 #'
 #' @return [DataBackend].
 #' @export

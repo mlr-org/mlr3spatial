@@ -27,108 +27,51 @@ It is not fully clear why the parallel approach of the {terra} package is slow t
 
 ```{r prepare}
 library(mlr3)
-library(mlr3learners)
 library(mlr3spatial)
 library(future)
 library(bench)
 library(stars)
+library(rpart)
 
 # SpatRaster demo stack
-stack = demo_stack_spatraster(size = 125, layers = 5)
-backend = DataBackendSpatRaster$new(stack)
-task = as_task_classif(backend, target = "y", positive = "TRUE")
+stack_classif = demo_stack_spatraster(1000)
+value = data.table::data.table(ID = c(0, 1), y = c("negative", "positive"))
+terra::setCats(stack_classif, layer = "y", value = value)
+colnames = names(stack_classif)
+file = tempfile(fileext = ".tif")
+terra::writeRaster(stack_classif, file)
 
-# RasterBrick demo stack
-stack_rasterbrick = demo_stack_rasterbrick(size = 125, layers = 5)
-backend_raster = DataBackendRasterBrick$new(stack_rasterbrick, response = "y", response_is_factor = TRUE)
-task_rasterbrick = as_task_classif(backend_raster, target = "y", positive = "1")
+# tasks
+stack_classif = terra::rast(file)
+backend = DataBackendSpatial$new(stack_classif)
+task = as_task_classif(backend, target = "y", positive = "positive")
 
-# Stars demo stack
-stack_stars = stars::st_as_stars(stack_rasterbrick)
-backend_stars = as_stars_backend(stack_stars, quiet = TRUE, response = "y.1", response_is_factor = TRUE)
-task_stars =  as_task_classif(backend_stars, target = "y.1", positive = "1")
-
-# SpatRaster learner
-learner_svm = lrn("classif.svm")
-learner_svm$parallel_predict = TRUE
 set.seed(42)
-row_ids = sample(1:task$nrow, 500)
-learner_svm$train(task, row_ids = row_ids)
+row_ids = sample(1:task$nrow, 50)
 
-# RasterBrick learner
-learner_svm_rasterbrick = lrn("classif.svm")
-learner_svm_rasterbrick$parallel_predict = TRUE
-set.seed(42)
-row_ids = sample(1:task_rasterbrick$nrow, 500)
-learner_svm_rasterbrick$train(task_rasterbrick, row_ids = row_ids)
-
-# Stars learner
-learner_svm_stars = lrn("classif.svm")
-learner_svm_stars$parallel_predict = TRUE
-set.seed(42)
-row_ids = sample(1:task_stars$nrow, 500)
-learner_svm_stars$train(task_stars, row_ids = row_ids)
+learner = lrn("classif.rpart")
+learner$train(task, row_ids = row_ids)
 
 # non-mlr3 model
-e1071svm = e1071::svm(y ~ ., task$data(rows = row_ids))
+rpart = rpart::rpart(y ~ ., task$data(rows = row_ids))
 ```
 
 ```{r benchmark}
 bm = bench::mark(
-  "01-mlr3-terra-sequential" = {
-    plan(multisession, workers = 1)
-    predict_spatial_newdata(learner_svm, stack)
+
+  "01-mlr3-terra-4-cores" = {
+    plan(multicore, workers = 4)
+    predict_spatial(task, learner, chunksize = 3000L)
   },
 
-  "02-mlr3-raster-sequential" = {
-    plan(multisession, workers = 1)
-    predict_spatial_newdata(learner_svm_rasterbrick, stack_rasterbrick)
-  },
+  "02-terra-4-cores" = terra::predict(stack_classif, rpart, cores = 4, cpkgs = "rpart"),
 
-  "03-mlr3-stars-sequential" = {
-    plan(multisession, workers = 1)
-    predict_spatial_newdata(learner_svm_stars, stack_stars, quiet = TRUE)
-  },
+  check = FALSE, filter_gc = FALSE, max_iterations = 1, memory = FALSE)
 
-  "04-terra-sequential" = terra::predict(stack, e1071svm, cores = 1, cpkgs = "e1071"),
-
-  "05-raster-sequential" = raster::predict(stack_rasterbrick, e1071svm),
-
-  "06-stars-sequential" = {
-    stack_stars_df = as.data.frame(split(stack_stars, "band"))
-    predict(e1071svm, stack_stars_df)
-  },
-
-  "07-mlr3-terra-4-cores" = {
-    plan(multisession, workers = 4)
-    predict_spatial_newdata(learner_svm, stack)
-  },
-
-  "08-mlr3-raster-4-cores" = {
-    plan(multisession, workers = 4)
-    predict_spatial_newdata(learner_svm_rasterbrick, stack_rasterbrick)
-  },
-
-  "09-mlr3-stars-4-cores" = {
-    plan(multisession, workers = 4)
-    predict_spatial_newdata(learner_svm_stars, stack_stars, quiet = TRUE)
-  },
-
-  "10-terra-4-cores" = terra::predict(stack, e1071svm, cores = 4, cpkgs = "e1071"),
-
-  "11-raster-4-cores" = {
-    library(raster)
-    library(e1071)
-    beginCluster(4, type = "PSOCK")
-    clusterR(stack_rasterbrick, predict, args = list(model = e1071svm))
-  },
-
-  check = FALSE, filter_gc = FALSE, min_iterations = 3, memory = FALSE)
-
-bm$mem_alloc = NULL
 bm$`itr/sec` = NULL
 bm$result = NULL
 bm$`gc/sec` = NULL
+bm$mem_alloc = NULL
 bm$memory = NULL
 
 print(bm)
@@ -136,7 +79,7 @@ print(bm)
 
 ```{r plot-benchmark, fig.cap="Benchmark plot"}
 library(ggplot2)
-autoplot(bm, "ridge")
+autoplot(bm)
 ```
 
 ```{r save-plot, echo = FALSE, message = FALSE}

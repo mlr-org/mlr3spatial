@@ -1,64 +1,36 @@
 #' @title Predict on spatial objects with mlr3 learners
-#' @description
-#' This function allows to directly predict mlr3 learners on various spatial
-#' objects (see section "Supported Spatial Classes"). It returns an
-#' [mlr3::Prediction] object and (optionally) the same object that was used for
-#' the prediction.
-#' @param object `[SpatRaster, sf, RasterBrick]`
-#' @param learner [mlr3::Learner]\cr
-#'   Any [mlr3::Learner].
-#' @param filename `[character]`\cr
-#'   Filename of optional file to write prediction values into.
-#'   For raster-like inputs this can be a `.tif` file.
-#'   For {sf} objects, this could be a `.gpgk` or a `.shp` file.
-#' @param overwrite `[logical]`\cr
-#'   Should a possibly existing file on disk (referring to argument `filename`)
-#'   be overwritten?
-#' @param quiet `[logical]`\cr
-#'   Whether to suppress possible console output when invoking the writing
-#'   methods of the respective spatial classes.
+#' @description This function allows to directly predict mlr3 learners on
+#' various spatial objects (see section "Supported Spatial Classes"). It returns
+#' an [mlr3::Prediction] object and (optionally) the same object that was used
+#' for the prediction.
+#' @param task ([Task]).
+#' @param learner ([Learner]).
+#' @template param-chunksize
+#' @param format `[character]`\cr
+#' Output class of the resulting object. Accepted values are `"raster"`,
+#' `"stars"` and `"terra"`.
 #' @details
-#' A direct prediction on a subset of a [mlr3::Task] object is not possible for
-#' \CRANpkg{terra} objects as \CRANpkg{terra} objects contain external pointers
-#' which are not compatible with future-based parallelization. Due to this, the
-#' values from the \CRANpkg{terra} object need to be extracted first into a
-#' `data.table`.
+#' When parallelizing the prediction via {future}, plan `"multisession"` will
+#' not work due to external pointers within the spatial object. If the execution
+#' platform is UNIX-based, `plan("multicore")` is recommended. For Windows
+#' users, `plan(future.callr::callr)` might be an alternative.
 #'
-#' @section Parallelization:
-#'
-#' For predictions which take > 10 seconds, parallelization could help speeding
-#' things up. {mlr3} supports parallel predictions since v0.12.0. This can be
-#' enabled by setting the `$parallel_predict = TRUE` flag in the learner and
-#' supplying a parallel future plan before executing the prediction, for example
-#' `future::plan(multisession, workers = 2)`. See the examples for more
-#' information.
-#'
-#' @section Spatial Classes support:
-#'
-#' Task and Prediction support for the following classes is planned:
-#'
-#' - {sf}
-#' - {stars}
-#' - {raster}
-#'
-#' @return mlr3::Prediction
+#' @return Spatial object of class given in argument `format`.
 #' @examples
-#' if (mlr3misc::require_namespaces("terra", quietly = TRUE)) {
-#'   stack = demo_stack_spatraster(size = 1)
-#'   value = data.table(ID = c(0, 1), y = c("negative", "positive"))
-#'   terra::setCats(stack, layer = "y", value = value)
+#' stack = demo_stack_spatraster(size = 1)
+#' value = data.table::data.table(ID = c(0, 1), y = c("negative", "positive"))
+#' terra::setCats(stack, layer = "y", value = value)
 #'
-#'   # create backend
-#'   backend = as_data_backend(stack)
-#'   task = as_task_classif(backend, target = "y", positive = "positive")
-#'   # train
-#'   learner = lrn("classif.featureless")
-#'   learner$train(task, row_ids = sample(1:task$nrow, 500))
-#'   ras = predict_spatial(task, learner)
-#'   ras
-#' }
+#' # create backend
+#' backend = as_data_backend(stack)
+#' task = as_task_classif(backend, target = "y", positive = "positive")
+#' # train
+#' learner = lrn("classif.featureless")
+#' learner$train(task, row_ids = sample(1:task$nrow, 50))
+#' ras = predict_spatial(task, learner)
+#' ras
 #' @export
-predict_spatial = function(task, learner, chunksize = 100L, format = "terra") {
+predict_spatial = function(task, learner, chunksize = 1000L, format = "terra") {
   assert_class(task$backend, "DataBackendSpatial")
   assert_learner(learner)
   assert_task(task)
@@ -77,12 +49,13 @@ predict_spatial = function(task, learner, chunksize = 100L, format = "terra") {
   lg$info("Prediction is executed with a chunksize of %i, %i chunk(s) in total, %i values per chunk",
     chunksize, length(bs$cells_seq), terra::ncell(task$backend$stack))
 
-  pmap(list(bs$cells_seq, bs$cells_to_read, seq_along(bs$cells_seq)), function(cells_seq, cells_to_read, n) {
+  mlr3misc::pmap(list(bs$cells_seq, bs$cells_to_read, seq_along(bs$cells_seq)), function(cells_seq, cells_to_read, n) {
 
+    stack = task$backend$stack
     pred = learner$predict(task, row_ids = cells_seq:((cells_seq + cells_to_read - 1)))
     terra::writeValues(target_raster, pred$response,
-      terra::rowFromCell(task$backend$stack, cells_seq),
-      terra::rowFromCell(task$backend$stack, cells_to_read))
+      terra::rowFromCell(stack, cells_seq),
+      terra::rowFromCell(stack, cells_to_read))
     lg$info("Chunk %i of %i finished", n, length(bs$cells_seq))
   })
 

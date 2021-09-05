@@ -9,6 +9,12 @@
 \arguments{
 \item{data}{(\code{SpatRaster})\cr
 A \code{SpatRaster} object to create a \link{DataBackend} from.}
+
+\item{primary_key}{(\code{character(1)} | \code{integer()})\cr
+Name of the primary key column, or integer vector of row ids.}
+
+\item{...}{(\code{any})\cr
+Not used.}
 }
 \value{
 \link{DataBackend}.

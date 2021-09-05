@@ -4,78 +4,53 @@
 \alias{predict_spatial}
 \title{Predict on spatial objects with mlr3 learners}
 \usage{
-predict_spatial(task, learner, chunksize = 100L, format = "terra")
+predict_spatial(task, learner, chunksize = 1000L, format = "terra")
 }
 \arguments{
-\item{learner}{\link[mlr3:Learner]{mlr3::Learner}\cr
-Any \link[mlr3:Learner]{mlr3::Learner}.}
+\item{task}{(\link{Task}).}
 
-\item{object}{\verb{[SpatRaster, sf, RasterBrick]}}
+\item{learner}{(\link{Learner}).}
 
-\item{filename}{\verb{[character]}\cr
-Filename of optional file to write prediction values into.
-For raster-like inputs this can be a \code{.tif} file.
-For {sf} objects, this could be a \code{.gpgk} or a \code{.shp} file.}
+\item{chunksize}{\verb{[integer]}\cr
+The chunksize determines in how many subparts the prediction task will be
+split into. The value can be roughly thought of as megabyte of a raster file
+on disk. For example, if a prediction on a 1 GB file would be carried out
+with \code{chunksize = 100L}, the prediction would happen in 10 chunks.
 
-\item{overwrite}{\verb{[logical]}\cr
-Should a possibly existing file on disk (referring to argument \code{filename})
-be overwritten?}
+The default of \code{chunksize = 1000L} might be a good compromise between speed
+and memory usage. If you find yourself running out of memory, reduce this
+value.}
 
-\item{quiet}{\verb{[logical]}\cr
-Whether to suppress possible console output when invoking the writing
-methods of the respective spatial classes.}
+\item{format}{\verb{[character]}\cr
+Output class of the resulting object. Accepted values are \code{"raster"},
+\code{"stars"} and \code{"terra"}.}
 }
 \value{
-mlr3::Prediction
+Spatial object of class given in argument \code{format}.
 }
 \description{
-This function allows to directly predict mlr3 learners on various spatial
-objects (see section "Supported Spatial Classes"). It returns an
-\link[mlr3:Prediction]{mlr3::Prediction} object and (optionally) the same object that was used for
-the prediction.
+This function allows to directly predict mlr3 learners on
+various spatial objects (see section "Supported Spatial Classes"). It returns
+an \link[mlr3:Prediction]{mlr3::Prediction} object and (optionally) the same object that was used
+for the prediction.
 }
 \details{
-A direct prediction on a subset of a \link[mlr3:Task]{mlr3::Task} object is not possible for
-\CRANpkg{terra} objects as \CRANpkg{terra} objects contain external pointers
-which are not compatible with future-based parallelization. Due to this, the
-values from the \CRANpkg{terra} object need to be extracted first into a
-\code{data.table}.
+When parallelizing the prediction via {future}, plan \code{"multisession"} will
+not work due to external pointers within the spatial object. If the execution
+platform is UNIX-based, \code{plan("multicore")} is recommended. For Windows
+users, \code{plan(future.callr::callr)} might be an alternative.
 }
-\section{Parallelization}{
-
-
-For predictions which take > 10 seconds, parallelization could help speeding
-things up. {mlr3} supports parallel predictions since v0.12.0. This can be
-enabled by setting the \verb{$parallel_predict = TRUE} flag in the learner and
-supplying a parallel future plan before executing the prediction, for example
-\code{future::plan(multisession, workers = 2)}. See the examples for more
-information.
-}
-
-\section{Spatial Classes support}{
-
-
-Task and Prediction support for the following classes is planned:
-\itemize{
-\item {sf}
-\item {stars}
-\item {raster}
-}
-}
-
 \examples{
-if (mlr3misc::require_namespaces("terra", quietly = TRUE)) {
-  stack = demo_stack_spatraster(size = 1)
-  value = data.table(ID = c(0, 1), y = c("negative", "positive"))
-  terra::setCats(stack, layer = "y", value = value)
+stack = demo_stack_spatraster(size = 1)
+value = data.table::data.table(ID = c(0, 1), y = c("negative", "positive"))
+terra::setCats(stack, layer = "y", value = value)
 
-  # create backend
-  backend = as_data_backend(stack)
-  task = as_task_classif(backend, target = "y", positive = "positive")
-  # train
-  learner = lrn("classif.featureless")
-  learner$train(task, row_ids = sample(1:task$nrow, 500))
-  ras = predict_spatial(task, learner)
-  ras
-}
+# create backend
+backend = as_data_backend(stack)
+task = as_task_classif(backend, target = "y", positive = "positive")
+# train
+learner = lrn("classif.featureless")
+learner$train(task, row_ids = sample(1:task$nrow, 50))
+ras = predict_spatial(task, learner)
+ras
 }

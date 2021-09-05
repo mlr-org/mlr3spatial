@@ -1,6 +1,10 @@
 #' Writes a raster in chunks
 #' @description
 #' Writes square raster to disk in chunks. Internal helper function.
+#' @param data `[SpatRaster]`\cr
+#'   `SpatRaster` object.
+#' @keywords internal
+#' @export
 write_raster = function(data) {
   # create temp file
   filename = tempfile(fileext = ".tif")
@@ -10,7 +14,7 @@ write_raster = function(data) {
   # initialize target raster
   terra::writeStart(target_raster, filename = filename)
   # write values in chunks
-  pmap(list(bs$cells_seq, bs$cells_to_read), function(row, nrows) {
+  mlr3misc::pmap(list(bs$cells_seq, bs$cells_to_read), function(row, nrows) {
     terra::writeValues(target_raster,
       data[1:(terra::rowFromCell(target_raster, row) + terra::rowFromCell(target_raster, nrows) - 1),
         1:terra::nrow(data)], terra::rowFromCell(target_raster, row), terra::rowFromCell(target_raster, nrows))
@@ -26,10 +30,10 @@ write_raster = function(data) {
 #'
 #' @param raster ([terra::SpatRaster])\cr
 #' Raster to be split into chunks.
-#' @param chunksize
-#' Raster chunk size in megabyte.
+#' @template param-chunksize
 #'
 #' @export
+#' @keywords internal
 block_size = function(raster, chunksize) {
   assert_class(raster, "SpatRaster")
   # chunksize in bytes

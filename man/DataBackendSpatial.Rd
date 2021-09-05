@@ -72,8 +72,14 @@ Creates a backend for a \code{SpatRaster}.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{data}}{(\code{SpatRaster})\cr
-A raster object.}
+\item{\code{data}}{(\verb{Spatial object})\cr
+Supported objects:
+\itemize{
+\item \code{"Spatraster"} (terra)
+\item \code{"stars"} (stars)
+\item \code{"RasterBrick"} (raster)
+\item \code{"Raster"} (raster)
+}}
 }
 \if{html}{\out{</div>}}
 }

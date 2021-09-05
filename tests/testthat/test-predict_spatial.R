@@ -21,7 +21,7 @@ test_that("parallelization (multicore) works", {
   # parallel
   learner$parallel_predict = TRUE
   with_future("multicore", workers = 2, {
-    pred = predict_spatial(task, learner)
+    pred = predict_spatial(task, learner, chunksize = 2000L)
     expect_class(pred, "SpatRaster")
   })
 })
@@ -31,6 +31,15 @@ test_that("parallelization (multisession) works", {
   learner$parallel_predict = TRUE
   with_future("multisession", workers = 2, {
     pred = predict_spatial(task, learner)
+    expect_class(pred, "SpatRaster")
+  })
+})
+
+test_that("parallelization (callr) works", {
+  # parallel
+  learner$parallel_predict = TRUE
+  with_future(future.callr::callr, workers = 4, {
+    pred = predict_spatial(task, learner, chunksize = 2000L)
     expect_class(pred, "SpatRaster")
   })
 })

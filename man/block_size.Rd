@@ -10,8 +10,17 @@ block_size(raster, chunksize)
 \item{raster}{(\link[terra:SpatRaster-class]{terra::SpatRaster})\cr
 Raster to be split into chunks.}
 
-\item{chunksize}{Raster chunk size in megabyte.}
+\item{chunksize}{\verb{[integer]}\cr
+The chunksize determines in how many subparts the prediction task will be
+split into. The value can be roughly thought of as megabyte of a raster file
+on disk. For example, if a prediction on a 1 GB file would be carried out
+with \code{chunksize = 100L}, the prediction would happen in 10 chunks.
+
+The default of \code{chunksize = 1000L} might be a good compromise between speed
+and memory usage. If you find yourself running out of memory, reduce this
+value.}
 }
 \description{
 Splits raster into chunks.
 }
+\keyword{internal}

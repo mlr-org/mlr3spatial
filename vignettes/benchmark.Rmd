@@ -26,42 +26,28 @@ library(mlr3spatial)
 library(future)
 library(bench)
 library(stars)
+#> Loading required package: abind
+#> Loading required package: sf
+#> Linking to GEOS 3.9.1, GDAL 3.3.1, PROJ 8.1.0
 
 # SpatRaster demo stack
-stack = demo_stack_spatraster(size = 125, layers = 5)
-backend = DataBackendSpatRaster$new(stack)
-task = as_task_classif(backend, target = "y", positive = "TRUE")
+stack_classif = demo_stack_spatraster(2000)
+value = data.table::data.table(ID = c(0, 1), y = c("negative", "positive"))
+terra::setCats(stack_classif, layer = "y", value = value)
+colnames = names(stack_classif)
+file = tempfile(fileext = ".tif")
+terra::writeRaster(stack_classif, file)
 
-# RasterBrick demo stack
-stack_rasterbrick = demo_stack_rasterbrick(size = 125, layers = 5)
-backend_raster = DataBackendRasterBrick$new(stack_rasterbrick, response = "y", response_is_factor = TRUE)
-task_rasterbrick = as_task_classif(backend_raster, target = "y", positive = "1")
+# tasks
+stack_classif = terra::rast(file)
+backend = DataBackendSpatial$new(stack_classif)
+task = as_task_classif(backend, target = "y", positive = "positive")
 
-# Stars demo stack
-stack_stars = stars::st_as_stars(stack_rasterbrick)
-backend_stars = as_stars_backend(stack_stars, quiet = TRUE, response = "y.1", response_is_factor = TRUE)
-task_stars =  as_task_classif(backend_stars, target = "y.1", positive = "1")
-
-# SpatRaster learner
-learner_svm = lrn("classif.svm")
-learner_svm$parallel_predict = TRUE
 set.seed(42)
-row_ids = sample(1:task$nrow, 500)
-learner_svm$train(task, row_ids = row_ids)
+row_ids = sample(1:task$nrow, 50)
 
-# RasterBrick learner
-learner_svm_rasterbrick = lrn("classif.svm")
-learner_svm_rasterbrick$parallel_predict = TRUE
-set.seed(42)
-row_ids = sample(1:task_rasterbrick$nrow, 500)
-learner_svm_rasterbrick$train(task_rasterbrick, row_ids = row_ids)
-
-# Stars learner
-learner_svm_stars = lrn("classif.svm")
-learner_svm_stars$parallel_predict = TRUE
-set.seed(42)
-row_ids = sample(1:task_stars$nrow, 500)
-learner_svm_stars$train(task_stars, row_ids = row_ids)
+learner = lrn("classif.svm")
+learner$train(task, row_ids = row_ids)
 
 # non-mlr3 model
 e1071svm = e1071::svm(y ~ ., task$data(rows = row_ids))
@@ -70,91 +56,36 @@ e1071svm = e1071::svm(y ~ ., task$data(rows = row_ids))
 
 ```r
 bm = bench::mark(
-  "01-mlr3-terra-sequential" = {
-    plan(multisession, workers = 1)
-    predict_spatial_newdata(learner_svm, stack)
+
+  "01-mlr3-terra-4-cores" = {
+    plan(multicore, workers = 4)
+    predict_spatial(task, learner, chunksize = 3000L)
   },
 
-  "02-mlr3-raster-sequential" = {
-    plan(multisession, workers = 1)
-    predict_spatial_newdata(learner_svm_rasterbrick, stack_rasterbrick)
-  },
+  "02-terra-4-cores" = terra::predict(stack_classif, e1071svm, cores = 4, cpkgs = "e1071"),
 
-  "03-mlr3-stars-sequential" = {
-    plan(multisession, workers = 1)
-    predict_spatial_newdata(learner_svm_stars, stack_stars, quiet = TRUE)
-  },
+  check = FALSE, filter_gc = FALSE, max_iterations = 1, memory = FALSE)
+#> Warning in supportsMulticoreAndRStudio(...): [ONE-TIME WARNING] Forked processing ('multicore') is not supported when
+#> running R from RStudio because it is considered unstable. For more details, how to control forked processing or not, and
+#> how to silence this warning in future R sessions, see ?parallelly::supportsMulticore
+#> INFO  [22:57:09.901] Start raster prediction 
+#> INFO  [22:57:09.927] Prediction is executed with a chunksize of 3000, 2 chunk(s) in total, 100000000 values per chunk 
+#> INFO  [23:01:00.260] Chunk 1 of 2 finished 
+#> INFO  [23:02:33.572] Chunk 2 of 2 finished 
+#> INFO  [23:02:35.086] Finished raster prediction in 325 seconds
 
-  "04-terra-sequential" = terra::predict(stack, e1071svm, cores = 1, cpkgs = "e1071"),
-
-  "05-raster-sequential" = raster::predict(stack_rasterbrick, e1071svm),
-
-  "06-stars-sequential" = {
-    stack_stars_df = as.data.frame(split(stack_stars, "band"))
-    predict(e1071svm, stack_stars_df)
-  },
-
-  "07-mlr3-terra-4-cores" = {
-    plan(multisession, workers = 4)
-    predict_spatial_newdata(learner_svm, stack)
-  },
-
-  "08-mlr3-raster-4-cores" = {
-    plan(multisession, workers = 4)
-    predict_spatial_newdata(learner_svm_rasterbrick, stack_rasterbrick)
-  },
-
-  "09-mlr3-stars-4-cores" = {
-    plan(multisession, workers = 4)
-    predict_spatial_newdata(learner_svm_stars, stack_stars, quiet = TRUE)
-  },
-
-  "10-terra-4-cores" = terra::predict(stack, e1071svm, cores = 4, cpkgs = "e1071"),
-
-  "11-raster-4-cores" = {
-    library(raster)
-    library(e1071)
-    beginCluster(4, type = "PSOCK")
-    clusterR(stack_rasterbrick, predict, args = list(model = e1071svm))
-  },
-
-  check = FALSE, filter_gc = FALSE, min_iterations = 3, memory = FALSE)
-#> Loading required package: sp
-#> 
-#> Attaching package: 'raster'
-#> The following object is masked from 'package:future':
-#> 
-#>     values
-#> The following object is masked from 'package:mlr3':
-#> 
-#>     resample
-#> 
-#> Attaching package: 'e1071'
-#> The following object is masked from 'package:raster':
-#> 
-#>     interpolate
-
-bm$mem_alloc = NULL
 bm$`itr/sec` = NULL
 bm$result = NULL
 bm$`gc/sec` = NULL
+bm$mem_alloc = NULL
 bm$memory = NULL
 
 print(bm)
-#> # A tibble: 11 × 8
-#>    expression                     min   median n_itr  n_gc total_time time           gc              
-#>    <bch:expr>                <bch:tm> <bch:tm> <int> <dbl>   <bch:tm> <list>         <list>          
-#>  1 01-mlr3-terra-sequential     23.1s    23.7s     3    15      1.18m <bench_tm [3]> <tibble [3 × 3]>
-#>  2 02-mlr3-raster-sequential      21s    21.9s     3     9      1.08m <bench_tm [3]> <tibble [3 × 3]>
-#>  3 03-mlr3-stars-sequential     22.6s    22.7s     3    10      1.16m <bench_tm [3]> <tibble [3 × 3]>
-#>  4 04-terra-sequential          26.5s    27.1s     3     8      1.36m <bench_tm [3]> <tibble [3 × 3]>
-#>  5 05-raster-sequential         22.5s    23.2s     3     7      1.16m <bench_tm [3]> <tibble [3 × 3]>
-#>  6 06-stars-sequential          20.9s      21s     3     8      1.07m <bench_tm [3]> <tibble [3 × 3]>
-#>  7 07-mlr3-terra-4-cores        13.3s    13.7s     3     4     41.43s <bench_tm [3]> <tibble [3 × 3]>
-#>  8 08-mlr3-raster-4-cores       11.1s    11.2s     3     1     33.44s <bench_tm [3]> <tibble [3 × 3]>
-#>  9 09-mlr3-stars-4-cores        11.4s    11.5s     3     5     34.64s <bench_tm [3]> <tibble [3 × 3]>
-#> 10 10-terra-4-cores             33.3s      35s     3     5      1.73m <bench_tm [3]> <tibble [3 × 3]>
-#> 11 11-raster-4-cores            18.9s    22.4s     3     0      1.08m <bench_tm [3]> <tibble [3 × 3]>
+#> # A tibble: 2 × 8
+#>   expression                 min   median n_itr  n_gc total_time time           gc              
+#>   <bch:expr>            <bch:tm> <bch:tm> <int> <dbl>   <bch:tm> <list>         <list>          
+#> 1 01-mlr3-terra-4-cores    5.42m    5.42m     1    27      5.42m <bench_tm [1]> <tibble [1 × 3]>
+#> 2 02-terra-4-cores         8.04m    8.04m     1     4      8.04m <bench_tm [1]> <tibble [1 × 3]>
 ```
 
 
@@ -162,7 +93,7 @@ print(bm)
 library(ggplot2)
 autoplot(bm, "ridge")
 #> Loading required namespace: tidyr
-#> Picking joint bandwidth of 0.00828
+#> Picking joint bandwidth of NaN
 ```
 
 ![Benchmark plot](./plot-benchmark-1.png)
