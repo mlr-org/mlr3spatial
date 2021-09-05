@@ -13,13 +13,13 @@ Functions may change without notice!
 
 ## Package scope
 
-The handling of (large) spatial objects ([{terra}](https://cran.r-project.org/web/packages/terra/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{stars}](https://cran.r-project.org/web/packages/stars/index.html), [{sf}](https://cran.r-project.org/web/packages/sf/index.html)) in ML is an error-prone and time consuming task.
+The handling of (large) spatial objects ([{terra}](https://cran.r-project.org/web/packages/terra/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{stars}](https://cran.r-project.org/web/packages/stars/index.html) in ML is an error-prone and time consuming task.
 Users often need to extract the "raw" values from the spatial objects, train a model, predict and then recreate the spatial object again.
+In addition, predictions on large raster files (i.e. multiple GB in size) often leads to memory issues on consumer grade machines.
 {mlr3spatial} tries to help here by
 
-- Providing [`DataBackend`](https://mlr3.mlr-org.com/reference/DataBackend.html) classes for various spatial classes ([{terra}](https://cran.r-project.org/web/packages/terra/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{stars}](https://cran.r-project.org/web/packages/stars/index.html), [{sf}](https://cran.r-project.org/web/packages/sf/index.html)) which can be used to easily create {mlr3} [Tasks](https://mlr3.mlr-org.com/reference/Task.html)
-- Support for direct predictions to spatial objects ([{terra}](https://cran.r-project.org/web/packages/terra/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{stars}](https://cran.r-project.org/web/packages/stars/index.html), [{sf}](https://cran.r-project.org/web/packages/sf/index.html)), returning both a {mlr3} [`Prediction`](https://mlr3.mlr-org.com/reference/Prediction.html) object and the respective spatial object
-- Speeding up predictions by making use of {mlr3} built-in future-based parallelization
+- Providing a [`DataBackendSpatial`](https://mlr3.mlr-org.com/reference/DataBackend.html) class which is able to handle various spatial classes ([{terra}](https://cran.r-project.org/web/packages/terra/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{stars}](https://cran.r-project.org/web/packages/stars/index.html)) which can be used to easily create {mlr3} [Tasks](https://mlr3.mlr-org.com/reference/Task.html)
+- Support for enhanced predictions on spatial objects ([{terra}](https://cran.r-project.org/web/packages/terra/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{stars}](https://cran.r-project.org/web/packages/stars/index.html), with optional parallelization and memory awareness
 
 ## Spatiotemporal resampling / cross-validation
 
@@ -40,13 +40,13 @@ For spatiotemporal resampling within mlr3 see [{mlr3spatiotempcv}](https://githu
   {mlr3spatial} makes use of the parallel prediction heuristic within {mlr3}.
   This one makes use of the {future} and {data.table} packages for parallelization and data handling.
   If {mlr3spatial} is faster, than this way seems to be more efficient than the parallelization built into the respective other packages.
-  In theory the overhead in {mlr3spatial} should be higher because we extract the values from the spatial objects first.
+  We have seen larger speedups for {mlr3spatial} compared to other alternatives the larger the raster file is.
 </details>
 
 <details>
   <summary>Can I make use of parallel predictions during nested resampling/tuning?</summary>
   <br>
-  In theory yes, {mlr3} supports nested parallelization via the {future} framework.
+  Yes, {mlr3} supports (nested) parallelization via the {future} framework.
   Watch out for required resources when having multiple parallelized layers.
 </details>
 
@@ -55,16 +55,6 @@ For spatiotemporal resampling within mlr3 see [{mlr3spatiotempcv}](https://githu
   <br>
  Eventually. It is not yet clear whether these would live in {mlr3extralearners} or in {mlr3spatial}.
  So far there are none yet.
-</details>
-
-<details>
-  <summary>Why can I only predict to "newdata" and not use a subset of the task?</summary>
-  <br>
-  Most often spatial data is stored in TIFF, Geopackage or Shapefiles.
-  Passing these as "newdata" directly into the `predict()` call is what is most often done in practice.
-  When creating a spatial backend it is often hard to distinguish train and predict parts upfront.
-  In addition, this requires a subset call of `task$data()` internally - which comes with some trouble for specific backends such as `terra::SpatRaster` due to "external pointer" issues when going parallel.
-  For these reasons (and to avoid headaches in the first place) we decided to only support "newdata" prediction for the moment.
 </details>
 
 <details>
