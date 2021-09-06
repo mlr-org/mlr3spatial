@@ -43,7 +43,8 @@ predict_spatial = function(task, learner, chunksize = 1000L, format = "terra") {
 
   # initialize target raster
   target_raster = terra::rast(terra::ext(stack), res = terra::res(stack), crs = terra::crs(stack))
-  terra::writeStart(target_raster, filename = tempfile(fileext = ".tif"), overwrite = TRUE)
+  terra::writeStart(target_raster, filename = tempfile(fileext = ".tif"),
+    datatype = "FLT8S", overwrite = TRUE)
 
   lg$info("Start raster prediction")
   lg$info("Prediction is executed with a chunksize of %i, %i chunk(s) in total, %i values per chunk",
