@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>DataBackend for SpatRaster — DataBackendSpatial • mlr3spatial</title>
+<title>DataBackend for spatial objects — DataBackendSpatial • mlr3spatial</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -47,8 +47,15 @@
 
 
 
-<meta property="og:title" content="DataBackend for SpatRaster — DataBackendSpatial" />
-<meta property="og:description" content="A mlr3::DataBackend for SpatRaster (terra)." />
+<meta property="og:title" content="DataBackend for spatial objects — DataBackendSpatial" />
+<meta property="og:description" content="mlr3::DataBackend for spatial objects:
+raster::brick
+stars::st_as_stars
+terra::SpatRaster
+
+
+The DataBackend can be constructed using the spatial objects listed above.
+Internally terra is used for processing operations." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -153,13 +160,20 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>DataBackend for SpatRaster</h1>
+    <h1>DataBackend for spatial objects</h1>
     <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/DataBackendSpatial.R'><code>R/DataBackendSpatial.R</code></a></small>
     <div class="hidden name"><code>DataBackendSpatial.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A <a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a> for <code>SpatRaster</code> (<a href='https://CRAN.R-project.org/package=terra'><span class="pkg">terra</span></a>).</p>
+    <p><a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a> for spatial objects:</p><ul>
+<li><p><a href='https://rdrr.io/pkg/raster/man/brick.html'>raster::brick</a></p></li>
+<li><p><a href='https://r-spatial.github.io/stars/reference/st_as_stars.html'>stars::st_as_stars</a></p></li>
+<li><p><a href='https://rdrr.io/pkg/terra/man/SpatRaster-class.html'>terra::SpatRaster</a></p></li>
+</ul>
+
+<p>The DataBackend can be constructed using the spatial objects listed above.
+Internally terra is used for processing operations.</p>
     </div>
 
 
@@ -168,15 +182,17 @@
 
     
 
-<ul>
-<li><p>Block mode reads complete rows of the raster file and subsets the requested
-cells. Faster than cell mode if we iterate the whole raster file.</p></li>
-<li><p>Cell mode reads individual cells. Faster than block mode if only a few
-cells are sampled.</p></li>
+<p>There are two different ways the reading of values is performed internally:</p><ul>
+<li><p>"Block mode" reads complete rows of the raster file and subsets the
+requested cells. This mode is faster than "cell mode" if the complete raster
+file is iterated over.</p></li>
+<li><p>"Cell mode" reads individual cells. This is faster than "block mode" if
+only a few cells are sampled.</p></li>
 </ul>
 
-<p>Block mode is activated if <code>$data(rows)</code> is called with a increasing integer
-sequence e.g. <code>200:300</code>.</p>
+<p>"Block mode" is activated if <code>$data(rows)</code> is used with a increasing integer
+sequence e.g. <code>200:300</code>. If only a single cell is requested, "cell mode" is
+used.</p>
     <h2 class="hasAnchor" id="super-class"><a class="anchor" href="#super-class"></a>Super class</h2>
 
     <p><code><a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a></code> -&gt; <code>DataBackendSpatial</code></p>
@@ -228,21 +244,22 @@ Raster stack.</p></dd>
 <dt><code>data</code></dt><dd><p>(<code>Spatial object</code>)<br />
 Supported objects:
 <ul>
-<li><p><code>"Spatraster"</code> (terra)</p></li>
-<li><p><code>"stars"</code> (stars)</p></li>
-<li><p><code>"RasterBrick"</code> (raster)</p></li>
-<li><p><code>"Raster"</code> (raster)</p></li>
+<li><p><a href='https://rdrr.io/pkg/raster/man/brick.html'>raster::brick</a></p></li>
+<li><p><a href='https://r-spatial.github.io/stars/reference/st_as_stars.html'>stars::st_as_stars</a></p></li>
+<li><p><a href='https://rdrr.io/pkg/terra/man/SpatRaster-class.html'>terra::SpatRaster</a></p></li>
 </ul></p></dd>
 
 </dl><p></div></p>
 <p><hr>
 <a id="method-data"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/utils/data.html'>data()</a></code></h3>
 <p>Returns a slice of the raster in the specified format.
-Currently, the only supported formats are <code>"data.table"</code>.
-The rows must be addressed as vector of cells indices, columns must be referred to via layer names.
-Queries for rows with no matching row id and queries for columns with no matching column name are silently ignored.
-Rows are guaranteed to be returned in the same order as <code>rows</code>, columns may be returned in an arbitrary order.
-Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+Currently, the only supported formats is <code>"data.table"</code>.</p>
+<p>The rows must be addressed as vector of cells indices, columns must be
+referred to via layer names. Queries for rows with no matching row id and
+queries for columns with no matching column name are silently ignored.</p>
+<p>Rows are guaranteed to be returned in the same order as <code>rows</code>, columns
+may be returned in an arbitrary order. Duplicated row ids result in
+duplicated rows, duplicated column names lead to an exception.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>DataBackendSpatial</span><span class='op'>$</span><span class='fu'>data</span><span class='op'>(</span><span class='va'>rows</span>, <span class='va'>cols</span>, data_format <span class='op'>=</span> <span class='st'>"data.table"</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
