@@ -32,9 +32,69 @@ library(future)
 library(bench)
 library(stars)
 library(rpart)
+```
 
+## Small files
+
+```{r prepare-small}
 # SpatRaster demo stack
-stack_classif = demo_stack_spatraster(1000)
+stack_classif = demo_stack_spatraster(50)
+value = data.table::data.table(ID = c(0, 1), y = c("negative", "positive"))
+terra::setCats(stack_classif, layer = "y", value = value)
+colnames = names(stack_classif)
+file = tempfile(fileext = ".tif")
+terra::writeRaster(stack_classif, file)
+
+# tasks
+stack_classif = terra::rast(file)
+backend = DataBackendSpatial$new(stack_classif)
+task = as_task_classif(backend, target = "y", positive = "positive")
+
+set.seed(42)
+row_ids = sample(1:task$nrow, 50)
+
+learner = lrn("classif.rpart")
+learner$train(task, row_ids = row_ids)
+
+# non-mlr3 model
+rpart = rpart::rpart(y ~ ., task$data(rows = row_ids))
+```
+
+```{r benchmark-small}
+bm = bench::mark(
+
+  "01-mlr3-terra-4-cores" = {
+    plan(multicore, workers = 4)
+    predict_spatial(task, learner, chunksize = 2000L)
+  },
+
+  "02-terra-4-cores" = terra::predict(stack_classif, rpart, cores = 4, cpkgs = "rpart"),
+
+  check = FALSE, filter_gc = FALSE, min_iterations = 3, memory = FALSE)
+
+bm$`itr/sec` = NULL
+bm$result = NULL
+bm$`gc/sec` = NULL
+bm$mem_alloc = NULL
+bm$memory = NULL
+
+print(bm)
+```
+
+```{r plot-benchmark-small}
+library(ggplot2)
+autoplot(bm, type = "ridge")
+```
+
+```{r save-plot, echo = FALSE, message = FALSE, fig.cap=""}
+ggsave("plot-benchmark-small-1.png")
+```
+
+## Large files
+
+```{r prepare-large}
+# SpatRaster demo stack
+stack_classif = demo_stack_spatraster(500)
 value = data.table::data.table(ID = c(0, 1), y = c("negative", "positive"))
 terra::setCats(stack_classif, layer = "y", value = value)
 colnames = names(stack_classif)
@@ -61,12 +121,12 @@ bm = bench::mark(
 
   "01-mlr3-terra-4-cores" = {
     plan(multicore, workers = 4)
-    predict_spatial(task, learner, chunksize = 3000L)
+    predict_spatial(task, learner, chunksize = 2000L)
   },
 
   "02-terra-4-cores" = terra::predict(stack_classif, rpart, cores = 4, cpkgs = "rpart"),
 
-  check = FALSE, filter_gc = FALSE, max_iterations = 1, memory = FALSE)
+  check = FALSE, filter_gc = FALSE, min_iterations = 3, memory = FALSE)
 
 bm$`itr/sec` = NULL
 bm$result = NULL
@@ -77,11 +137,11 @@ bm$memory = NULL
 print(bm)
 ```
 
-```{r plot-benchmark, fig.cap="Benchmark plot"}
+```{r plot-benchmark-large}
 library(ggplot2)
-autoplot(bm)
+autoplot(bm, type = "ridge", fig.cap="")
 ```
 
-```{r save-plot, echo = FALSE, message = FALSE}
-ggsave("plot-benchmark-1.png")
+```{r save-plot-large, echo = FALSE, message = FALSE}
+ggsave("plot-benchmark-large-1.png")
 ```

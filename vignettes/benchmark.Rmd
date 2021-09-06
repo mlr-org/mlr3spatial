@@ -21,17 +21,19 @@ It is not fully clear why the parallel approach of the {terra} package is slow t
 
 ```r
 library(mlr3)
-library(mlr3learners)
 library(mlr3spatial)
 library(future)
 library(bench)
 library(stars)
-#> Loading required package: abind
-#> Loading required package: sf
-#> Linking to GEOS 3.9.1, GDAL 3.3.1, PROJ 8.1.0
+library(rpart)
+```
 
+## Small files
+
+
+```r
 # SpatRaster demo stack
-stack_classif = demo_stack_spatraster(2000)
+stack_classif = demo_stack_spatraster(50)
 value = data.table::data.table(ID = c(0, 1), y = c("negative", "positive"))
 terra::setCats(stack_classif, layer = "y", value = value)
 colnames = names(stack_classif)
@@ -46,11 +48,11 @@ task = as_task_classif(backend, target = "y", positive = "positive")
 set.seed(42)
 row_ids = sample(1:task$nrow, 50)
 
-learner = lrn("classif.svm")
+learner = lrn("classif.rpart")
 learner$train(task, row_ids = row_ids)
 
 # non-mlr3 model
-e1071svm = e1071::svm(y ~ ., task$data(rows = row_ids))
+rpart = rpart::rpart(y ~ ., task$data(rows = row_ids))
 ```
 
 
@@ -59,20 +61,24 @@ bm = bench::mark(
 
   "01-mlr3-terra-4-cores" = {
     plan(multicore, workers = 4)
-    predict_spatial(task, learner, chunksize = 3000L)
+    predict_spatial(task, learner, chunksize = 2000L)
   },
 
-  "02-terra-4-cores" = terra::predict(stack_classif, e1071svm, cores = 4, cpkgs = "e1071"),
+  "02-terra-4-cores" = terra::predict(stack_classif, rpart, cores = 4, cpkgs = "rpart"),
 
-  check = FALSE, filter_gc = FALSE, max_iterations = 1, memory = FALSE)
-#> Warning in supportsMulticoreAndRStudio(...): [ONE-TIME WARNING] Forked processing ('multicore') is not supported when
-#> running R from RStudio because it is considered unstable. For more details, how to control forked processing or not, and
-#> how to silence this warning in future R sessions, see ?parallelly::supportsMulticore
-#> INFO  [22:57:09.901] Start raster prediction 
-#> INFO  [22:57:09.927] Prediction is executed with a chunksize of 3000, 2 chunk(s) in total, 100000000 values per chunk 
-#> INFO  [23:01:00.260] Chunk 1 of 2 finished 
-#> INFO  [23:02:33.572] Chunk 2 of 2 finished 
-#> INFO  [23:02:35.086] Finished raster prediction in 325 seconds
+  check = FALSE, filter_gc = FALSE, min_iterations = 3, memory = FALSE)
+#> INFO  [22:13:20.889] Start raster prediction 
+#> INFO  [22:13:20.895] Prediction is executed with a chunksize of 2000, 1 chunk(s) in total, 2499561 values per chunk 
+#> INFO  [22:13:24.983] Chunk 1 of 1 finished 
+#> INFO  [22:13:25.063] Finished raster prediction in 4 seconds 
+#> INFO  [22:13:25.071] Start raster prediction 
+#> INFO  [22:13:25.076] Prediction is executed with a chunksize of 2000, 1 chunk(s) in total, 2499561 values per chunk 
+#> INFO  [22:13:29.323] Chunk 1 of 1 finished 
+#> INFO  [22:13:29.412] Finished raster prediction in 4 seconds 
+#> INFO  [22:13:29.422] Start raster prediction 
+#> INFO  [22:13:29.428] Prediction is executed with a chunksize of 2000, 1 chunk(s) in total, 2499561 values per chunk 
+#> INFO  [22:13:33.603] Chunk 1 of 1 finished 
+#> INFO  [22:13:33.686] Finished raster prediction in 4 seconds
 
 bm$`itr/sec` = NULL
 bm$result = NULL
@@ -84,18 +90,94 @@ print(bm)
 #> # A tibble: 2 × 8
 #>   expression                 min   median n_itr  n_gc total_time time           gc              
 #>   <bch:expr>            <bch:tm> <bch:tm> <int> <dbl>   <bch:tm> <list>         <list>          
-#> 1 01-mlr3-terra-4-cores    5.42m    5.42m     1    27      5.42m <bench_tm [1]> <tibble [1 × 3]>
-#> 2 02-terra-4-cores         8.04m    8.04m     1     4      8.04m <bench_tm [1]> <tibble [1 × 3]>
+#> 1 01-mlr3-terra-4-cores    4.18s    4.27s     3     2      12.8s <bench_tm [3]> <tibble [3 × 3]>
+#> 2 02-terra-4-cores        17.51s   17.68s     3     2      54.5s <bench_tm [3]> <tibble [3 × 3]>
 ```
 
 
 ```r
 library(ggplot2)
-autoplot(bm, "ridge")
-#> Loading required namespace: tidyr
-#> Picking joint bandwidth of NaN
+autoplot(bm, type = "ridge")
+#> Picking joint bandwidth of 0.00802
 ```
 
-![Benchmark plot](./plot-benchmark-1.png)
+![](./plot-benchmark-small-1.png)
+
+
+
+## Large files
+
+
+```r
+# SpatRaster demo stack
+stack_classif = demo_stack_spatraster(500)
+value = data.table::data.table(ID = c(0, 1), y = c("negative", "positive"))
+terra::setCats(stack_classif, layer = "y", value = value)
+colnames = names(stack_classif)
+file = tempfile(fileext = ".tif")
+terra::writeRaster(stack_classif, file)
+
+# tasks
+stack_classif = terra::rast(file)
+backend = DataBackendSpatial$new(stack_classif)
+task = as_task_classif(backend, target = "y", positive = "positive")
+
+set.seed(42)
+row_ids = sample(1:task$nrow, 50)
+
+learner = lrn("classif.rpart")
+learner$train(task, row_ids = row_ids)
+
+# non-mlr3 model
+rpart = rpart::rpart(y ~ ., task$data(rows = row_ids))
+```
+
+
+```r
+bm = bench::mark(
+
+  "01-mlr3-terra-4-cores" = {
+    plan(multicore, workers = 4)
+    predict_spatial(task, learner, chunksize = 2000L)
+  },
+
+  "02-terra-4-cores" = terra::predict(stack_classif, rpart, cores = 4, cpkgs = "rpart"),
+
+  check = FALSE, filter_gc = FALSE, min_iterations = 3, memory = FALSE)
+#> INFO  [22:14:58.898] Start raster prediction 
+#> INFO  [22:14:58.903] Prediction is executed with a chunksize of 2000, 1 chunk(s) in total, 25000000 values per chunk 
+#> INFO  [22:15:43.166] Chunk 1 of 1 finished 
+#> INFO  [22:15:44.049] Finished raster prediction in 45 seconds 
+#> INFO  [22:15:44.058] Start raster prediction 
+#> INFO  [22:15:44.064] Prediction is executed with a chunksize of 2000, 1 chunk(s) in total, 25000000 values per chunk 
+#> INFO  [22:16:31.095] Chunk 1 of 1 finished 
+#> INFO  [22:16:31.912] Finished raster prediction in 47 seconds 
+#> INFO  [22:16:31.922] Start raster prediction 
+#> INFO  [22:16:31.927] Prediction is executed with a chunksize of 2000, 1 chunk(s) in total, 25000000 values per chunk 
+#> INFO  [22:17:19.887] Chunk 1 of 1 finished 
+#> INFO  [22:17:20.791] Finished raster prediction in 48 seconds
+
+bm$`itr/sec` = NULL
+bm$result = NULL
+bm$`gc/sec` = NULL
+bm$mem_alloc = NULL
+bm$memory = NULL
+
+print(bm)
+#> # A tibble: 2 × 8
+#>   expression                 min   median n_itr  n_gc total_time time           gc              
+#>   <bch:expr>            <bch:tm> <bch:tm> <int> <dbl>   <bch:tm> <list>         <list>          
+#> 1 01-mlr3-terra-4-cores   45.16s   47.86s     3    40      2.37m <bench_tm [3]> <tibble [3 × 3]>
+#> 2 02-terra-4-cores         1.35m    1.43m     3    20      4.23m <bench_tm [3]> <tibble [3 × 3]>
+```
+
+
+```r
+library(ggplot2)
+autoplot(bm, type = "ridge")
+#> Picking joint bandwidth of 0.009
+```
+
+![](./plot-benchmark-large-1.png)
 
 
