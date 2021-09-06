@@ -2,9 +2,18 @@
 % Please edit documentation in R/DataBackendSpatial.R
 \name{as_data_backend.stars}
 \alias{as_data_backend.stars}
+\alias{as_data_backend.SpatRaster}
+\alias{as_data_backend.RasterBrick}
+\alias{as_data_backend.Raster}
 \title{Coerce to DataBackendSpatial}
 \usage{
 \method{as_data_backend}{stars}(data, primary_key = NULL, ...)
+
+\method{as_data_backend}{SpatRaster}(data, primary_key = NULL, ...)
+
+\method{as_data_backend}{RasterBrick}(data, primary_key = NULL, ...)
+
+\method{as_data_backend}{Raster}(data, primary_key = NULL, ...)
 }
 \arguments{
 \item{data}{(\verb{Spatial object})\cr

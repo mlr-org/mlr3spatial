@@ -246,15 +246,18 @@ as_data_backend.stars = function(data, primary_key = NULL, ...) { # nolint
   DataBackendSpatial$new(data)
 }
 #' @export
+#' @rdname as_data_backend
 as_data_backend.SpatRaster = function(data, primary_key = NULL, ...) { # nolint
   DataBackendSpatial$new(data)
 }
 #' @export
+#' @rdname as_data_backend
 as_data_backend.RasterBrick = function(data, primary_key = NULL, ...) { # nolint
   data = terra::rast(data)
   DataBackendSpatial$new(data)
 }
 #' @export
+#' @rdname as_data_backend
 as_data_backend.Raster = function(data, primary_key = NULL, ...) { # nolint
   data = terra::rast(data)
   DataBackendSpatial$new(data)
