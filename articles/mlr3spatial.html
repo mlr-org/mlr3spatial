@@ -124,30 +124,26 @@
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>{mlr3spatial} adds [mlr3::DataBackend]s for spatial classes ([terra::SpatRaster], [raster::brick], [sf::sf]). In addition, direct predictions to objects of these classes are supported. The direct return is a [mlr3::Prediction] object as for all other <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> returns in the {mlr3} ecosystem. Besides, the respective spatial objects can be written to disk and loaded into the session for further analysis.</p>
+<p>{mlr3spatial} adds [mlr3::DataBackend]s for spatial classes ([terra::SpatRaster], [raster::brick], [stars::stars]). The package is capable of making predictions to objects of these classes via <code>predict_raster()</code>. The return is a spatial object in the class specified in argument <code>format</code>.</p>
 <p>Essentially, {mlr3spatial} takes of the burden of converting spatial objects into a plain <code>data.table</code> and then coercing the predicted values back into the spatial object while making sure to not loose the spatial reference.</p>
-<p>There is one more goodie in the bag. Thanks to mlr3’s ability to predict in parallel with any learner, {mlr3spatial} prediction can also make use of future-based parallelization and speed up the predictions of spatial objects. Often enough, spatial predictions are quite large (in the millions of values) and efficient parallelization can save some time here. See the vignette on <a href="https://mlr3spatial.mlr-org.com/articles/benchmark.html">“Benchmarking parallel predictions”</a> for details.</p>
-<p>In the following, we showcase a step-by-step example how to handle a multi-layer raster object from package {terra}.</p>
+<p>There are some more goodies in the bag though:</p>
+<ul>
+<li>Thanks to mlr3’s ability to predict in parallel with any learner, {mlr3spatial} predictions can also make use of <strong>future-based parallelization</strong> and speed up the predictions of spatial objects. Often enough, spatial predictions are quite large (in the millions of values) and efficient parallelization can save some time here. See the vignette on <a href="https://mlr3spatial.mlr-org.com/articles/benchmark.html">“Benchmarking parallel predictions”</a> for details.</li>
+<li>
+<code>predict_raster()</code> can be executed in chunks (argument <code>chunksize</code>), making it possible to <strong>execute predictions on large raster files</strong> on consumer grade machines. This chunked execution comes with some overhead compared to execution in one block since the prediction heuristic is executed multiple times and the results need to be merged in the end.</li>
+</ul>
+<p>In the following, we showcase a step-by-step example how to handle a multi-layer raster object from package {stars}.</p>
 </div>
-<div id="use-case---stars-objects" class="section level2">
+<div id="use-case---landsat7-data-as-stars-object" class="section level2">
 <h2 class="hasAnchor">
-<a href="#use-case---stars-objects" class="anchor"></a>Use Case - {stars} objects</h2>
+<a href="#use-case---landsat7-data-as-stars-object" class="anchor"></a>Use Case - Landsat7 data as {stars} object</h2>
 <div id="data-preparation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#data-preparation" class="anchor"></a>Data Preparation</h3>
-<p>Spatial objects are not included as built-in datasets into the package due to their size. Some helper functions like <code><a href="../reference/demo_stack_spatraster.html">demo_stack_spatraster()</a></code> are available to create such.</p>
-<p>The <code>SpatRaster</code> consists of 500 columns and rows and contains five layers with each layer representing a variable.</p>
-<p>The <code>"Error in (function (x)  : attempt to apply non-function"</code> error can be ignored - this is an internal issue of the {terra} package during object creation and does not affect usage.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://mlr3.mlr-org.com">"mlr3"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://mlr3spatial.mlr-org.com">"mlr3spatial"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://mlr3learners.mlr-org.com">"mlr3learners"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://r-spatial.github.io/stars/">"stars"</a></span><span class="op">)</span>
-<span class="co">#&gt; Loading required package: abind</span>
-<span class="co">#&gt; Loading required package: sf</span>
-<span class="co">#&gt; Linking to GEOS 3.8.0, GDAL 3.0.4, PROJ 6.3.1</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"e1071"</span><span class="op">)</span></code></pre></div>
-<p>First, a {mlr3} classification <code>task</code> is created and a SVM learner is fitted with randomly sampled raster cells.</p>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://mlr3spatial.mlr-org.com">"mlr3spatial"</a></span><span class="op">)</span></code></pre></div>
+<p>First, the TIFF files is read via <code><a href="https://r-spatial.github.io/stars/reference/read_stars.html">stars::read_stars()</a></code> and put into a <code>DataBackendSpatial</code>. The DataBackend is then used to create a regression task with the response being <code>layer.1</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tif</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"tif/L7_ETMs.tif"</span>, package <span class="op">=</span> <span class="st">"stars"</span><span class="op">)</span>
 <span class="va">stack</span> <span class="op">=</span> <span class="fu">stars</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/read_stars.html">read_stars</a></span><span class="op">(</span><span class="va">tif</span><span class="op">)</span>
@@ -161,21 +157,21 @@
 <span class="co">#&gt; * Properties: -</span>
 <span class="co">#&gt; * Features (5):</span>
 <span class="co">#&gt;   - dbl (5): layer.2, layer.3, layer.4, layer.5, layer.6</span></code></pre></div>
-<p>For large raster files with millions of values it helps to predict in parallel. To enable this, set <code>learner$parallel_predict = TRUE</code> and initiate a parallel plan via {future}. This required {mlr3} &gt;= 0.12.0.</p>
+<p>For large raster files with millions of values it helps to predict in parallel. To enable this, set <code>learner$parallel_predict = TRUE</code> and initiate a parallel plan via {future}. Since this is only an example, parallelization is not enabled here. Here we will use a simple regression tree as an example learner. In practice you might want to use a different learner - you can find an overview of available learners <a href="https://mlr3extralearners.mlr-org.com/articles/learners/list_learners.html">here</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">learner_svm</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html">lrn</a></span><span class="op">(</span><span class="st">"regr.svm"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">learner</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html">lrn</a></span><span class="op">(</span><span class="st">"regr.rpart"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span>
 <span class="va">row_ids</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">task</span><span class="op">$</span><span class="va">nrow</span>, <span class="fl">500</span><span class="op">)</span>
-<span class="va">learner_svm</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span>, row_ids <span class="op">=</span> <span class="va">row_ids</span><span class="op">)</span>
+<span class="va">learner</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span>, row_ids <span class="op">=</span> <span class="va">row_ids</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">learner_svm</span><span class="op">)</span>
-<span class="co">#&gt; &lt;LearnerRegrSVM:regr.svm&gt;</span>
-<span class="co">#&gt; * Model: svm</span>
-<span class="co">#&gt; * Parameters: list()</span>
-<span class="co">#&gt; * Packages: e1071</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">learner</span><span class="op">)</span>
+<span class="co">#&gt; &lt;LearnerRegrRpart:regr.rpart&gt;</span>
+<span class="co">#&gt; * Model: rpart</span>
+<span class="co">#&gt; * Parameters: xval=0</span>
+<span class="co">#&gt; * Packages: rpart</span>
 <span class="co">#&gt; * Predict Type: response</span>
-<span class="co">#&gt; * Feature types: logical, integer, numeric</span>
-<span class="co">#&gt; * Properties: -</span></code></pre></div>
+<span class="co">#&gt; * Feature types: logical, integer, numeric, factor, ordered</span>
+<span class="co">#&gt; * Properties: importance, missings, selected_features, weights</span></code></pre></div>
 </div>
 <div id="prediction" class="section level3">
 <h3 class="hasAnchor">
@@ -186,7 +182,7 @@
 <h4 class="hasAnchor">
 <a href="#mlr3spatial" class="anchor"></a>mlr3spatial</h4>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ras</span> <span class="op">=</span> <span class="fu"><a href="../reference/predict_spatial.html">predict_spatial</a></span><span class="op">(</span><span class="va">task</span>, <span class="va">learner_svm</span>, format <span class="op">=</span> <span class="st">"stars"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">ras</span> <span class="op">=</span> <span class="fu"><a href="../reference/predict_spatial.html">predict_spatial</a></span><span class="op">(</span><span class="va">task</span>, <span class="va">learner</span>, format <span class="op">=</span> <span class="st">"stars"</span><span class="op">)</span>
 <span class="co">#&gt; Warning in showSRID(SRS_string, format = "PROJ", multiline = "NO", prefer_proj =</span>
 <span class="co">#&gt; prefer_proj): Discarded datum unknown in Proj4 definition</span>
 <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">ras</span><span class="op">)</span> <span class="op">=</span> <span class="st">"cadmium"</span>
@@ -194,8 +190,8 @@
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">ras</span><span class="op">)</span>
 <span class="co">#&gt; stars object with 2 dimensions and 1 attribute</span>
 <span class="co">#&gt; attribute(s):</span>
-<span class="co">#&gt;              Min.  1st Qu.   Median     Mean  3rd Qu.     Max.</span>
-<span class="co">#&gt; cadmium  57.59748 67.45409 78.34238 78.61442 89.09275 110.2793</span>
+<span class="co">#&gt;             Min.  1st Qu.   Median     Mean 3rd Qu.     Max.</span>
+<span class="co">#&gt; cadmium  62.3629 70.30233 77.01695 79.05135 89.2809 118.1429</span>
 <span class="co">#&gt; dimension(s):</span>
 <span class="co">#&gt;   from  to  offset delta                       refsys point values x/y</span>
 <span class="co">#&gt; x    1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]</span>
@@ -207,12 +203,12 @@
 <p>Since the layers are merged in a {stars} object, one first need to split them up and convert them into a regular data.table. Next, the column names need to be adjusted to match the ones of the training data. Afterwards, the <code>data.frame</code> generic of <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> can be called. Finally, the predictions need to be injected into a stars object again.</p>
 <p>(All of these steps are happening internally in {mlr3spatial}).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">svm_e1071</span> <span class="op">=</span> <span class="fu">e1071</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/e1071/man/svm.html">svm</a></span><span class="op">(</span><span class="va">layer.1</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">task</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span>rows <span class="op">=</span> <span class="va">row_ids</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">rpart_learner</span> <span class="op">=</span> <span class="fu">rpart</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">layer.1</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">task</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span>rows <span class="op">=</span> <span class="va">row_ids</span><span class="op">)</span><span class="op">)</span>
 <span class="va">stars_stack</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html">as.data.table</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/merge.html">split</a></span><span class="op">(</span><span class="va">stack</span>, <span class="st">"band"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">stars_stack</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"X1"</span><span class="op">)</span><span class="op">]</span> <span class="op">=</span> <span class="cn">NULL</span>
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">stars_stack</span><span class="op">)</span> <span class="op">=</span> <span class="va">task</span><span class="op">$</span><span class="va">feature_names</span>
 
-<span class="va">stars_pred</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">svm_e1071</span>, <span class="va">stars_stack</span><span class="op">)</span>
+<span class="va">stars_pred</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">rpart_learner</span>, <span class="va">stars_stack</span><span class="op">)</span>
 
 <span class="co"># subset stars object to one band only</span>
 <span class="va">stars_pred_ras</span> <span class="op">=</span> <span class="va">stack</span><span class="op">[</span>, , , <span class="fl">1</span><span class="op">]</span>
@@ -224,8 +220,8 @@
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">stars_pred_ras</span><span class="op">)</span>
 <span class="co">#&gt; stars object with 3 dimensions and 1 attribute</span>
 <span class="co">#&gt; attribute(s):</span>
-<span class="co">#&gt;           Min.  1st Qu.   Median     Mean  3rd Qu.     Max.</span>
-<span class="co">#&gt; pred  57.59748 67.45409 78.34238 78.61442 89.09275 110.2793</span>
+<span class="co">#&gt;          Min.  1st Qu.   Median     Mean 3rd Qu.     Max.</span>
+<span class="co">#&gt; pred  62.3629 70.30233 77.01695 79.05135 89.2809 118.1429</span>
 <span class="co">#&gt; dimension(s):</span>
 <span class="co">#&gt;      from  to  offset delta                       refsys point values x/y</span>
 <span class="co">#&gt; x       1 349  288776  28.5 UTM Zone 25, Southern Hem... FALSE   NULL [x]</span>
@@ -244,11 +240,10 @@
 <div id="visualization" class="section level3">
 <h3 class="hasAnchor">
 <a href="#visualization" class="anchor"></a>Visualization</h3>
-<p>Finally we can plot the predictions. The color vector is extract from the viridis color palette via <code><a href="https://rdrr.io/r/base/dput.html">dput(viridis::viridis_pal()(12))</a></code>.</p>
+<p>Finally we can plot the predictions. The color vector is extract from the viridis color palette via <code><a href="https://rdrr.io/r/base/dput.html">dput(viridis::viridis_pal()(7))</a></code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://r-spatial.github.io/stars/reference/plot.html">plot</a></span><span class="op">(</span><span class="va">ras</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#440154FF"</span>, <span class="st">"#482173FF"</span>, <span class="st">"#433E85FF"</span>, <span class="st">"#38598CFF"</span>, <span class="st">"#2D708EFF"</span>,
-  <span class="st">"#25858EFF"</span>, <span class="st">"#1E9B8AFF"</span>, <span class="st">"#2BB07FFF"</span>, <span class="st">"#51C56AFF"</span>, <span class="st">"#85D54AFF"</span>,
-  <span class="st">"#C2DF23FF"</span>, <span class="st">"#FDE725FF"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://r-spatial.github.io/stars/reference/plot.html">plot</a></span><span class="op">(</span><span class="va">ras</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#440154FF"</span>, <span class="st">"#443A83FF"</span>, <span class="st">"#31688EFF"</span>, <span class="st">"#21908CFF"</span>, <span class="st">"#35B779FF"</span>,
+  <span class="st">"#8FD744FF"</span>, <span class="st">"#FDE725FF"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="mlr3spatial_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 </div>
 </div>
