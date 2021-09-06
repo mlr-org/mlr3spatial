@@ -9,6 +9,8 @@
 #' @param format `[character]`\cr
 #' Output class of the resulting object. Accepted values are `"raster"`,
 #' `"stars"` and `"terra"`.
+#' @param filename `[character]`\cr
+#' Path where the spatial object should be written to.
 #' @details
 #' When parallelizing the prediction via {future}, plan `"multisession"` will
 #' not work due to external pointers within the spatial object. If the execution
@@ -30,7 +32,8 @@
 #' ras = predict_spatial(task, learner)
 #' ras
 #' @export
-predict_spatial = function(task, learner, chunksize = 1000L, format = "terra") {
+predict_spatial = function(task, learner, chunksize = 1000L, format = "terra",
+  filename = tempfile(fileext = ".tif")) {
   assert_class(task$backend, "DataBackendSpatial")
   assert_learner(learner)
   assert_task(task)
@@ -43,8 +46,7 @@ predict_spatial = function(task, learner, chunksize = 1000L, format = "terra") {
 
   # initialize target raster
   target_raster = terra::rast(terra::ext(stack), res = terra::res(stack), crs = terra::crs(stack))
-  terra::writeStart(target_raster, filename = tempfile(fileext = ".tif"),
-    datatype = "FLT8S", overwrite = TRUE)
+  terra::writeStart(target_raster, filename = filename, overwrite = TRUE, datatype = "FLT8S")
 
   lg$info("Start raster prediction")
   lg$info("Prediction is executed with a chunksize of %i, %i chunk(s) in total, %i values per chunk",

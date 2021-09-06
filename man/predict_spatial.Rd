@@ -4,7 +4,13 @@
 \alias{predict_spatial}
 \title{Predict on spatial objects with mlr3 learners}
 \usage{
-predict_spatial(task, learner, chunksize = 1000L, format = "terra")
+predict_spatial(
+  task,
+  learner,
+  chunksize = 1000L,
+  format = "terra",
+  filename = tempfile(fileext = ".tif")
+)
 }
 \arguments{
 \item{task}{(\link{Task}).}
@@ -24,6 +30,9 @@ value.}
 \item{format}{\verb{[character]}\cr
 Output class of the resulting object. Accepted values are \code{"raster"},
 \code{"stars"} and \code{"terra"}.}
+
+\item{filename}{\verb{[character]}\cr
+Path where the spatial object should be written to.}
 }
 \value{
 Spatial object of class given in argument \code{format}.
