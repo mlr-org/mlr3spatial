@@ -129,8 +129,6 @@ Now that we have executed two predictions, we would like to verify that these ar
 all.equal(as.numeric(stars_pred_ras$pred), as.numeric(ras$cadmium))
 ```
 
-The rounding differences are caused by a bug in {terra}.
-
 ### Visualization
 
 Finally we can plot the predictions.
