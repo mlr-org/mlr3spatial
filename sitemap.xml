@@ -4,22 +4,16 @@
     <loc>https://mlr3spatial.mlr-org.com/index.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/reference/DataBackendRasterBrick.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/reference/DataBackendSpatial.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/reference/DataBackendSF.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/reference/as_data_backend.stars.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/reference/DataBackendSpatRaster.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/reference/block_size.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/reference/DataBackendStars.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3spatial.mlr-org.com/reference/as_data_backend.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3spatial.mlr-org.com/reference/demo_spatraster.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/reference/demo_raster.html</loc>
   </url>
   <url>
     <loc>https://mlr3spatial.mlr-org.com/reference/demo_stack_rasterbrick.html</loc>
@@ -31,13 +25,13 @@
     <loc>https://mlr3spatial.mlr-org.com/reference/mlr3spatial-package.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/reference/predict_spatial_newdata.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/reference/predict_spatial.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3spatial.mlr-org.com/reference/write_raster.html</loc>
   </url>
   <url>
     <loc>https://mlr3spatial.mlr-org.com/articles/benchmark.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3spatial.mlr-org.com/articles/meuse.html</loc>
   </url>
   <url>
     <loc>https://mlr3spatial.mlr-org.com/articles/mlr3spatial.html</loc>

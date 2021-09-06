@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate a dummy 'raster::brick' — demo_stack_rasterbrick • mlr3spatial</title>
+<title>Split Raster Into Chunks — block_size • mlr3spatial</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -47,8 +47,8 @@
 
 
 
-<meta property="og:title" content="Generate a dummy 'raster::brick' — demo_stack_rasterbrick" />
-<meta property="og:description" content="Generates a square demo raster::brick object." />
+<meta property="og:title" content="Split Raster Into Chunks — block_size" />
+<meta property="og:description" content="Splits raster into chunks." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -153,47 +153,39 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generate a dummy 'raster::brick'</h1>
-    <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/data.R'><code>R/data.R</code></a></small>
-    <div class="hidden name"><code>demo_stack_rasterbrick.Rd</code></div>
+    <h1>Split Raster Into Chunks</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/helper.R'><code>R/helper.R</code></a></small>
+    <div class="hidden name"><code>block_size.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Generates a square demo <a href='https://rdrr.io/pkg/raster/man/brick.html'>raster::brick</a> object.</p>
+    <p>Splits raster into chunks.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>demo_stack_rasterbrick</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>50</span>, layers <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>block_size</span><span class='op'>(</span><span class='va'>raster</span>, <span class='va'>chunksize</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>size</th>
-      <td><p><code>[integer(1)]</code><br />
-Size of raster stack in megabyte (disk space).</p></td>
+      <th>raster</th>
+      <td><p>(<a href='https://rdrr.io/pkg/terra/man/SpatRaster-class.html'>terra::SpatRaster</a>)<br />
+Raster to be split into chunks.</p></td>
     </tr>
     <tr>
-      <th>layers</th>
-      <td><p><code>[integer(1)]</code><br />
-Number of layers.</p></td>
+      <th>chunksize</th>
+      <td><p><code>[integer]</code><br />
+The chunksize determines in how many subparts the prediction task will be
+split into. The value can be roughly thought of as megabyte of a raster file
+on disk. For example, if a prediction on a 1 GB file would be carried out
+with <code>chunksize = 100L</code>, the prediction would happen in 10 chunks.</p>
+<p>The default of <code>chunksize = 1000L</code> might be a good compromise between speed
+and memory usage. If you find yourself running out of memory, reduce this
+value.</p></td>
     </tr>
     </table>
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='fu'>mlr3misc</span><span class='fu'>::</span><span class='fu'><a href='https://mlr3misc.mlr-org.com/reference/require_namespaces.html'>require_namespaces</a></span><span class='op'>(</span><span class='st'>"raster"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='fu'>demo_stack_rasterbrick</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>5</span>, layers <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div><div class='output co'>#&gt; class      : RasterBrick 
-#&gt; dimensions : 790, 790, 624100, 2  (nrow, ncol, ncell, nlayers)
-#&gt; resolution : 0.001265823, 0.001265823  (x, y)
-#&gt; extent     : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
-#&gt; crs        : NA 
-#&gt; source     : memory
-#&gt; names      :       x_1,         y 
-#&gt; min values : -5.287884,  0.000000 
-#&gt; max values :  5.475621,  1.000000 
-#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
