@@ -40,7 +40,6 @@ For spatiotemporal resampling within mlr3 see [{mlr3spatiotempcv}](https://githu
   {mlr3spatial} makes use of the parallel prediction heuristic within {mlr3}.
   This one makes use of the {future} and {data.table} packages for parallelization and data handling.
   If {mlr3spatial} is faster, than this way seems to be more efficient than the parallelization built into the respective other packages.
-  We have seen larger speedups for {mlr3spatial} compared to other alternatives the larger the raster file is.
 </details>
 
 <details>
