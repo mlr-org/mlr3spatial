@@ -2,21 +2,32 @@
 % Please edit documentation in R/DataBackendSpatial.R
 \name{DataBackendSpatial}
 \alias{DataBackendSpatial}
-\title{DataBackend for SpatRaster}
+\title{DataBackend for spatial objects}
 \description{
-A \link[mlr3:DataBackend]{mlr3::DataBackend} for \code{SpatRaster} (\CRANpkg{terra}).
+\link[mlr3:DataBackend]{mlr3::DataBackend} for spatial objects:
+\itemize{
+\item \link[raster:brick]{raster::brick}
+\item \link[stars:st_as_stars]{stars::st_as_stars}
+\item \link[terra:SpatRaster-class]{terra::SpatRaster}
+}
+
+The DataBackend can be constructed using the spatial objects listed above.
+Internally {terra} is used for processing operations.
 }
 \section{Read mode}{
 
+There are two different ways the reading of values is performed internally:
 \itemize{
-\item Block mode reads complete rows of the raster file and subsets the requested
-cells. Faster than cell mode if we iterate the whole raster file.
-\item Cell mode reads individual cells. Faster than block mode if only a few
-cells are sampled.
+\item "Block mode" reads complete rows of the raster file and subsets the
+requested cells. This mode is faster than "cell mode" if the complete raster
+file is iterated over.
+\item "Cell mode" reads individual cells. This is faster than "block mode" if
+only a few cells are sampled.
 }
 
-Block mode is activated if \verb{$data(rows)} is called with a increasing integer
-sequence e.g. \code{200:300}.
+"Block mode" is activated if \verb{$data(rows)} is used with a increasing integer
+sequence e.g. \code{200:300}. If only a single cell is requested, "cell mode" is
+used.
 }
 
 \section{Super class}{
@@ -75,10 +86,9 @@ Creates a backend for a \code{SpatRaster}.
 \item{\code{data}}{(\verb{Spatial object})\cr
 Supported objects:
 \itemize{
-\item \code{"Spatraster"} (terra)
-\item \code{"stars"} (stars)
-\item \code{"RasterBrick"} (raster)
-\item \code{"Raster"} (raster)
+\item \link[raster:brick]{raster::brick}
+\item \link[stars:st_as_stars]{stars::st_as_stars}
+\item \link[terra:SpatRaster-class]{terra::SpatRaster}
 }}
 }
 \if{html}{\out{</div>}}
@@ -89,11 +99,15 @@ Supported objects:
 \if{latex}{\out{\hypertarget{method-data}{}}}
 \subsection{Method \code{data()}}{
 Returns a slice of the raster in the specified format.
-Currently, the only supported formats are \code{"data.table"}.
-The rows must be addressed as vector of cells indices, columns must be referred to via layer names.
-Queries for rows with no matching row id and queries for columns with no matching column name are silently ignored.
-Rows are guaranteed to be returned in the same order as \code{rows}, columns may be returned in an arbitrary order.
-Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.
+Currently, the only supported formats is \code{"data.table"}.
+
+The rows must be addressed as vector of cells indices, columns must be
+referred to via layer names. Queries for rows with no matching row id and
+queries for columns with no matching column name are silently ignored.
+
+Rows are guaranteed to be returned in the same order as \code{rows}, columns
+may be returned in an arbitrary order. Duplicated row ids result in
+duplicated rows, duplicated column names lead to an exception.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DataBackendSpatial$data(rows, cols, data_format = "data.table")}\if{html}{\out{</div>}}
 }

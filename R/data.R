@@ -1,7 +1,7 @@
 #' @title Generate Demo Raster
 #'
 #' @description
-#' Generates a square demo [terra::SpatRaster].
+#' Generates a square demo [terra::SpatRaster]
 #'
 #' @param dimension (`integer(1)`)
 #' xy dimension of raster
@@ -15,10 +15,11 @@ demo_raster = function(dimension) {
   write_raster(data)
 }
 
-#' @title Generate a dummy 'terra::SpatRaster'
+#' @title Generate a demo 'terra::SpatRaster'
 #'
 #' @description
-#' Generates a square demo [terra::SpatRaster] object.
+#' Generates a square demo [terra::SpatRaster] object with options to set the
+#' size (on disk) and number of layers.
 #'
 #' @param size `[integer(1)]`\cr
 #'   Size of raster stack in megabyte (disk space).
@@ -41,9 +42,10 @@ demo_stack_spatraster = function(size = 50, layers = 5) {
   raster
 }
 
-#' @title Generate a dummy 'raster::brick'
+#' @title Generate a demo 'raster::brick'
 #' @description
-#' Generates a square demo [raster::brick] object.
+#' Generates a square demo [raster::brick] object with options to set the size
+#' (on disk) and number of layers.
 #' @inheritParams demo_stack_spatraster
 #' @examples
 #' if (mlr3misc::require_namespaces("raster", quietly = TRUE)) {

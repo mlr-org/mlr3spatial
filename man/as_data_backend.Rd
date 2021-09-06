@@ -2,13 +2,18 @@
 % Please edit documentation in R/DataBackendSpatial.R
 \name{as_data_backend.stars}
 \alias{as_data_backend.stars}
-\title{Create a Data Backend}
+\title{Coerce to DataBackendSpatial}
 \usage{
 \method{as_data_backend}{stars}(data, primary_key = NULL, ...)
 }
 \arguments{
-\item{data}{(\code{SpatRaster})\cr
-A \code{SpatRaster} object to create a \link{DataBackend} from.}
+\item{data}{(\verb{Spatial object})\cr
+Supported objects:
+\itemize{
+\item \link[raster:brick]{raster::brick}
+\item \link[stars:st_as_stars]{stars::st_as_stars}
+\item \link[terra:SpatRaster-class]{terra::SpatRaster}
+}}
 
 \item{primary_key}{(\code{character(1)} | \code{integer()})\cr
 Name of the primary key column, or integer vector of row ids.}
@@ -20,5 +25,7 @@ Not used.}
 \link{DataBackend}.
 }
 \description{
-Wraps a \link{DataBackend} around \code{SpatRaster} objects.
+Wraps a \link{DataBackend} around spatial objects.
+Currently this is only a synonym for \code{DataBackenSpatial$new()} and does not
+support coercing from other backends.
 }

@@ -1,7 +1,13 @@
-#' @title DataBackend for SpatRaster
+#' @title DataBackend for spatial objects
 #'
 #' @description
-#' A [mlr3::DataBackend] for `SpatRaster` (\CRANpkg{terra}).
+#' [mlr3::DataBackend] for spatial objects:
+#' - [raster::brick]
+#' - [stars::st_as_stars]
+#' - [terra::SpatRaster]
+#'
+#' The DataBackend can be constructed using the spatial objects listed above.
+#' Internally {terra} is used for processing operations.
 #'
 #' @param rows `integer()`\cr
 #'   Row indices. Row indices start with 1 in the upper left corner in the
@@ -12,14 +18,17 @@
 #'   Column names.
 #'
 #' @section Read mode:
-#' * Block mode reads complete rows of the raster file and subsets the requested
-#'   cells. Faster than cell mode if we iterate the whole raster file.
+#'  There are two different ways the reading of values is performed internally:
+#' * "Block mode" reads complete rows of the raster file and subsets the
+#' requested cells. This mode is faster than "cell mode" if the complete raster
+#' file is iterated over.
 #'
-#' * Cell mode reads individual cells. Faster than block mode if only a few
-#'   cells are sampled.
+#' * "Cell mode" reads individual cells. This is faster than "block mode" if
+#' only a few cells are sampled.
 #'
-#' Block mode is activated if `$data(rows)` is called with a increasing integer
-#' sequence e.g. `200:300`.
+#' "Block mode" is activated if `$data(rows)` is used with a increasing integer
+#' sequence e.g. `200:300`. If only a single cell is requested, "cell mode" is
+#' used.
 #'
 #' @importFrom terra writeRaster writeStart writeStop rast cats sources
 #'   intersect readStart readStop rowColFromCell readValues head unique ncell
@@ -34,12 +43,7 @@ DataBackendSpatial = R6Class("DataBackendSpatial",
     #'
     #' Creates a backend for a `SpatRaster`.
     #'
-    #' @param data (`Spatial object`)\cr
-    #'    Supported objects:
-    #'    - `"Spatraster"` (terra)
-    #'    - `"stars"` (stars)
-    #'    - `"RasterBrick"` (raster)
-    #'    - `"Raster"` (raster)
+    #' @template param-data
     #'
     initialize = function(data) {
 
@@ -66,11 +70,15 @@ DataBackendSpatial = R6Class("DataBackendSpatial",
 
     #' @description
     #' Returns a slice of the raster in the specified format.
-    #' Currently, the only supported formats are `"data.table"`.
-    #' The rows must be addressed as vector of cells indices, columns must be referred to via layer names.
-    #' Queries for rows with no matching row id and queries for columns with no matching column name are silently ignored.
-    #' Rows are guaranteed to be returned in the same order as `rows`, columns may be returned in an arbitrary order.
-    #' Duplicated row ids result in duplicated rows, duplicated column names lead to an exception.
+    #' Currently, the only supported formats is `"data.table"`.
+    #'
+    #' The rows must be addressed as vector of cells indices, columns must be
+    #' referred to via layer names. Queries for rows with no matching row id and
+    #' queries for columns with no matching column name are silently ignored.
+    #'
+    #' Rows are guaranteed to be returned in the same order as `rows`, columns
+    #' may be returned in an arbitrary order. Duplicated row ids result in
+    #' duplicated rows, duplicated column names lead to an exception.
     #'
     #' @param data_format (`character(1)`)\cr
     #'   Desired data format. Currently only `"data.table"` supported.
@@ -216,18 +224,21 @@ DataBackendSpatial = R6Class("DataBackendSpatial",
   )
 )
 
-#' @title Create a Data Backend
+#' @title Coerce to DataBackendSpatial
 #'
 #' @description
-#' Wraps a [DataBackend] around `SpatRaster` objects.
+#' Wraps a [DataBackend] around spatial objects.
+#' Currently this is only a synonym for `DataBackenSpatial$new()` and does not
+#' support coercing from other backends.
 #'
-#' @param data (`SpatRaster`)\cr
-#'    A `SpatRaster` object to create a [DataBackend] from.
+#' @template param-data
 #' @template param-primary-key
 #' @param ... (`any`)\cr
 #'   Not used.
 #'
 #' @return [DataBackend].
+#' @rdname as_data_backend
+#'
 #' @export
 as_data_backend.stars = function(data, primary_key = NULL, ...) { # nolint
   # we need to go stars -> raster -> terra

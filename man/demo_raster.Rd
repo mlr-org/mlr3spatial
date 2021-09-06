@@ -11,6 +11,6 @@ demo_raster(dimension)
 xy dimension of raster}
 }
 \description{
-Generates a square demo \link[terra:SpatRaster-class]{terra::SpatRaster}.
+Generates a square demo \link[terra:SpatRaster-class]{terra::SpatRaster}
 }
 \keyword{internal}
