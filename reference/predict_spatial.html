@@ -168,7 +168,13 @@ an <a href='https://mlr3.mlr-org.com/reference/Prediction.html'>mlr3::Prediction
 for the prediction.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>predict_spatial</span><span class='op'>(</span><span class='va'>task</span>, <span class='va'>learner</span>, chunksize <span class='op'>=</span> <span class='fl'>1000L</span>, format <span class='op'>=</span> <span class='st'>"terra"</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>predict_spatial</span><span class='op'>(</span>
+  <span class='va'>task</span>,
+  <span class='va'>learner</span>,
+  chunksize <span class='op'>=</span> <span class='fl'>1000L</span>,
+  format <span class='op'>=</span> <span class='st'>"terra"</span>,
+  filename <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".tif"</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -197,6 +203,11 @@ value.</p></td>
       <td><p><code>[character]</code><br />
 Output class of the resulting object. Accepted values are <code>"raster"</code>,
 <code>"stars"</code> and <code>"terra"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>filename</th>
+      <td><p><code>[character]</code><br />
+Path where the spatial object should be written to.</p></td>
     </tr>
     </table>
 
@@ -228,7 +239,7 @@ users, <code>plan(future.callr::callr)</code> might be an alternative.</p>
 #&gt; resolution  : 0.004484305, 0.004484305  (x, y)
 #&gt; extent      : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
 #&gt; coord. ref. : +proj=longlat +datum=WGS84 +no_defs 
-#&gt; source      : file3b07488259ad.tif 
+#&gt; source      : file3a655a8dd996.tif 
 #&gt; name        : lyr.1 
 #&gt; min value   :     1 
 #&gt; max value   :     1 </div></pre>
