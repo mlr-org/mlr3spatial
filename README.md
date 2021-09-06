@@ -30,12 +30,12 @@ For spatiotemporal resampling within mlr3 see [{mlr3spatiotempcv}](https://githu
 <details>
   <summary>Do I need to use <code>TaskClassifST</code>/<code>TaskRegrST</code> with {mlr3spatial}?</summary>
   <br>
-  No, you can use `TaskClassif` and `TaskRegr`. However, their `*ST` equivalents will also work.
-  When we introduced the `*ST` tasks, we had no support for spatial backends yet and there was a need to store the spatial information somewhere.
+    No, you can use `TaskClassif` and `TaskRegr`. However, their `*ST` equivalents will also work.
+    When we introduced the `*ST` tasks, we had no support for spatial backends yet and there was a need to store the spatial information somewhere.
 </details>
 
 <details>
-  <summary>Why is {mlr3spatial} faster when predicting than doing it directly via the spatial packages?</summary>
+  <summary>Why is {mlr3spatial} faster when predicting compared to the native spatial packages?</summary>
   <br>
   {mlr3spatial} makes use of the parallel prediction heuristic within {mlr3}.
   This one makes use of the {future} and {data.table} packages for parallelization and data handling.
@@ -76,6 +76,5 @@ For spatiotemporal resampling within mlr3 see [{mlr3spatiotempcv}](https://githu
 
 ## Articles
 
-- [Get Started](https://mlr3spatial.mlr-org.com/articles/mlr3spatial.html)
+- [Getting Started](https://mlr3spatial.mlr-org.com/articles/mlr3spatial.html)
 - [Benchmarking parallel predictions](https://mlr3spatial.mlr-org.com/articles/benchmark.html)
-- [Vector data use case: `meuse` dataset](https://mlr3spatial.mlr-org.com/articles/meuse.html)
