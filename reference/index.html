@@ -80,7 +80,7 @@
 
       <div class="navbar-brand-container">
         <a href="https://mlr-org.com"><img src="https://raw.githubusercontent.com/mlr-org/mlr3/master/man/figures/logo.png" id="hexlogo" alt="mlr-org" /></a>
-        <a class="navbar-brand" href="../index.html">mlr3spatial <small>v0.0.0.9001</small></a>
+        <a class="navbar-brand" href="../index.html">mlr3spatial <small>v0.0.0.9000</small></a>
       </div>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
@@ -108,6 +108,9 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/benchmark.html">Benchmarking parallel predictions</a>
+    </li>
+    <li>
+      <a href="../articles/meuse.html">Vector data use case: `meuse` dataset</a>
     </li>
   </ul>
 </li>
@@ -198,13 +201,13 @@
         <td>
           <p><code><a href="demo_stack_rasterbrick.html">demo_stack_rasterbrick()</a></code> </p>
         </td>
-        <td><p>Generate a demo 'raster::brick'</p></td>
+        <td><p>Generate a dummy 'raster::brick'</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="demo_stack_spatraster.html">demo_stack_spatraster()</a></code> </p>
         </td>
-        <td><p>Generate a demo 'terra::SpatRaster'</p></td>
+        <td><p>Generate a dummy 'terra::SpatRaster'</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -221,15 +224,33 @@
       <tr>
         
         <td>
-          <p><code><a href="DataBackendSpatial.html">DataBackendSpatial</a></code> </p>
+          <p><code><a href="DataBackendRasterBrick.html">DataBackendRasterBrick</a></code> </p>
         </td>
-        <td><p>DataBackend for spatial objects</p></td>
+        <td><p>DataBackend for RasterBrick objects</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="as_data_backend.html">as_data_backend(<i>&lt;stars&gt;</i>)</a></code> <code><a href="as_data_backend.html">as_data_backend(<i>&lt;SpatRaster&gt;</i>)</a></code> <code><a href="as_data_backend.html">as_data_backend(<i>&lt;RasterBrick&gt;</i>)</a></code> <code><a href="as_data_backend.html">as_data_backend(<i>&lt;Raster&gt;</i>)</a></code> </p>
+          <p><code><a href="DataBackendSF.html">DataBackendSf</a></code> </p>
         </td>
-        <td><p>Coerce to DataBackendSpatial</p></td>
+        <td><p>DataBackend for 'sf' objects</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="DataBackendSpatRaster.html">DataBackendSpatRaster</a></code> </p>
+        </td>
+        <td><p>DataBackend for SpatRaster</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="DataBackendStars.html">DataBackendStars</a></code> </p>
+        </td>
+        <td><p>DataBackend for 'stars'</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="as_data_backend.html">as_rasterbrick_backend()</a></code> <code><a href="as_data_backend.html">as_sf_backend()</a></code> <code><a href="as_data_backend.html">as_spatraster_backend()</a></code> <code><a href="as_data_backend.html">as_stars_backend()</a></code> </p>
+        </td>
+        <td><p>Convert to and between spatial DataBackends</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -246,7 +267,7 @@
       <tr>
         
         <td>
-          <p><code><a href="predict_spatial.html">predict_spatial()</a></code> </p>
+          <p><code><a href="predict_spatial_newdata.html">predict_spatial_newdata()</a></code> </p>
         </td>
         <td><p>Predict on spatial objects with mlr3 learners</p></td>
       </tr>

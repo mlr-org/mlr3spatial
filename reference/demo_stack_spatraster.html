@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate a demo 'terra::SpatRaster' — demo_stack_spatraster • mlr3spatial</title>
+<title>Generate a dummy 'terra::SpatRaster' — demo_stack_spatraster • mlr3spatial</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -47,9 +47,8 @@
 
 
 
-<meta property="og:title" content="Generate a demo 'terra::SpatRaster' — demo_stack_spatraster" />
-<meta property="og:description" content="Generates a square demo terra::SpatRaster object with options to set the
-size (on disk) and number of layers." />
+<meta property="og:title" content="Generate a dummy 'terra::SpatRaster' — demo_stack_spatraster" />
+<meta property="og:description" content="Generates a square demo terra::SpatRaster object." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -83,7 +82,7 @@ size (on disk) and number of layers." />
 
       <div class="navbar-brand-container">
         <a href="https://mlr-org.com"><img src="https://raw.githubusercontent.com/mlr-org/mlr3/master/man/figures/logo.png" id="hexlogo" alt="mlr-org" /></a>
-        <a class="navbar-brand" href="../index.html">mlr3spatial <small>v0.0.0.9001</small></a>
+        <a class="navbar-brand" href="../index.html">mlr3spatial <small>v0.0.0.9000</small></a>
       </div>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
@@ -111,6 +110,9 @@ size (on disk) and number of layers." />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/benchmark.html">Benchmarking parallel predictions</a>
+    </li>
+    <li>
+      <a href="../articles/meuse.html">Vector data use case: `meuse` dataset</a>
     </li>
   </ul>
 </li>
@@ -154,14 +156,13 @@ size (on disk) and number of layers." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generate a demo 'terra::SpatRaster'</h1>
+    <h1>Generate a dummy 'terra::SpatRaster'</h1>
     <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/data.R'><code>R/data.R</code></a></small>
     <div class="hidden name"><code>demo_stack_spatraster.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Generates a square demo <a href='https://rdrr.io/pkg/terra/man/SpatRaster-class.html'>terra::SpatRaster</a> object with options to set the
-size (on disk) and number of layers.</p>
+    <p>Generates a square demo <a href='https://rdrr.io/pkg/terra/man/SpatRaster-class.html'>terra::SpatRaster</a> object.</p>
     </div>
 
     <pre class="usage"><span class='fu'>demo_stack_spatraster</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>50</span>, layers <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span></pre>
@@ -188,12 +189,12 @@ Number of layers.</p></td>
 #&gt; dimensions  : 790, 790, 2  (nrow, ncol, nlyr)
 #&gt; resolution  : 0.001265823, 0.001265823  (x, y)
 #&gt; extent      : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
-#&gt; coord. ref. : +proj=longlat +datum=WGS84 +no_defs 
-#&gt; sources     : file3a5f7f63ad4d.tif  
-#&gt;               file3a5f4488aacf.tif  
-#&gt; names       :       x_1,         y 
-#&gt; min values  : -4.589538,  0.000000 
-#&gt; max values  :  5.507922,  1.000000 </div></pre>
+#&gt; coord. ref. :  
+#&gt; sources     : memory  
+#&gt;               memory  
+#&gt; names       :       x_1,     y 
+#&gt; min values  : -4.638386, FALSE 
+#&gt; max values  :  5.637882,  TRUE </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate a demo 'raster::brick' — demo_stack_rasterbrick • mlr3spatial</title>
+<title>Generate a dummy 'raster::brick' — demo_stack_rasterbrick • mlr3spatial</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -47,9 +47,8 @@
 
 
 
-<meta property="og:title" content="Generate a demo 'raster::brick' — demo_stack_rasterbrick" />
-<meta property="og:description" content="Generates a square demo raster::brick object with options to set the size
-(on disk) and number of layers." />
+<meta property="og:title" content="Generate a dummy 'raster::brick' — demo_stack_rasterbrick" />
+<meta property="og:description" content="Generates a square demo raster::brick object." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -83,7 +82,7 @@
 
       <div class="navbar-brand-container">
         <a href="https://mlr-org.com"><img src="https://raw.githubusercontent.com/mlr-org/mlr3/master/man/figures/logo.png" id="hexlogo" alt="mlr-org" /></a>
-        <a class="navbar-brand" href="../index.html">mlr3spatial <small>v0.0.0.9001</small></a>
+        <a class="navbar-brand" href="../index.html">mlr3spatial <small>v0.0.0.9000</small></a>
       </div>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
@@ -111,6 +110,9 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/benchmark.html">Benchmarking parallel predictions</a>
+    </li>
+    <li>
+      <a href="../articles/meuse.html">Vector data use case: `meuse` dataset</a>
     </li>
   </ul>
 </li>
@@ -154,14 +156,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generate a demo 'raster::brick'</h1>
+    <h1>Generate a dummy 'raster::brick'</h1>
     <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/data.R'><code>R/data.R</code></a></small>
     <div class="hidden name"><code>demo_stack_rasterbrick.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Generates a square demo <a href='https://rdrr.io/pkg/raster/man/brick.html'>raster::brick</a> object with options to set the size
-(on disk) and number of layers.</p>
+    <p>Generates a square demo <a href='https://rdrr.io/pkg/raster/man/brick.html'>raster::brick</a> object.</p>
     </div>
 
     <pre class="usage"><span class='fu'>demo_stack_rasterbrick</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>50</span>, layers <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span></pre>
@@ -193,8 +194,8 @@ Number of layers.</p></td>
 #&gt; crs        : NA 
 #&gt; source     : memory
 #&gt; names      :       x_1,         y 
-#&gt; min values : -5.287884,  0.000000 
-#&gt; max values :  5.475621,  1.000000 
+#&gt; min values : -4.454651,  0.000000 
+#&gt; max values :  5.629156,  1.000000 
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

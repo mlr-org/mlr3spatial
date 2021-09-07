@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Coerce to DataBackendSpatial — as_data_backend.stars • mlr3spatial</title>
+<title>Convert to and between spatial DataBackends — as_rasterbrick_backend • mlr3spatial</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -47,10 +47,8 @@
 
 
 
-<meta property="og:title" content="Coerce to DataBackendSpatial — as_data_backend.stars" />
-<meta property="og:description" content="Wraps a DataBackend around spatial objects.
-Currently this is only a synonym for DataBackenSpatial$new() and does not
-support coercing from other backends." />
+<meta property="og:title" content="Convert to and between spatial DataBackends — as_rasterbrick_backend" />
+<meta property="og:description" content="S3 dispatch methods for converting from and to various spatial mlr3::DataBackends." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -84,7 +82,7 @@ support coercing from other backends." />
 
       <div class="navbar-brand-container">
         <a href="https://mlr-org.com"><img src="https://raw.githubusercontent.com/mlr-org/mlr3/master/man/figures/logo.png" id="hexlogo" alt="mlr-org" /></a>
-        <a class="navbar-brand" href="../index.html">mlr3spatial <small>v0.0.0.9001</small></a>
+        <a class="navbar-brand" href="../index.html">mlr3spatial <small>v0.0.0.9000</small></a>
       </div>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
@@ -112,6 +110,9 @@ support coercing from other backends." />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/benchmark.html">Benchmarking parallel predictions</a>
+    </li>
+    <li>
+      <a href="../articles/meuse.html">Vector data use case: `meuse` dataset</a>
     </li>
   </ul>
 </li>
@@ -155,40 +156,96 @@ support coercing from other backends." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Coerce to DataBackendSpatial</h1>
-    <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/DataBackendSpatial.R'><code>R/DataBackendSpatial.R</code></a></small>
+    <h1>Convert to and between spatial DataBackends</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/as_rasterbrick_backend.R'><code>R/as_rasterbrick_backend.R</code></a>, <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/as_sf_backend.R'><code>R/as_sf_backend.R</code></a>, <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/as_spatraster_backend.R'><code>R/as_spatraster_backend.R</code></a>, and 1 more</small>
     <div class="hidden name"><code>as_data_backend.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Wraps a DataBackend around spatial objects.
-Currently this is only a synonym for <code>DataBackenSpatial$new()</code> and does not
-support coercing from other backends.</p>
+    <p>S3 dispatch methods for converting from and to various spatial <a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a>s.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for stars</span>
-<span class='fu'>as_data_backend</span><span class='op'>(</span><span class='va'>data</span>, primary_key <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>as_rasterbrick_backend</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  primary_key <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>response</span>,
+  response_is_factor <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
+
+<span class='fu'>as_sf_backend</span><span class='op'>(</span><span class='va'>data</span>, primary_key <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for SpatRaster</span>
-<span class='fu'>as_data_backend</span><span class='op'>(</span><span class='va'>data</span>, primary_key <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='fu'>as_sf_backend</span><span class='op'>(</span><span class='va'>data</span>, primary_key <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for RasterBrick</span>
-<span class='fu'>as_data_backend</span><span class='op'>(</span><span class='va'>data</span>, primary_key <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
+<span class='fu'>as_sf_backend</span><span class='op'>(</span><span class='va'>data</span>, primary_key <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='co'># S3 method for Raster</span>
-<span class='fu'>as_data_backend</span><span class='op'>(</span><span class='va'>data</span>, primary_key <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='co'># S3 method for DataBackendSpatRaster</span>
+<span class='fu'>as_sf_backend</span><span class='op'>(</span><span class='va'>data</span>, primary_key <span class='op'>=</span> <span class='cn'>NULL</span>, polygons <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for DataBackendRasterBrick</span>
+<span class='fu'>as_sf_backend</span><span class='op'>(</span><span class='va'>data</span>, primary_key <span class='op'>=</span> <span class='cn'>NULL</span>, polygons <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='fu'>as_spatraster_backend</span><span class='op'>(</span><span class='va'>data</span>, primary_key <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='fu'>as_stars_backend</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  primary_key <span class='op'>=</span> <span class='cn'>NULL</span>,
+  response <span class='op'>=</span> <span class='cn'>NULL</span>,
+  response_is_factor <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
+
+<span class='co'># S3 method for SpatRaster</span>
+<span class='fu'>as_stars_backend</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  primary_key <span class='op'>=</span> <span class='cn'>NULL</span>,
+  response <span class='op'>=</span> <span class='cn'>NULL</span>,
+  response_is_factor <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
+
+<span class='co'># S3 method for RasterBrick</span>
+<span class='fu'>as_stars_backend</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  primary_key <span class='op'>=</span> <span class='cn'>NULL</span>,
+  response <span class='op'>=</span> <span class='cn'>NULL</span>,
+  response_is_factor <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
+
+<span class='co'># S3 method for DataBackendSpatRaster</span>
+<span class='fu'>as_stars_backend</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  primary_key <span class='op'>=</span> <span class='cn'>NULL</span>,
+  response <span class='op'>=</span> <span class='cn'>NULL</span>,
+  response_is_factor <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
+
+<span class='co'># S3 method for DataBackendRasterBrick</span>
+<span class='fu'>as_stars_backend</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  primary_key <span class='op'>=</span> <span class='cn'>NULL</span>,
+  response <span class='op'>=</span> <span class='cn'>NULL</span>,
+  response_is_factor <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>(<code>Spatial object</code>)<br />
-Supported objects:</p><ul>
-<li><p><a href='https://rdrr.io/pkg/raster/man/brick.html'>raster::brick</a></p></li>
-<li><p><a href='https://r-spatial.github.io/stars/reference/st_as_stars.html'>stars::st_as_stars</a></p></li>
-<li><p><a href='https://rdrr.io/pkg/terra/man/SpatRaster-class.html'>terra::SpatRaster</a></p></li>
-</ul></td>
+      <td><p>(<code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame()</a></code>)<br />
+The input <code><a href='https://rdrr.io/r/base/data.frame.html'>data.frame()</a></code>.
+Converted to a <code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table::data.table()</a></code> automatically.</p></td>
     </tr>
     <tr>
       <th>primary_key</th>
@@ -196,15 +253,38 @@ Supported objects:</p><ul>
 Name of the primary key column, or integer vector of row ids.</p></td>
     </tr>
     <tr>
+      <th>response</th>
+      <td><p>(<code><a href='https://rdrr.io/r/base/character.html'>character</a></code>)<br />
+The name of the response variable. Only needed when <code>response_is_factor = TRUE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>response_is_factor</th>
+      <td><p>(<code><a href='https://rdrr.io/r/base/character.html'>character</a></code>)<br />
+When this backend should be used in a <a href='https://mlr3.mlr-org.com/reference/TaskClassif.html'>mlr3::TaskClassif</a>, set <code>response_is_factor = TRUE</code>.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>(<code>any</code>)<br />
-Not used.</p></td>
+Additional arguments passed to the respective <a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>DataBackend</a> method.</p></td>
+    </tr>
+    <tr>
+      <th>polygons</th>
+      <td><p><code>[logical]</code><br />
+Whether to convert to polygons instead of points.</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p><code>[logical]</code><br />
+Whether to suppress possible console output.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>DataBackend.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>DataBackendSf DataBackendStars</p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
