@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate Demo Raster — demo_spatraster • mlr3spatial</title>
+<title>Writes a raster in chunks — write_raster • mlr3spatial</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -47,8 +47,8 @@
 
 
 
-<meta property="og:title" content="Generate Demo Raster — demo_spatraster" />
-<meta property="og:description" content="Generates a square demo terra::SpatRaster." />
+<meta property="og:title" content="Writes a raster in chunks — write_raster" />
+<meta property="og:description" content="Writes square raster to disk in chunks. Internal helper function." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -82,7 +82,7 @@
 
       <div class="navbar-brand-container">
         <a href="https://mlr-org.com"><img src="https://raw.githubusercontent.com/mlr-org/mlr3/master/man/figures/logo.png" id="hexlogo" alt="mlr-org" /></a>
-        <a class="navbar-brand" href="../index.html">mlr3spatial <small>v0.0.0.9000</small></a>
+        <a class="navbar-brand" href="../index.html">mlr3spatial <small>v0.0.0.9001</small></a>
       </div>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
@@ -110,9 +110,6 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/benchmark.html">Benchmarking parallel predictions</a>
-    </li>
-    <li>
-      <a href="../articles/meuse.html">Vector data use case: `meuse` dataset</a>
     </li>
   </ul>
 </li>
@@ -156,24 +153,24 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generate Demo Raster</h1>
-    <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/data.R'><code>R/data.R</code></a></small>
-    <div class="hidden name"><code>demo_spatraster.Rd</code></div>
+    <h1>Writes a raster in chunks</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/helper.R'><code>R/helper.R</code></a></small>
+    <div class="hidden name"><code>write_raster.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Generates a square demo <a href='https://rdrr.io/pkg/terra/man/SpatRaster-class.html'>terra::SpatRaster</a>.</p>
+    <p>Writes square raster to disk in chunks. Internal helper function.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>demo_spatraster</span><span class='op'>(</span><span class='va'>dimension</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>write_raster</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>dimension</th>
-      <td><p>(<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>)
-xy dimension of raster</p></td>
+      <th>data</th>
+      <td><p><code>[SpatRaster]</code><br />
+<code>SpatRaster</code> object.</p></td>
     </tr>
     </table>
 

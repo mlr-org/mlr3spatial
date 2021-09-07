@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>DataBackend for 'stars' — DataBackendStars • mlr3spatial</title>
+<title>DataBackend for raster objects — DataBackendRaster • mlr3spatial</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -47,8 +47,15 @@
 
 
 
-<meta property="og:title" content="DataBackend for 'stars' — DataBackendStars" />
-<meta property="og:description" content="A mlr3::DataBackend for stars (package terra)." />
+<meta property="og:title" content="DataBackend for raster objects — DataBackendRaster" />
+<meta property="og:description" content="mlr3::DataBackend for raster objects:
+raster::brick
+stars::st_as_stars
+terra::SpatRaster
+
+
+The DataBackend can be constructed using the spatial objects listed above.
+Internally terra is used for processing operations." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -82,7 +89,7 @@
 
       <div class="navbar-brand-container">
         <a href="https://mlr-org.com"><img src="https://raw.githubusercontent.com/mlr-org/mlr3/master/man/figures/logo.png" id="hexlogo" alt="mlr-org" /></a>
-        <a class="navbar-brand" href="../index.html">mlr3spatial <small>v0.0.0.9000</small></a>
+        <a class="navbar-brand" href="../index.html">mlr3spatial <small>v0.0.0.9001</small></a>
       </div>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
@@ -110,9 +117,6 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/benchmark.html">Benchmarking parallel predictions</a>
-    </li>
-    <li>
-      <a href="../articles/meuse.html">Vector data use case: `meuse` dataset</a>
     </li>
   </ul>
 </li>
@@ -156,13 +160,20 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>DataBackend for 'stars'</h1>
-    <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/DataBackend-stars.R'><code>R/DataBackend-stars.R</code></a></small>
-    <div class="hidden name"><code>DataBackendStars.Rd</code></div>
+    <h1>DataBackend for raster objects</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/DataBackendRaster.R'><code>R/DataBackendRaster.R</code></a></small>
+    <div class="hidden name"><code>DataBackendRaster.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A <a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a> for <code>stars</code> (package <a href='https://CRAN.R-project.org/package=terra'><span class="pkg">terra</span></a>).</p>
+    <p><a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a> for raster objects:</p><ul>
+<li><p><a href='https://rdrr.io/pkg/raster/man/brick.html'>raster::brick</a></p></li>
+<li><p><a href='https://r-spatial.github.io/stars/reference/st_as_stars.html'>stars::st_as_stars</a></p></li>
+<li><p><a href='https://rdrr.io/pkg/terra/man/SpatRaster-class.html'>terra::SpatRaster</a></p></li>
+</ul>
+
+<p>The DataBackend can be constructed using the spatial objects listed above.
+Internally terra is used for processing operations.</p>
     </div>
 
 
@@ -171,32 +182,20 @@
 
     
 
-<ul>
-<li><p>Block mode reads complete rows of the raster file and subsets the requested
-cells. Faster than cell mode if we iterate the whole raster file.</p></li>
-<li><p>Cell mode reads individual cells. Faster than block mode if only a few
-cells are sampled.</p></li>
+<p>There are two different ways the reading of values is performed internally:</p><ul>
+<li><p>"Block mode" reads complete rows of the raster file and subsets the
+requested cells. This mode is faster than "cell mode" if the complete raster
+file is iterated over.</p></li>
+<li><p>"Cell mode" reads individual cells. This is faster than "block mode" if
+only a few cells are sampled.</p></li>
 </ul>
 
-<p>Block mode is activated if <code>$data(rows)</code> is called with a increasing integer
-sequence e.g. <code>200:300</code>.</p>
+<p>"Block mode" is activated if <code>$data(rows)</code> is used with a increasing integer
+sequence e.g. <code>200:300</code>. If only a single cell is requested, "cell mode" is
+used.</p>
     <h2 class="hasAnchor" id="super-class"><a class="anchor" href="#super-class"></a>Super class</h2>
 
-    <p><code><a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a></code> -&gt; <code>DataBackendStars</code></p>
-    <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
-
-    <p><div class="r6-fields"></p><dl>
-<dt><code>compact_seq</code></dt><dd><p><code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code><br />
-If <code>TRUE</code>, row ids are a natural sequence from 1 to <code><a href='https://rdrr.io/r/base/nrow.html'>nrow(data)</a></code> (determined internally).
-In this case, row lookup uses faster positional indices instead of equi joins.</p></dd>
-
-<dt><code>response</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/character.html'>character</a></code>)<br />
-The name of the response variable given during construction.</p></dd>
-
-<dt><code>response_is_factor</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/character.html'>character</a></code>)<br />
-Whether <code>response_is_factor = TRUE</code> was set during construction.</p></dd>
-
-</dl><p></div></p>
+    <p><code><a href='https://mlr3.mlr-org.com/reference/DataBackend.html'>mlr3::DataBackend</a></code> -&gt; <code>DataBackendRaster</code></p>
     <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
 
     <p><div class="r6-active-bindings"></p><dl>
@@ -204,19 +203,16 @@ Whether <code>response_is_factor = TRUE</code> was set during construction.</p><
 Returns vector of all distinct row identifiers, i.e. the contents of the primary key column.</p></dd>
 
 <dt><code>colnames</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>)<br />
-Returns vector of all column names, including the primary key column.</p></dd>
+Returns vector of all column names.</p></dd>
 
 <dt><code>nrow</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>)<br />
 Number of rows (observations).</p></dd>
 
 <dt><code>ncol</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>)<br />
-Number of columns (variables), including the primary key column.</p></dd>
+Number of columns (variables).</p></dd>
 
-<dt><code>stack</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>)<br />
-Returns stars.</p></dd>
-
-<dt><code>coordinates</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>)<br />
-Returns the sf geometry.</p></dd>
+<dt><code>stack</code></dt><dd><p>(<code>SpatRaster</code>)<br />
+Raster stack.</p></dd>
 
 </dl><p></div></p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
@@ -225,11 +221,11 @@ Returns the sf geometry.</p></dd>
 <h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Public methods</h3>
 
 <ul>
-<li><p><a href='#method-new'><code>DataBackendStars$new()</code></a></p></li>
-<li><p><a href='#method-data'><code>DataBackendStars$data()</code></a></p></li>
-<li><p><a href='#method-head'><code>DataBackendStars$head()</code></a></p></li>
-<li><p><a href='#method-distinct'><code>DataBackendStars$distinct()</code></a></p></li>
-<li><p><a href='#method-missings'><code>DataBackendStars$missings()</code></a></p></li>
+<li><p><a href='#method-new'><code>DataBackendRaster$new()</code></a></p></li>
+<li><p><a href='#method-data'><code>DataBackendRaster$data()</code></a></p></li>
+<li><p><a href='#method-head'><code>DataBackendRaster$head()</code></a></p></li>
+<li><p><a href='#method-distinct'><code>DataBackendRaster$distinct()</code></a></p></li>
+<li><p><a href='#method-missings'><code>DataBackendRaster$missings()</code></a></p></li>
 </ul>
 <p><details open ><summary>Inherited methods</summary>
 <ul>
@@ -240,45 +236,31 @@ Returns the sf geometry.</p></dd>
 
 <hr>
 <a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
-<p>Creates a backend for a <code>stars</code>.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>DataBackendStars</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
-  <span class='va'>data</span>,
-  primary_key <span class='op'>=</span> <span class='cn'>NULL</span>,
-  <span class='va'>response</span>,
-  response_is_factor <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span></pre><p></div></p>
+<p>Creates a backend for a raster objects.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>DataBackendRaster</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
-<dt><code>data</code></dt><dd><p>(<code>stars</code>)<br />
-A raster object.</p></dd>
-
-<dt><code>primary_key</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> | <code><a href='https://rdrr.io/r/base/integer.html'>integer()</a></code>)<br />
-Name of the primary key column, or integer vector of row ids.</p></dd>
-
-<dt><code>response</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/character.html'>character</a></code>)<br />
-The name of the response variable. Only needed when <code>response_is_factor = TRUE</code>.</p></dd>
-
-<dt><code>response_is_factor</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/character.html'>character</a></code>)<br />
-When this backend should be used in a <a href='https://mlr3.mlr-org.com/reference/TaskClassif.html'>mlr3::TaskClassif</a>, set <code>response_is_factor = TRUE</code>.</p></dd>
-
-<dt><code>quiet</code></dt><dd><p><code>[logical]</code><br />
-Whether to suppress possible console output.</p></dd>
+<dt><code>data</code></dt><dd><p>(<code>Spatial object</code>)<br />
+Supported objects:
+<ul>
+<li><p><a href='https://rdrr.io/pkg/raster/man/brick.html'>raster::brick</a></p></li>
+<li><p><a href='https://r-spatial.github.io/stars/reference/st_as_stars.html'>stars::st_as_stars</a></p></li>
+<li><p><a href='https://rdrr.io/pkg/terra/man/SpatRaster-class.html'>terra::SpatRaster</a></p></li>
+</ul></p></dd>
 
 </dl><p></div></p>
 <p><hr>
 <a id="method-data"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/utils/data.html'>data()</a></code></h3>
-<p>Returns a slice of the data.
-Calls <code><a href='https://rdrr.io/pkg/raster/man/rowFromCell.html'>raster::rowColFromCell()</a></code> and <code><a href='https://rdrr.io/pkg/raster/man/getValues.html'>raster::getValues()</a></code> on the spatial
-object and converts it to a <code><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table::data.table()</a></code>.</p>
-<p>The rows must be addressed as vector of primary key values, columns must
-be referred to via column names. Queries for rows with no matching row id
-and queries for columns with no matching column name are silently
-ignored. Rows are guaranteed to be returned in the same order as <code>rows</code>,
-columns may be returned in an arbitrary order. Duplicated row ids result
-in duplicated rows, duplicated column names lead to an exception.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>DataBackendStars</span><span class='op'>$</span><span class='fu'>data</span><span class='op'>(</span><span class='va'>rows</span>, <span class='va'>cols</span>, data_format <span class='op'>=</span> <span class='st'>"data.table"</span><span class='op'>)</span></pre><p></div></p>
+<p>Returns a slice of the raster in the specified format.
+Currently, the only supported formats is <code>"data.table"</code>.</p>
+<p>The rows must be addressed as vector of cells indices, columns must be
+referred to via layer names. Queries for rows with no matching row id and
+queries for columns with no matching column name are silently ignored.</p>
+<p>Rows are guaranteed to be returned in the same order as <code>rows</code>, columns
+may be returned in an arbitrary order. Duplicated row ids result in
+duplicated rows, duplicated column names lead to an exception.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>DataBackendRaster</span><span class='op'>$</span><span class='fu'>data</span><span class='op'>(</span><span class='va'>rows</span>, <span class='va'>cols</span>, data_format <span class='op'>=</span> <span class='st'>"data.table"</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -292,13 +274,13 @@ cells in the raster.</p></dd>
 Column names.</p></dd>
 
 <dt><code>data_format</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>)<br />
-Desired data format, e.g. <code>"data.table"</code> or <code>"Matrix"</code>.</p></dd>
+Desired data format. Currently only <code>"data.table"</code> supported.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
 <a id="method-head"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/utils/head.html'>head()</a></code></h3>
 <p>Retrieve the first <code>n</code> rows.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>DataBackendStars</span><span class='op'>$</span><span class='fu'>head</span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>6L</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>DataBackendRaster</span><span class='op'>$</span><span class='fu'>head</span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>6L</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -314,7 +296,7 @@ Number of rows.</p></dd>
 specified. If <code>na_rm</code> is <code>TRUE</code>, missing values are removed from the
 returned vectors of distinct values. Non-existing rows and columns are
 silently ignored.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>DataBackendStars</span><span class='op'>$</span><span class='fu'>distinct</span><span class='op'>(</span><span class='va'>rows</span>, <span class='va'>cols</span>, na_rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>DataBackendRaster</span><span class='op'>$</span><span class='fu'>distinct</span><span class='op'>(</span><span class='va'>rows</span>, <span class='va'>cols</span>, na_rm <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -337,7 +319,7 @@ Whether to remove NAs or not.</p></dd>
 <a id="method-missings"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>missings()</code></h3>
 <p>Returns the number of missing values per column in the specified slice
 of data. Non-existing rows and columns are silently ignored.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>DataBackendStars</span><span class='op'>$</span><span class='fu'>missings</span><span class='op'>(</span><span class='va'>rows</span>, <span class='va'>cols</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>DataBackendRaster</span><span class='op'>$</span><span class='fu'>missings</span><span class='op'>(</span><span class='va'>rows</span>, <span class='va'>cols</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -356,16 +338,6 @@ Column names.</p></dd>
 
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='fu'>mlr3misc</span><span class='fu'>::</span><span class='fu'><a href='https://mlr3misc.mlr-org.com/reference/require_namespaces.html'>require_namespaces</a></span><span class='op'>(</span><span class='st'>"stars"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='va'>tif</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"tif/L7_ETMs.tif"</span>, package <span class='op'>=</span> <span class='st'>"stars"</span><span class='op'>)</span>
-  <span class='va'>l7data</span> <span class='op'>=</span> <span class='fu'>stars</span><span class='fu'>::</span><span class='fu'><a href='https://r-spatial.github.io/stars/reference/read_stars.html'>read_stars</a></span><span class='op'>(</span><span class='va'>tif</span><span class='op'>)</span>
-  <span class='va'>backend</span> <span class='op'>=</span> <span class='va'>DataBackendStars</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>l7data</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div><div class='output co'>#&gt; <span class='message'>Dropping coordinates 'x' and 'y' as they are most likely coordinates.</span>
-#&gt; <span class='message'>If you want to have these variables included, duplicate them in the</span>
-#&gt; <span class='message'>stars objects using a different name. To silence this message, set</span>
-#&gt; <span class='message'>'quiet = TRUE'.</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

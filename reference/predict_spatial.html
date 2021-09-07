@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate a demo 'raster::brick' — demo_stack_rasterbrick • mlr3spatial</title>
+<title>Predict on spatial objects with mlr3 learners — predict_spatial • mlr3spatial</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -47,9 +47,11 @@
 
 
 
-<meta property="og:title" content="Generate a demo 'raster::brick' — demo_stack_rasterbrick" />
-<meta property="og:description" content="Generates a square demo raster::brick object with options to set the size
-(on disk) and number of layers." />
+<meta property="og:title" content="Predict on spatial objects with mlr3 learners — predict_spatial" />
+<meta property="og:description" content="This function allows to directly predict mlr3 learners on
+various spatial objects (see section &quot;Supported Spatial Classes&quot;). It returns
+an mlr3::Prediction object and (optionally) the same object that was used
+for the prediction." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -154,48 +156,93 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generate a demo 'raster::brick'</h1>
-    <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/data.R'><code>R/data.R</code></a></small>
-    <div class="hidden name"><code>demo_stack_rasterbrick.Rd</code></div>
+    <h1>Predict on spatial objects with mlr3 learners</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mlr-org/mlr3spatial/blob/master/R/predict_spatial.R'><code>R/predict_spatial.R</code></a></small>
+    <div class="hidden name"><code>predict_spatial.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Generates a square demo <a href='https://rdrr.io/pkg/raster/man/brick.html'>raster::brick</a> object with options to set the size
-(on disk) and number of layers.</p>
+    <p>This function allows to directly predict mlr3 learners on
+various spatial objects (see section "Supported Spatial Classes"). It returns
+an <a href='https://mlr3.mlr-org.com/reference/Prediction.html'>mlr3::Prediction</a> object and (optionally) the same object that was used
+for the prediction.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>demo_stack_rasterbrick</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>50</span>, layers <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>predict_spatial</span><span class='op'>(</span>
+  <span class='va'>task</span>,
+  <span class='va'>learner</span>,
+  chunksize <span class='op'>=</span> <span class='fl'>1000L</span>,
+  format <span class='op'>=</span> <span class='st'>"terra"</span>,
+  filename <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".tif"</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>size</th>
-      <td><p><code>[integer(1)]</code><br />
-Size of raster stack in megabyte (disk space).</p></td>
+      <th>task</th>
+      <td><p>(Task).</p></td>
     </tr>
     <tr>
-      <th>layers</th>
-      <td><p><code>[integer(1)]</code><br />
-Number of layers.</p></td>
+      <th>learner</th>
+      <td><p>(Learner).</p></td>
+    </tr>
+    <tr>
+      <th>chunksize</th>
+      <td><p><code>[integer]</code><br />
+The chunksize determines in how many subparts the prediction task will be
+split into. The value can be roughly thought of as megabyte of a raster file
+on disk. For example, if a prediction on a 1 GB file would be carried out
+with <code>chunksize = 100L</code>, the prediction would happen in 10 chunks.</p>
+<p>The default of <code>chunksize = 1000L</code> might be a good compromise between speed
+and memory usage. If you find yourself running out of memory, reduce this
+value.</p></td>
+    </tr>
+    <tr>
+      <th>format</th>
+      <td><p><code>[character]</code><br />
+Output class of the resulting object. Accepted values are <code>"raster"</code>,
+<code>"stars"</code> and <code>"terra"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>filename</th>
+      <td><p><code>[character]</code><br />
+Path where the spatial object should be written to.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Spatial object of class given in argument <code>format</code>.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>When parallelizing the prediction via future, plan <code>"multisession"</code> will
+not work due to external pointers within the spatial object. If the execution
+platform is UNIX-based, <code>plan("multicore")</code> is recommended. For Windows
+users, <code>plan(future.callr::callr)</code> might be an alternative.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='fu'>mlr3misc</span><span class='fu'>::</span><span class='fu'><a href='https://mlr3misc.mlr-org.com/reference/require_namespaces.html'>require_namespaces</a></span><span class='op'>(</span><span class='st'>"raster"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='fu'>demo_stack_rasterbrick</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>5</span>, layers <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div><div class='output co'>#&gt; class      : RasterBrick 
-#&gt; dimensions : 790, 790, 624100, 2  (nrow, ncol, ncell, nlayers)
-#&gt; resolution : 0.001265823, 0.001265823  (x, y)
-#&gt; extent     : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
-#&gt; crs        : NA 
-#&gt; source     : memory
-#&gt; names      :       x_1,         y 
-#&gt; min values : -5.287884,  0.000000 
-#&gt; max values :  5.475621,  1.000000 
-#&gt; </div></pre>
+    <pre class="examples"><div class='input'><span class='va'>stack</span> <span class='op'>=</span> <span class='fu'><a href='demo_stack_spatraster.html'>demo_stack_spatraster</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+<span class='va'>value</span> <span class='op'>=</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span><span class='op'>(</span>ID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"negative"</span>, <span class='st'>"positive"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>terra</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/factors.html'>setCats</a></span><span class='op'>(</span><span class='va'>stack</span>, layer <span class='op'>=</span> <span class='st'>"y"</span>, value <span class='op'>=</span> <span class='va'>value</span><span class='op'>)</span>
+
+<span class='co'># create backend</span>
+<span class='va'>backend</span> <span class='op'>=</span> <span class='fu'>as_data_backend</span><span class='op'>(</span><span class='va'>stack</span><span class='op'>)</span>
+<span class='va'>task</span> <span class='op'>=</span> <span class='fu'>as_task_classif</span><span class='op'>(</span><span class='va'>backend</span>, target <span class='op'>=</span> <span class='st'>"y"</span>, positive <span class='op'>=</span> <span class='st'>"positive"</span><span class='op'>)</span>
+<span class='co'># train</span>
+<span class='va'>learner</span> <span class='op'>=</span> <span class='fu'>lrn</span><span class='op'>(</span><span class='st'>"classif.featureless"</span><span class='op'>)</span>
+<span class='va'>learner</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>task</span>, row_ids <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='va'>task</span><span class='op'>$</span><span class='va'>nrow</span>, <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>ras</span> <span class='op'>=</span> <span class='fu'>predict_spatial</span><span class='op'>(</span><span class='va'>task</span>, <span class='va'>learner</span><span class='op'>)</span>
+<span class='va'>ras</span>
+</div><div class='output co'>#&gt; class       : SpatRaster 
+#&gt; dimensions  : 223, 223, 1  (nrow, ncol, nlyr)
+#&gt; resolution  : 0.004484305, 0.004484305  (x, y)
+#&gt; extent      : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
+#&gt; coord. ref. : +proj=longlat +datum=WGS84 +no_defs 
+#&gt; source      : file3ade35348709.tif 
+#&gt; name        : lyr.1 
+#&gt; min value   :     1 
+#&gt; max value   :     1 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
