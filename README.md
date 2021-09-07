@@ -18,8 +18,9 @@ Users often need to extract the "raw" values from the spatial objects, train a m
 In addition, predictions on large raster files (i.e. multiple GB in size) often leads to memory issues on consumer grade machines.
 {mlr3spatial} tries to help here by
 
-- Providing a [`DataBackendSpatial`](https://mlr3.mlr-org.com/reference/DataBackend.html) class which is able to handle various spatial classes ([{terra}](https://cran.r-project.org/web/packages/terra/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{stars}](https://cran.r-project.org/web/packages/stars/index.html)) which can be used to create {mlr3} [Tasks](https://mlr3.mlr-org.com/reference/Task.html)
-- Support for enhanced predictions on spatial objects ([{terra}](https://cran.r-project.org/web/packages/terra/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{stars}](https://cran.r-project.org/web/packages/stars/index.html), with optional parallelization and memory awareness
+- Providing a [`DataBackendRaster`](https://mlr3.mlr-org.com/reference/DataBackend.html) class which is able to handle various spatial raster classes ([{terra}](https://cran.r-project.org/web/packages/terra/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{stars}](https://cran.r-project.org/web/packages/stars/index.html))
+- Providing a [`DataBackendVector`](https://mlr3.mlr-org.com/reference/DataBackend.html) class which is able to handle {sf} objects
+- Support for enhanced predictions on spatial objects ([{terra}](https://cran.r-project.org/web/packages/terra/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{stars}](https://cran.r-project.org/web/packages/stars/index.html), [{sf}](https://cran.r-project.org/web/packages/sf/index.html), with optional **parallelization** and **memory awareness**
 
 ## Spatiotemporal resampling / cross-validation
 

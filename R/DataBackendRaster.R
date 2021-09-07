@@ -1,7 +1,7 @@
-#' @title DataBackend for spatial objects
+#' @title DataBackend for raster objects
 #'
 #' @description
-#' [mlr3::DataBackend] for spatial objects:
+#' [mlr3::DataBackend] for raster objects:
 #' - [raster::brick]
 #' - [stars::st_as_stars]
 #' - [terra::SpatRaster]
@@ -41,7 +41,7 @@ DataBackendSpatial = R6Class("DataBackendSpatial",
 
     #' @description
     #'
-    #' Creates a backend for a `SpatRaster`.
+    #' Creates a backend for a raster objects.
     #'
     #' @template param-data
     #'
@@ -228,7 +228,7 @@ DataBackendSpatial = R6Class("DataBackendSpatial",
 #'
 #' @description
 #' Wraps a [DataBackend] around spatial objects.
-#' Currently this is only a synonym for `DataBackenSpatial$new()` and does not
+#' Currently this is only a synonym for `DataBackendSpatial$new()` and does not
 #' support coercing from other backends.
 #'
 #' @template param-data
