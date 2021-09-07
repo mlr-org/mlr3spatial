@@ -8,7 +8,9 @@
 #' @template param-chunksize
 #' @param format `[character]`\cr
 #' Output class of the resulting object. Accepted values are `"raster"`,
-#' `"stars"` and `"terra"`.
+#' `"stars"` and `"terra"`. Note that when choosing something else than
+#' `"terra"`, the spatial object is converted into the respective format which
+#' might cause overhead both in runtime and memory allocation.
 #' @param filename `[character]`\cr
 #' Path where the spatial object should be written to.
 #' @details

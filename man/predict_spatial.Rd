@@ -29,7 +29,9 @@ value.}
 
 \item{format}{\verb{[character]}\cr
 Output class of the resulting object. Accepted values are \code{"raster"},
-\code{"stars"} and \code{"terra"}.}
+\code{"stars"} and \code{"terra"}. Note that when choosing something else than
+\code{"terra"}, the spatial object is converted into the respective format which
+might cause overhead both in runtime and memory allocation.}
 
 \item{filename}{\verb{[character]}\cr
 Path where the spatial object should be written to.}
