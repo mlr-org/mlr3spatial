@@ -2,7 +2,7 @@
 % Please edit documentation in R/data.R
 \name{demo_stack_rasterbrick}
 \alias{demo_stack_rasterbrick}
-\title{Generate a dummy 'raster::brick'}
+\title{Generate a demo 'raster::brick'}
 \usage{
 demo_stack_rasterbrick(size = 50, layers = 5)
 }
@@ -14,7 +14,8 @@ Size of raster stack in megabyte (disk space).}
 Number of layers.}
 }
 \description{
-Generates a square demo \link[raster:brick]{raster::brick} object.
+Generates a square demo \link[raster:brick]{raster::brick} object with options to set the size
+(on disk) and number of layers.
 }
 \examples{
 if (mlr3misc::require_namespaces("raster", quietly = TRUE)) {

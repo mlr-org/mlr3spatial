@@ -1,109 +1,77 @@
-#' @title DataBackend for 'stars'
+#' @title DataBackend for vector objects
 #'
 #' @description
-#' A [mlr3::DataBackend] for `stars` (package \CRANpkg{terra}).
+#' A [mlr3::DataBackend] for vector objects (only package \CRANpkg{sf} is
+#' supported).
 #'
 #' @param rows `integer()`\cr
-#'   Row indices. Row indices start with 1 in the upper left corner in the
-#'   raster, increase from left to right and then from top to bottom. The last
-#'   cell is in the bottom right corner and the row index equals the number of
-#'   cells in the raster.
+#'   Row indices.
 #' @param cols `character()`\cr
 #'   Column names.
 #'
-#' @section Read mode:
-#' * Block mode reads complete rows of the raster file and subsets the requested
-#'   cells. Faster than cell mode if we iterate the whole raster file.
-#'
-#' * Cell mode reads individual cells. Faster than block mode if only a few
-#'   cells are sampled.
-#'
-#' Block mode is activated if `$data(rows)` is called with a increasing integer
-#' sequence e.g. `200:300`.
-#' @examples
-#' if (mlr3misc::require_namespaces("stars", quietly = TRUE)) {
-#'   tif = system.file("tif/L7_ETMs.tif", package = "stars")
-#'   l7data = stars::read_stars(tif)
-#'   backend = DataBackendStars$new(l7data)
-#' }
 #' @export
-DataBackendStars = R6::R6Class("DataBackendStars",
+DataBackendVector = R6::R6Class("DataBackendVector",
   inherit = mlr3::DataBackend, cloneable = FALSE,
   public = list(
-
     #' @field compact_seq `logical(1)`\cr
     #' If `TRUE`, row ids are a natural sequence from 1 to `nrow(data)` (determined internally).
     #' In this case, row lookup uses faster positional indices instead of equi joins.
     compact_seq = FALSE,
 
-    #' @field response ([`character`])\cr
-    #'   The name of the response variable given during construction.
-    response = NULL,
-
-    #' @field response_is_factor ([`character`])\cr
-    #'   Whether `response_is_factor = TRUE` was set during construction.
-    response_is_factor = NULL,
-
     #' @description
     #'
-    #' Creates a backend for a `stars`.
+    #' Creates a backend for spatial vector objects.
     #'
-    #' @param data (`stars`)\cr
+    #' @param data (`sf`)\cr
     #'    A raster object.
-    #'
-    #' @template param-primary-key
-    #' @template param-response
-    #' @template param-response-is-factor
-    #' @template param-quiet
-    initialize = function(data, primary_key = NULL, response, response_is_factor = FALSE, quiet = FALSE) {
-      # we need to convert the layer data into "wide" format
-      private$.stars = data
-      private$.coordinates = as.data.table(data)[, c("x", "y")]
+    #' @param primary_key (`character(1)` | `integer()`)\cr
+    #'   Name of the primary key column, or integer vector of row ids.
+    initialize = function(data, primary_key = NULL) {
+      assert_class(data$geometry, "sfc")
+      private$.coordinates = data$geometry
+      self$data_formats = "data.table"
 
-      values_dt_wide = as.data.table(split(data, "band"))
+      data$geometry = NULL
+      attr(data, "sf_column") = NULL
+      data = as.data.table(data)
 
-      if (any(c("x", "y") %in% colnames(values_dt_wide))) {
-        if (!quiet) { # nocov start
-          messagef("Dropping coordinates 'x' and 'y' as they are
-            most likely coordinates. If you want to have these variables included,
-            duplicate them in the stars objects using a different name.
-            To silence this message, set 'quiet = TRUE'.", wrap = TRUE)
-        } # nocov end
-        values_dt_wide[, c("x", "y")] = list(NULL)
+      if (is.character(primary_key)) { # nocov start
+        assert_string(primary_key)
+        assert_choice(primary_key, colnames(data))
+        assert_integer(data[[primary_key]], any.missing = FALSE, unique = TRUE) # nocov end
+      } else {
+        if (is.null(primary_key)) {
+          row_ids = seq_row(data)
+          compact_seq = TRUE
+        } else if (is.integer(primary_key)) {
+          row_ids = assert_integer(primary_key, len = nrow(data), any.missing = FALSE, unique = TRUE)
+        } else {
+          stopf("Argument 'primary_key' must be NULL, a column name or a vector of ids")
+        }
+        primary_key = "..row_id"
+        data = insert_named(data, list("..row_id" = row_ids))
       }
 
-      if (response_is_factor) {
-        values_dt_wide[[response]] = as.factor(values_dt_wide[[response]])
-      }
-
-      row_ids = seq_row(values_dt_wide)
-
-      primary_key = "..row_id"
-      # FIXME: I think we can do this better?
-      values_dt_wide = suppressWarnings(mlr3misc::insert_named(values_dt_wide, list("..row_id" = row_ids)))
-
-      super$initialize(setkeyv(values_dt_wide, primary_key), primary_key, data_formats = "data.table")
-      ii = match(primary_key, names(values_dt_wide))
+      assert_data_table(data, col.names = "unique")
+      super$initialize(setkeyv(data, primary_key), primary_key, data_formats = "data.table")
+      ii = match(primary_key, names(data))
       if (is.na(ii)) {
         stopf("Primary key '%s' not in 'data'", primary_key) # nocov
       }
-
-      private$.data = assert_class(values_dt_wide, "data.table")
-      self$data_formats = "data.table"
-      private$.cache = set_names(replace(rep(NA, ncol(values_dt_wide)), ii, FALSE), names(values_dt_wide))
+      private$.cache = set_names(replace(rep(NA, ncol(data)), ii, FALSE), names(data))
     },
 
     #' @description
-    #' Returns a slice of the data.
-    #' Calls [raster::rowColFromCell()] and [raster::getValues()] on the spatial
-    #' object and converts it to a [data.table::data.table()].
-    #'
-    #' The rows must be addressed as vector of primary key values, columns must
-    #' be referred to via column names. Queries for rows with no matching row id
-    #' and queries for columns with no matching column name are silently
-    #' ignored. Rows are guaranteed to be returned in the same order as `rows`,
-    #' columns may be returned in an arbitrary order. Duplicated row ids result
-    #' in duplicated rows, duplicated column names lead to an exception.
+    #' Returns a slice of the data in the specified format.
+    #' Currently, the only supported formats are `"data.table"` and `"Matrix"`.
+    #' The rows must be addressed as vector of primary key values, columns
+    #' must be referred to via column names.
+    #' Queries for rows with no matching row id and queries for columns with
+    #' no matching column name are silently ignored.
+    #' Rows are guaranteed to be returned in the same order as `rows`, columns
+    #' may be returned in an arbitrary order.
+    #' Duplicated row ids result in duplicated rows, duplicated column names
+    #' lead to an exception.
     #' @param data_format (`character(1)`)\cr
     #'  Desired data format, e.g. `"data.table"` or `"Matrix"`.
     data = function(rows, cols, data_format = "data.table") {
@@ -138,7 +106,6 @@ DataBackendStars = R6::R6Class("DataBackendStars",
     #' specified. If `na_rm` is `TRUE`, missing values are removed from the
     #' returned vectors of distinct values. Non-existing rows and columns are
     #' silently ignored.
-    #'
     #' @param na_rm `logical(1)`\cr
     #'   Whether to remove NAs or not.
     #'
@@ -203,12 +170,6 @@ DataBackendStars = R6::R6Class("DataBackendStars",
       ncol(private$.data)
     },
 
-    #' @field stack (`integer(1)`)\cr
-    #' Returns stars.
-    stack = function(rhs) {
-      assert_ro_binding(rhs)
-      private$.stars
-    },
     #' @field coordinates (`integer(1)`)\cr
     #' Returns the sf geometry.
     coordinates = function(rhs) {
@@ -221,9 +182,30 @@ DataBackendStars = R6::R6Class("DataBackendStars",
     .calculate_hash = function() {
       mlr3misc::calculate_hash(self$compact_seq, private$.data)
     },
-    .stars = NULL,
     .data = NULL,
-    .coordinates = NULL,
-    .cache = NULL
+    .cache = NULL,
+    .coordinates = NULL
   )
 )
+
+#' @title Coerce to DataBackendVector
+#'
+#' @description
+#' Wraps a [DataBackend] around spatial objects.
+#' Currently this is only a synonym for `DataBackendVector$new()` and does not
+#' support coercing from other backends.
+#'
+#' @template param-data
+#' @template param-primary-key
+#' @param ... (`any`)\cr
+#'   Not used.
+#'
+#' @return [DataBackend].
+#' @rdname as_data_backend
+#'
+#' @export
+as_data_backend.sf = function(data, primary_key = NULL, ...) { # nolint
+  b = DataBackendVector$new(data, primary_key = primary_key)
+  b$compact_seq = FALSE
+  return(b)
+}

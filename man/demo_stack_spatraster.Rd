@@ -2,7 +2,7 @@
 % Please edit documentation in R/data.R
 \name{demo_stack_spatraster}
 \alias{demo_stack_spatraster}
-\title{Generate a dummy 'terra::SpatRaster'}
+\title{Generate a demo 'terra::SpatRaster'}
 \usage{
 demo_stack_spatraster(size = 50, layers = 5)
 }
@@ -14,7 +14,8 @@ Size of raster stack in megabyte (disk space).}
 Number of layers.}
 }
 \description{
-Generates a square demo \link[terra:SpatRaster-class]{terra::SpatRaster} object.
+Generates a square demo \link[terra:SpatRaster-class]{terra::SpatRaster} object with options to set the
+size (on disk) and number of layers.
 }
 \examples{
 demo_stack_spatraster(size = 5, layers = 2)

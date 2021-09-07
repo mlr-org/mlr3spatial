@@ -8,7 +8,7 @@
 \description{
 Extends the mlr3 ML framework with methods for spatial
     objects. Data storage and prediction are supported for packages
-    'terra', 'raster', 'sf' and 'stars'.
+    'terra', 'raster' and 'stars'.
 }
 \section{Learn mlr3}{
 

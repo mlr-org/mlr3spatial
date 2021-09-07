@@ -1,6 +1,6 @@
 Package: mlr3spatial
 Title: Support for Spatial Objects Within the 'mlr3' Ecosystem
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Date: 2021-08-20
 Authors@R:
     c(person(given = "Marc",
@@ -15,7 +15,7 @@ Authors@R:
              comment = c(ORCID = "0000-0003-0748-6624")))
 Description: Extends the mlr3 ML framework with methods for spatial
     objects. Data storage and prediction are supported for packages
-    'terra', 'raster', 'sf' and 'stars'.
+    'terra', 'raster' and 'stars'.
 License: LGPL-3
 URL: https://mlr3spatial.mlr-org.com,
     https://github.com/mlr-org/mlr3spatial
@@ -27,14 +27,16 @@ Imports:
     checkmate (>= 2.0.0),
     data.table (>= 1.14.0),
     lgr (>= 0.4.2),
+    methods,
     mlr3misc,
-    R6 (>= 2.5.0)
+    R6 (>= 2.5.0),
+    terra (>= 1.3-22)
 Suggests:
     bench,
     e1071,
     future,
+    future.callr,
     knitr,
-    mapview,
     mlr3learners (>= 0.4.5),
     mlr3tuning,
     paradox,
@@ -44,9 +46,7 @@ Suggests:
     rmarkdown,
     rpart,
     sf,
-    sp,
     stars,
-    terra (>= 1.3-22),
     testthat (>= 3.0.0)
 VignetteBuilder:
     knitr
