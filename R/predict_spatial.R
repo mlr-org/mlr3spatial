@@ -34,7 +34,7 @@
 #' @export
 predict_spatial = function(task, learner, chunksize = 1000L, format = "terra",
   filename = tempfile(fileext = ".tif")) {
-  assert_class(task$backend, "DataBackendSpatial")
+  assert_class(task$backend, "DataBackendRaster")
   assert_learner(learner)
   assert_task(task)
   assert_int(chunksize)
@@ -50,7 +50,7 @@ predict_spatial = function(task, learner, chunksize = 1000L, format = "terra",
 
   lg$info("Start raster prediction")
   lg$info("Prediction is executed with a chunksize of %i, %i chunk(s) in total, %i values per chunk",
-    chunksize, length(bs$cells_seq), terra::ncell(task$backend$stack))
+    chunksize, length(bs$cells_seq), terra::ncell(task$backend$stack) / length(bs$cells_seq))
 
   mlr3misc::pmap(list(bs$cells_seq, bs$cells_to_read, seq_along(bs$cells_seq)), function(cells_seq, cells_to_read, n) {
 

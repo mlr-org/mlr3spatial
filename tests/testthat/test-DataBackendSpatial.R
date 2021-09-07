@@ -1,5 +1,5 @@
-test_that("DataBackendSpatial works", {
-  backend = DataBackendSpatial$new(stack_classif)
+test_that("DataBackendRaster works", {
+  backend = DataBackendRaster$new(stack_classif)
 
   # head
   data = backend$head(10L)
@@ -43,7 +43,7 @@ test_that("DataBackendSpatial works", {
   stack_classif = terra::rast(nrow = 3, ncol = 4)
   stack_classif[] = 1:12
   names(stack_classif) = "y"
-  backend = DataBackendSpatial$new(stack_classif)
+  backend = DataBackendRaster$new(stack_classif)
 
   # [x] [x] [x] [x]
   # [ ] [ ] [ ] [ ]
@@ -68,8 +68,8 @@ test_that("DataBackendSpatial works", {
 
 # stars input ------------------------------------------------------------------
 
-test_that("DataBackendSpatial + stars", {
-  backend = DataBackendSpatial$new(l7data)
+test_that("DataBackendRaster + stars", {
+  backend = DataBackendRaster$new(l7data)
 
   # head
   data = backend$head(10L)
@@ -87,8 +87,8 @@ test_that("DataBackendSpatial + stars", {
 
 # brick input ------------------------------------------------------------------
 
-test_that("DataBackendSpatial + raster", {
-  backend = DataBackendSpatial$new(stack_brick)
+test_that("DataBackendRaster + raster", {
+  backend = DataBackendRaster$new(stack_brick)
 
   # head
   data = backend$head(10L)

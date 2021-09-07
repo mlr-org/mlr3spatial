@@ -1,7 +1,8 @@
-#' @title DataBackend for spatial vector objects.
+#' @title DataBackend for vector objects
 #'
 #' @description
-#' A [mlr3::DataBackend] for `sf` (package \CRANpkg{sf}).
+#' A [mlr3::DataBackend] for vector objects (only package \CRANpkg{sf} is
+#' supported).
 #'
 #' @param rows `integer()`\cr
 #'   Row indices.

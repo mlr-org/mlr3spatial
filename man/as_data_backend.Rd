@@ -6,7 +6,7 @@
 \alias{as_data_backend.RasterBrick}
 \alias{as_data_backend.Raster}
 \alias{as_data_backend.sf}
-\title{Coerce to DataBackendSpatial}
+\title{Coerce to DataBackendRaster}
 \usage{
 \method{as_data_backend}{stars}(data, primary_key = NULL, ...)
 
@@ -40,7 +40,7 @@ Not used.}
 }
 \description{
 Wraps a \link{DataBackend} around spatial objects.
-Currently this is only a synonym for \code{DataBackendSpatial$new()} and does not
+Currently this is only a synonym for \code{DataBackendRaster$new()} and does not
 support coercing from other backends.
 
 Wraps a \link{DataBackend} around spatial objects.

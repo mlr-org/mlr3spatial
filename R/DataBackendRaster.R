@@ -35,7 +35,7 @@
 #'   nlyr ncol
 #' @importFrom methods as
 #' @export
-DataBackendSpatial = R6Class("DataBackendSpatial",
+DataBackendRaster = R6Class("DataBackendRaster",
   inherit = DataBackend, cloneable = FALSE,
   public = list(
 
@@ -50,9 +50,11 @@ DataBackendSpatial = R6Class("DataBackendSpatial",
       if (inherits(data, "stars")) {
         # we need to go stars -> raster -> terra
         data = terra::rast(as(data, "Raster"))
-        DataBackendSpatial$new(data)
+        DataBackendRaster$new(data)
       } else if (inherits(data, "Raster")) {
+        names = names(data)
         data = terra::rast(data)
+        names(data) = names
       }
       assert_class(data, "SpatRaster")
       # FIXME: use inMemory function
@@ -224,11 +226,11 @@ DataBackendSpatial = R6Class("DataBackendSpatial",
   )
 )
 
-#' @title Coerce to DataBackendSpatial
+#' @title Coerce to DataBackendRaster
 #'
 #' @description
 #' Wraps a [DataBackend] around spatial objects.
-#' Currently this is only a synonym for `DataBackendSpatial$new()` and does not
+#' Currently this is only a synonym for `DataBackendRaster$new()` and does not
 #' support coercing from other backends.
 #'
 #' @template param-data
@@ -243,22 +245,22 @@ DataBackendSpatial = R6Class("DataBackendSpatial",
 as_data_backend.stars = function(data, primary_key = NULL, ...) { # nolint
   # we need to go stars -> raster -> terra
   data = terra::rast(as(data, "Raster"))
-  DataBackendSpatial$new(data)
+  DataBackendRaster$new(data)
 }
 #' @export
 #' @rdname as_data_backend
 as_data_backend.SpatRaster = function(data, primary_key = NULL, ...) { # nolint
-  DataBackendSpatial$new(data)
+  DataBackendRaster$new(data)
 }
 #' @export
 #' @rdname as_data_backend
 as_data_backend.RasterBrick = function(data, primary_key = NULL, ...) { # nolint
   data = terra::rast(data)
-  DataBackendSpatial$new(data)
+  DataBackendRaster$new(data)
 }
 #' @export
 #' @rdname as_data_backend
 as_data_backend.Raster = function(data, primary_key = NULL, ...) { # nolint
   data = terra::rast(data)
-  DataBackendSpatial$new(data)
+  DataBackendRaster$new(data)
 }

@@ -2,9 +2,10 @@
 % Please edit documentation in R/DataBackendVector.R
 \name{DataBackendVector}
 \alias{DataBackendVector}
-\title{DataBackend for spatial vector objects.}
+\title{DataBackend for vector objects}
 \description{
-A \link[mlr3:DataBackend]{mlr3::DataBackend} for \code{sf} (package \CRANpkg{sf}).
+A \link[mlr3:DataBackend]{mlr3::DataBackend} for vector objects (only package \CRANpkg{sf} is
+supported).
 }
 \section{Super class}{
 \code{\link[mlr3:DataBackend]{mlr3::DataBackend}} -> \code{DataBackendVector}

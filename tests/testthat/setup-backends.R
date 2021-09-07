@@ -12,7 +12,7 @@ l7data = stars::read_stars(tif)
 colnames_stars = c("layer.1", "layer.2", "layer.3", "layer.4", "layer.5", "layer.6")
 
 # tasks
-backend = DataBackendSpatial$new(stack_classif)
+backend = DataBackendRaster$new(stack_classif)
 task = as_task_classif(backend, target = "y", positive = "positive")
 
 # learners

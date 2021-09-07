@@ -44,7 +44,7 @@ library("mlr3")
 library("mlr3spatial")
 ```
 
-First, the TIFF files is read via `stars::read_stars()` and put into a `DataBackendSpatial`.
+First, the TIFF files is read via `stars::read_stars()` and put into a `DataBackendRaster`.
 The DataBackend is then used to create a regression task with the response being `layer.1`.
 
 ```{r, error=TRUE}
