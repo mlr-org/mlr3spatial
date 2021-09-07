@@ -32,7 +32,7 @@
 #' ras = predict_spatial(task, learner)
 #' ras
 #' @export
-predict_spatial = function(task, learner, chunksize = 1000L, format = "terra",
+predict_spatial = function(task, learner, chunksize = 200L, format = "terra",
   filename = tempfile(fileext = ".tif")) {
   assert_class(task$backend, "DataBackendRaster")
   assert_learner(learner)

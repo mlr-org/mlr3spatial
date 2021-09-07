@@ -7,7 +7,7 @@
 predict_spatial(
   task,
   learner,
-  chunksize = 1000L,
+  chunksize = 200L,
   format = "terra",
   filename = tempfile(fileext = ".tif")
 )
