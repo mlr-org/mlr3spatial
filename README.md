@@ -8,18 +8,15 @@
 [![Lifecycle:experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-This package is **NOT** yet ready for production use.
-Functions may change without notice!
-
 ## Package scope
 
-The handling of (large) spatial objects ([{terra}](https://cran.r-project.org/web/packages/terra/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{stars}](https://cran.r-project.org/web/packages/stars/index.html) in ML is an error-prone and time consuming task.
-Users often need to extract the "raw" values from the spatial objects, train a model, predict and then recreate the spatial object again.
+The handling of (large) spatial objects ([{terra}](https://cran.r-project.org/web/packages/terra/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{stars}](https://cran.r-project.org/web/packages/stars/index.html), [{sf}](https://cran.r-project.org/web/packages/sf/index.html)in ML is an error-prone and time consuming task.
+Users often need to extract the "raw" values from the spatial objects (detaching the spatial metadata), train a model, predict and then recreate the spatial object again.  
 In addition, predictions on large raster files (i.e. multiple GB in size) often leads to memory issues on consumer grade machines.
 {mlr3spatial} tries to help here by
 
-- Providing a [`DataBackendRaster`](https://mlr3.mlr-org.com/reference/DataBackend.html) class which is able to handle various spatial raster classes ([{terra}](https://cran.r-project.org/web/packages/terra/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{stars}](https://cran.r-project.org/web/packages/stars/index.html))
-- Providing a [`DataBackendVector`](https://mlr3.mlr-org.com/reference/DataBackend.html) class which is able to handle {sf} objects
+- Providing a [`DataBackendRaster`](https://mlr3.mlr-org.com/reference/DataBackend.html) class for {mlr3} which is able to handle various spatial raster classes ([{terra}](https://cran.r-project.org/web/packages/terra/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{stars}](https://cran.r-project.org/web/packages/stars/index.html))
+- Providing a [`DataBackendVector`](https://mlr3.mlr-org.com/reference/DataBackend.html) class for {mlr3} which is able to handle [{sf}](https://cran.r-project.org/web/packages/sf/index.html) objects
 - Support for enhanced predictions on spatial objects ([{terra}](https://cran.r-project.org/web/packages/terra/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{stars}](https://cran.r-project.org/web/packages/stars/index.html), [{sf}](https://cran.r-project.org/web/packages/sf/index.html), with optional **parallelization** and **memory awareness**
 
 ## Spatiotemporal resampling / cross-validation
@@ -55,15 +52,6 @@ For spatiotemporal resampling within mlr3 see [{mlr3spatiotempcv}](https://githu
   <br>
  Eventually. It is not yet clear whether these would live in {mlr3extralearners} or in {mlr3spatial}.
  So far there are none yet.
-</details>
-
-<details>
-  <summary>Which DataBackend for raster images should I use - {raster}, {terra} or {stars}?</summary>
-  <br>
-  We try to refrain from making "use X or Y" suggestions within the mlr-org framework.
-  {terra} is the successor of the {raster} package from the same developer.
-  {stars} is package which also comes with support for multidimensional arrays and is from the same author as the {sf} package.
-  All packages have advantages and disadvantages - we recommend to browse all packages to make an educated decision which package to use in your analysis.
 </details>
 
 <details>

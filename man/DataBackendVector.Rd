@@ -34,7 +34,7 @@ Number of rows (observations).}
 \item{\code{ncol}}{(\code{integer(1)})\cr
 Number of columns (variables), including the primary key column.}
 
-\item{\code{coordinates}}{(\code{integer(1)})\cr
+\item{\code{geometry}}{(\code{integer(1)})\cr
 Returns the sf geometry.}
 }
 \if{html}{\out{</div>}}
