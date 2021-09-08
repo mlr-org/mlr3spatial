@@ -173,7 +173,7 @@ for the prediction.</p>
   <span class='va'>learner</span>,
   chunksize <span class='op'>=</span> <span class='fl'>200L</span>,
   format <span class='op'>=</span> <span class='st'>"terra"</span>,
-  filename <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>".tif"</span><span class='op'>)</span>
+  filename <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -202,7 +202,11 @@ value.</p></td>
       <th>format</th>
       <td><p><code>[character]</code><br />
 Output class of the resulting object. Accepted values are <code>"raster"</code>,
-<code>"stars"</code> and <code>"terra"</code>.</p></td>
+<code>"stars"</code> and <code>"terra"</code> if the input is a <a href='DataBackendRaster.html'>DataBackendRaster</a>. Note that when
+choosing something else than <code>"terra"</code>, the spatial object is converted into
+the respective format which might cause overhead both in runtime and memory
+allocation.
+For a <a href='DataBackendVector.html'>DataBackendVector</a>, the output class will always be <a href='https://r-spatial.github.io/sf/reference/sf.html'>sf::sf</a>.</p></td>
     </tr>
     <tr>
       <th>filename</th>
@@ -239,7 +243,7 @@ users, <code>plan(future.callr::callr)</code> might be an alternative.</p>
 #&gt; resolution  : 0.004484305, 0.004484305  (x, y)
 #&gt; extent      : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
 #&gt; coord. ref. : +proj=longlat +datum=WGS84 +no_defs 
-#&gt; source      : filec46831f32f28.tif 
+#&gt; source      : file3e1e33d31c05.tif 
 #&gt; name        : lyr.1 
 #&gt; min value   :     1 
 #&gt; max value   :     1 </div></pre>
