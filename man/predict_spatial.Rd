@@ -9,7 +9,7 @@ predict_spatial(
   learner,
   chunksize = 200L,
   format = "terra",
-  filename = tempfile(fileext = ".tif")
+  filename = NULL
 )
 }
 \arguments{
@@ -29,9 +29,11 @@ value.}
 
 \item{format}{\verb{[character]}\cr
 Output class of the resulting object. Accepted values are \code{"raster"},
-\code{"stars"} and \code{"terra"}. Note that when choosing something else than
-\code{"terra"}, the spatial object is converted into the respective format which
-might cause overhead both in runtime and memory allocation.}
+\code{"stars"} and \code{"terra"} if the input is a \link{DataBackendRaster}. Note that when
+choosing something else than \code{"terra"}, the spatial object is converted into
+the respective format which might cause overhead both in runtime and memory
+allocation.
+For a \link{DataBackendVector}, the output class will always be \link[sf:sf]{sf::sf}.}
 
 \item{filename}{\verb{[character]}\cr
 Path where the spatial object should be written to.}

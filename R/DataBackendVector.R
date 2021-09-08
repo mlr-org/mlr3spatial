@@ -28,7 +28,7 @@ DataBackendVector = R6::R6Class("DataBackendVector",
     #'   Name of the primary key column, or integer vector of row ids.
     initialize = function(data, primary_key = NULL) {
       assert_class(data$geometry, "sfc")
-      private$.coordinates = data$geometry
+      private$.geometry = data$geometry
       self$data_formats = "data.table"
 
       data$geometry = NULL
@@ -170,11 +170,11 @@ DataBackendVector = R6::R6Class("DataBackendVector",
       ncol(private$.data)
     },
 
-    #' @field coordinates (`integer(1)`)\cr
+    #' @field geometry (`integer(1)`)\cr
     #' Returns the sf geometry.
-    coordinates = function(rhs) {
+    geometry = function(rhs) {
       assert_ro_binding(rhs)
-      private$.coordinates
+      private$.geometry
     }
   ),
 
@@ -184,7 +184,7 @@ DataBackendVector = R6::R6Class("DataBackendVector",
     },
     .data = NULL,
     .cache = NULL,
-    .coordinates = NULL
+    .geometry = NULL
   )
 )
 
