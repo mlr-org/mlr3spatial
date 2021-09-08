@@ -12,6 +12,16 @@ test_that("DataBackendRaster works", {
   expect_names(names(data), identical.to = c("x_1", "y"))
   expect_numeric(data$x_1)
   expect_factor(data$y, levels = c("negative", "positive"))
+  # non-factor, all rows
+  data = backend$distinct(rows = NULL, cols = c("x_1"))
+  expect_names(names(data), identical.to = c("x_1"))
+  expect_length(data[[names(data)]], 497800)
+
+  # nrow
+  expect_equal(backend$nrow, 499849)
+
+  # ncol
+  expect_equal(backend$ncol, 6)
 
   stack_classif = terra::rast(nrow = 3, ncol = 4)
   stack_classif[] = c(1:11, NA)
@@ -69,7 +79,7 @@ test_that("DataBackendRaster works", {
 # stars input ------------------------------------------------------------------
 
 test_that("DataBackendRaster + stars", {
-  backend = DataBackendRaster$new(l7data)
+  backend = as_data_backend(l7data)
 
   # head
   data = backend$head(10L)
@@ -88,7 +98,7 @@ test_that("DataBackendRaster + stars", {
 # brick input ------------------------------------------------------------------
 
 test_that("DataBackendRaster + raster", {
-  backend = DataBackendRaster$new(stack_brick)
+  backend = as_data_backend(stack_brick)
 
   # head
   data = backend$head(10L)
@@ -101,6 +111,26 @@ test_that("DataBackendRaster + raster", {
     list("y" = c(1, 0)))
   data = backend$distinct(rows = 1:5, cols = c("y", "x_2"))
   expect_names(names(data), identical.to = c("y", "x_2"))
+  expect_numeric(data$y)
+
+})
+
+# raster input -----------------------------------------------------------------
+
+test_that("DataBackendRaster + raster", {
+  backend = as_data_backend(stack_brick[[5]])
+
+  # head
+  data = backend$head(10L)
+  expect_data_table(data, nrow = 10L, ncol = 1L)
+  expect_names(names(data), identical.to = "y")
+
+  # distinct
+  # no support for factors when using bricks
+  expect_equal(backend$distinct(rows = 1:1000, cols = "y"),
+    list("y" = c(1, 0)))
+  data = backend$distinct(rows = 1:5, cols = c("y"))
+  expect_names(names(data), identical.to = c("y"))
   expect_numeric(data$y)
 
 })

@@ -147,7 +147,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
         } else {
           # fast
           res = terra::unique(stack, incomparables = TRUE)
-          set_names(res, names(stack))
+          names(res) = names(stack)
         }
       } else {
         # slow
