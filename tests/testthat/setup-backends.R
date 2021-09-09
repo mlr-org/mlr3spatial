@@ -1,7 +1,7 @@
 set.seed(42)
 # data -------------------------------------------------------------------------
 # SpatRaster
-stack_classif = demo_stack_spatraster(10)
+stack_classif = demo_stack_spatraster(0.1)
 value = data.table(ID = c(0, 1), y = c("negative", "positive"))
 terra::setCats(stack_classif, layer = "y", value = value)
 colnames = names(stack_classif)
@@ -9,7 +9,7 @@ file = tempfile(fileext = ".tif")
 terra::writeRaster(stack_classif, file)
 
 # RasterBrick
-stack_brick = demo_stack_rasterbrick(1)
+stack_brick = demo_stack_rasterbrick(0.1)
 
 # stars
 tif = system.file("tif/L7_ETMs.tif", package = "stars")

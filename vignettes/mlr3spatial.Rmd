@@ -127,9 +127,10 @@ all.equal(as.numeric(stars_pred_ras$pred), as.numeric(ras$cadmium))
 ### Visualization
 
 Finally we can plot the predictions.
-The color vector is extract from the viridis color palette via `dput(viridis::viridis_pal()(7))`.
+The color vector is extract from the viridis color palette via `dput(viridis::viridis_pal()(5))`.
 
 ```{r}
-plot(ras, col = c("#440154FF", "#443A83FF", "#31688EFF", "#21908CFF", "#35B779FF",
-  "#8FD744FF", "#FDE725FF"))
+plot(ras, col = c("#440154FF", "#3B528BFF", "#21908CFF",
+  "#5DC863FF", "#FDE725FF"
+))
 ```

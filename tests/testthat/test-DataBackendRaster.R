@@ -15,10 +15,10 @@ test_that("DataBackendRaster works", {
   # non-factor, all rows
   data = backend$distinct(rows = NULL, cols = c("x_1"))
   expect_names(names(data), identical.to = c("x_1"))
-  expect_length(data[[names(data)]], 497799)
+  expect_length(data[[names(data)]], 4900)
 
   # nrow
-  expect_equal(backend$nrow, 499849)
+  expect_equal(backend$nrow, 4900)
 
   # ncol
   expect_equal(backend$ncol, 6)
@@ -72,8 +72,8 @@ test_that("DataBackendRaster works", {
 
   # [x] [ ] [x] [ ]
   # [ ] [ ] [ ] [x]
-  # [ ] [ ] [x] [ ]
-  expect_equal(backend$data(rows = c(1, 3, 8, 11), cols = "y"), data.table(y = c(1, 3, 8, 11)))
+  # [ ] [x] [x] [ ]
+  expect_equal(backend$data(rows = c(1, 3, 8, 10, 11), cols = "y"), data.table(y = c(1, 3, 8, 10, 11)))
 })
 
 # stars input ------------------------------------------------------------------

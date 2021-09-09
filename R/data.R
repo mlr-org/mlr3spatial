@@ -30,7 +30,6 @@ demo_raster = function(dimension) {
 #' demo_stack_spatraster(size = 5, layers = 2)
 #' @export
 demo_stack_spatraster = function(size = 50, layers = 5) {
-  assert_int(size, lower = 1)
   assert_int(layers, lower = 1)
 
   dimension = floor(sqrt(size / layers * 1e+06 / 4))
@@ -53,7 +52,6 @@ demo_stack_spatraster = function(size = 50, layers = 5) {
 #' }
 #' @export
 demo_stack_rasterbrick = function(size = 50, layers = 5) {
-  assert_int(size, lower = 1)
   assert_int(layers, lower = 1)
 
   dimension = floor(sqrt(size / layers * 1e+06 / 4))
