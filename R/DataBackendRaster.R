@@ -33,11 +33,16 @@
 #' @importFrom terra writeRaster writeStart writeStop rast cats sources
 #'   intersect readStart readStop rowColFromCell readValues head unique ncell
 #'   nlyr ncol
+#' @importFrom utils tail
 #' @importFrom methods as
 #' @export
 DataBackendRaster = R6Class("DataBackendRaster",
   inherit = DataBackend, cloneable = FALSE,
   public = list(
+    #' @field compact_seq `logical(1)`\cr
+    #' If `TRUE`, row ids are a natural sequence from 1 to `nrow(data)` (determined internally).
+    #' In this case, row lookup uses faster positional indices instead of equi joins.
+    compact_seq = FALSE,
 
     #' @description
     #'
@@ -85,29 +90,32 @@ DataBackendRaster = R6Class("DataBackendRaster",
     #' @param data_format (`character(1)`)\cr
     #'   Desired data format. Currently only `"data.table"` supported.
     data = function(rows, cols, data_format = "data.table") {
+
       stack = self$stack
       rows = assert_integerish(rows, coerce = TRUE)
       assert_names(cols, type = "unique")
       assert_choice(data_format, self$data_formats)
       cols = terra::intersect(cols, names(self$stack))
 
-      if (isTRUE(all.equal(rows, rows[1]:rows[length(rows)]))) {
-        # block read
-        terra::readStart(stack)
-        on.exit(terra::readStop(stack))
-        # determine rows to read
-        cells = terra::rowColFromCell(stack, rows)
-        row = cells[1, 1]
-        nrows = cells[dim(cells)[1], 1] - cells[1, 1] + 1
-        res = as.data.table(terra::readValues(stack, row = row, nrows = nrows, dataframe = TRUE))
+      # block read (e.g. 50:100)
+      # fast
+      terra::readStart(stack)
+      on.exit(terra::readStop(stack))
+      # determine rows to read
+      cells = terra::rowColFromCell(stack, rows)
+      row = cells[1, 1]
+      nrows = cells[dim(cells)[1], 1] - cells[1, 1] + 1
+      res = as.data.table(terra::readValues(stack, row = row, nrows = nrows, dataframe = TRUE))
+
+      if (isTRUE(all.equal(rows, seq(rows[1], tail(rows, 1), 1)))) {
         # subset cells and features
         res = res[cells[1, 2]:(cells[1, 2] + length(rows) - 1), cols, with = FALSE]
-
       } else {
-        # cell read
-        cells = terra::rowColFromCell(stack, rows)
-        res = rbindlist(apply(cells, 1, function(x) stack[x[1], x[2]][cols]))
+        # cell read (e.g. c(1, 2, 5, 8))
+        # slow
+        res = res[rows, cols, with = FALSE]
       }
+
       res
     },
 
