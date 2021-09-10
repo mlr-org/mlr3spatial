@@ -97,25 +97,25 @@ DataBackendRaster = R6Class("DataBackendRaster",
       assert_choice(data_format, self$data_formats)
       cols = terra::intersect(cols, names(self$stack))
 
-      # block read (e.g. 50:100)
-      # fast
-      terra::readStart(stack)
-      on.exit(terra::readStop(stack))
-      # determine rows to read
-      cells = terra::rowColFromCell(stack, rows)
-      row = cells[1, 1]
-      nrows = cells[dim(cells)[1], 1] - cells[1, 1] + 1
-      res = as.data.table(terra::readValues(stack, row = row, nrows = nrows, dataframe = TRUE))
-
-      if (isTRUE(all.equal(rows, seq(rows[1], tail(rows, 1), 1)))) {
+      if (isTRUE(all.equal(rows, rows[1]:rows[length(rows)]))) {
+        # block read (e.g. c(1:10))
+        terra::readStart(stack)
+        on.exit(terra::readStop(stack))
+        # determine rows to read
+        cells = terra::rowColFromCell(stack, rows)
+        row = cells[1, 1]
+        nrows = cells[dim(cells)[1], 1] - cells[1, 1] + 1
+        res = as.data.table(terra::readValues(stack, row = row, nrows = nrows, dataframe = TRUE))
         # subset cells and features
         res = res[cells[1, 2]:(cells[1, 2] + length(rows) - 1), cols, with = FALSE]
-      } else {
-        # cell read (e.g. c(1, 2, 5, 8))
-        # slow
-        res = res[rows, cols, with = FALSE]
-      }
 
+      } else {
+        # cell read (e.g. c(1, 3, 5, 6, 10))
+        # FIXME: slow, we need to find a better solution
+        cells = terra::rowColFromCell(stack, rows)
+        res = rbindlist(apply(cells, 1, function(x) stack[x[1], x[2]][cols]))
+      }
+      res
       res
     },
 
