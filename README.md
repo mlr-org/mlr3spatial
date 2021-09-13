@@ -10,7 +10,7 @@
 
 ## Package scope
 
-The handling of (large) spatial objects ([{terra}](https://cran.r-project.org/web/packages/terra/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{stars}](https://cran.r-project.org/web/packages/stars/index.html), [{sf}](https://cran.r-project.org/web/packages/sf/index.html)in ML is an error-prone and time consuming task.
+The handling of (large) spatial objects ([{terra}](https://cran.r-project.org/web/packages/terra/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{stars}](https://cran.r-project.org/web/packages/stars/index.html), [{sf}](https://cran.r-project.org/web/packages/sf/index.html) in ML is an error-prone and time consuming task.
 Users often need to extract the "raw" values from the spatial objects (detaching the spatial metadata), train a model, predict and then recreate the spatial object again.  
 In addition, predictions on large raster files (i.e. multiple GB in size) often leads to memory issues on consumer grade machines.
 {mlr3spatial} tries to help here by
