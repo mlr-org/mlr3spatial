@@ -108,14 +108,11 @@ DataBackendRaster = R6Class("DataBackendRaster",
         res = as.data.table(terra::readValues(stack, row = row, nrows = nrows, dataframe = TRUE))
         # subset cells and features
         res = res[cells[1, 2]:(cells[1, 2] + length(rows) - 1), cols, with = FALSE]
-
       } else {
         # cell read (e.g. c(1, 3, 5, 6, 10))
-        # FIXME: slow, we need to find a better solution
         cells = terra::rowColFromCell(stack, rows)
-        res = rbindlist(apply(cells, 1, function(x) stack[x[1], x[2]][cols]))
+        res = as.data.table(terra::extract(stack, rows))[, ..cols]
       }
-      res
       res
     },
 
