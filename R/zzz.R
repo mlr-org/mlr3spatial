@@ -45,7 +45,7 @@
 #' `r tools::toRd(citation("mlr3spatial"))`
 "_PACKAGE"
 
-utils::globalVariables(c("..response"))
+utils::globalVariables(c("..response", "..cols"))
 
 .onLoad = function(libname, pkgname) {
   # nocov start
