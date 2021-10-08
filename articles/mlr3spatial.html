@@ -147,6 +147,10 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tif</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"tif/L7_ETMs.tif"</span>, package <span class="op">=</span> <span class="st">"stars"</span><span class="op">)</span>
 <span class="va">stack</span> <span class="op">=</span> <span class="fu">stars</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/read_stars.html">read_stars</a></span><span class="op">(</span><span class="va">tif</span><span class="op">)</span>
+<span class="co">#&gt; Registered S3 methods overwritten by 'stars':</span>
+<span class="co">#&gt;   method             from</span>
+<span class="co">#&gt;   st_bbox.SpatRaster sf  </span>
+<span class="co">#&gt;   st_crs.SpatRaster  sf</span>
 
 <span class="va">backend</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_data_backend.html">as_data_backend</a></span><span class="op">(</span><span class="va">stack</span><span class="op">)</span>
 <span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html">as_task_regr</a></span><span class="op">(</span><span class="va">backend</span>, target <span class="op">=</span> <span class="st">"layer.1"</span><span class="op">)</span>
