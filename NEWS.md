@@ -1,3 +1,6 @@
-# mlr3spatial 0.0.0.9001
+<!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
-* Added a `NEWS.md` file to track changes to the package.
+# mlr3spatial 0.1.0
+
+* initial release
+
