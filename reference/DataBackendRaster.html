@@ -202,8 +202,8 @@ used.</p>
     <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
 
     <p><div class="r6-fields"></p><dl>
-<dt><code>compact_seq</code></dt><dd><p><code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code><br />
-If <code>TRUE</code>, row ids are a natural sequence from 1 to <code><a href='https://rdrr.io/r/base/nrow.html'>nrow(data)</a></code> (determined internally).
+<dt><code>compact_seq</code></dt><dd><p><code>logical(1)</code><br />
+If <code>TRUE</code>, row ids are a natural sequence from 1 to <code>nrow(data)</code> (determined internally).
 In this case, row lookup uses faster positional indices instead of equi joins.</p></dd>
 
 </dl><p></div></p>
@@ -216,10 +216,10 @@ Returns vector of all distinct row identifiers, i.e. the contents of the primary
 <dt><code>colnames</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>)<br />
 Returns vector of all column names.</p></dd>
 
-<dt><code>nrow</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>)<br />
+<dt><code>nrow</code></dt><dd><p>(<code>integer(1)</code>)<br />
 Number of rows (observations).</p></dd>
 
-<dt><code>ncol</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>)<br />
+<dt><code>ncol</code></dt><dd><p>(<code>integer(1)</code>)<br />
 Number of columns (variables).</p></dd>
 
 <dt><code>stack</code></dt><dd><p>(<code>SpatRaster</code>)<br />
@@ -284,7 +284,7 @@ cells in the raster.</p></dd>
 <dt><code>cols</code></dt><dd><p><code><a href='https://rdrr.io/r/base/character.html'>character()</a></code><br />
 Column names.</p></dd>
 
-<dt><code>data_format</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>)<br />
+<dt><code>data_format</code></dt><dd><p>(<code>character(1)</code>)<br />
 Desired data format. Currently only <code>"data.table"</code> supported.</p></dd>
 
 </dl><p></div></p>
@@ -295,7 +295,7 @@ Desired data format. Currently only <code>"data.table"</code> supported.</p></dd
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
-<dt><code>n</code></dt><dd><p>(<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>)<br />
+<dt><code>n</code></dt><dd><p>(<code>integer(1)</code>)<br />
 Number of rows.</p></dd>
 
 </dl><p></div></p>
@@ -320,7 +320,7 @@ cells in the raster.</p></dd>
 <dt><code>cols</code></dt><dd><p><code><a href='https://rdrr.io/r/base/character.html'>character()</a></code><br />
 Column names.</p></dd>
 
-<dt><code>na_rm</code></dt><dd><p><code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code><br />
+<dt><code>na_rm</code></dt><dd><p><code>logical(1)</code><br />
 Whether to remove NAs or not.</p></dd>
 
 </dl><p></div></p>

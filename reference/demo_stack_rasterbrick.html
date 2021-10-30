@@ -186,19 +186,20 @@ Number of layers.</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='fu'>mlr3misc</span><span class='fu'>::</span><span class='fu'><a href='https://mlr3misc.mlr-org.com/reference/require_namespaces.html'>require_namespaces</a></span><span class='op'>(</span><span class='st'>"raster"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='fu'>demo_stack_rasterbrick</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>5</span>, layers <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div><div class='output co'>#&gt; class      : RasterBrick 
-#&gt; dimensions : 790, 790, 624100, 2  (nrow, ncol, ncell, nlayers)
-#&gt; resolution : 0.001265823, 0.001265823  (x, y)
-#&gt; extent     : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
-#&gt; crs        : NA 
-#&gt; source     : memory
-#&gt; names      :       x_1,         y 
-#&gt; min values : -5.287884,  0.000000 
-#&gt; max values :  5.475621,  1.000000 
-#&gt; </div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='fu'>mlr3misc</span><span class='fu'>::</span><span class='fu'><a href='https://mlr3misc.mlr-org.com/reference/require_namespaces.html'>require_namespaces</a></span><span class='op'>(</span><span class='st'>"raster"</span>, quietly <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>  <span class='fu'>demo_stack_rasterbrick</span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>5</span>, layers <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class      : RasterBrick </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> dimensions : 790, 790, 624100, 2  (nrow, ncol, ncell, nlayers)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> resolution : 0.001265823, 0.001265823  (x, y)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> extent     : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> crs        : NA </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> source     : memory</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> names      :       x_1,         y </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min values : -5.287884,  0.000000 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> max values :  5.475621,  1.000000 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

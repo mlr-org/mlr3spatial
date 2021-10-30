@@ -247,7 +247,7 @@
 <div id="visualization" class="section level3">
 <h3 class="hasAnchor">
 <a href="#visualization" class="anchor"></a>Visualization</h3>
-<p>Finally we can plot the predictions. The color vector is extract from the viridis color palette via <code><a href="https://rdrr.io/r/base/dput.html">dput(viridis::viridis_pal()(5))</a></code>.</p>
+<p>Finally we can plot the predictions. The color vector is extract from the viridis color palette via <code>dput(viridis::viridis_pal()(5))</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">ras</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#440154FF"</span>, <span class="st">"#443A83FF"</span>, <span class="st">"#31688EFF"</span>, <span class="st">"#21908CFF"</span>, <span class="st">"#35B779FF"</span>, <span class="st">"#8FD744FF"</span>, <span class="st">"#FDE725FF"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="mlr3spatial_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>

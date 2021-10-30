@@ -229,27 +229,28 @@ platform is UNIX-based, <code>plan("multicore")</code> is recommended. For Windo
 users, <code>plan(future.callr::callr)</code> might be an alternative.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>stack</span> <span class='op'>=</span> <span class='fu'><a href='demo_stack_spatraster.html'>demo_stack_spatraster</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-<span class='va'>value</span> <span class='op'>=</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span><span class='op'>(</span>ID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"negative"</span>, <span class='st'>"positive"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>terra</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/factors.html'>setCats</a></span><span class='op'>(</span><span class='va'>stack</span>, layer <span class='op'>=</span> <span class='st'>"y"</span>, value <span class='op'>=</span> <span class='va'>value</span><span class='op'>)</span>
-
-<span class='co'># create backend</span>
-<span class='va'>backend</span> <span class='op'>=</span> <span class='fu'>as_data_backend</span><span class='op'>(</span><span class='va'>stack</span><span class='op'>)</span>
-<span class='va'>task</span> <span class='op'>=</span> <span class='fu'>as_task_classif</span><span class='op'>(</span><span class='va'>backend</span>, target <span class='op'>=</span> <span class='st'>"y"</span>, positive <span class='op'>=</span> <span class='st'>"positive"</span><span class='op'>)</span>
-<span class='co'># train</span>
-<span class='va'>learner</span> <span class='op'>=</span> <span class='fu'>lrn</span><span class='op'>(</span><span class='st'>"classif.featureless"</span><span class='op'>)</span>
-<span class='va'>learner</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>task</span>, row_ids <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='va'>task</span><span class='op'>$</span><span class='va'>nrow</span>, <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>ras</span> <span class='op'>=</span> <span class='fu'>predict_spatial</span><span class='op'>(</span><span class='va'>task</span>, <span class='va'>learner</span><span class='op'>)</span>
-<span class='va'>ras</span>
-</div><div class='output co'>#&gt; class       : SpatRaster 
-#&gt; dimensions  : 223, 223, 1  (nrow, ncol, nlyr)
-#&gt; resolution  : 0.004484305, 0.004484305  (x, y)
-#&gt; extent      : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
-#&gt; coord. ref. : lon/lat WGS 84 
-#&gt; source      : filec30076893701.tif 
-#&gt; name        : lyr.1 
-#&gt; min value   :     1 
-#&gt; max value   :     1 </div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>stack</span> <span class='op'>=</span> <span class='fu'><a href='demo_stack_spatraster.html'>demo_stack_spatraster</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>value</span> <span class='op'>=</span> <span class='fu'>data.table</span><span class='fu'>::</span><span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span><span class='op'>(</span>ID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"negative"</span>, <span class='st'>"positive"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>terra</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/factors.html'>setCats</a></span><span class='op'>(</span><span class='va'>stack</span>, layer <span class='op'>=</span> <span class='st'>"y"</span>, value <span class='op'>=</span> <span class='va'>value</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># create backend</span></span>
+<span class='r-in'><span class='va'>backend</span> <span class='op'>=</span> <span class='fu'>as_data_backend</span><span class='op'>(</span><span class='va'>stack</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>task</span> <span class='op'>=</span> <span class='fu'>as_task_classif</span><span class='op'>(</span><span class='va'>backend</span>, target <span class='op'>=</span> <span class='st'>"y"</span>, positive <span class='op'>=</span> <span class='st'>"positive"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># train</span></span>
+<span class='r-in'><span class='va'>learner</span> <span class='op'>=</span> <span class='fu'>lrn</span><span class='op'>(</span><span class='st'>"classif.featureless"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>learner</span><span class='op'>$</span><span class='fu'>train</span><span class='op'>(</span><span class='va'>task</span>, row_ids <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='va'>task</span><span class='op'>$</span><span class='va'>nrow</span>, <span class='fl'>50</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>ras</span> <span class='op'>=</span> <span class='fu'>predict_spatial</span><span class='op'>(</span><span class='va'>task</span>, <span class='va'>learner</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>ras</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> class       : SpatRaster </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> dimensions  : 223, 223, 1  (nrow, ncol, nlyr)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> resolution  : 0.004484305, 0.004484305  (x, y)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> extent      : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> coord. ref. : lon/lat WGS 84 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> source      : filec2aa2873348c.tif </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> name        : lyr.1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> min value   :     1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> max value   :     1 </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
