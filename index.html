@@ -29,6 +29,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -41,7 +43,7 @@
       </button>
 
       <div class="navbar-brand-container">
-        <a href="https://mlr-org.com"><img src="https://raw.githubusercontent.com/mlr-org/mlr3/master/man/figures/logo.png" id="hexlogo" alt="mlr-org"></a>
+        <a href="https://mlr-org.com" class="external-link"><img src="https://raw.githubusercontent.com/mlr-org/mlr3/master/reference/figures/logo.png" id="hexlogo" alt="mlr-org"></a>
         <a class="navbar-brand" href="index.html">mlr3spatial <small>v0.1.0</small></a>
       </div>
     </div>
@@ -58,7 +60,7 @@
   <a href="news/index.html">Changelog</a>
 </li>
 <li>
-  <a href="https://mlr3book.mlr-org.com">
+  <a href="https://mlr3book.mlr-org.com" class="external-link">
     <span class="fa fa-link"></span>
      
     mlr3book
@@ -76,29 +78,26 @@
     </li>
   </ul>
 </li>
-<li>
-  <a href="articles/mlr3spatial.html">Get started</a>
-</li>
         <li>
-  <a href="https://github.com/mlr-org/mlr3spatial/">
+  <a href="https://github.com/mlr-org/mlr3spatial/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/">
+  <a href="https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/" class="external-link">
     <span class="fa fa-comments"></span>
      
   </a>
 </li>
 <li>
-  <a href="https://stackoverflow.com/questions/tagged/mlr3">
+  <a href="https://stackoverflow.com/questions/tagged/mlr3" class="external-link">
     <span class="fab fa-stack-overflow"></span>
      
   </a>
 </li>
 <li>
-  <a href="https://mlr-org.com/">
+  <a href="https://mlr-org.com/" class="external-link">
     <span class="fa fa-rss"></span>
      
   </a>
@@ -115,31 +114,31 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="mlr3spatial" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#mlr3spatial" class="anchor"></a>mlr3spatial</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="mlr3spatial">mlr3spatial<a class="anchor" aria-label="anchor" href="#mlr3spatial"></a>
+</h1></div>
 <!-- badges: start -->
 
-<div id="package-scope" class="section level2">
-<h2 class="hasAnchor">
-<a href="#package-scope" class="anchor"></a>Package scope</h2>
-<p>The handling of (large) spatial objects (<a href="https://CRAN.R-project.org/package=terra">{terra}</a>, <a href="https://CRAN.R-project.org/package=raster">{raster}</a>, <a href="https://CRAN.R-project.org/package=stars">{stars}</a>, <a href="https://CRAN.R-project.org/package=sf">{sf}</a> in ML is an error-prone and time consuming task. Users often need to extract the “raw” values from the spatial objects (detaching the spatial metadata), train a model, predict and then recreate the spatial object again.<br>
+<div class="section level2">
+<h2 id="package-scope">Package scope<a class="anchor" aria-label="anchor" href="#package-scope"></a>
+</h2>
+<p>The handling of (large) spatial objects (<a href="https://CRAN.R-project.org/package=terra" class="external-link">{terra}</a>, <a href="https://CRAN.R-project.org/package=raster" class="external-link">{raster}</a>, <a href="https://CRAN.R-project.org/package=stars" class="external-link">{stars}</a>, <a href="https://CRAN.R-project.org/package=sf" class="external-link">{sf}</a> in ML is an error-prone and time consuming task. Users often need to extract the “raw” values from the spatial objects (detaching the spatial metadata), train a model, predict and then recreate the spatial object again.<br>
 In addition, predictions on large raster files (i.e. multiple GB in size) often leads to memory issues on consumer grade machines. {mlr3spatial} tries to help here by</p>
 <ul>
-<li>Providing a <a href="https://mlr3.mlr-org.com/reference/DataBackend.html"><code>DataBackendRaster</code></a> class for {mlr3} which is able to handle various spatial raster classes (<a href="https://CRAN.R-project.org/package=terra">{terra}</a>, <a href="https://CRAN.R-project.org/package=raster">{raster}</a>, <a href="https://CRAN.R-project.org/package=stars">{stars}</a>)</li>
-<li>Providing a <a href="https://mlr3.mlr-org.com/reference/DataBackend.html"><code>DataBackendVector</code></a> class for {mlr3} which is able to handle <a href="https://CRAN.R-project.org/package=sf">{sf}</a> objects</li>
-<li>Support for enhanced predictions on spatial objects (<a href="https://CRAN.R-project.org/package=terra">{terra}</a>, <a href="https://CRAN.R-project.org/package=raster">{raster}</a>, <a href="https://CRAN.R-project.org/package=stars">{stars}</a>, <a href="https://CRAN.R-project.org/package=sf">{sf}</a>, with optional <strong>parallelization</strong> and <strong>memory awareness</strong>
+<li>Providing a <a href="https://mlr3.mlr-org.com/reference/DataBackend.html" class="external-link"><code>DataBackendRaster</code></a> class for {mlr3} which is able to handle various spatial raster classes (<a href="https://CRAN.R-project.org/package=terra" class="external-link">{terra}</a>, <a href="https://CRAN.R-project.org/package=raster" class="external-link">{raster}</a>, <a href="https://CRAN.R-project.org/package=stars" class="external-link">{stars}</a>)</li>
+<li>Providing a <a href="https://mlr3.mlr-org.com/reference/DataBackend.html" class="external-link"><code>DataBackendVector</code></a> class for {mlr3} which is able to handle <a href="https://CRAN.R-project.org/package=sf" class="external-link">{sf}</a> objects</li>
+<li>Support for enhanced predictions on spatial objects (<a href="https://CRAN.R-project.org/package=terra" class="external-link">{terra}</a>, <a href="https://CRAN.R-project.org/package=raster" class="external-link">{raster}</a>, <a href="https://CRAN.R-project.org/package=stars" class="external-link">{stars}</a>, <a href="https://CRAN.R-project.org/package=sf" class="external-link">{sf}</a>, with optional <strong>parallelization</strong> and <strong>memory awareness</strong>
 </li>
 </ul>
 </div>
-<div id="spatiotemporal-resampling--cross-validation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#spatiotemporal-resampling--cross-validation" class="anchor"></a>Spatiotemporal resampling / cross-validation</h2>
-<p>For spatiotemporal resampling within mlr3 see <a href="https://github.com/mlr-org/mlr3spatiotempcv">{mlr3spatiotempcv}</a>.</p>
+<div class="section level2">
+<h2 id="spatiotemporal-resampling--cross-validation">Spatiotemporal resampling / cross-validation<a class="anchor" aria-label="anchor" href="#spatiotemporal-resampling--cross-validation"></a>
+</h2>
+<p>For spatiotemporal resampling within mlr3 see <a href="https://github.com/mlr-org/mlr3spatiotempcv" class="external-link">{mlr3spatiotempcv}</a>.</p>
 </div>
-<div id="faq" class="section level2">
-<h2 class="hasAnchor">
-<a href="#faq" class="anchor"></a>FAQ</h2>
+<div class="section level2">
+<h2 id="faq">FAQ<a class="anchor" aria-label="anchor" href="#faq"></a>
+</h2>
 <details><summary>Do I need to use <code>TaskClassifST</code>/<code>TaskRegrST</code> with {mlr3spatial}?</summary><br> No, you can use <code>TaskClassif</code> and <code>TaskRegr</code>. However, their <code>*ST</code> equivalents will also work. When we introduced the <code>*ST</code> tasks, we had no support for spatial backends yet and there was a need to store the spatial information somewhere.
 </details><details><summary>Why is {mlr3spatial} faster when predicting compared to the native spatial packages?</summary><br> {mlr3spatial} makes use of the parallel prediction heuristic within {mlr3}. This one makes use of the {future} and {data.table} packages for parallelization and data handling. If {mlr3spatial} is faster, than this way seems to be more efficient than the parallelization built into the respective other packages.
 </details><details><summary>Can I make use of parallel predictions during nested resampling/tuning?</summary><br> Yes, {mlr3} supports (nested) parallelization via the {future} framework. Watch out for required resources when having multiple parallelized layers.
@@ -147,9 +146,9 @@ In addition, predictions on large raster files (i.e. multiple GB in size) often
 </details><details><summary>Why are there two packages, {mlr3spatial} and {mlr3spatiotempcv}?</summary><br> {mlr3spatiotempcv} is solely devoted to resampling techniques. There are quite a few and keeping packages small is one of the development philosophies of the mlr3 framework. Also back in the days when {mlr3spatiotempcv} was developed it was not yet clear how we want to structure additional spatial components such as prediction support for spatial classes and so on.
 </details>
 </div>
-<div id="articles" class="section level2">
-<h2 class="hasAnchor">
-<a href="#articles" class="anchor"></a>Articles</h2>
+<div class="section level2">
+<h2 id="articles">Articles<a class="anchor" aria-label="anchor" href="#articles"></a>
+</h2>
 <ul>
 <li><a href="https://mlr3spatial.mlr-org.com/articles/mlr3spatial.html">Getting Started</a></li>
 <li><a href="https://mlr3spatial.mlr-org.com/articles/benchmark.html">Benchmarking parallel predictions</a></li>
@@ -160,50 +159,60 @@ In addition, predictions on large raster files (i.e. multiple GB in size) often
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=mlr3spatial">https://​cloud.r-project.org/​package=mlr3spatial</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/mlr-org/mlr3spatial/">https://​github.com/​mlr-org/​mlr3spatial/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/mlr-org/mlr3spatial/issues">https://​github.com/​mlr-org/​mlr3spatial/​issues</a>
-</li>
-</ul>
-</div>
-<div class="license">
-<h2>License</h2>
-<ul class="list-unstyled">
-<li><a href="https://www.r-project.org/Licenses/LGPL-3">LGPL-3</a></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>Marc Becker <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-8115-0400" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>
-<a href="https://pat-s.me">Patrick Schratz</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-0748-6624" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="https://cloud.r-project.org/package=mlr3spatial" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/mlr-org/mlr3spatial/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/mlr-org/mlr3spatial/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="license">
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/mlr-org/mlr3spatial/actions"><img src="https://github.com/mlr-org/mlr3spatial/workflows/tic/badge.svg?branch=main" alt="tic"></a></li>
-<li><a href="https://codecov.io/github/mlr-org/mlr3spatial?branch=main"><img src="https://codecov.io/gh/mlr-org/mlr3spatial/branch/main/graph/badge.svg" alt="Coverage status"></a></li>
-<li><a href="https://www.codefactor.io/repository/github/mlr-org/mlr3spatial"><img src="https://www.codefactor.io/repository/github/mlr-org/mlr3spatial/badge" alt="CodeFactor"></a></li>
-<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle:experimental"></a></li>
+<li><a href="https://www.r-project.org/Licenses/LGPL-3" class="external-link">LGPL-3</a></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing mlr3spatial</a></li>
+</ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>Marc Becker <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-8115-0400" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>
+<a href="https://pat-s.me" class="external-link">Patrick Schratz</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-0748-6624" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+</ul>
+</div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/mlr-org/mlr3spatial/actions" class="external-link"><img src="https://github.com/mlr-org/mlr3spatial/workflows/tic/badge.svg?branch=main" alt="tic"></a></li>
+<li><a href="https://codecov.io/github/mlr-org/mlr3spatial?branch=main" class="external-link"><img src="https://codecov.io/gh/mlr-org/mlr3spatial/branch/main/graph/badge.svg" alt="Coverage status"></a></li>
+<li><a href="https://www.codefactor.io/repository/github/mlr-org/mlr3spatial" class="external-link"><img src="https://www.codefactor.io/repository/github/mlr-org/mlr3spatial/badge" alt="CodeFactor"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle:experimental"></a></li>
+</ul>
+</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Marc Becker, <a href="https://pat-s.me">Patrick Schratz</a>.</p>
+  <p></p>
+<p>Developed by Marc Becker, <a href="https://pat-s.me" class="external-link">Patrick Schratz</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
 </div>
 
       </footer>
@@ -211,6 +220,8 @@ In addition, predictions on large raster files (i.e. multiple GB in size) often
 
   
 
+
+  
 
   </body>
 </html>

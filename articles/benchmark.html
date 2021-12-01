@@ -27,6 +27,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -39,7 +41,7 @@
       </button>
 
       <div class="navbar-brand-container">
-        <a href="https://mlr-org.com"><img src="https://raw.githubusercontent.com/mlr-org/mlr3/master/man/figures/logo.png" id="hexlogo" alt="mlr-org"></a>
+        <a href="https://mlr-org.com" class="external-link"><img src="https://raw.githubusercontent.com/mlr-org/mlr3/master/reference/figures/logo.png" id="hexlogo" alt="mlr-org"></a>
         <a class="navbar-brand" href="../index.html">mlr3spatial <small>v0.1.0</small></a>
       </div>
     </div>
@@ -56,7 +58,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
 <li>
-  <a href="https://mlr3book.mlr-org.com">
+  <a href="https://mlr3book.mlr-org.com" class="external-link">
     <span class="fa fa-link"></span>
      
     mlr3book
@@ -74,29 +76,26 @@
     </li>
   </ul>
 </li>
-<li>
-  <a href="../articles/mlr3spatial.html">Get started</a>
-</li>
         <li>
-  <a href="https://github.com/mlr-org/mlr3spatial/">
+  <a href="https://github.com/mlr-org/mlr3spatial/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/">
+  <a href="https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/" class="external-link">
     <span class="fa fa-comments"></span>
      
   </a>
 </li>
 <li>
-  <a href="https://stackoverflow.com/questions/tagged/mlr3">
+  <a href="https://stackoverflow.com/questions/tagged/mlr3" class="external-link">
     <span class="fab fa-stack-overflow"></span>
      
   </a>
 </li>
 <li>
-  <a href="https://mlr-org.com/">
+  <a href="https://mlr-org.com/" class="external-link">
     <span class="fa fa-rss"></span>
      
   </a>
@@ -117,7 +116,7 @@
       <h1 data-toc-skip>Benchmarking parallel predictions</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/mlr-org/mlr3spatial/blob/master/vignettes/benchmark.Rmd"><code>vignettes/benchmark.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/mlr-org/mlr3spatial/blob/HEAD/vignettes/benchmark.Rmd" class="external-link"><code>vignettes/benchmark.Rmd</code></a></small>
       <div class="hidden name"><code>benchmark.Rmd</code></div>
 
     </div>
@@ -132,18 +131,18 @@
 <p>Note that the differences between the parallel and sequential timings will increase for larger objects as the overhead for starting the parallel workers and collecting the results will decrease.</p>
 <p>It is not fully clear why the parallel approach of the {terra} package is slow than its sequential counterpart but it might relate to the single-core performance of the machine the benchmark was run on in combination with the overhead associated with starting the parallel cluster the way it is done in the {terra} package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3.mlr-org.com">mlr3</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3spatial.mlr-org.com">mlr3spatial</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-lib/bench">bench</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/stars/">stars</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3.mlr-org.com" class="external-link">mlr3</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3spatial.mlr-org.com">mlr3spatial</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org" class="external-link">future</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bench.r-lib.org/" class="external-link">bench</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/stars/" class="external-link">stars</a></span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: abind</span>
 <span class="co">#&gt; Loading required package: sf</span>
 <span class="co">#&gt; Linking to GEOS 3.9.1, GDAL 3.3.1, PROJ 8.1.0</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bethatkinson/rpart">rpart</a></span><span class="op">)</span></code></pre></div>
-<div id="small-files" class="section level2">
-<h2 class="hasAnchor">
-<a href="#small-files" class="anchor"></a>Small files</h2>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bethatkinson/rpart" class="external-link">rpart</a></span><span class="op">)</span></code></pre></div>
+<div class="section level2">
+<h2 id="small-files">Small files<a class="anchor" aria-label="anchor" href="#small-files"></a>
+</h2>
 <ul>
 <li>~ 250k values</li>
 <li>48 MB on disk</li>
@@ -151,65 +150,65 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># SpatRaster demo stack</span>
 <span class="va">stack_terra</span> <span class="op">=</span> <span class="fu"><a href="../reference/demo_stack_spatraster.html">demo_stack_spatraster</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span>
-<span class="va">value</span> <span class="op">=</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"negative"</span>, <span class="st">"positive"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/factors.html">setCats</a></span><span class="op">(</span><span class="va">stack_terra</span>, layer <span class="op">=</span> <span class="st">"y"</span>, value <span class="op">=</span> <span class="va">value</span><span class="op">)</span>
-<span class="va">colnames</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">stack_terra</span><span class="op">)</span>
-<span class="va">file_terra</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span><span class="st">"terra"</span>, fileext <span class="op">=</span> <span class="st">".tif"</span><span class="op">)</span>
-<span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/writeRaster.html">writeRaster</a></span><span class="op">(</span><span class="va">stack_terra</span>, <span class="va">file_terra</span><span class="op">)</span>
+<span class="va">value</span> <span class="op">=</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"negative"</span>, <span class="st">"positive"</span><span class="op">)</span><span class="op">)</span>
+<span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/factors.html" class="external-link">setCats</a></span><span class="op">(</span><span class="va">stack_terra</span>, layer <span class="op">=</span> <span class="st">"y"</span>, value <span class="op">=</span> <span class="va">value</span><span class="op">)</span>
+<span class="va">colnames</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">stack_terra</span><span class="op">)</span>
+<span class="va">file_terra</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"terra"</span>, fileext <span class="op">=</span> <span class="st">".tif"</span><span class="op">)</span>
+<span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/writeRaster.html" class="external-link">writeRaster</a></span><span class="op">(</span><span class="va">stack_terra</span>, <span class="va">file_terra</span><span class="op">)</span>
 
 <span class="co"># RasterBrick demo stack</span>
 <span class="va">stack_raster</span> <span class="op">=</span> <span class="fu"><a href="../reference/demo_stack_rasterbrick.html">demo_stack_rasterbrick</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span>
-<span class="va">colnames_raster</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">stack_raster</span><span class="op">)</span>
-<span class="va">file_raster</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span><span class="st">"raster"</span>, fileext <span class="op">=</span> <span class="st">".tif"</span><span class="op">)</span>
-<span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/writeRaster.html">writeRaster</a></span><span class="op">(</span><span class="va">stack_raster</span>, <span class="va">file_raster</span><span class="op">)</span>
+<span class="va">colnames_raster</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">stack_raster</span><span class="op">)</span>
+<span class="va">file_raster</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"raster"</span>, fileext <span class="op">=</span> <span class="st">".tif"</span><span class="op">)</span>
+<span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/writeRaster.html" class="external-link">writeRaster</a></span><span class="op">(</span><span class="va">stack_raster</span>, <span class="va">file_raster</span><span class="op">)</span>
 <span class="co">#&gt; Warning in .gd_SetProject(object, ...): NOT UPDATED FOR PROJ &gt;= 6</span>
 
 <span class="co"># tasks</span>
-<span class="va">stack_terra</span> <span class="op">=</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html">rast</a></span><span class="op">(</span><span class="va">file_terra</span><span class="op">)</span>
+<span class="va">stack_terra</span> <span class="op">=</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">file_terra</span><span class="op">)</span>
 <span class="va">backend_terra</span> <span class="op">=</span> <span class="va"><a href="../reference/DataBackendRaster.html">DataBackendRaster</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">stack_terra</span><span class="op">)</span>
-<span class="va">task_terra</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html">as_task_regr</a></span><span class="op">(</span><span class="va">backend_terra</span>, target <span class="op">=</span> <span class="st">"x_1"</span><span class="op">)</span>
+<span class="va">task_terra</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html" class="external-link">as_task_regr</a></span><span class="op">(</span><span class="va">backend_terra</span>, target <span class="op">=</span> <span class="st">"x_1"</span><span class="op">)</span>
 
-<span class="va">stack_raster</span> <span class="op">=</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/brick.html">brick</a></span><span class="op">(</span><span class="va">file_raster</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">stack_raster</span><span class="op">)</span> <span class="op">=</span> <span class="va">colnames_raster</span>
+<span class="va">stack_raster</span> <span class="op">=</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/brick.html" class="external-link">brick</a></span><span class="op">(</span><span class="va">file_raster</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">stack_raster</span><span class="op">)</span> <span class="op">=</span> <span class="va">colnames_raster</span>
 <span class="va">backend_raster</span> <span class="op">=</span> <span class="va"><a href="../reference/DataBackendRaster.html">DataBackendRaster</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">stack_raster</span><span class="op">)</span>
 <span class="co">#&gt; Warning in wkt(from): no wkt comment</span>
-<span class="va">task_raster</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html">as_task_regr</a></span><span class="op">(</span><span class="va">backend_raster</span>, target <span class="op">=</span> <span class="st">"x_1"</span><span class="op">)</span>
+<span class="va">task_raster</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html" class="external-link">as_task_regr</a></span><span class="op">(</span><span class="va">backend_raster</span>, target <span class="op">=</span> <span class="st">"x_1"</span><span class="op">)</span>
 
 <span class="co"># Train learners</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span>
-<span class="va">row_ids</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">task_terra</span><span class="op">$</span><span class="va">nrow</span>, <span class="fl">50</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span>
+<span class="va">row_ids</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">task_terra</span><span class="op">$</span><span class="va">nrow</span>, <span class="fl">50</span><span class="op">)</span>
 
-<span class="va">learner_task_terra</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html">lrn</a></span><span class="op">(</span><span class="st">"regr.rpart"</span><span class="op">)</span>
+<span class="va">learner_task_terra</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"regr.rpart"</span><span class="op">)</span>
 <span class="va">learner_task_terra</span><span class="op">$</span><span class="va">parallel_predict</span> <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="va">learner_task_terra</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task_terra</span>, row_ids <span class="op">=</span> <span class="va">row_ids</span><span class="op">)</span>
 
-<span class="va">learner_task_raster</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html">lrn</a></span><span class="op">(</span><span class="st">"regr.rpart"</span><span class="op">)</span>
+<span class="va">learner_task_raster</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"regr.rpart"</span><span class="op">)</span>
 <span class="va">learner_task_terra</span><span class="op">$</span><span class="va">parallel_predict</span> <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="va">learner_task_raster</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task_raster</span>, row_ids <span class="op">=</span> <span class="va">row_ids</span><span class="op">)</span>
 
 <span class="co"># non-mlr3 models</span>
-<span class="va">rpart_task_terra</span> <span class="op">=</span> <span class="fu">rpart</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">x_1</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">task_terra</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span>rows <span class="op">=</span> <span class="va">row_ids</span><span class="op">)</span><span class="op">)</span>
-<span class="va">rpart_task_raster</span> <span class="op">=</span> <span class="fu">rpart</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">x_1</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">task_raster</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span>rows <span class="op">=</span> <span class="va">row_ids</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="va">rpart_task_terra</span> <span class="op">=</span> <span class="fu">rpart</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html" class="external-link">rpart</a></span><span class="op">(</span><span class="va">x_1</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">task_terra</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span>rows <span class="op">=</span> <span class="va">row_ids</span><span class="op">)</span><span class="op">)</span>
+<span class="va">rpart_task_raster</span> <span class="op">=</span> <span class="fu">rpart</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html" class="external-link">rpart</a></span><span class="op">(</span><span class="va">x_1</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">task_raster</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span>rows <span class="op">=</span> <span class="va">row_ids</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">bm</span> <span class="op">=</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">bm</span> <span class="op">=</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="http://bench.r-lib.org/reference/mark.html" class="external-link">mark</a></span><span class="op">(</span>
 
   <span class="st">"01-mlr3-terra-4-cores"</span> <span class="op">=</span> <span class="op">{</span>
-    <span class="fu"><a href="https://future.futureverse.org/reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multicore</span>, workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
+    <span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multicore</span>, workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
     <span class="fu"><a href="../reference/predict_spatial.html">predict_spatial</a></span><span class="op">(</span><span class="va">task_terra</span>, <span class="va">learner_task_terra</span>, chunksize <span class="op">=</span> <span class="fl">2000L</span><span class="op">)</span>
   <span class="op">}</span>,
 
-  <span class="st">"02-terra-4-cores"</span> <span class="op">=</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/predict.html">predict</a></span><span class="op">(</span><span class="va">stack_terra</span>, <span class="va">rpart_task_terra</span>, cores <span class="op">=</span> <span class="fl">4</span>, cpkgs <span class="op">=</span> <span class="st">"rpart"</span><span class="op">)</span>,
+  <span class="st">"02-terra-4-cores"</span> <span class="op">=</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">stack_terra</span>, <span class="va">rpart_task_terra</span>, cores <span class="op">=</span> <span class="fl">4</span>, cpkgs <span class="op">=</span> <span class="st">"rpart"</span><span class="op">)</span>,
 
   <span class="st">"03-mlr3-raster-4-cores"</span> <span class="op">=</span> <span class="op">{</span>
-    <span class="fu"><a href="https://future.futureverse.org/reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multicore</span>, workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
+    <span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multicore</span>, workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
     <span class="fu"><a href="../reference/predict_spatial.html">predict_spatial</a></span><span class="op">(</span><span class="va">task_raster</span>, <span class="va">learner_task_raster</span>, chunksize <span class="op">=</span> <span class="fl">2000L</span>, format <span class="op">=</span> <span class="st">"raster"</span><span class="op">)</span>
   <span class="op">}</span>,
 
   <span class="st">"04-raster-4-cores"</span> <span class="op">=</span> <span class="op">{</span>
-    <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster">raster</a></span><span class="op">)</span>
-    <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bethatkinson/rpart">rpart</a></span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/raster/man/cluster.html">beginCluster</a></span><span class="op">(</span><span class="fl">4</span>, type <span class="op">=</span> <span class="st">"PSOCK"</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/raster/man/cluster.html">clusterR</a></span><span class="op">(</span><span class="va">stack_raster</span>, <span class="va">predict</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">rpart_task_raster</span><span class="op">)</span><span class="op">)</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster" class="external-link">raster</a></span><span class="op">)</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bethatkinson/rpart" class="external-link">rpart</a></span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/raster/man/cluster.html" class="external-link">beginCluster</a></span><span class="op">(</span><span class="fl">4</span>, type <span class="op">=</span> <span class="st">"PSOCK"</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/raster/man/cluster.html" class="external-link">clusterR</a></span><span class="op">(</span><span class="va">stack_raster</span>, <span class="va">predict</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">rpart_task_raster</span><span class="op">)</span><span class="op">)</span>
   <span class="op">}</span>,
 
   check <span class="op">=</span> <span class="cn">FALSE</span>, filter_gc <span class="op">=</span> <span class="cn">FALSE</span>, min_iterations <span class="op">=</span> <span class="fl">3</span>,
@@ -230,7 +229,7 @@
 <span class="va">bm</span><span class="op">$</span><span class="va">memory</span> <span class="op">=</span> <span class="cn">NULL</span>
 <span class="va">bm</span><span class="op">$</span><span class="va">mem_alloc</span> <span class="op">=</span> <span class="cn">NULL</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">bm</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">bm</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 4 × 8</span>
 <span class="co">#&gt;   expression                  min   median n_itr  n_gc total_time time           gc              </span>
 <span class="co">#&gt;   &lt;bch:expr&gt;             &lt;bch:tm&gt; &lt;bch:tm&gt; &lt;int&gt; &lt;dbl&gt;   &lt;bch:tm&gt; &lt;list&gt;         &lt;list&gt;          </span>
@@ -239,15 +238,15 @@
 <span class="co">#&gt; 3 03-mlr3-raster-4-cores    3.25s     3.5s     3    34     10.42s &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
 <span class="co">#&gt; 4 04-raster-4-cores          8.3s    8.74s     3     1     25.94s &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
 <span class="fu">autoplot</span><span class="op">(</span><span class="va">bm</span>, type <span class="op">=</span> <span class="st">"ridge"</span><span class="op">)</span>
 <span class="co">#&gt; Loading required namespace: tidyr</span>
 <span class="co">#&gt; Picking joint bandwidth of 0.00863</span></code></pre></div>
 <p><img src="plot-benchmark-small-1.png"></p>
 </div>
-<div id="large-files" class="section level2">
-<h2 class="hasAnchor">
-<a href="#large-files" class="anchor"></a>Large files</h2>
+<div class="section level2">
+<h2 id="large-files">Large files<a class="anchor" aria-label="anchor" href="#large-files"></a>
+</h2>
 <ul>
 <li><p>~ 25 Mio. values</p></li>
 <li><p>485 MB on disk</p></li>
@@ -255,65 +254,65 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># SpatRaster demo stack</span>
 <span class="va">stack_terra</span> <span class="op">=</span> <span class="fu"><a href="../reference/demo_stack_spatraster.html">demo_stack_spatraster</a></span><span class="op">(</span><span class="fl">500</span><span class="op">)</span>
-<span class="va">value</span> <span class="op">=</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"negative"</span>, <span class="st">"positive"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/factors.html">setCats</a></span><span class="op">(</span><span class="va">stack_terra</span>, layer <span class="op">=</span> <span class="st">"y"</span>, value <span class="op">=</span> <span class="va">value</span><span class="op">)</span>
-<span class="va">colnames</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span><span class="op">(</span><span class="va">stack_terra</span><span class="op">)</span>
-<span class="va">file_terra</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span><span class="st">"terra"</span>, fileext <span class="op">=</span> <span class="st">".tif"</span><span class="op">)</span>
-<span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/writeRaster.html">writeRaster</a></span><span class="op">(</span><span class="va">stack_terra</span>, <span class="va">file_terra</span><span class="op">)</span>
+<span class="va">value</span> <span class="op">=</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"negative"</span>, <span class="st">"positive"</span><span class="op">)</span><span class="op">)</span>
+<span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/factors.html" class="external-link">setCats</a></span><span class="op">(</span><span class="va">stack_terra</span>, layer <span class="op">=</span> <span class="st">"y"</span>, value <span class="op">=</span> <span class="va">value</span><span class="op">)</span>
+<span class="va">colnames</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">stack_terra</span><span class="op">)</span>
+<span class="va">file_terra</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"terra"</span>, fileext <span class="op">=</span> <span class="st">".tif"</span><span class="op">)</span>
+<span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/writeRaster.html" class="external-link">writeRaster</a></span><span class="op">(</span><span class="va">stack_terra</span>, <span class="va">file_terra</span><span class="op">)</span>
 
 <span class="co"># RasterBrick demo stack</span>
 <span class="va">stack_raster</span> <span class="op">=</span> <span class="fu"><a href="../reference/demo_stack_rasterbrick.html">demo_stack_rasterbrick</a></span><span class="op">(</span><span class="fl">500</span><span class="op">)</span>
-<span class="va">colnames_raster</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span><span class="op">(</span><span class="va">stack_raster</span><span class="op">)</span>
-<span class="va">file_raster</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span><span class="st">"raster"</span>, fileext <span class="op">=</span> <span class="st">".tif"</span><span class="op">)</span>
-<span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/writeRaster.html">writeRaster</a></span><span class="op">(</span><span class="va">stack_raster</span>, <span class="va">file_raster</span><span class="op">)</span>
+<span class="va">colnames_raster</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">stack_raster</span><span class="op">)</span>
+<span class="va">file_raster</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"raster"</span>, fileext <span class="op">=</span> <span class="st">".tif"</span><span class="op">)</span>
+<span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/writeRaster.html" class="external-link">writeRaster</a></span><span class="op">(</span><span class="va">stack_raster</span>, <span class="va">file_raster</span><span class="op">)</span>
 <span class="co">#&gt; Warning in .gd_SetProject(object, ...): NOT UPDATED FOR PROJ &gt;= 6</span>
 
 <span class="co"># tasks</span>
-<span class="va">stack_terra</span> <span class="op">=</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html">rast</a></span><span class="op">(</span><span class="va">file_terra</span><span class="op">)</span>
+<span class="va">stack_terra</span> <span class="op">=</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">file_terra</span><span class="op">)</span>
 <span class="va">backend_terra</span> <span class="op">=</span> <span class="va"><a href="../reference/DataBackendRaster.html">DataBackendRaster</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">stack_terra</span><span class="op">)</span>
-<span class="va">task_terra</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html">as_task_regr</a></span><span class="op">(</span><span class="va">backend_terra</span>, target <span class="op">=</span> <span class="st">"x_1"</span><span class="op">)</span>
+<span class="va">task_terra</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html" class="external-link">as_task_regr</a></span><span class="op">(</span><span class="va">backend_terra</span>, target <span class="op">=</span> <span class="st">"x_1"</span><span class="op">)</span>
 
-<span class="va">stack_raster</span> <span class="op">=</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/brick.html">brick</a></span><span class="op">(</span><span class="va">file_raster</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span><span class="op">(</span><span class="va">stack_raster</span><span class="op">)</span> <span class="op">=</span> <span class="va">colnames_raster</span>
+<span class="va">stack_raster</span> <span class="op">=</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/brick.html" class="external-link">brick</a></span><span class="op">(</span><span class="va">file_raster</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">stack_raster</span><span class="op">)</span> <span class="op">=</span> <span class="va">colnames_raster</span>
 <span class="va">backend_raster</span> <span class="op">=</span> <span class="va"><a href="../reference/DataBackendRaster.html">DataBackendRaster</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">stack_raster</span><span class="op">)</span>
 <span class="co">#&gt; Warning in wkt(from): no wkt comment</span>
-<span class="va">task_raster</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html">as_task_regr</a></span><span class="op">(</span><span class="va">backend_raster</span>, target <span class="op">=</span> <span class="st">"x_1"</span><span class="op">)</span>
+<span class="va">task_raster</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html" class="external-link">as_task_regr</a></span><span class="op">(</span><span class="va">backend_raster</span>, target <span class="op">=</span> <span class="st">"x_1"</span><span class="op">)</span>
 
 <span class="co"># Train learners</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span>
-<span class="va">row_ids</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">task_terra</span><span class="op">$</span><span class="va">nrow</span>, <span class="fl">50</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span>
+<span class="va">row_ids</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">task_terra</span><span class="op">$</span><span class="va">nrow</span>, <span class="fl">50</span><span class="op">)</span>
 
-<span class="va">learner_task_terra</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html">lrn</a></span><span class="op">(</span><span class="st">"regr.rpart"</span><span class="op">)</span>
+<span class="va">learner_task_terra</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"regr.rpart"</span><span class="op">)</span>
 <span class="va">learner_task_terra</span><span class="op">$</span><span class="va">parallel_predict</span> <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="va">learner_task_terra</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task_terra</span>, row_ids <span class="op">=</span> <span class="va">row_ids</span><span class="op">)</span>
 
-<span class="va">learner_task_raster</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html">lrn</a></span><span class="op">(</span><span class="st">"regr.rpart"</span><span class="op">)</span>
+<span class="va">learner_task_raster</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"regr.rpart"</span><span class="op">)</span>
 <span class="va">learner_task_terra</span><span class="op">$</span><span class="va">parallel_predict</span> <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="va">learner_task_raster</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task_raster</span>, row_ids <span class="op">=</span> <span class="va">row_ids</span><span class="op">)</span>
 
 <span class="co"># non-mlr3 models</span>
-<span class="va">rpart_task_terra</span> <span class="op">=</span> <span class="fu">rpart</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">x_1</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">task_terra</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span>rows <span class="op">=</span> <span class="va">row_ids</span><span class="op">)</span><span class="op">)</span>
-<span class="va">rpart_task_raster</span> <span class="op">=</span> <span class="fu">rpart</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html">rpart</a></span><span class="op">(</span><span class="va">x_1</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">task_raster</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span>rows <span class="op">=</span> <span class="va">row_ids</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="va">rpart_task_terra</span> <span class="op">=</span> <span class="fu">rpart</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html" class="external-link">rpart</a></span><span class="op">(</span><span class="va">x_1</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">task_terra</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span>rows <span class="op">=</span> <span class="va">row_ids</span><span class="op">)</span><span class="op">)</span>
+<span class="va">rpart_task_raster</span> <span class="op">=</span> <span class="fu">rpart</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html" class="external-link">rpart</a></span><span class="op">(</span><span class="va">x_1</span> <span class="op">~</span> <span class="va">.</span>, <span class="va">task_raster</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span>rows <span class="op">=</span> <span class="va">row_ids</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">bm</span> <span class="op">=</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">bm</span> <span class="op">=</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="http://bench.r-lib.org/reference/mark.html" class="external-link">mark</a></span><span class="op">(</span>
 
   <span class="st">"01-mlr3-terra-4-cores"</span> <span class="op">=</span> <span class="op">{</span>
-    <span class="fu"><a href="https://future.futureverse.org/reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multicore</span>, workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
+    <span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multicore</span>, workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
     <span class="fu"><a href="../reference/predict_spatial.html">predict_spatial</a></span><span class="op">(</span><span class="va">task_terra</span>, <span class="va">learner_task_terra</span>, chunksize <span class="op">=</span> <span class="fl">2000L</span><span class="op">)</span>
   <span class="op">}</span>,
 
-  <span class="st">"02-terra-4-cores"</span> <span class="op">=</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/predict.html">predict</a></span><span class="op">(</span><span class="va">stack_terra</span>, <span class="va">rpart_task_terra</span>, cores <span class="op">=</span> <span class="fl">4</span>, cpkgs <span class="op">=</span> <span class="st">"rpart"</span><span class="op">)</span>,
+  <span class="st">"02-terra-4-cores"</span> <span class="op">=</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">stack_terra</span>, <span class="va">rpart_task_terra</span>, cores <span class="op">=</span> <span class="fl">4</span>, cpkgs <span class="op">=</span> <span class="st">"rpart"</span><span class="op">)</span>,
 
   <span class="st">"03-mlr3-raster-4-cores"</span> <span class="op">=</span> <span class="op">{</span>
-    <span class="fu"><a href="https://future.futureverse.org/reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multicore</span>, workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
+    <span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">multicore</span>, workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
     <span class="fu"><a href="../reference/predict_spatial.html">predict_spatial</a></span><span class="op">(</span><span class="va">task_raster</span>, <span class="va">learner_task_raster</span>, chunksize <span class="op">=</span> <span class="fl">2000L</span>, format <span class="op">=</span> <span class="st">"raster"</span><span class="op">)</span>
   <span class="op">}</span>,
 
   <span class="st">"04-raster-4-cores"</span> <span class="op">=</span> <span class="op">{</span>
-    <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster">raster</a></span><span class="op">)</span>
-    <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bethatkinson/rpart">rpart</a></span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/raster/man/cluster.html">beginCluster</a></span><span class="op">(</span><span class="fl">4</span>, type <span class="op">=</span> <span class="st">"PSOCK"</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/raster/man/cluster.html">clusterR</a></span><span class="op">(</span><span class="va">stack_raster</span>, <span class="va">predict</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">rpart_task_raster</span><span class="op">)</span><span class="op">)</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster" class="external-link">raster</a></span><span class="op">)</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bethatkinson/rpart" class="external-link">rpart</a></span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/raster/man/cluster.html" class="external-link">beginCluster</a></span><span class="op">(</span><span class="fl">4</span>, type <span class="op">=</span> <span class="st">"PSOCK"</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/raster/man/cluster.html" class="external-link">clusterR</a></span><span class="op">(</span><span class="va">stack_raster</span>, <span class="va">predict</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">rpart_task_raster</span><span class="op">)</span><span class="op">)</span>
   <span class="op">}</span>,
 
   check <span class="op">=</span> <span class="cn">FALSE</span>, filter_gc <span class="op">=</span> <span class="cn">FALSE</span>, min_iterations <span class="op">=</span> <span class="fl">3</span>,
@@ -325,7 +324,7 @@
 <span class="va">bm</span><span class="op">$</span><span class="va">memory</span> <span class="op">=</span> <span class="cn">NULL</span>
 <span class="va">bm</span><span class="op">$</span><span class="va">mem_alloc</span> <span class="op">=</span> <span class="cn">NULL</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">bm</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">bm</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 4 × 8</span>
 <span class="co">#&gt;   expression                  min   median n_itr  n_gc total_time time           gc              </span>
 <span class="co">#&gt;   &lt;bch:expr&gt;             &lt;bch:tm&gt; &lt;bch:tm&gt; &lt;int&gt; &lt;dbl&gt;   &lt;bch:tm&gt; &lt;list&gt;         &lt;list&gt;          </span>
@@ -334,7 +333,7 @@
 <span class="co">#&gt; 3 03-mlr3-raster-4-cores    30.5s   30.86s     3    38      1.62m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
 <span class="co">#&gt; 4 04-raster-4-cores         24.4s    28.1s     3     1      1.35m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
 <span class="fu">autoplot</span><span class="op">(</span><span class="va">bm</span>, type <span class="op">=</span> <span class="st">"ridge"</span><span class="op">)</span>
 <span class="co">#&gt; Picking joint bandwidth of 0.0143</span></code></pre></div>
 <p><img src="plot-benchmark-large-1.png"></p>
@@ -352,11 +351,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Marc Becker, <a href="https://pat-s.me">Patrick Schratz</a>.</p>
+  <p></p>
+<p>Developed by Marc Becker, <a href="https://pat-s.me" class="external-link">Patrick Schratz</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
 </div>
 
       </footer>
@@ -364,6 +365,8 @@
 
   
 
+
+  
 
   </body>
 </html>
