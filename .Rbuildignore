@@ -17,3 +17,5 @@ attic/
 target*
 ^.*\.xml$
 ^man-roxygen$
+cran-comments\.md
+^CRAN-RELEASE$

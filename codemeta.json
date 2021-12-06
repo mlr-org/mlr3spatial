@@ -5,17 +5,17 @@
   ],
   "@type": "SoftwareSourceCode",
   "identifier": "mlr3spatial",
-  "description": "Extends the mlr3 ML framework with methods for data storage\n    and prediction for spatial objects (terra, raster, stars packages).",
-  "name": "mlr3spatial: Support for spatial objects within the 'mlr3' ecosystem.",
+  "description": "Extends the mlr3 ML framework with methods for spatial objects. Data storage and prediction are supported for packages 'terra', 'raster' and 'stars'.",
+  "name": "mlr3spatial: Support for Spatial Objects Within the 'mlr3' Ecosystem",
   "codeRepository": "https://github.com/mlr-org/mlr3spatial",
   "license": "https://spdx.org/licenses/LGPL-3.0",
-  "version": "0.0.0.9000",
+  "version": "0.1.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.1.0 Patched (2021-06-24 r80555)",
+  "runtimePlatform": "R version 4.1.2 (2021-11-01)",
   "author": [
     {
       "@type": "Person",
@@ -47,27 +47,51 @@
   "softwareSuggestions": [
     {
       "@type": "SoftwareApplication",
-      "identifier": "checkmate",
-      "name": "checkmate",
+      "identifier": "bench",
+      "name": "bench",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=checkmate"
+      "sameAs": "https://CRAN.R-project.org/package=bench"
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "data.table",
-      "name": "data.table",
+      "identifier": "e1071",
+      "name": "e1071",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=data.table"
+      "sameAs": "https://CRAN.R-project.org/package=e1071"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "future",
+      "name": "future",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=future"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "future.callr",
+      "name": "future.callr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=future.callr"
     },
     {
       "@type": "SoftwareApplication",
@@ -83,33 +107,9 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "lgr",
-      "name": "lgr",
-      "version": ">= 0.3.0",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=lgr"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "mlr3",
-      "name": "mlr3",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=mlr3"
-    },
-    {
-      "@type": "SoftwareApplication",
       "identifier": "mlr3learners",
       "name": "mlr3learners",
+      "version": ">= 0.4.5",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -120,15 +120,39 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "R6",
-      "name": "R6",
+      "identifier": "mlr3tuning",
+      "name": "mlr3tuning",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=R6"
+      "sameAs": "https://CRAN.R-project.org/package=mlr3tuning"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "paradox",
+      "name": "paradox",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=paradox"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "ranger",
+      "name": "ranger",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=ranger"
     },
     {
       "@type": "SoftwareApplication",
@@ -144,6 +168,18 @@
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "rgdal",
+      "name": "rgdal",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rgdal"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "rmarkdown",
       "name": "rmarkdown",
       "provider": {
@@ -153,6 +189,42 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=rmarkdown"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "rpart",
+      "name": "rpart",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rpart"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "sf",
+      "name": "sf",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=sf"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "stars",
+      "name": "stars",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=stars"
     },
     {
       "@type": "SoftwareApplication",
@@ -173,7 +245,7 @@
       "@type": "SoftwareApplication",
       "identifier": "mlr3",
       "name": "mlr3",
-      "version": ">= 0.11.0",
+      "version": ">= 0.12.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -187,19 +259,6 @@
       "identifier": "R",
       "name": "R",
       "version": ">= 3.1.0"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "terra",
-      "name": "terra",
-      "version": ">= 1.2-10",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=terra"
     },
     {
       "@type": "SoftwareApplication",
@@ -242,16 +301,8 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "mlr3learners",
-      "name": "mlr3learners",
-      "version": ">= 0.4.5",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=mlr3learners"
+      "identifier": "methods",
+      "name": "methods"
     },
     {
       "@type": "SoftwareApplication",
@@ -277,17 +328,39 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=R6"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "terra",
+      "name": "terra",
+      "version": ">= 1.3-22",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=terra"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "utils",
+      "name": "utils"
     }
   ],
   "readme": "https://github.com/mlr-org/mlr3spatial/blob/main/README.md",
-  "fileSize": "58.023KB",
-  "contIntegration": "https://codecov.io/github/mlr-org/mlr3spatial?branch=main",
+  "fileSize": "340.409KB",
+  "contIntegration": ["https://github.com/mlr-org/mlr3spatial/actions", "https://codecov.io/github/mlr-org/mlr3spatial?branch=main"],
   "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html#experimental",
   "keywords": [
     "raster-prediction",
     "spatial",
-    "spatial-modelling"
+    "spatial-modelling",
+    "r",
+    "r-package",
+    "mlr3"
   ],
   "relatedLink": "https://mlr3spatial.mlr-org.com",
-  "issueTracker": "https://github.com/mlr-org/mlr3spatial/issues"
+  "issueTracker": "https://github.com/mlr-org/mlr3spatial/issues",
+  "releaseNotes": "https://github.com/mlr-org/mlr3spatial/blob/master/NEWS.md"
 }

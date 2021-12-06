@@ -106,3 +106,5 @@ po/*~
 *.tif
 *.xml
 inst/doc
+cran-comments\.md
+CRAN-RELEASE
