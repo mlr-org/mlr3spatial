@@ -69,7 +69,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
         terra::writeRaster(data, filename = filename)
         data = terra::rast(filename)
       }
-      private$.data = terra::sources(assert_class(data, "SpatRaster"), bands = TRUE)$source
+      private$.data = terra::sources(assert_class(data, "SpatRaster"), bands = TRUE)$source # nolint
       private$.categories = terra::cats(data)
       private$.layer_names = names(data)
       self$data_formats = "data.table"
