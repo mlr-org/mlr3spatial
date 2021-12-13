@@ -248,8 +248,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
 #'
 #' @export
 as_data_backend.stars = function(data, primary_key = NULL, ...) { # nolint
-  # we need to go stars -> raster -> terra
-  data = terra::rast(as(data, "Raster"))
+  data = as(data, "SpatRaster")
   DataBackendRaster$new(data)
 }
 #' @export

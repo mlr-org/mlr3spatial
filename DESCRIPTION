@@ -49,6 +49,8 @@ Suggests:
     sf,
     stars,
     testthat (>= 3.0.0)
+Remotes:
+    r-spatial/stars
 VignetteBuilder:
     knitr
 Config/testthat/edition: 3
