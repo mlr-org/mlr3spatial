@@ -69,7 +69,11 @@ DataBackendRaster = R6Class("DataBackendRaster",
         terra::writeRaster(data, filename = filename)
         data = terra::rast(filename)
       }
+<<<<<<< HEAD
       private$.data = unique(terra::sources(assert_class(data, "SpatRaster"), bands = TRUE)$source)
+=======
+      private$.data = unique(terra::sources(assert_class(data, "SpatRaster"), bands = TRUE)$source) # nolint
+>>>>>>> main
       private$.categories = terra::cats(data)
       private$.layer_names = names(data)
       self$data_formats = "data.table"
