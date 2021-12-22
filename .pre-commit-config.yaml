@@ -1,22 +1,38 @@
 # All available hooks: https://pre-commit.com/hooks.html
 repos:
 -   repo: https://github.com/lorenzwalthert/precommit
-    rev: v0.2.0
+    rev: v0.2.2.9006
     hooks:
     # any R project
     -   id: style-files
         args: [--style_pkg=styler.mlr, --style_fun=mlr_style]
-    # -   id: lintr
+        additional_dependencies:
+        - mlr-org/styler.mlr
+    -   id: roxygenize
+        # roxygen requires loading pkg -> add dependencies from DESCRIPTION
+        additional_dependencies:
+        -    mlr3
+        -    checkmate
+        -    data.table
+        -    lgr
+        -    methods
+        -    mlr3misc
+        -    R6
+        -    terra
+        -    utils
     -   id: parsable-R
     -   id: no-browser-statement
     -   id: readme-rmd-rendered
     #  R package development
-    -   id: roxygenize
-    # -   id: deps-in-desc
-    # -   id: codemeta-description-updated
+    -   id: deps-in-desc
+        exclude: "attic/demo.r"
+    -   id: codemeta-description-updated
     -   id: use-tidy-description
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.0.1
     hooks:
     -   id: check-added-large-files
         args: ['--maxkb=2300']
+
+ci:
+    skip: [roxygenize]
