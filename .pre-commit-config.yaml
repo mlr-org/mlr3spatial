@@ -33,3 +33,6 @@ repos:
     hooks:
     -   id: check-added-large-files
         args: ['--maxkb=2300']
+
+ci:
+    skip: [roxygenize]
