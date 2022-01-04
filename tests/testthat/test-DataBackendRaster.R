@@ -87,11 +87,11 @@ test_that("DataBackendRaster + stars", {
   expect_names(names(data), identical.to = colnames_stars)
 
   # distinct
-  expect_equal(backend$distinct(rows = 1:10, cols = "layer.1"),
-    list("layer.1" = c(69, 63, 60, 61, 62, 64)))
-  data = backend$distinct(rows = 1:5, cols = c("layer.1", "layer.2"))
-  expect_names(names(data), identical.to = c("layer.1", "layer.2"))
-  expect_numeric(data$layer.1)
+  expect_equal(backend$distinct(rows = 1:10, cols = "band1"),
+    list("band1" = c(69, 63, 60, 61, 62, 64)))
+  data = backend$distinct(rows = 1:5, cols = c("band1", "band2"))
+  expect_names(names(data), identical.to = c("band1", "band2"))
+  expect_numeric(data$band1)
 
 })
 

@@ -14,7 +14,7 @@ stack_brick = demo_stack_rasterbrick(0.1)
 # stars
 tif = system.file("tif/L7_ETMs.tif", package = "stars")
 l7data = stars::read_stars(tif)
-colnames_stars = c("layer.1", "layer.2", "layer.3", "layer.4", "layer.5", "layer.6")
+colnames_stars = c("band1", "band2", "band3", "band4", "band5", "band6")
 
 # sf
 sf_data = sf::st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)

@@ -69,11 +69,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
         terra::writeRaster(data, filename = filename)
         data = terra::rast(filename)
       }
-<<<<<<< HEAD
-      private$.data = unique(terra::sources(assert_class(data, "SpatRaster"), bands = TRUE)$source)
-=======
       private$.data = unique(terra::sources(assert_class(data, "SpatRaster"), bands = TRUE)$source) # nolint
->>>>>>> main
       private$.categories = terra::cats(data)
       private$.layer_names = names(data)
       self$data_formats = "data.table"
@@ -117,6 +113,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
         cells = terra::rowColFromCell(stack, rows)
         res = as.data.table(terra::extract(stack, rows))[, ..cols]
       }
+      lg$info(round(terra::free_RAM()/1000))
       res
     },
 
@@ -252,6 +249,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
 #'
 #' @export
 as_data_backend.stars = function(data, primary_key = NULL, ...) { # nolint
+  require_namespaces("stars")
   data = as(data, "SpatRaster")
   DataBackendRaster$new(data)
 }
@@ -263,6 +261,7 @@ as_data_backend.SpatRaster = function(data, primary_key = NULL, ...) { # nolint
 #' @export
 #' @rdname as_data_backend
 as_data_backend.RasterBrick = function(data, primary_key = NULL, ...) { # nolint
+  browser()
   data = terra::rast(data)
   DataBackendRaster$new(data)
 }
