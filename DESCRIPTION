@@ -13,7 +13,7 @@ Authors@R:
              role = "aut",
              email = "patrick.schratz@gmail.com",
              comment = c(ORCID = "0000-0003-0748-6624")))
-Description: Extends the mlr3 ML framework with methods for spatial
+Description: Extends the 'mlr3' ML framework with methods for spatial
     objects. Data storage and prediction are supported for packages
     'terra', 'raster' and 'stars'.
 License: LGPL-3
