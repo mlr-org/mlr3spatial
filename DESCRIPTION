@@ -30,7 +30,7 @@ Imports:
     methods,
     mlr3misc,
     R6 (>= 2.5.0),
-    terra (>= 1.3-22),
+    terra (>= 1.5-12),
     utils
 Suggests:
     bench,
@@ -47,7 +47,7 @@ Suggests:
     rmarkdown,
     rpart,
     sf,
-    stars,
+    stars (>= 0.5-5),
     testthat (>= 3.0.0)
 VignetteBuilder:
     knitr
