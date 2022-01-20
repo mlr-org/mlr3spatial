@@ -259,7 +259,6 @@ as_data_backend.SpatRaster = function(data, primary_key = NULL, ...) { # nolint
 #' @export
 #' @rdname as_data_backend
 as_data_backend.RasterBrick = function(data, primary_key = NULL, ...) { # nolint
-  browser()
   data = terra::rast(data)
   DataBackendRaster$new(data)
 }
