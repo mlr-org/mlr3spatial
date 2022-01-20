@@ -13,8 +13,8 @@ test_that("DataBackendRaster works", {
   expect_numeric(data$x_1)
   expect_factor(data$y, levels = c("negative", "positive"))
   # non-factor, all rows
-  data = backend$distinct(rows = NULL, cols = c("x_1"))
-  expect_names(names(data), identical.to = c("x_1"))
+  data = backend$distinct(rows = NULL, cols = "x_1")
+  expect_names(names(data), identical.to = "x_1")
   expect_length(data[[names(data)]], 4900)
 
   # nrow
@@ -90,11 +90,11 @@ test_that("DataBackendRaster + stars", {
   expect_names(names(data), identical.to = colnames_stars)
 
   # distinct
-  expect_equal(backend$distinct(rows = 1:10, cols = "layer.1"),
-    list("layer.1" = c(69, 63, 60, 61, 62, 64)))
-  data = backend$distinct(rows = 1:5, cols = c("layer.1", "layer.2"))
-  expect_names(names(data), identical.to = c("layer.1", "layer.2"))
-  expect_numeric(data$layer.1)
+  expect_equal(backend$distinct(rows = 1:10, cols = "band1"),
+    list("band1" = c(69, 63, 60, 61, 62, 64)))
+  data = backend$distinct(rows = 1:5, cols = c("band1", "band2"))
+  expect_names(names(data), identical.to = c("band1", "band2"))
+  expect_numeric(data$band1)
 
 })
 
@@ -132,8 +132,8 @@ test_that("DataBackendRaster + raster", {
   # no support for factors when using bricks
   expect_equal(backend$distinct(rows = 1:1000, cols = "y"),
     list("y" = c(1, 0)))
-  data = backend$distinct(rows = 1:5, cols = c("y"))
-  expect_names(names(data), identical.to = c("y"))
+  data = backend$distinct(rows = 1:5, cols = "y")
+  expect_names(names(data), identical.to = "y")
   expect_numeric(data$y)
 
 })

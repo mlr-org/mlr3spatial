@@ -111,6 +111,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
         cells = terra::rowColFromCell(stack, rows)
         res = as.data.table(terra::extract(stack, rows))[, ..cols]
       }
+      lg$info(round(terra::free_RAM() / 1000))
       res
     },
 
@@ -246,8 +247,8 @@ DataBackendRaster = R6Class("DataBackendRaster",
 #'
 #' @export
 as_data_backend.stars = function(data, primary_key = NULL, ...) { # nolint
-  # we need to go stars -> raster -> terra
-  data = terra::rast(as(data, "Raster"))
+  require_namespaces("stars")
+  data = as(data, "SpatRaster")
   DataBackendRaster$new(data)
 }
 #' @export
