@@ -46,6 +46,9 @@ test_that("DataBackendRaster works", {
   # backend = as_data_backend(stack_classif)
   backend$missings(rows = 1:4, cols = "y")
 
+  # data prototyp
+  expect_data_table(backend$data(rows = integer(0), cols = c("x_1", "y")), nrows = 0, ncols = 2)
+
   # data
   # [01] [02] [03] [04]
   # [05] [06] [07] [08]

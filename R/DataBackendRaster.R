@@ -51,7 +51,6 @@ DataBackendRaster = R6Class("DataBackendRaster",
     #' @template param-data
     #'
     initialize = function(data) {
-
       if (inherits(data, "stars")) {
         # we need to go stars -> raster -> terra
         data = terra::rast(as(data, "Raster"))
@@ -90,14 +89,13 @@ DataBackendRaster = R6Class("DataBackendRaster",
     #' @param data_format (`character(1)`)\cr
     #'   Desired data format. Currently only `"data.table"` supported.
     data = function(rows, cols, data_format = "data.table") {
-
       stack = self$stack
       rows = assert_integerish(rows, coerce = TRUE)
       assert_names(cols, type = "unique")
       assert_choice(data_format, self$data_formats)
       cols = terra::intersect(cols, names(self$stack))
 
-      if (isTRUE(all.equal(rows, rows[1]:rows[length(rows)]))) {
+      if (length(rows) && test_integer(rows, sorted = TRUE, unique = TRUE, len = rows[length(rows)] - rows[1] + 1)) {
         # block read (e.g. c(1:10))
         terra::readStart(stack)
         on.exit(terra::readStop(stack))
@@ -213,8 +211,8 @@ DataBackendRaster = R6Class("DataBackendRaster",
       assert_ro_binding(rhs)
       stack = terra::rast(private$.data)
       names(stack) = private$.layer_names
-      imap(private$.categories, function(category, n) {
-        if (nrow(category) > 0) {
+      iwalk(private$.categories, function(category, n) {
+        if (!is.null(category)) {
           terra::setCats(stack, layer = n, value = category)
         }
       })

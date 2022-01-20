@@ -5,11 +5,11 @@
   ],
   "@type": "SoftwareSourceCode",
   "identifier": "mlr3spatial",
-  "description": "Extends the mlr3 ML framework with methods for spatial objects. Data storage and prediction are supported for packages 'terra', 'raster' and 'stars'.",
+  "description": "Extends the 'mlr3' ML framework with methods for spatial objects. Data storage and prediction are supported for packages 'terra', 'raster' and 'stars'.",
   "name": "mlr3spatial: Support for Spatial Objects Within the 'mlr3' Ecosystem",
   "codeRepository": "https://github.com/mlr-org/mlr3spatial",
   "license": "https://spdx.org/licenses/LGPL-3.0",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -349,7 +349,7 @@
     }
   ],
   "readme": "https://github.com/mlr-org/mlr3spatial/blob/main/README.md",
-  "fileSize": "340.409KB",
+  "fileSize": "658.476KB",
   "contIntegration": ["https://github.com/mlr-org/mlr3spatial/actions", "https://codecov.io/github/mlr-org/mlr3spatial?branch=main"],
   "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html#experimental",
   "keywords": [
@@ -362,5 +362,11 @@
   ],
   "relatedLink": "https://mlr3spatial.mlr-org.com",
   "issueTracker": "https://github.com/mlr-org/mlr3spatial/issues",
-  "releaseNotes": "https://github.com/mlr-org/mlr3spatial/blob/master/NEWS.md"
+  "releaseNotes": "https://github.com/mlr-org/mlr3spatial/blob/master/NEWS.md",
+  "provider": {
+    "@id": "https://cran.r-project.org",
+    "@type": "Organization",
+    "name": "Comprehensive R Archive Network (CRAN)",
+    "url": "https://cran.r-project.org"
+  }
 }
