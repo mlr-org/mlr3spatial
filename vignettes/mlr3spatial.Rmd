@@ -99,7 +99,7 @@ Finally, the predictions need to be injected into a stars object again.
 (All of these steps are happening internally in {mlr3spatial}).
 
 ```{r}
-rpart_learner = rpart::rpart(layer.1 ~ ., data = task$data(rows = row_ids))
+rpart_learner = rpart::rpart(band1 ~ ., data = task$data(rows = row_ids))
 stars_stack = as.data.table(split(stack, "band"))
 stars_stack[, c("x", "y", "X1")] = NULL
 colnames(stars_stack) = task$feature_names
