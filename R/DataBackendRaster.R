@@ -111,7 +111,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
         cells = terra::rowColFromCell(stack, rows)
         res = as.data.table(terra::extract(stack, rows))[, ..cols]
       }
-      lg$info(round(terra::free_RAM()/1000))
+      lg$info(round(terra::free_RAM() / 1000))
       res
     },
 
