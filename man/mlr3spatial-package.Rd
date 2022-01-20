@@ -6,7 +6,7 @@
 \alias{mlr3spatial-package}
 \title{mlr3spatial: Support for Spatial Objects Within the 'mlr3' Ecosystem}
 \description{
-Extends the mlr3 ML framework with methods for spatial objects. Data storage and prediction are supported for packages 'terra', 'raster' and 'stars'.
+Extends the 'mlr3' ML framework with methods for spatial objects. Data storage and prediction are supported for packages 'terra', 'raster' and 'stars'.
 }
 \section{Learn mlr3}{
 
@@ -62,7 +62,7 @@ likely be removed in a future version of the package. analysis.
 }
 
 \references{
-Becker M, Schratz P (2021).
+Becker M, Schratz P (2022).
 \emph{mlr3spatial: Support for Spatial Objects Within the 'mlr3' Ecosystem}.
 https://mlr3spatial.mlr-org.com,
 https://github.com/mlr-org/mlr3spatial.
