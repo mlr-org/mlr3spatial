@@ -13,8 +13,8 @@ test_that("DataBackendRaster works", {
   expect_numeric(data$x_1)
   expect_factor(data$y, levels = c("negative", "positive"))
   # non-factor, all rows
-  data = backend$distinct(rows = NULL, cols = c("x_1"))
-  expect_names(names(data), identical.to = c("x_1"))
+  data = backend$distinct(rows = NULL, cols = "x_1")
+  expect_names(names(data), identical.to = "x_1")
   expect_length(data[[names(data)]], 4900)
 
   # nrow
@@ -132,8 +132,8 @@ test_that("DataBackendRaster + raster", {
   # no support for factors when using bricks
   expect_equal(backend$distinct(rows = 1:1000, cols = "y"),
     list("y" = c(1, 0)))
-  data = backend$distinct(rows = 1:5, cols = c("y"))
-  expect_names(names(data), identical.to = c("y"))
+  data = backend$distinct(rows = 1:5, cols = "y")
+  expect_names(names(data), identical.to = "y")
   expect_numeric(data$y)
 
 })
