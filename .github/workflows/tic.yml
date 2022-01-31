@@ -85,12 +85,12 @@ jobs:
       - name: "[Custom block] [Linux] Install spatial libraries"
         if: runner.os == 'Linux'
         run: |
-          sudo apt install ccache libgdal-dev libgeos-dev libproj-dev libudunits2-dev pandoc-citeproc
+          sudo apt install ccache libgdal-dev libgeos-dev libproj-dev libudunits2-dev pandoc-citeproc sqlite3
 
       - name: "[Custom block] [macOS] Install spatial libraries"
         if: runner.os == 'macOS'
         run: |
-          brew install ccache gdal geos proj udunits
+          brew install ccache gdal geos proj udunits sqlite
           brew install xquartz
 
       - name: "[Stage] [Linux] Install required system libs"
@@ -106,13 +106,6 @@ jobs:
       - name: "[Stage] [macOS] Install libgit2"
         if: runner.os == 'macOS'
         run: brew install libgit2
-
-      - name: "[Custom block] [macOS] Install spatial libraries"
-        if: runner.os == 'macOS'
-        run: |
-          rm '/usr/local/bin/gfortran'
-          brew install ccache gdal geos proj udunits
-          brew install xquartz
 
       - name: "[Stage] [macOS] Install system libs for pkgdown"
         if: runner.os == 'macOS' && matrix.config.pkgdown != ''
