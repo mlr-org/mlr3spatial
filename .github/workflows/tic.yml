@@ -5,9 +5,13 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
-    tags:
+    - main
+    - master
   pull_request:
+    branches:
+    - main
+    - master
+    tags:
   # for now, CRON jobs only run on the default branch of the repo (i.e. usually on master)
   schedule:
     # * is a special character in YAML so you have to quote this string
@@ -70,13 +74,13 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date '+%d-%m')"
 
-      # - name: "[Cache] Cache R packages"
-      #   if: runner.os != 'Windows'
-      #   uses: pat-s/always-upload-cache@v2
-      #   with:
-      #     path: ${{ env.R_LIBS_USER }}
-      #     key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{steps.date.outputs.date}}
-      #     restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-${{steps.date.outputs.date}}
+      - name: "[Cache] Cache R packages"
+        if: runner.os != 'Windows'
+        uses: pat-s/always-upload-cache@v2
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{steps.date.outputs.date}}
+          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-${{steps.date.outputs.date}}
 
       - name: "[Custom block] [Linux] Install spatial libraries"
         if: runner.os == 'Linux'
