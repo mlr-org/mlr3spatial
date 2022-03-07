@@ -95,7 +95,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
       assert_choice(data_format, self$data_formats)
       cols = terra::intersect(cols, names(self$stack))
 
-      if (length(rows) && test_integer(rows, sorted = TRUE, unique = TRUE, len = rows[length(rows)] - rows[1] + 1)) {
+      if (length(rows) && test_integer(rows, sorted = TRUE, unique = TRUE, len = max(rows[length(rows)] - rows[1] + 1, 0))) {
         # block read (e.g. c(1:10))
         terra::readStart(stack)
         on.exit(terra::readStop(stack))

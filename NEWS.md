@@ -1,5 +1,6 @@
 # mlr3spatial 0.1.2.9000
 
+- fix: The `$data()` method of `DataBackendRaster` sometimes failed when not adjacent cells were read.
 - refactor: compatibility to `terra` update.
 
 # mlr3spatial 0.1.2
