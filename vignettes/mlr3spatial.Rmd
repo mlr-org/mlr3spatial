@@ -1,6 +1,6 @@
 ---
 title: "Getting started"
-output: 
+output:
   rmarkdown::html_vignette:
     df_print: paged
 vignette: >
@@ -47,7 +47,7 @@ library("mlr3spatial")
 First, the TIFF files is read via `stars::read_stars()` and put into a `DataBackendRaster`.
 The DataBackend is then used to create a regression task with the response being `band1`.
 
-```{r, error=TRUE}
+```{r}
 tif = system.file("tif/L7_ETMs.tif", package = "stars")
 stack = stars::read_stars(tif)
 
