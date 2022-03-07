@@ -6,7 +6,7 @@ stack = rast("demo_50mb.tif")
 
 ## make response a categorical raster
 value = data.table(ID = c(0, 1), y = c("negative", "positive"))
-setCats(stack, layer = "y", value = value)
+set.cats(stack, layer = "y", value = value)
 
 # set task
 backend = as_data_backend(stack)

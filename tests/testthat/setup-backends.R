@@ -3,7 +3,7 @@ set.seed(42)
 # SpatRaster
 stack_classif = demo_stack_spatraster(0.1)
 value = data.table(ID = c(0, 1), y = c("negative", "positive"))
-terra::setCats(stack_classif, layer = "y", value = value)
+terra::set.cats(stack_classif, layer = "y", value = value)
 colnames = names(stack_classif)
 file = tempfile(fileext = ".tif")
 terra::writeRaster(stack_classif, file)

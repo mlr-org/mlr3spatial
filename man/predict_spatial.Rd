@@ -56,7 +56,7 @@ users, \code{plan(future.callr::callr)} might be an alternative.
 \examples{
 stack = demo_stack_spatraster(size = 1)
 value = data.table::data.table(ID = c(0, 1), y = c("negative", "positive"))
-terra::setCats(stack, layer = "y", value = value)
+terra::set.cats(stack, layer = "y", value = value)
 
 # create backend
 backend = as_data_backend(stack)

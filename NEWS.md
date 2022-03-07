@@ -1,3 +1,7 @@
+# mlr3spatial 0.1.2.9000
+
+- refactor: compatibility to `terra` update.
+
 # mlr3spatial 0.1.2
 
 - refactor: stars objects are directly converted to terra objects now.

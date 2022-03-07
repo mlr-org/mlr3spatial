@@ -29,7 +29,7 @@ Imports:
     methods,
     mlr3misc,
     R6 (>= 2.5.0),
-    terra (>= 1.5-12),
+    terra (>= 1.5-21),
     utils
 Suggests:
     bench,

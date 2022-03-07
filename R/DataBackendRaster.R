@@ -213,7 +213,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
       names(stack) = private$.layer_names
       iwalk(private$.categories, function(category, n) {
         if (!is.null(category)) {
-          terra::setCats(stack, layer = n, value = category)
+          terra::set.cats(stack, layer = n, value = category)
         }
       })
       stack

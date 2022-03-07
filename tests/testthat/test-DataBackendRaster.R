@@ -35,7 +35,7 @@ test_that("DataBackendRaster works", {
   stack_classif[] = c(0, 1, NA, 0)
   names(stack_classif) = "y"
   value = data.table(ID = c(0, 1), y = c("negative", "positive"))
-  terra::setCats(stack_classif, layer = "y", value = value)
+  terra::set.cats(stack_classif, layer = "y", value = value)
   # backend = as_data_backend(stack_classif)
   expect_equal(levels(backend$distinct(rows = 1:4, cols = "y")[[1]]), c("negative", "positive"))
 
