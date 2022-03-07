@@ -1,0 +1,24 @@
+old_opts = options(
+  warnPartialMatchArgs = TRUE,
+  warnPartialMatchAttr = TRUE,
+  warnPartialMatchDollar = TRUE
+)
+
+# https://github.com/HenrikBengtsson/Wishlist-for-R/issues/88
+old_opts = lapply(old_opts, function(x) if (is.null(x)) FALSE else x)
+
+# logger
+lg_mlr3 = lgr::get_logger("mlr3")
+old_threshold_mlr3 = lg_mlr3$threshold
+lg_mlr3$set_threshold("warn")
+lg_bbotk = lgr::get_logger("bbotk")
+old_threshold_bbotk = lg_bbotk$threshold
+lg_bbotk$set_threshold("warn")
+lg_mlr3spatial = lgr::get_logger("mlr3spatial")
+old_threshold_mlr3spatial = lg_mlr3spatial$threshold
+lg_mlr3spatial$set_threshold("warn")
+
+# future
+old_plan = future::plan()
+lg$set_threshold("warn")
+future::plan("sequential")

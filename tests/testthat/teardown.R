@@ -1,1 +1,5 @@
-#unlink("*.xml")
+options(old_opts)
+lg_mlr3$set_threshold(old_threshold_mlr3)
+lg_bbotk$set_threshold(old_threshold_bbotk)
+lg_mlr3spatial$set_threshold(old_threshold_mlr3spatial)
+future::plan(old_plan)
