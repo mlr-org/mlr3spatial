@@ -16,8 +16,8 @@ write_raster = function(data) {
   # write values in chunks
   mlr3misc::pmap(list(bs$cells_seq, bs$cells_to_read), function(row, nrows) {
     terra::writeValues(target_raster,
-      data[1:(terra::rowFromCell(target_raster, row) + terra::rowFromCell(target_raster, nrows) - 1),
-        1:terra::nrow(data)], terra::rowFromCell(target_raster, row), terra::rowFromCell(target_raster, nrows))
+      data[seq_len((terra::rowFromCell(target_raster, row)) + terra::rowFromCell(target_raster, nrows) - 1),
+        seq_len(terra::nrow(data))], terra::rowFromCell(target_raster, row), terra::rowFromCell(target_raster, nrows))
   })
   terra::writeStop(target_raster)
   terra::rast(filename)
