@@ -1,14 +1,13 @@
-sf_data = sf::st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
-
 test_that("DataBackendVector construction", {
 
-  b = DataBackendVector$new(sf_data)
+  b = DataBackendVector$new(generate_sf())
   expect_backend(b)
 
-  b = as_data_backend(sf_data)
+  b = as_data_backend(generate_sf())
 
   expect_backend(b)
 
+  sf_data = generate_sf()
   sf_data$NAME[21:30] = NA
   b = as_data_backend(sf_data)
   x = b$missings(b$rownames, c("NAME", "NWBIR79"))
@@ -19,12 +18,12 @@ test_that("DataBackendVector construction", {
 })
 
 test_that("DataBackendVector with 0 rows", {
-  b = as_data_backend(sf_data[integer(), ])
+  b = as_data_backend(generate_sf()[integer(), ])
   expect_backend(b)
 })
 
 test_that("$missing works", {
-
+  sf_data = generate_sf()
   sf_data[c(1, 2), "AREA"] = NA
   b = DataBackendVector$new(sf_data)
 

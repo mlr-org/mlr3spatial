@@ -1,10 +1,10 @@
 test_that("DataBackendRaster works", {
-  backend = DataBackendRaster$new(stack_classif)
+  backend = DataBackendRaster$new(generate_spat_raster())
 
   # head
   data = backend$head(10L)
   expect_data_table(data, nrow = 10L, ncol = 5L)
-  expect_names(names(data), identical.to = colnames)
+  expect_names(names(data), identical.to = c("x_1", "x_2", "x_3", "x_4", "y"))
 
   # distinct
   expect_equal(backend$distinct(rows = NULL, cols = "y"), list(y = c("negative", "positive")))
@@ -82,12 +82,12 @@ test_that("DataBackendRaster works", {
 # stars input ------------------------------------------------------------------
 
 test_that("DataBackendRaster + stars", {
-  backend = as_data_backend(l7data)
+  backend = as_data_backend(generate_stars())
 
   # head
   data = backend$head(10L)
   expect_data_table(data, nrow = 10L, ncol = 6L)
-  expect_names(names(data), identical.to = colnames_stars)
+  expect_names(names(data), identical.to = c("band1", "band2", "band3", "band4", "band5", "band6"))
 
   # distinct
   expect_equal(backend$distinct(rows = 1:10, cols = "band1"),
@@ -101,12 +101,12 @@ test_that("DataBackendRaster + stars", {
 # brick input ------------------------------------------------------------------
 
 test_that("DataBackendRaster + raster", {
-  backend = as_data_backend(stack_brick)
+  backend = as_data_backend(generate_raster_brick())
 
   # head
   data = backend$head(10L)
   expect_data_table(data, nrow = 10L, ncol = 5L)
-  expect_names(names(data), identical.to = colnames)
+  expect_names(names(data), identical.to = c("x_1", "x_2", "x_3", "x_4", "y"))
 
   # distinct
   # no support for factors when using bricks
@@ -121,7 +121,7 @@ test_that("DataBackendRaster + raster", {
 # raster input -----------------------------------------------------------------
 
 test_that("DataBackendRaster + raster", {
-  backend = as_data_backend(stack_brick[[5]])
+  backend = as_data_backend(generate_raster_brick()[[5]])
 
   # head
   data = backend$head(10L)
