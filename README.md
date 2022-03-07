@@ -3,6 +3,7 @@
 <!-- badges: start -->
 
 [![tic](https://github.com/mlr-org/mlr3spatial/workflows/tic/badge.svg?branch=main)](https://github.com/mlr-org/mlr3spatial/actions)
+[![CRAN status](https://www.r-pkg.org/badges/version/mlr3spatial)](https://CRAN.R-project.org/package=mlr3spatial)
 [![Coverage status](https://codecov.io/gh/mlr-org/mlr3spatial/branch/main/graph/badge.svg)](https://codecov.io/github/mlr-org/mlr3spatial?branch=main)
 [![CodeFactor](https://www.codefactor.io/repository/github/mlr-org/mlr3spatial/badge)](https://www.codefactor.io/repository/github/mlr-org/mlr3spatial)
 [![Lifecycle:experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
@@ -11,7 +12,7 @@
 ## Package scope
 
 The handling of (large) spatial objects ([{terra}](https://CRAN.R-project.org/package=terra), [{raster}](https://CRAN.R-project.org/package=raster), [{stars}](https://CRAN.R-project.org/package=stars), [{sf}](https://CRAN.R-project.org/package=sf) in ML is an error-prone and time consuming task.
-Users often need to extract the "raw" values from the spatial objects (detaching the spatial metadata), train a model, predict and then recreate the spatial object again.  
+Users often need to extract the "raw" values from the spatial objects (detaching the spatial metadata), train a model, predict and then recreate the spatial object again.
 In addition, predictions on large raster files (i.e. multiple GB in size) often leads to memory issues on consumer grade machines.
 {mlr3spatial} tries to help here by
 
