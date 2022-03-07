@@ -15,8 +15,8 @@ test_that("DataBackendRaster works", {
   # non-factor, all rows
   data = backend$distinct(rows = NULL, cols = "x_1")
   expect_names(names(data), identical.to = "x_1")
-  expect_gt(data[[names(data)]], 4898)
-  expect_lte(data[[names(data)]], 4900)
+  expect_gt(length(data[[names(data)]]), 4898)
+  expect_lte(length(data[[names(data)]]), 4900)
 
   # nrow
   expect_equal(backend$nrow, 4900)
