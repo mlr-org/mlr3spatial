@@ -35,7 +35,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">mlr3spatial</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.1</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -106,7 +106,8 @@
 
 
 
-<script src="benchmark_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+
+<div class="row">
   <main id="main"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Benchmarking parallel predictions</h1>
             
@@ -145,7 +146,7 @@
 <code class="sourceCode R"><span class="co"># SpatRaster demo stack</span>
 <span class="va">stack_terra</span> <span class="op">=</span> <span class="fu"><a href="../reference/demo_stack_spatraster.html">demo_stack_spatraster</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span>
 <span class="va">value</span> <span class="op">=</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"negative"</span>, <span class="st">"positive"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/factors.html" class="external-link">setCats</a></span><span class="op">(</span><span class="va">stack_terra</span>, layer <span class="op">=</span> <span class="st">"y"</span>, value <span class="op">=</span> <span class="va">value</span><span class="op">)</span>
+<span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/inplace.html" class="external-link">set.cats</a></span><span class="op">(</span><span class="va">stack_terra</span>, layer <span class="op">=</span> <span class="st">"y"</span>, value <span class="op">=</span> <span class="va">value</span><span class="op">)</span>
 <span class="va">colnames</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">stack_terra</span><span class="op">)</span>
 <span class="va">file_terra</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"terra"</span>, fileext <span class="op">=</span> <span class="st">".tif"</span><span class="op">)</span>
 <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/writeRaster.html" class="external-link">writeRaster</a></span><span class="op">(</span><span class="va">stack_terra</span>, <span class="va">file_terra</span><span class="op">)</span>
@@ -249,7 +250,7 @@
 <code class="sourceCode R"><span class="co"># SpatRaster demo stack</span>
 <span class="va">stack_terra</span> <span class="op">=</span> <span class="fu"><a href="../reference/demo_stack_spatraster.html">demo_stack_spatraster</a></span><span class="op">(</span><span class="fl">500</span><span class="op">)</span>
 <span class="va">value</span> <span class="op">=</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"negative"</span>, <span class="st">"positive"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/factors.html" class="external-link">setCats</a></span><span class="op">(</span><span class="va">stack_terra</span>, layer <span class="op">=</span> <span class="st">"y"</span>, value <span class="op">=</span> <span class="va">value</span><span class="op">)</span>
+<span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/inplace.html" class="external-link">set.cats</a></span><span class="op">(</span><span class="va">stack_terra</span>, layer <span class="op">=</span> <span class="st">"y"</span>, value <span class="op">=</span> <span class="va">value</span><span class="op">)</span>
 <span class="va">colnames</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">stack_terra</span><span class="op">)</span>
 <span class="va">file_terra</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"terra"</span>, fileext <span class="op">=</span> <span class="st">".tif"</span><span class="op">)</span>
 <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/writeRaster.html" class="external-link">writeRaster</a></span><span class="op">(</span><span class="va">stack_terra</span>, <span class="va">file_terra</span><span class="op">)</span>

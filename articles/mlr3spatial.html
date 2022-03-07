@@ -35,7 +35,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">mlr3spatial</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.1</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -106,7 +106,8 @@
 
 
 
-<script src="mlr3spatial_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+
+<div class="row">
   <main id="main"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Getting started</h1>
             
@@ -139,20 +140,20 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://mlr3.mlr-org.com" class="external-link">"mlr3"</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://mlr3spatial.mlr-org.com">"mlr3spatial"</a></span><span class="op">)</span></code></pre></div>
-<p>First, the TIFF files is read via <code><a href="https://r-spatial.github.io/stars/reference/read_stars.html" class="external-link">stars::read_stars()</a></code> and put into a <code>DataBackendRaster</code>. The DataBackend is then used to create a regression task with the response being <code>layer.1</code>.</p>
+<p>First, the TIFF files is read via <code><a href="https://r-spatial.github.io/stars/reference/read_stars.html" class="external-link">stars::read_stars()</a></code> and put into a <code>DataBackendRaster</code>. The DataBackend is then used to create a regression task with the response being <code>band1</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tif</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"tif/L7_ETMs.tif"</span>, package <span class="op">=</span> <span class="st">"stars"</span><span class="op">)</span>
 <span class="va">stack</span> <span class="op">=</span> <span class="fu">stars</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/read_stars.html" class="external-link">read_stars</a></span><span class="op">(</span><span class="va">tif</span><span class="op">)</span>
 
 <span class="va">backend</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_data_backend.html" class="external-link">as_data_backend</a></span><span class="op">(</span><span class="va">stack</span><span class="op">)</span>
-<span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html" class="external-link">as_task_regr</a></span><span class="op">(</span><span class="va">backend</span>, target <span class="op">=</span> <span class="st">"layer.1"</span><span class="op">)</span>
+<span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html" class="external-link">as_task_regr</a></span><span class="op">(</span><span class="va">backend</span>, target <span class="op">=</span> <span class="st">"band1"</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">task</span><span class="op">)</span>
 <span class="co">#&gt; &lt;TaskRegr:backend&gt; (122848 x 6)</span>
-<span class="co">#&gt; * Target: layer.1</span>
+<span class="co">#&gt; * Target: band1</span>
 <span class="co">#&gt; * Properties: -</span>
 <span class="co">#&gt; * Features (5):</span>
-<span class="co">#&gt;   - dbl (5): layer.2, layer.3, layer.4, layer.5, layer.6</span></code></pre></div>
+<span class="co">#&gt;   - dbl (5): band2, band3, band4, band5, band6</span></code></pre></div>
 <p>For large raster files with millions of values it helps to predict in parallel. To enable this, set <code>learner$parallel_predict = TRUE</code> and initiate a parallel plan via {future}. Since this is only an example, parallelization is not enabled here. Here we will use a simple regression tree as an example learner. In practice you might want to use a different learner - you can find an overview of available learners <a href="https://mlr3extralearners.mlr-org.com/articles/learners/list_learners.html" class="external-link">here</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">learner</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"regr.rpart"</span><span class="op">)</span>
@@ -161,7 +162,7 @@
 <span class="va">learner</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span>, row_ids <span class="op">=</span> <span class="va">row_ids</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">learner</span><span class="op">)</span>
-<span class="co">#&gt; &lt;LearnerRegrRpart:regr.rpart&gt;</span>
+<span class="co">#&gt; &lt;LearnerRegrRpart:regr.rpart&gt;: Regression Tree</span>
 <span class="co">#&gt; * Model: rpart</span>
 <span class="co">#&gt; * Parameters: xval=0</span>
 <span class="co">#&gt; * Packages: mlr3, rpart</span>
@@ -197,7 +198,7 @@
 <p>Since the layers are merged in a {stars} object, one first need to split them up and convert them into a regular data.table. Next, the column names need to be adjusted to match the ones of the training data. Afterwards, the <code>data.frame</code> generic of <code><a href="https://rdrr.io/pkg/raster/man/predict.html" class="external-link">predict()</a></code> can be called. Finally, the predictions need to be injected into a stars object again.</p>
 <p>(All of these steps are happening internally in {mlr3spatial}).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rpart_learner</span> <span class="op">=</span> <span class="fu">rpart</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html" class="external-link">rpart</a></span><span class="op">(</span><span class="va">layer.1</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">task</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span>rows <span class="op">=</span> <span class="va">row_ids</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">rpart_learner</span> <span class="op">=</span> <span class="fu">rpart</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html" class="external-link">rpart</a></span><span class="op">(</span><span class="va">band1</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">task</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span>rows <span class="op">=</span> <span class="va">row_ids</span><span class="op">)</span><span class="op">)</span>
 <span class="va">stars_stack</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/merge.html" class="external-link">split</a></span><span class="op">(</span><span class="va">stack</span>, <span class="st">"band"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">stars_stack</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"X1"</span><span class="op">)</span><span class="op">]</span> <span class="op">=</span> <span class="cn">NULL</span>
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">stars_stack</span><span class="op">)</span> <span class="op">=</span> <span class="va">task</span><span class="op">$</span><span class="va">feature_names</span>

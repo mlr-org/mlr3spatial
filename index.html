@@ -39,7 +39,7 @@
     
     <a class="navbar-brand me-2" href="index.html">mlr3spatial</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.1</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -133,11 +133,21 @@ In addition, predictions on large raster files (i.e. multiple GB in size) often
 <div class="section level2">
 <h2 id="faq">FAQ<a class="anchor" aria-label="anchor" href="#faq"></a>
 </h2>
-<details><summary>Do I need to use <code>TaskClassifST</code>/<code>TaskRegrST</code> with {mlr3spatial}?</summary><br> No, you can use <code>TaskClassif</code> and <code>TaskRegr</code>. However, their <code>*ST</code> equivalents will also work. When we introduced the <code>*ST</code> tasks, we had no support for spatial backends yet and there was a need to store the spatial information somewhere.
-</details><details><summary>Why is {mlr3spatial} faster when predicting compared to the native spatial packages?</summary><br> {mlr3spatial} makes use of the parallel prediction heuristic within {mlr3}. This one makes use of the {future} and {data.table} packages for parallelization and data handling. If {mlr3spatial} is faster, than this way seems to be more efficient than the parallelization built into the respective other packages.
-</details><details><summary>Can I make use of parallel predictions during nested resampling/tuning?</summary><br> Yes, {mlr3} supports (nested) parallelization via the {future} framework. Watch out for required resources when having multiple parallelized layers.
-</details><details><summary>Will {mlr3spatial} support spatial learners?</summary><br> Eventually. It is not yet clear whether these would live in {mlr3extralearners} or in {mlr3spatial}. So far there are none yet.
-</details><details><summary>Why are there two packages, {mlr3spatial} and {mlr3spatiotempcv}?</summary><br> {mlr3spatiotempcv} is solely devoted to resampling techniques. There are quite a few and keeping packages small is one of the development philosophies of the mlr3 framework. Also back in the days when {mlr3spatiotempcv} was developed it was not yet clear how we want to structure additional spatial components such as prediction support for spatial classes and so on.
+<details><summary>
+Do I need to use <code>TaskClassifST</code>/<code>TaskRegrST</code> with {mlr3spatial}?
+</summary><br> No, you can use <code>TaskClassif</code> and <code>TaskRegr</code>. However, their <code>*ST</code> equivalents will also work. When we introduced the <code>*ST</code> tasks, we had no support for spatial backends yet and there was a need to store the spatial information somewhere.
+</details><details><summary>
+Why is {mlr3spatial} faster when predicting compared to the native spatial packages?
+</summary><br> {mlr3spatial} makes use of the parallel prediction heuristic within {mlr3}. This one makes use of the {future} and {data.table} packages for parallelization and data handling. If {mlr3spatial} is faster, than this way seems to be more efficient than the parallelization built into the respective other packages.
+</details><details><summary>
+Can I make use of parallel predictions during nested resampling/tuning?
+</summary><br> Yes, {mlr3} supports (nested) parallelization via the {future} framework. Watch out for required resources when having multiple parallelized layers.
+</details><details><summary>
+Will {mlr3spatial} support spatial learners?
+</summary><br> Eventually. It is not yet clear whether these would live in {mlr3extralearners} or in {mlr3spatial}. So far there are none yet.
+</details><details><summary>
+Why are there two packages, {mlr3spatial} and {mlr3spatiotempcv}?
+</summary><br> {mlr3spatiotempcv} is solely devoted to resampling techniques. There are quite a few and keeping packages small is one of the development philosophies of the mlr3 framework. Also back in the days when {mlr3spatiotempcv} was developed it was not yet clear how we want to structure additional spatial components such as prediction support for spatial classes and so on.
 </details>
 </div>
 <div class="section level2">
