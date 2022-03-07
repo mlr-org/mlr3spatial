@@ -47,7 +47,6 @@ Suggests:
     rgdal,
     rmarkdown,
     rpart,
-
     stars (>= 0.5-5),
     testthat (>= 3.0.0)
 VignetteBuilder:
