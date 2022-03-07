@@ -100,8 +100,8 @@ jobs:
       # for some strange Windows reason this step and the next one need to be decoupled
       - name: "[Stage] Prepare"
         run: |
-          Rscript -e "if (!requireNamespace('remotes')) install.packages('remotes', type = 'source')"
-          Rscript -e "if (!requireNamespace('curl')) install.packages('curl', type = 'source')"
+          Rscript -e "install.packages('remotes', type = 'source')"
+          Rscript -e "install.packages('curl', type = 'source')"
 
       - name: "[Stage] [macOS] Install libgit2"
         if: runner.os == 'macOS'
