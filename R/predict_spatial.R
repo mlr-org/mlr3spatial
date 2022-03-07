@@ -55,7 +55,7 @@ predict_spatial = function(task, learner, chunksize = 200L, format = "terra",
     if (is.null(filename)) {
       filename = tempfile(fileext = ".tif")
     }
-    target_raster = terra::rast(terra::ext(stack), res = terra::res(stack), crs = terra::crs(stack))
+    target_raster = terra::rast(terra::ext(stack), resolution = terra::res(stack), crs = terra::crs(stack))
     terra::writeStart(target_raster, filename = filename, overwrite = TRUE, datatype = "FLT8S")
 
     lg$info("Start raster prediction")

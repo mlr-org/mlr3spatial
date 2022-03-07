@@ -3,7 +3,7 @@ test_that("DataBackendRaster works", {
 
   # head
   data = backend$head(10L)
-  expect_data_table(data, nrow = 10L, ncol = 5L)
+  expect_data_table(data, nrows = 10L, ncols = 5L)
   expect_names(names(data), identical.to = c("x_1", "x_2", "x_3", "x_4", "y"))
 
   # distinct
@@ -24,7 +24,7 @@ test_that("DataBackendRaster works", {
   # ncol
   expect_equal(backend$ncol, 6)
 
-  stack_classif = terra::rast(nrow = 3, ncol = 4)
+  stack_classif = terra::rast(nrows = 3, ncols = 4)
   stack_classif[] = c(1:11, NA)
   names(stack_classif) = "y"
   # backend = as_data_backend(stack_classif)
@@ -32,7 +32,7 @@ test_that("DataBackendRaster works", {
     list(y = factor("negative", levels = c("negative", "positive"))))
 
   # terra does not add NA as a factor level
-  stack_classif = terra::rast(nrow = 2, ncol = 2)
+  stack_classif = terra::rast(nrows = 2, ncols = 2)
   stack_classif[] = c(0, 1, NA, 0)
   names(stack_classif) = "y"
   value = data.table(ID = c(0, 1), y = c("negative", "positive"))
@@ -41,7 +41,7 @@ test_that("DataBackendRaster works", {
   expect_equal(levels(backend$distinct(rows = 1:4, cols = "y")[[1]]), c("negative", "positive"))
 
   # missings
-  stack_classif = terra::rast(nrow = 2, ncol = 2)
+  stack_classif = terra::rast(nrows = 2, ncols = 2)
   stack_classif[] = c(0, 1, NA, 0)
   names(stack_classif) = "y"
   # backend = as_data_backend(stack_classif)
@@ -54,7 +54,7 @@ test_that("DataBackendRaster works", {
   # [01] [02] [03] [04]
   # [05] [06] [07] [08]
   # [09] [10] [11] [12]
-  stack_classif = terra::rast(nrow = 3, ncol = 4)
+  stack_classif = terra::rast(nrows = 3, ncols = 4)
   stack_classif[] = 1:12
   names(stack_classif) = "y"
   backend = DataBackendRaster$new(stack_classif)
@@ -87,7 +87,7 @@ test_that("DataBackendRaster + stars", {
 
   # head
   data = backend$head(10L)
-  expect_data_table(data, nrow = 10L, ncol = 6L)
+  expect_data_table(data, nrows = 10L, ncols = 6L)
   expect_names(names(data), identical.to = c("band1", "band2", "band3", "band4", "band5", "band6"))
 
   # distinct
@@ -106,7 +106,7 @@ test_that("DataBackendRaster + raster", {
 
   # head
   data = backend$head(10L)
-  expect_data_table(data, nrow = 10L, ncol = 5L)
+  expect_data_table(data, nrows = 10L, ncols = 5L)
   expect_names(names(data), identical.to = c("x_1", "x_2", "x_3", "x_4", "y"))
 
   # distinct
@@ -126,7 +126,7 @@ test_that("DataBackendRaster + raster", {
 
   # head
   data = backend$head(10L)
-  expect_data_table(data, nrow = 10L, ncol = 1L)
+  expect_data_table(data, nrows = 10L, ncols = 1L)
   expect_names(names(data), identical.to = "y")
 
   # distinct
