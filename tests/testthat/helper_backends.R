@@ -32,21 +32,21 @@ generate_sf = function() {
 # backends ----------------------------------------------------------------------
 # raster
 generate_raster_backend = function() {
-    DataBackendRaster$new(generate_spat_raster())
+  DataBackendRaster$new(generate_spat_raster())
 }
 
 # vector
 generate_vector_backend = function() {
-    as_data_backend(generate_sf())
+  as_data_backend(generate_sf())
 }
 
 # tasks ------------------------------------------------------------------------
 # raster
 generate_raster_task = function() {
-    as_task_classif(generate_raster_backend(), target = "y", positive = "positive")
+  as_task_classif(generate_raster_backend(), target = "y", positive = "positive")
 }
 
 # vector
 generate_vector_task = function() {
-    as_task_regr(generate_vector_backend(), target = "PERIMETER")
+  as_task_regr(generate_vector_backend(), target = "PERIMETER")
 }
