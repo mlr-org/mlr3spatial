@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   benchmark: benchmark.html
   mlr3spatial: mlr3spatial.html
-last_built: 2022-03-28T05:01Z
+last_built: 2022-03-29T04:53Z
 urls:
   reference: https://mlr3spatial.mlr-org.com/reference
   article: https://mlr3spatial.mlr-org.com/articles
