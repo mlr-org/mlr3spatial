@@ -8,18 +8,19 @@ repos:
         args: [--style_pkg=styler.mlr, --style_fun=mlr_style]
         additional_dependencies:
         - mlr-org/styler.mlr
-    -   id: roxygenize
-        # roxygen requires loading pkg -> add dependencies from DESCRIPTION
-        additional_dependencies:
-        -    mlr3
-        -    checkmate
-        -    data.table
-        -    lgr
-        -    methods
-        -    mlr3misc
-        -    R6
-        -    terra
-        -    utils
+    # -   id: roxygenize
+    #     # roxygen requires loading pkg -> add dependencies from DESCRIPTION
+    #     additional_dependencies:
+    #     -    mlr3
+    #     -    checkmate
+    #     -    data.table
+    #     -    lgr
+    #     -    methods
+    #     -    mlr3misc
+    #     -    R6
+    #     -    terra
+    #     -    utils
+    #     - stars
     -   id: parsable-R
     -   id: no-browser-statement
     -   id: readme-rmd-rendered

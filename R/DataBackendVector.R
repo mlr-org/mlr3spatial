@@ -188,19 +188,6 @@ DataBackendVector = R6::R6Class("DataBackendVector",
   )
 )
 
-#' @title Coerce to DataBackendVector
-#'
-#' @description
-#' Wraps a [DataBackend] around spatial objects.
-#' Currently this is only a synonym for `DataBackendVector$new()` and does not
-#' support coercing from other backends.
-#'
-#' @template param-data
-#' @template param-primary-key
-#' @param ... (`any`)\cr
-#'   Not used.
-#'
-#' @return [DataBackend].
 #' @rdname as_data_backend
 #'
 #' @export

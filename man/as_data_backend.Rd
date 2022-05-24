@@ -6,7 +6,7 @@
 \alias{as_data_backend.RasterBrick}
 \alias{as_data_backend.Raster}
 \alias{as_data_backend.sf}
-\title{Coerce to DataBackendRaster}
+\title{Coerce to spatial DataBackend}
 \usage{
 \method{as_data_backend}{stars}(data, primary_key = NULL, ...)
 
@@ -35,15 +35,9 @@ Not used.}
 }
 \value{
 \link{DataBackend}.
-
-\link{DataBackend}.
 }
 \description{
 Wraps a \link{DataBackend} around spatial objects.
-Currently this is only a synonym for \code{DataBackendRaster$new()} and does not
-support coercing from other backends.
-
-Wraps a \link{DataBackend} around spatial objects.
-Currently this is only a synonym for \code{DataBackendVector$new()} and does not
-support coercing from other backends.
+Currently these S3 methods are only alternative ways for writing \code{DataBackendRaster$new()} or \code{DataBackendVector$new()}.
+They do not support coercing from other backends yet.
 }
