@@ -9,10 +9,10 @@ vignette: >
 
 
 
-This benchmark was run on a MacBook Pro 2020 with the following specs
+This benchmark was run on a MacBook Pro 2021 (arm64) with the following specs
 
-- Intel i7-1068NG7 (8) @ 2.30GHz
-- 32 GB DDR4 RAM
+- M1 Pro
+- 32 GB RAM
 
 Note that the differences between the parallel and sequential timings will increase for larger objects as the overhead for starting the parallel workers and collecting the results will decrease.
 
@@ -27,7 +27,7 @@ library(bench)
 library(stars)
 #> Loading required package: abind
 #> Loading required package: sf
-#> Linking to GEOS 3.9.1, GDAL 3.3.1, PROJ 8.1.0
+#> Linking to GEOS 3.9.1, GDAL 3.4.2, PROJ 8.2.1; sf_use_s2() is TRUE
 library(rpart)
 ```
 
@@ -61,7 +61,7 @@ task_terra = as_task_regr(backend_terra, target = "x_1")
 stack_raster = raster::brick(file_raster)
 names(stack_raster) = colnames_raster
 backend_raster = DataBackendRaster$new(stack_raster)
-#> Warning in wkt(from): no wkt comment
+#> Warning in raster::wkt(from): no wkt comment
 task_raster = as_task_regr(backend_raster, target = "x_1")
 
 # Train learners
@@ -107,14 +107,6 @@ bm = bench::mark(
   check = FALSE, filter_gc = FALSE, min_iterations = 3,
   max_iterations = 3, memory = FALSE)
 #> Loading required package: sp
-#> 
-#> Attaching package: 'raster'
-#> The following object is masked from 'package:future':
-#> 
-#>     values
-#> The following object is masked from 'package:mlr3':
-#> 
-#>     resample
 
 bm$`itr/sec` = NULL
 bm$result = NULL
@@ -126,10 +118,10 @@ print(bm)
 #> # A tibble: 4 × 8
 #>   expression                  min   median n_itr  n_gc total_time time           gc              
 #>   <bch:expr>             <bch:tm> <bch:tm> <int> <dbl>   <bch:tm> <list>         <list>          
-#> 1 01-mlr3-terra-4-cores     2.44s    2.49s     3    35      7.45s <bench_tm [3]> <tibble [3 × 3]>
-#> 2 02-terra-4-cores         17.16s   17.22s     3    26      52.7s <bench_tm [3]> <tibble [3 × 3]>
-#> 3 03-mlr3-raster-4-cores    3.25s     3.5s     3    34     10.42s <bench_tm [3]> <tibble [3 × 3]>
-#> 4 04-raster-4-cores          8.3s    8.74s     3     1     25.94s <bench_tm [3]> <tibble [3 × 3]>
+#> 1 01-mlr3-terra-4-cores  852.65ms 915.91ms     3    22      2.77s <bench_tm [3]> <tibble [3 × 3]>
+#> 2 02-terra-4-cores          9.54s     9.7s     3    34        29s <bench_tm [3]> <tibble [3 × 3]>
+#> 3 03-mlr3-raster-4-cores    1.72s     1.8s     3    28       5.5s <bench_tm [3]> <tibble [3 × 3]>
+#> 4 04-raster-4-cores         3.76s    3.79s     3     1     11.41s <bench_tm [3]> <tibble [3 × 3]>
 ```
 
 
@@ -137,7 +129,7 @@ print(bm)
 library(ggplot2)
 autoplot(bm, type = "ridge")
 #> Loading required namespace: tidyr
-#> Picking joint bandwidth of 0.00863
+#> Picking joint bandwidth of 0.0103
 ```
 
 ![](./plot-benchmark-small-1.png)
@@ -175,7 +167,7 @@ task_terra = as_task_regr(backend_terra, target = "x_1")
 stack_raster = raster::brick(file_raster)
 names(stack_raster) = colnames_raster
 backend_raster = DataBackendRaster$new(stack_raster)
-#> Warning in wkt(from): no wkt comment
+#> Warning in raster::wkt(from): no wkt comment
 task_raster = as_task_regr(backend_raster, target = "x_1")
 
 # Train learners
@@ -231,17 +223,17 @@ print(bm)
 #> # A tibble: 4 × 8
 #>   expression                  min   median n_itr  n_gc total_time time           gc              
 #>   <bch:expr>             <bch:tm> <bch:tm> <int> <dbl>   <bch:tm> <list>         <list>          
-#> 1 01-mlr3-terra-4-cores    20.88s   21.55s     3   170      1.11m <bench_tm [3]> <tibble [3 × 3]>
-#> 2 02-terra-4-cores          1.44m    1.45m     3    27      4.37m <bench_tm [3]> <tibble [3 × 3]>
-#> 3 03-mlr3-raster-4-cores    30.5s   30.86s     3    38      1.62m <bench_tm [3]> <tibble [3 × 3]>
-#> 4 04-raster-4-cores         24.4s    28.1s     3     1      1.35m <bench_tm [3]> <tibble [3 × 3]>
+#> 1 01-mlr3-terra-4-cores    11.93s   12.01s     3   167     37.23s <bench_tm [3]> <tibble [3 × 3]>
+#> 2 02-terra-4-cores         41.14s   42.54s     3    32      2.52m <bench_tm [3]> <tibble [3 × 3]>
+#> 3 03-mlr3-raster-4-cores   15.81s   16.09s     3    31     48.85s <bench_tm [3]> <tibble [3 × 3]>
+#> 4 04-raster-4-cores         9.46s    9.85s     3     0     29.36s <bench_tm [3]> <tibble [3 × 3]>
 ```
 
 
 ```r
 library(ggplot2)
 autoplot(bm, type = "ridge")
-#> Picking joint bandwidth of 0.0143
+#> Picking joint bandwidth of 0.0215
 ```
 
 ![](./plot-benchmark-large-1.png)
