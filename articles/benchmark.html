@@ -118,10 +118,10 @@
 
     
     
-<p>This benchmark was run on a MacBook Pro 2020 with the following specs</p>
+<p>This benchmark was run on a MacBook Pro 2021 (arm64) with the following specs</p>
 <ul>
-<li>Intel i7-1068NG7 (8) @ 2.30GHz</li>
-<li>32 GB DDR4 RAM</li>
+<li>M1 Pro</li>
+<li>32 GB RAM</li>
 </ul>
 <p>Note that the differences between the parallel and sequential timings will increase for larger objects as the overhead for starting the parallel workers and collecting the results will decrease.</p>
 <p>It is not fully clear why the parallel approach of the {terra} package is slow than its sequential counterpart but it might relate to the single-core performance of the machine the benchmark was run on in combination with the overhead associated with starting the parallel cluster the way it is done in the {terra} package.</p>
@@ -133,7 +133,7 @@
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/stars/" class="external-link">stars</a></span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: abind</span>
 <span class="co">#&gt; Loading required package: sf</span>
-<span class="co">#&gt; Linking to GEOS 3.9.1, GDAL 3.3.1, PROJ 8.1.0</span>
+<span class="co">#&gt; Linking to GEOS 3.9.1, GDAL 3.4.2, PROJ 8.2.1; sf_use_s2() is TRUE</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bethatkinson/rpart" class="external-link">rpart</a></span><span class="op">)</span></code></pre></div>
 <div class="section level2">
 <h2 id="small-files">Small files<a class="anchor" aria-label="anchor" href="#small-files"></a>
@@ -166,7 +166,7 @@
 <span class="va">stack_raster</span> <span class="op">=</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/brick.html" class="external-link">brick</a></span><span class="op">(</span><span class="va">file_raster</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">stack_raster</span><span class="op">)</span> <span class="op">=</span> <span class="va">colnames_raster</span>
 <span class="va">backend_raster</span> <span class="op">=</span> <span class="va"><a href="../reference/DataBackendRaster.html">DataBackendRaster</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">stack_raster</span><span class="op">)</span>
-<span class="co">#&gt; Warning in wkt(from): no wkt comment</span>
+<span class="co">#&gt; Warning in raster::wkt(from): no wkt comment</span>
 <span class="va">task_raster</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html" class="external-link">as_task_regr</a></span><span class="op">(</span><span class="va">backend_raster</span>, target <span class="op">=</span> <span class="st">"x_1"</span><span class="op">)</span>
 
 <span class="co"># Train learners</span>
@@ -209,14 +209,6 @@
   check <span class="op">=</span> <span class="cn">FALSE</span>, filter_gc <span class="op">=</span> <span class="cn">FALSE</span>, min_iterations <span class="op">=</span> <span class="fl">3</span>,
   max_iterations <span class="op">=</span> <span class="fl">3</span>, memory <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: sp</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'raster'</span>
-<span class="co">#&gt; The following object is masked from 'package:future':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     values</span>
-<span class="co">#&gt; The following object is masked from 'package:mlr3':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     resample</span>
 
 <span class="va">bm</span><span class="op">$</span><span class="va">`itr/sec`</span> <span class="op">=</span> <span class="cn">NULL</span>
 <span class="va">bm</span><span class="op">$</span><span class="va">result</span> <span class="op">=</span> <span class="cn">NULL</span>
@@ -228,15 +220,15 @@
 <span class="co">#&gt; # A tibble: 4 × 8</span>
 <span class="co">#&gt;   expression                  min   median n_itr  n_gc total_time time           gc              </span>
 <span class="co">#&gt;   &lt;bch:expr&gt;             &lt;bch:tm&gt; &lt;bch:tm&gt; &lt;int&gt; &lt;dbl&gt;   &lt;bch:tm&gt; &lt;list&gt;         &lt;list&gt;          </span>
-<span class="co">#&gt; 1 01-mlr3-terra-4-cores     2.44s    2.49s     3    35      7.45s &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
-<span class="co">#&gt; 2 02-terra-4-cores         17.16s   17.22s     3    26      52.7s &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
-<span class="co">#&gt; 3 03-mlr3-raster-4-cores    3.25s     3.5s     3    34     10.42s &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
-<span class="co">#&gt; 4 04-raster-4-cores          8.3s    8.74s     3     1     25.94s &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span></code></pre></div>
+<span class="co">#&gt; 1 01-mlr3-terra-4-cores  852.65ms 915.91ms     3    22      2.77s &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
+<span class="co">#&gt; 2 02-terra-4-cores          9.54s     9.7s     3    34        29s &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
+<span class="co">#&gt; 3 03-mlr3-raster-4-cores    1.72s     1.8s     3    28       5.5s &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
+<span class="co">#&gt; 4 04-raster-4-cores         3.76s    3.79s     3     1     11.41s &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
 <span class="fu">autoplot</span><span class="op">(</span><span class="va">bm</span>, type <span class="op">=</span> <span class="st">"ridge"</span><span class="op">)</span>
 <span class="co">#&gt; Loading required namespace: tidyr</span>
-<span class="co">#&gt; Picking joint bandwidth of 0.00863</span></code></pre></div>
+<span class="co">#&gt; Picking joint bandwidth of 0.0103</span></code></pre></div>
 <p><img src="plot-benchmark-small-1.png"></p>
 </div>
 <div class="section level2">
@@ -270,7 +262,7 @@
 <span class="va">stack_raster</span> <span class="op">=</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/brick.html" class="external-link">brick</a></span><span class="op">(</span><span class="va">file_raster</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">stack_raster</span><span class="op">)</span> <span class="op">=</span> <span class="va">colnames_raster</span>
 <span class="va">backend_raster</span> <span class="op">=</span> <span class="va"><a href="../reference/DataBackendRaster.html">DataBackendRaster</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">stack_raster</span><span class="op">)</span>
-<span class="co">#&gt; Warning in wkt(from): no wkt comment</span>
+<span class="co">#&gt; Warning in raster::wkt(from): no wkt comment</span>
 <span class="va">task_raster</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html" class="external-link">as_task_regr</a></span><span class="op">(</span><span class="va">backend_raster</span>, target <span class="op">=</span> <span class="st">"x_1"</span><span class="op">)</span>
 
 <span class="co"># Train learners</span>
@@ -323,14 +315,14 @@
 <span class="co">#&gt; # A tibble: 4 × 8</span>
 <span class="co">#&gt;   expression                  min   median n_itr  n_gc total_time time           gc              </span>
 <span class="co">#&gt;   &lt;bch:expr&gt;             &lt;bch:tm&gt; &lt;bch:tm&gt; &lt;int&gt; &lt;dbl&gt;   &lt;bch:tm&gt; &lt;list&gt;         &lt;list&gt;          </span>
-<span class="co">#&gt; 1 01-mlr3-terra-4-cores    20.88s   21.55s     3   170      1.11m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
-<span class="co">#&gt; 2 02-terra-4-cores          1.44m    1.45m     3    27      4.37m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
-<span class="co">#&gt; 3 03-mlr3-raster-4-cores    30.5s   30.86s     3    38      1.62m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
-<span class="co">#&gt; 4 04-raster-4-cores         24.4s    28.1s     3     1      1.35m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span></code></pre></div>
+<span class="co">#&gt; 1 01-mlr3-terra-4-cores    11.93s   12.01s     3   167     37.23s &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
+<span class="co">#&gt; 2 02-terra-4-cores         41.14s   42.54s     3    32      2.52m &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
+<span class="co">#&gt; 3 03-mlr3-raster-4-cores   15.81s   16.09s     3    31     48.85s &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span>
+<span class="co">#&gt; 4 04-raster-4-cores         9.46s    9.85s     3     0     29.36s &lt;bench_tm [3]&gt; &lt;tibble [3 × 3]&gt;</span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
 <span class="fu">autoplot</span><span class="op">(</span><span class="va">bm</span>, type <span class="op">=</span> <span class="st">"ridge"</span><span class="op">)</span>
-<span class="co">#&gt; Picking joint bandwidth of 0.0143</span></code></pre></div>
+<span class="co">#&gt; Picking joint bandwidth of 0.0215</span></code></pre></div>
 <p><img src="plot-benchmark-large-1.png"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
