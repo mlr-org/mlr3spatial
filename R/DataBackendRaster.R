@@ -292,24 +292,24 @@ DataBackendRaster = R6Class("DataBackendRaster",
 #' @return [DataBackend].
 #' @rdname as_data_backend
 #'
-#' @export
+#' @export as_data_backend.stars
 as_data_backend.stars = function(data, primary_key = NULL, train_task = NULL, ...) { # nolint
   require_namespaces("stars")
   data = as(data, "SpatRaster")
   DataBackendRaster$new(data, train_task = train_task)
 }
-#' @export
+#' @export as_data_backend.SpatRaster
 #' @rdname as_data_backend
 as_data_backend.SpatRaster = function(data, primary_key = NULL, train_task = NULL,...) { # nolint
   DataBackendRaster$new(data, train_task = train_task)
 }
-#' @export
+#' @export as_data_backend.RasterBrick
 #' @rdname as_data_backend
 as_data_backend.RasterBrick = function(data, primary_key = NULL, train_task = NULL, ...) { # nolint
   data = terra::rast(data)
   DataBackendRaster$new(data, train_task = train_task)
 }
-#' @export
+#' @export as_data_backend.Raster
 #' @rdname as_data_backend
 as_data_backend.Raster = function(data, primary_key = NULL, train_task = NULL, ...) { # nolint
   data = terra::rast(data)
