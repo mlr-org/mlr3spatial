@@ -35,5 +35,5 @@ test_that("$missing works", {
 test_that("DataBackendVector works renamed geometry column", {
   vector = generate_sf()
   sf::st_geometry(vector) = "geom"
-  assert_class(as_data_backend(vector), "DataBackendVector")
+  expect_class(as_data_backend(vector), "DataBackendVector")
 })
