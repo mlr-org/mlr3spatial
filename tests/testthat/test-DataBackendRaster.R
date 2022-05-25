@@ -46,7 +46,7 @@ test_that("DataBackendRaster works with a single numeric layer", {
 
   # missings
   expect_equal(backend$missings(rows = seq(10), cols = "x_1"), c("x_1" = 0)) # slow query
-  expect_equal(backend$missings(rows = seq(100), cols = "x_1"), c("x_1" = 0))  # fast query
+  expect_equal(backend$missings(rows = seq(100), cols = "x_1"), c("x_1" = 0)) # fast query
   expect_numeric(backend$missings(rows = seq(10), cols = "x_2"), len = 0)
 })
 
@@ -93,7 +93,7 @@ test_that("DataBackendRaster works with a single factor layer", {
 
   # missings
   expect_equal(backend$missings(rows = seq(10), cols = "c_1"), c("c_1" = 0)) # slow query
-  expect_equal(backend$missings(rows = seq(100), cols = "c_1"), c("c_1" = 0))  # fast query
+  expect_equal(backend$missings(rows = seq(100), cols = "c_1"), c("c_1" = 0)) # fast query
   expect_numeric(backend$missings(rows = seq(10), cols = "c_2"), len = 0)
 })
 
@@ -150,7 +150,7 @@ test_that("DataBackendRaster works with a numeric and a factor layer", {
   # missings
   expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "c_1")), c("x_1" = 0, "c_1" = 0)) # slow query
 
-  expect_equal(backend$missings(rows = seq(100), cols = c("x_1", "c_1")), c("x_1" = 0, "c_1" = 0))  # fast query
+  expect_equal(backend$missings(rows = seq(100), cols = c("x_1", "c_1")), c("x_1" = 0, "c_1" = 0)) # fast query
 
   expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "c_1", "c_2")), c("x_1" = 0, "c_1" = 0))
 })
@@ -221,7 +221,7 @@ test_that("DataBackendRaster works with multiple numeric and factor layers", {
 
   # missings
   expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "x_2", "c_1", "c_2")), c("x_1" = 0, "x_2" = 0, "c_1" = 0, "c_2" = 0)) # slow query
-  expect_equal(backend$missings(rows = seq(100), cols = c("x_1", "x_2", "c_1", "c_2")), c("x_1" = 0, "x_2" = 0, "c_1" = 0, "c_2" = 0))  # fast query
+  expect_equal(backend$missings(rows = seq(100), cols = c("x_1", "x_2", "c_1", "c_2")), c("x_1" = 0, "x_2" = 0, "c_1" = 0, "c_2" = 0)) # fast query
   expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "x_2", "c_1", "c_2", "c_3")), c("x_1" = 0, "x_2" = 0, "c_1" = 0, "c_2" = 0))
 })
 
@@ -248,7 +248,7 @@ test_that("DataBackendRaster works with a classif train task", {
   expect_equal(backend$nrow, 100L)
   expect_class(backend$stack, "SpatRaster")
 
-   # stack
+  # stack
   expect_names(names(backend$stack), identical.to = "x_1")
 
   # data
@@ -292,7 +292,7 @@ test_that("DataBackendRaster works with a regr train task", {
   expect_equal(backend$nrow, 100L)
   expect_class(backend$stack, "SpatRaster")
 
-   # stack
+  # stack
   expect_names(names(backend$stack), identical.to = "c_1")
 
   # data
@@ -424,7 +424,7 @@ test_that("in memory rasters work", {
   # missings
   expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "c_1")), c("x_1" = 0, "c_1" = 0)) # slow query
 
-  expect_equal(backend$missings(rows = seq(100), cols = c("x_1", "c_1")), c("x_1" = 0, "c_1" = 0))  # fast query
+  expect_equal(backend$missings(rows = seq(100), cols = c("x_1", "c_1")), c("x_1" = 0, "c_1" = 0)) # fast query
 
   expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "c_1", "c_2")), c("x_1" = 0, "c_1" = 0))
 })
@@ -483,7 +483,7 @@ test_that("in memory and disk rasters work", {
   # missings
   expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "c_1")), c("x_1" = 0, "c_1" = 0)) # slow query
 
-  expect_equal(backend$missings(rows = seq(100), cols = c("x_1", "c_1")), c("x_1" = 0, "c_1" = 0))  # fast query
+  expect_equal(backend$missings(rows = seq(100), cols = c("x_1", "c_1")), c("x_1" = 0, "c_1" = 0)) # fast query
 
   expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "c_1", "c_2")), c("x_1" = 0, "c_1" = 0))
 })

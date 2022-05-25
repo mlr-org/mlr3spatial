@@ -24,7 +24,7 @@ create_stack = function(layers, layer_size = NULL, dimension = NULL) {
   assert_int(layer_size, null.ok = TRUE)
   assert_int(dimension, null.ok = TRUE)
   dimension = dimension %??% floor(sqrt(layer_size * 1e+06))
-  ids = map_chr(layers, 'id')
+  ids = map_chr(layers, "id")
   assert_character(ids, unique = TRUE)
 
   layers = map(layers, function(layer) {
@@ -63,7 +63,7 @@ create_vector = function(stack, n = 1000) {
   points = terra::setValues(points, data)
   vector = sf::st_as_sf(points)
   for (layer in layer_factor) {
-     vector[layer] = factor(vector[[layer]])
+    vector[layer] = factor(vector[[layer]])
   }
   vector
 }

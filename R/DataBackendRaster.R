@@ -300,7 +300,7 @@ as_data_backend.stars = function(data, primary_key = NULL, train_task = NULL, ..
 }
 #' @export as_data_backend.SpatRaster
 #' @rdname as_data_backend
-as_data_backend.SpatRaster = function(data, primary_key = NULL, train_task = NULL,...) { # nolint
+as_data_backend.SpatRaster = function(data, primary_key = NULL, train_task = NULL, ...) { # nolint
   DataBackendRaster$new(data, train_task = train_task)
 }
 #' @export as_data_backend.RasterBrick
