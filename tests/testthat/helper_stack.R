@@ -71,6 +71,6 @@ create_vector = function(stack, n = 1000) {
 add_aoi = function(stack) {
   val = terra::values(stack[[1]])
   val[seq(nrow(val) * 0.1)] = NA_real_
-  terra::values(stack[[1]]) = val
+  stack = terra::setValues(stack[[1]], val)
   stack
 }

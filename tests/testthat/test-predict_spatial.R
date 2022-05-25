@@ -76,6 +76,48 @@ test_that("parallelization (callr) works", {
   })
 })
 
+test_that("NAs in features",{
+  skip_if_not_installed("mlr3learners")
+  require_namespaces("mlr3learners")
+
+  stack = create_stack(list(
+      numeric_layer("x_1"),
+      factor_layer("y", levels = c("a", "b"))),
+    dimension = 10)
+  vector = create_vector(stack, n = 10)
+  task = as_task_classif(vector, id = "test_vector", target = "y")
+
+
+  learner = lrn("classif.ranger")
+  learner$properties = c(learner$properties, "missings")
+  learner_na = PipeOpLearnerNA$new(learner)
+
+  learner_na$train(list(task))
+
+
+  stack$y = NULL
+  stack = add_aoi(stack)
+  backend = DataBackendRaster$new(stack, task)
+  task_raster = as_task_classif(backend, id = "test", target = "y")
+
+  learner_na$predict(list(task_raster))
+
+
+
+
+  learner$train(task)
+
+
+
+
+  pred = predict_spatial(task_raster, learner)
+
+
+
+
+
+})
+
 # DataBackendVector ------------------------------------------------------------
 
 test_that("sequential execution works", {

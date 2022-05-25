@@ -2,6 +2,7 @@
 #' @import checkmate
 #' @import mlr3misc
 #' @import mlr3
+#' @import mlr3pipelines
 #' @importFrom utils globalVariables
 #' @importFrom R6 R6Class is.R6
 #' @section Learn mlr3:

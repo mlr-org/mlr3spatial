@@ -3,3 +3,5 @@ stack = create_stack(list(
   factor_layer("c_1", levels = c("a", "b"))),
   dimension = 10
 )
+
+stack = add_aoi(stack)
