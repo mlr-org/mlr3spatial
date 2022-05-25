@@ -165,14 +165,14 @@ Raster stack.</p></dd>
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>DataBackendRaster$new()</code></a></p></li>
-<li><p><a href="#method-data"><code>DataBackendRaster$data()</code></a></p></li>
-<li><p><a href="#method-head"><code>DataBackendRaster$head()</code></a></p></li>
-<li><p><a href="#method-distinct"><code>DataBackendRaster$distinct()</code></a></p></li>
-<li><p><a href="#method-missings"><code>DataBackendRaster$missings()</code></a></p></li>
-</ul></div><p><details open><summary>Inherited methods</summary><ul><li><p><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="format"><a href="https://mlr3.mlr-org.com/reference/DataBackend.html#method-format"><code>mlr3::DataBackend$format()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="print"><a href="https://mlr3.mlr-org.com/reference/DataBackend.html#method-print"><code>mlr3::DataBackend$print()</code></a></span></p></li>
-</ul></details></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-DataBackendRaster-new"><code>DataBackendRaster$new()</code></a></p></li>
+<li><p><a href="#method-DataBackendRaster-data"><code>DataBackendRaster$data()</code></a></p></li>
+<li><p><a href="#method-DataBackendRaster-head"><code>DataBackendRaster$head()</code></a></p></li>
+<li><p><a href="#method-DataBackendRaster-distinct"><code>DataBackendRaster$distinct()</code></a></p></li>
+<li><p><a href="#method-DataBackendRaster-missings"><code>DataBackendRaster$missings()</code></a></p></li>
+</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="format"><a href="https://mlr3.mlr-org.com/reference/DataBackend.html#method-format"><code>mlr3::DataBackend$format()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="print"><a href="https://mlr3.mlr-org.com/reference/DataBackend.html#method-print"><code>mlr3::DataBackend$print()</code></a></span></li>
+</ul></details></p><hr><a id="method-DataBackendRaster-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Creates a backend for a raster objects.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
@@ -192,7 +192,7 @@ Supported objects:</p><ul><li><p><a href="https://rdrr.io/pkg/raster/man/brick.h
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-data"></a><div class="section">
+</div><p></p><hr><a id="method-DataBackendRaster-data"></a><div class="section">
 <h3 id="method-data-">Method <code><a href="https://rdrr.io/r/utils/data.html" class="external-link">data()</a></code><a class="anchor" aria-label="anchor" href="#method-data-"></a></h3>
 <p>Returns a slice of the raster in the specified format.
 Currently, the only supported formats is <code>"data.table"</code>.</p>
@@ -229,7 +229,7 @@ Desired data format. Currently only <code>"data.table"</code> supported.</p></dd
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-head"></a><div class="section">
+</div><p></p><hr><a id="method-DataBackendRaster-head"></a><div class="section">
 <h3 id="method-head-">Method <code><a href="https://rdrr.io/r/utils/head.html" class="external-link">head()</a></code><a class="anchor" aria-label="anchor" href="#method-head-"></a></h3>
 <p>Retrieve the first <code>n</code> rows.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
@@ -250,7 +250,7 @@ Number of rows.</p></dd>
 <p><code><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table::data.table()</a></code> of the first <code>n</code> rows.</p>
 </div>
 
-</div><p></p><hr><a id="method-distinct"></a><div class="section">
+</div><p></p><hr><a id="method-DataBackendRaster-distinct"></a><div class="section">
 <h3 id="method-distinct-">Method <code>distinct()</code><a class="anchor" aria-label="anchor" href="#method-distinct-"></a></h3>
 <p>Returns a named list of vectors of distinct values for each column
 specified. If <code>na_rm</code> is <code>TRUE</code>, missing values are removed from the
@@ -287,7 +287,7 @@ Whether to remove NAs or not.</p></dd>
 <p>Named <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code> of distinct values.</p>
 </div>
 
-</div><p></p><hr><a id="method-missings"></a><div class="section">
+</div><p></p><hr><a id="method-DataBackendRaster-missings"></a><div class="section">
 <h3 id="method-missings-">Method <code>missings()</code><a class="anchor" aria-label="anchor" href="#method-missings-"></a></h3>
 <p>Returns the number of missing values per column in the specified slice
 of data. Non-existing rows and columns are silently ignored.</p><div class="section">
