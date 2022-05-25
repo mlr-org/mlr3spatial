@@ -1,7 +1,9 @@
 PipeOpLearnerNA = R6Class("PipeOpLearnerNA", inherit = PipeOpLearner,
   private = list(
     .predict = function(inputs) {
-      on.exit({private$.learner$state = NULL})
+      on.exit({
+        private$.learner$state = NULL
+      })
       task = inputs[[1]]
       private$.learner$state = self$state
 

@@ -76,14 +76,14 @@ test_that("parallelization (callr) works", {
   })
 })
 
-test_that("NAs in features",{
+test_that("NAs in features", {
   skip_if_not_installed("mlr3learners")
   require_namespaces("mlr3learners")
 
   stack = create_stack(list(
-      numeric_layer("x_1"),
-      factor_layer("y", levels = c("a", "b"))),
-    dimension = 10)
+    numeric_layer("x_1"),
+    factor_layer("y", levels = c("a", "b"))),
+  dimension = 10)
   vector = create_vector(stack, n = 10)
   task = as_task_classif(vector, id = "test_vector", target = "y")
 
@@ -111,10 +111,6 @@ test_that("NAs in features",{
 
 
   pred = predict_spatial(task_raster, learner)
-
-
-
-
 
 })
 
