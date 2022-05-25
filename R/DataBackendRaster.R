@@ -1,10 +1,7 @@
 #' @title DataBackend for raster objects
 #'
 #' @description
-#' [mlr3::DataBackend] for raster objects:
-#' - [raster::brick]
-#' - [stars::st_as_stars]
-#' - [terra::SpatRaster]
+#' [mlr3::DataBackend] for [terra::SpatRaster] raster objects.
 #'
 #' The DataBackend can be constructed using the spatial objects listed above.
 #' Internally {terra} is used for processing operations.
@@ -49,28 +46,45 @@ DataBackendRaster = R6Class("DataBackendRaster",
     #' Creates a backend for a raster objects.
     #'
     #' @template param-data
+    #' @template param-train-task
     #'
-    initialize = function(data) {
-      if (inherits(data, "stars")) {
-        # we need to go stars -> raster -> terra
-        data = terra::rast(as(data, "Raster"))
-        DataBackendRaster$new(data)
-      } else if (inherits(data, "Raster")) {
-        names = names(data)
-        data = terra::rast(data)
-        names(data) = names
-      }
+    initialize = function(data, train_task = NULL) {
       assert_class(data, "SpatRaster")
-      # FIXME: use inMemory function
+
       # write raster to disk
-      if (all(data@ptr$inMemory)) {
-        filename = tempfile(fileext = ".tif")
-        terra::writeRaster(data, filename = filename)
-        data = terra::rast(filename)
-      }
-      private$.data = unique(terra::sources(assert_class(data, "SpatRaster"), bands = TRUE)$source) # nolint
+      sources = map_chr(names(data), function(layer) {
+        if (data[layer]@ptr$inMemory) {
+          filename = tempfile(fileext = ".tif")
+          terra::writeRaster(data[layer], filename = filename)
+        } else {
+          filename = terra::sources(data[layer])
+        }
+        filename
+      })
+
+      # stack
+      private$.data = unique(sources) # nolint
       private$.categories = terra::cats(data)
       private$.layer_names = names(data)
+
+      # cache default active fields
+      private$.rownames = 1:terra::ncell(data)
+      private$.colnames = names(data)
+      private$.nrow = terra::ncell(data)
+      private$.ncol = terra::nlyr(data)
+
+      # train task
+      if (!is.null(train_task)) {
+        assert_task(train_task)
+        if (train_task$target_names %in% private$.colnames) stopf("Target of %s is already a layer in data.", format(train_task))
+        private$.colnames = c(private$.colnames, train_task$target_names)
+        private$.ncol = private$.ncol + 1
+        private$.response = switch(train_task$task_type,
+          "classif" = factor(NA_character_, levels = train_task$levels()[[train_task$target_names]]),
+          "regr" = NA_real_
+        )
+        private$.target_names = train_task$target_names
+      }
       self$data_formats = "data.table"
     },
 
@@ -90,12 +104,16 @@ DataBackendRaster = R6Class("DataBackendRaster",
     #'   Desired data format. Currently only `"data.table"` supported.
     data = function(rows, cols, data_format = "data.table") {
       stack = self$stack
-      rows = assert_integerish(rows, coerce = TRUE)
+      if (is.null(rows)) rows = numeric(0)
+      rows = assert_integerish(rows, coerce = TRUE, null.ok = TRUE)
       assert_names(cols, type = "unique")
       assert_choice(data_format, self$data_formats)
-      cols = terra::intersect(cols, names(self$stack))
+      cols_stack = intersect(cols, private$.layer_names)
 
-      if (length(rows) && test_integer(rows, sorted = TRUE, unique = TRUE, len = max(rows[length(rows)] - rows[1] + 1, 0))) {
+      # data from stack
+      res = if (!length(cols_stack)) {
+        data.table()
+      } else if (length(rows) && test_integer(rows, sorted = TRUE, unique = TRUE, len = max(rows[length(rows)] - rows[1] + 1, 0))) {
         # block read (e.g. c(1:10))
         terra::readStart(stack)
         on.exit(terra::readStop(stack))
@@ -105,12 +123,16 @@ DataBackendRaster = R6Class("DataBackendRaster",
         nrows = cells[dim(cells)[1], 1] - cells[1, 1] + 1
         res = as.data.table(terra::readValues(stack, row = row, nrows = nrows, dataframe = TRUE))
         # subset cells and features
-        res = res[cells[1, 2]:(cells[1, 2] + length(rows) - 1), cols, with = FALSE]
+        res[cells[1, 2]:(cells[1, 2] + length(rows) - 1), cols_stack, with = FALSE]
       } else {
         # cell read (e.g. c(1, 3, 5, 6, 10))
         cells = terra::rowColFromCell(stack, rows)
-        res = as.data.table(terra::extract(stack, rows))[, ..cols]
+        as.data.table(terra::extract(stack, rows))[, ..cols_stack]
       }
+
+      # response from train task
+      if (private$.target_names %in% cols) set(res, j = private$.target_names, value = private$.response)
+
       res
     },
 
@@ -122,7 +144,9 @@ DataBackendRaster = R6Class("DataBackendRaster",
     #'
     #' @return [data.table::data.table()] of the first `n` rows.
     head = function(n = 6L) {
-      as.data.table(terra::head(self$stack, n))
+      res = as.data.table(terra::head(self$stack, n))
+      if (length(private$.response)) set(res, j = private$.target_names, value = private$.response)
+      res
     },
 
     #' @description
@@ -136,26 +160,31 @@ DataBackendRaster = R6Class("DataBackendRaster",
     #'
     #' @return Named `list()` of distinct values.
     distinct = function(rows, cols, na_rm = TRUE) {
-      assert_names(cols, type = "unique")
-      if (length(cols) == 0) {
-        return(NULL)
-      }
-      cols = intersect(cols, self$colnames)
+      cols_stack = intersect(cols, private$.layer_names)
+      rows = rows %??% seq(self$nrow)
 
-      if (is.null(rows)) {
-        stack = terra::subset(self$stack, cols)
-        if (all(terra::is.factor(stack))) {
-          # fastest
-          res = as.list(map_dtc(terra::cats(stack), function(layer) as.data.table(layer)[, 2]))
-        } else {
-          # fast
-          res = terra::unique(stack, incomparables = TRUE)
-          names(res) = names(stack)
-        }
+      res = if (!length(cols_stack)) {
+        named_list()
+      } else if (test_integer(rows, sorted = TRUE, unique = TRUE, len = self$nrow)) {
+        # fast
+        stack = terra::subset(self$stack, cols_stack)
+        set_names(map(cols_stack, function(layer) {
+          if (terra::is.factor(stack[layer])) {
+            terra::cats(stack[layer])[[1]][, 2]
+          } else {
+            terra::unique(stack["x_1"])[[1]]
+          }
+        }), cols_stack)
       } else {
         # slow
-        data = self$data(rows, cols)
-        res = lapply(data, unique)
+        data = self$data(rows, cols_stack)
+        res = map(data, unique)
+        map_if(res, is.factor, as.character)
+      }
+
+      if (private$.target_names %in% cols) {
+        response = if (is.factor(private$.response)) levels(private$.response) else NA_real_
+        res = c(res, set_names(list(response), private$.target_names))
       }
       if (na_rm) res = map(res, function(values) values[!is.na(values)])
       res
@@ -167,11 +196,24 @@ DataBackendRaster = R6Class("DataBackendRaster",
     #'
     #' @return Total of missing values per column (named `numeric()`).
     missings = function(rows, cols) {
-      cols = terra::intersect(cols, self$colnames)
+      cols_stack = intersect(cols, private$.layer_names)
 
-      stack = self$stack
-      res = terra::freq(stack, value = NA)
-      set_names(res[, "count"], names(stack))[cols]
+      res = if (!length(cols_stack)) {
+        numeric(0)
+      } else if (test_integer(rows, sorted = TRUE, unique = TRUE, len = self$nrow)) {
+        # fast
+        stack = self$stack
+        res = terra::freq(stack, value = NA)
+        res = set_names(res[, "count"], private$.layer_names)[cols_stack]
+        res
+      } else {
+        # slow
+        data = self$data(rows, cols_stack)
+        map_int(data, count_missing)
+      }
+
+      if (private$.target_names %in% cols) res = c(res, set_names(length(rows), private$.target_names))
+      res
     }
   ),
 
@@ -180,28 +222,28 @@ DataBackendRaster = R6Class("DataBackendRaster",
     #' Returns vector of all distinct row identifiers, i.e. the contents of the primary key column.
     rownames = function(rhs) {
       assert_ro_binding(rhs)
-      1:terra::ncell(self$stack)
+      private$.rownames
     },
 
     #' @field colnames (`character()`)\cr
     #' Returns vector of all column names.
     colnames = function(rhs) {
       assert_ro_binding(rhs)
-      names(self$stack)
+      private$.colnames
     },
 
     #' @field nrow (`integer(1)`)\cr
     #' Number of rows (observations).
     nrow = function(rhs) {
       assert_ro_binding(rhs)
-      terra::ncell(self$stack)
+      private$.nrow
     },
 
     #' @field ncol (`integer(1)`)\cr
     #' Number of columns (variables).
     ncol = function(rhs) {
       assert_ro_binding(rhs)
-      terra::nlyr(self$stack) + 1
+      private$.ncol
     },
 
     #' @field stack (`SpatRaster`)\cr
@@ -209,12 +251,12 @@ DataBackendRaster = R6Class("DataBackendRaster",
     stack = function(rhs) {
       assert_ro_binding(rhs)
       stack = terra::rast(private$.data)
-      names(stack) = private$.layer_names
       iwalk(private$.categories, function(category, n) {
         if (!is.null(category)) {
           terra::set.cats(stack, layer = n, value = category)
         }
       })
+      terra::set.names(stack, private$.layer_names)
       stack
     }
   ),
@@ -223,9 +265,19 @@ DataBackendRaster = R6Class("DataBackendRaster",
     .calculate_hash = function() {
       mlr3misc::calculate_hash(self$compact_seq, self$stack)
     },
-
+    # stack
     .categories = NULL,
-    .layer_names = NULL
+    .layer_names = NULL,
+
+    # cache
+    .rownames = NULL,
+    .colnames = NULL,
+    .nrow = NULL,
+    .ncol = NULL,
+
+    # fake response
+    .response = NULL,
+    .target_names = character(1)
   )
 )
 
@@ -238,6 +290,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
 #'
 #' @template param-data
 #' @template param-primary-key
+#' @template param-train-task
 #' @param ... (`any`)\cr
 #'   Not used.
 #'
@@ -245,25 +298,25 @@ DataBackendRaster = R6Class("DataBackendRaster",
 #' @rdname as_data_backend
 #'
 #' @export
-as_data_backend.stars = function(data, primary_key = NULL, ...) { # nolint
+as_data_backend.stars = function(data, primary_key = NULL, train_task = NULL, ...) { # nolint
   require_namespaces("stars")
   data = as(data, "SpatRaster")
-  DataBackendRaster$new(data)
+  DataBackendRaster$new(data, train_task = train_task)
 }
 #' @export
 #' @rdname as_data_backend
-as_data_backend.SpatRaster = function(data, primary_key = NULL, ...) { # nolint
-  DataBackendRaster$new(data)
+as_data_backend.SpatRaster = function(data, primary_key = NULL, train_task = NULL, ...) { # nolint
+  DataBackendRaster$new(data, train_task = train_task)
 }
 #' @export
 #' @rdname as_data_backend
-as_data_backend.RasterBrick = function(data, primary_key = NULL, ...) { # nolint
+as_data_backend.RasterBrick = function(data, primary_key = NULL, train_task = NULL, ...) { # nolint
   data = terra::rast(data)
-  DataBackendRaster$new(data)
+  DataBackendRaster$new(data, train_task = train_task)
 }
 #' @export
 #' @rdname as_data_backend
-as_data_backend.Raster = function(data, primary_key = NULL, ...) { # nolint
+as_data_backend.Raster = function(data, primary_key = NULL, train_task = NULL, ...) { # nolint
   data = terra::rast(data)
-  DataBackendRaster$new(data)
+  DataBackendRaster$new(data, train_task = train_task)
 }
