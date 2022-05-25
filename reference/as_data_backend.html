@@ -102,16 +102,16 @@ support coercing from other backends.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S3 method for stars</span>
-<span class="fu">as_data_backend</span><span class="op">(</span><span class="va">data</span>, primary_key <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span>
+<span class="fu">as_data_backend</span><span class="op">(</span><span class="va">data</span>, primary_key <span class="op">=</span> <span class="cn">NULL</span>, train_task <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span>
 
 <span class="co"># S3 method for SpatRaster</span>
-<span class="fu">as_data_backend</span><span class="op">(</span><span class="va">data</span>, primary_key <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span>
+<span class="fu">as_data_backend</span><span class="op">(</span><span class="va">data</span>, primary_key <span class="op">=</span> <span class="cn">NULL</span>, train_task <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span>
 
 <span class="co"># S3 method for RasterBrick</span>
-<span class="fu">as_data_backend</span><span class="op">(</span><span class="va">data</span>, primary_key <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span>
+<span class="fu">as_data_backend</span><span class="op">(</span><span class="va">data</span>, primary_key <span class="op">=</span> <span class="cn">NULL</span>, train_task <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span>
 
 <span class="co"># S3 method for Raster</span>
-<span class="fu">as_data_backend</span><span class="op">(</span><span class="va">data</span>, primary_key <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span>
+<span class="fu">as_data_backend</span><span class="op">(</span><span class="va">data</span>, primary_key <span class="op">=</span> <span class="cn">NULL</span>, train_task <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span>
 
 <span class="co"># S3 method for sf</span>
 <span class="fu">as_data_backend</span><span class="op">(</span><span class="va">data</span>, primary_key <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
@@ -120,14 +120,14 @@ support coercing from other backends.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
-<dd><p>(<code>Spatial object</code>)<br>
-Supported objects:</p><ul><li><p><a href="https://rdrr.io/pkg/raster/man/brick.html" class="external-link">raster::brick</a></p></li>
-<li><p><a href="https://r-spatial.github.io/stars/reference/st_as_stars.html" class="external-link">stars::st_as_stars</a></p></li>
-<li><p><a href="https://rdrr.io/pkg/terra/man/SpatRaster-class.html" class="external-link">terra::SpatRaster</a></p></li>
-</ul></dd>
+<dd><p>(<a href="https://rdrr.io/pkg/terra/man/SpatRaster-class.html" class="external-link">terra::SpatRaster</a>)<br>
+The input <a href="https://rdrr.io/pkg/terra/man/SpatRaster-class.html" class="external-link">terra::SpatRaster</a>.</p></dd>
 <dt>primary_key</dt>
 <dd><p>(<code>character(1)</code> | <code><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer()</a></code>)<br>
 Name of the primary key column, or integer vector of row ids.</p></dd>
+<dt>train_task</dt>
+<dd><p><code>[mlr3::Task]</code><br>
+Task used for training the learner.</p></dd>
 <dt>...</dt>
 <dd><p>(<code>any</code>)<br>
 Not used.</p></dd>
