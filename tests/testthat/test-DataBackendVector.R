@@ -31,3 +31,9 @@ test_that("$missing works", {
   expect_integer(b$missings(rows = 1:10, "PERIMETER"), names = "named", lower = 0, upper = 0)
 
 })
+
+test_that("DataBackendVector works renamed geometry column", {
+  vector = generate_sf()
+  sf::st_geometry(vector) = "geom"
+  assert_class(as_data_backend(vector), "DataBackendVector")
+})

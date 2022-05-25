@@ -27,11 +27,12 @@ DataBackendVector = R6::R6Class("DataBackendVector",
     #' @param primary_key (`character(1)` | `integer()`)\cr
     #'   Name of the primary key column, or integer vector of row ids.
     initialize = function(data, primary_key = NULL) {
-      assert_class(data$geometry, "sfc")
-      private$.geometry = data$geometry
+      assert_class(data, "sf")
+      sf_column = attr(data, "sf_column")
+      private$.geometry = data[[sf_column]]
       self$data_formats = "data.table"
 
-      data$geometry = NULL
+      data[[sf_column]] = NULL
       attr(data, "sf_column") = NULL
       data = as.data.table(data)
 
@@ -203,7 +204,7 @@ DataBackendVector = R6::R6Class("DataBackendVector",
 #' @return [DataBackend].
 #' @rdname as_data_backend
 #'
-#' @export as_data_backend.sf
+#' @export
 as_data_backend.sf = function(data, primary_key = NULL, ...) { # nolint
   b = DataBackendVector$new(data, primary_key = primary_key)
   b$compact_seq = FALSE
