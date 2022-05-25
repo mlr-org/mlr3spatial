@@ -203,7 +203,7 @@ DataBackendVector = R6::R6Class("DataBackendVector",
 #' @return [DataBackend].
 #' @rdname as_data_backend
 #'
-#' @export as_data_backend.sf
+#' @export
 as_data_backend.sf = function(data, primary_key = NULL, ...) { # nolint
   b = DataBackendVector$new(data, primary_key = primary_key)
   b$compact_seq = FALSE
