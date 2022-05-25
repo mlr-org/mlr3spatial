@@ -75,7 +75,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
 
       # train task
       if (!is.null(train_task)) {
-        assert_task(task)
+        assert_task(train_task)
         if (train_task$target_names %in% private$.colnames) stopf("Target of %s is already a layer in data.", format(train_task))
         private$.colnames = c(private$.colnames, train_task$target_names)
         private$.ncol = private$.ncol + 1
@@ -104,7 +104,8 @@ DataBackendRaster = R6Class("DataBackendRaster",
     #'   Desired data format. Currently only `"data.table"` supported.
     data = function(rows, cols, data_format = "data.table") {
       stack = self$stack
-      rows = assert_integerish(rows, coerce = TRUE)
+      if (is.null(rows)) rows = numeric(0)
+      rows = assert_integerish(rows, coerce = TRUE, null.ok = TRUE)
       assert_names(cols, type = "unique")
       assert_choice(data_format, self$data_formats)
       cols_stack = intersect(cols, private$.layer_names)
@@ -160,6 +161,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
     #' @return Named `list()` of distinct values.
     distinct = function(rows, cols, na_rm = TRUE) {
       cols_stack = intersect(cols, private$.layer_names)
+      rows = rows %??% seq(self$nrow)
 
       res = if (!length(cols_stack)) {
         named_list()
@@ -180,8 +182,11 @@ DataBackendRaster = R6Class("DataBackendRaster",
         map_if(res, is.factor, as.character)
       }
 
+      if (private$.target_names %in% cols) {
+        response = if (is.factor(private$.response)) levels(private$.response) else NA_real_
+        res = c(res, set_names(list(response), private$.target_names))
+      }
       if (na_rm) res = map(res, function(values) values[!is.na(values)])
-      if (private$.target_names %in% cols) res = c(res, set_names(list(private$.response), private$.target_names))
       res
     },
 

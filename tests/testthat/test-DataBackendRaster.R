@@ -153,6 +153,9 @@ test_that("DataBackendRaster works with a numeric and a factor layer", {
   expect_equal(backend$missings(rows = seq(100), cols = c("x_1", "c_1")), c("x_1" = 0, "c_1" = 0)) # fast query
 
   expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "c_1", "c_2")), c("x_1" = 0, "c_1" = 0))
+
+  # task
+  expect_class(as_task_classif(backend, id = "test", target = "c_1"), "TaskClassif")
 })
 
 test_that("DataBackendRaster works with multiple numeric and factor layers", {
@@ -223,6 +226,9 @@ test_that("DataBackendRaster works with multiple numeric and factor layers", {
   expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "x_2", "c_1", "c_2")), c("x_1" = 0, "x_2" = 0, "c_1" = 0, "c_2" = 0)) # slow query
   expect_equal(backend$missings(rows = seq(100), cols = c("x_1", "x_2", "c_1", "c_2")), c("x_1" = 0, "x_2" = 0, "c_1" = 0, "c_2" = 0)) # fast query
   expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "x_2", "c_1", "c_2", "c_3")), c("x_1" = 0, "x_2" = 0, "c_1" = 0, "c_2" = 0))
+
+  # task
+  expect_class(as_task_classif(backend, id = "test", target = "c_1"), "TaskClassif")
 })
 
 test_that("DataBackendRaster works with a classif train task", {
@@ -261,12 +267,15 @@ test_that("DataBackendRaster works with a classif train task", {
 
   # distinct
   expect_list(backend$distinct(rows = seq(100), cols = c("x_1", "y")), len = 2, names = "strict")
-  expect_factor(backend$distinct(rows = seq(100), cols = c("x_1", "y"))$y, len = 1, levels = c("a", "b"))
+  expect_equal(backend$distinct(rows = seq(100), cols = c("x_1", "y"))$y, c("a", "b"))
   expect_numeric(backend$distinct(rows = seq(100), cols = c("x_1", "y"))$x_1)
 
   # missings
   expect_equal(backend$missings(rows = seq(100), cols = c("x_1", "y")), c("x_1" = 0, "y" = 100))
   expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "y")), c("x_1" = 0, "y" = 10))
+
+  # task
+  expect_class(as_task_classif(backend, id = "test", target = "y"), "TaskClassif")
 })
 
 test_that("DataBackendRaster works with a regr train task", {
@@ -277,7 +286,7 @@ test_that("DataBackendRaster works with a regr train task", {
   vector = create_vector(stack, n = 10)
   task = as_task_regr(vector, id = "test_vector", target = "y")
 
-  expect_error(DataBackendRaster$new(stack, task), "Target of training task is already a layer in the stack")
+  expect_error(DataBackendRaster$new(stack, task), "is already a layer")
   stack$y = NULL
 
   backend = DataBackendRaster$new(stack, task)
@@ -305,7 +314,8 @@ test_that("DataBackendRaster works with a regr train task", {
 
   # distinct
   expect_list(backend$distinct(rows = seq(100), cols = c("c_1", "y")), len = 2, names = "strict")
-  expect_numeric(backend$distinct(rows = seq(100), cols = c("c_1", "y"))$y, len = 1)
+  expect_numeric(backend$distinct(rows = seq(100), cols = c("c_1", "y"))$y, len = 0)
+  expect_scalar_na(backend$distinct(rows = seq(100), cols = c("c_1", "y"), na_rm = FALSE)$y)
   expect_character(backend$distinct(rows = seq(100), cols = c("c_1", "y"))$c_1, len = 2)
 
   # missings
@@ -362,7 +372,7 @@ test_that("data prototyp works", {
   vector = create_vector(stack, n = 10)
   task = as_task_classif(vector, id = "test_vector", target = "y")
 
-  expect_error(DataBackendRaster$new(stack, task), "Target of training task is already a layer in the stack")
+  expect_error(DataBackendRaster$new(stack, task), "is already a layer")
   stack$y = NULL
 
   backend = DataBackendRaster$new(stack, task)
