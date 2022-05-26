@@ -281,12 +281,12 @@ DataBackendRaster = R6Class("DataBackendRaster",
   )
 )
 
-#' @title Coerce to DataBackendRaster
+#' @title Coerce to spatial DataBackend
 #'
 #' @description
 #' Wraps a [DataBackend] around spatial objects.
-#' Currently this is only a synonym for `DataBackendRaster$new()` and does not
-#' support coercing from other backends.
+#' Currently these S3 methods are only alternative ways for writing `DataBackendRaster$new()` or `DataBackendVector$new()`.
+#' They do not support coercing from other backends yet.
 #'
 #' @template param-data
 #' @template param-primary-key
