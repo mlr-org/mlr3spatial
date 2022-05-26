@@ -3,8 +3,8 @@
 #' @import mlr3misc
 #' @import mlr3
 #' @import mlr3pipelines
-#' @importFrom utils globalVariables
 #' @importFrom R6 R6Class is.R6
+#' @importFrom stats complete.cases
 #' @section Learn mlr3:
 #' * Book on mlr3: \url{https://mlr3book.mlr-org.com}
 #' * Use cases and examples gallery: \url{https://mlr3gallery.mlr-org.com}
@@ -45,8 +45,6 @@
 #' @references
 #' `r tools::toRd(citation("mlr3spatial"))`
 "_PACKAGE"
-
-utils::globalVariables(c("..response", "..cols"))
 
 .onLoad = function(libname, pkgname) {
   # nocov start

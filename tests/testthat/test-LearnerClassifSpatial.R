@@ -17,6 +17,7 @@ test_that("LearnerClassifSpatial ignores observations with missing values",{
   stack = add_aoi(stack)
   backend = DataBackendRaster$new(stack, task_train)
   task_predict = as_task_classif(backend, id = "test", target = "y")
+  learner_spatial = LearnerClassifSpatial$new(learner)
   pred = learner_spatial$predict(task_predict)
 
   expect_true(all(is.na(pred$response[seq(10)])))

@@ -127,7 +127,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
       } else {
         # cell read (e.g. c(1, 3, 5, 6, 10))
         cells = terra::rowColFromCell(stack, rows)
-        as.data.table(terra::extract(stack, rows))[, ..cols_stack]
+        as.data.table(terra::extract(stack, rows))[, cols_stack, with = FALSE]
       }
 
       # response from train task
