@@ -37,3 +37,18 @@ test_that("DataBackendVector works renamed geometry column", {
   sf::st_geometry(vector) = "geom"
   expect_class(as_data_backend(vector), "DataBackendVector")
 })
+
+test_that("s3 dispatch works - {sf}", {
+
+  skip_if_not_installed("sf")
+  requireNamespace("sf", quietly = TRUE)
+
+  x = sf::st_point(c(1, 2))
+  geometry = sf::st_sfc(x)
+  point = sf::st_sf(geometry)
+  point[1, "value"] = 2
+
+  backend = as_data_backend(point)
+
+  expect_class(backend, "DataBackendVector")
+})
