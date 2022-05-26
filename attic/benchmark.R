@@ -149,7 +149,7 @@ with_future("multicore", workers = 2, {
 })
 
 with_future("multicore", workers = 4, {
-  ras = predict_spatial(task_predict, learner, chunksize = 20L) # 21 seconds
+  ras = predict_spatial(task_predict, learner, chunksize = 20L) # 61 seconds
 })
 
 with_future("multicore", workers = 8, {
