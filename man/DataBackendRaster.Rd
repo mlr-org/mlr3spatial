@@ -4,12 +4,7 @@
 \alias{DataBackendRaster}
 \title{DataBackend for raster objects}
 \description{
-\link[mlr3:DataBackend]{mlr3::DataBackend} for raster objects:
-\itemize{
-\item \link[raster:brick]{raster::brick}
-\item \link[stars:st_as_stars]{stars::st_as_stars}
-\item \link[terra:SpatRaster-class]{terra::SpatRaster}
-}
+\link[mlr3:DataBackend]{mlr3::DataBackend} for \link[terra:SpatRaster-class]{terra::SpatRaster} raster objects.
 
 The DataBackend can be constructed using the spatial objects listed above.
 Internally {terra} is used for processing operations.
@@ -86,19 +81,17 @@ Raster stack.}
 \subsection{Method \code{new()}}{
 Creates a backend for a raster objects.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendRaster$new(data)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{DataBackendRaster$new(data, train_task = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{data}}{(\verb{Spatial object})\cr
-Supported objects:
-\itemize{
-\item \link[raster:brick]{raster::brick}
-\item \link[stars:st_as_stars]{stars::st_as_stars}
-\item \link[terra:SpatRaster-class]{terra::SpatRaster}
-}}
+\item{\code{data}}{(\link[terra:SpatRaster-class]{terra::SpatRaster})\cr
+The input \link[terra:SpatRaster-class]{terra::SpatRaster}.}
+
+\item{\code{train_task}}{\verb{[mlr3::Task]}\cr
+Task used for training the learner.}
 }
 \if{html}{\out{</div>}}
 }

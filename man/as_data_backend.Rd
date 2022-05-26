@@ -8,27 +8,25 @@
 \alias{as_data_backend.sf}
 \title{Coerce to spatial DataBackend}
 \usage{
-\method{as_data_backend}{stars}(data, primary_key = NULL, ...)
+\method{as_data_backend}{stars}(data, primary_key = NULL, train_task = NULL, ...)
 
-\method{as_data_backend}{SpatRaster}(data, primary_key = NULL, ...)
+\method{as_data_backend}{SpatRaster}(data, primary_key = NULL, train_task = NULL, ...)
 
-\method{as_data_backend}{RasterBrick}(data, primary_key = NULL, ...)
+\method{as_data_backend}{RasterBrick}(data, primary_key = NULL, train_task = NULL, ...)
 
-\method{as_data_backend}{Raster}(data, primary_key = NULL, ...)
+\method{as_data_backend}{Raster}(data, primary_key = NULL, train_task = NULL, ...)
 
 \method{as_data_backend}{sf}(data, primary_key = NULL, ...)
 }
 \arguments{
-\item{data}{(\verb{Spatial object})\cr
-Supported objects:
-\itemize{
-\item \link[raster:brick]{raster::brick}
-\item \link[stars:st_as_stars]{stars::st_as_stars}
-\item \link[terra:SpatRaster-class]{terra::SpatRaster}
-}}
+\item{data}{(\link[terra:SpatRaster-class]{terra::SpatRaster})\cr
+The input \link[terra:SpatRaster-class]{terra::SpatRaster}.}
 
 \item{primary_key}{(\code{character(1)} | \code{integer()})\cr
 Name of the primary key column, or integer vector of row ids.}
+
+\item{train_task}{\verb{[mlr3::Task]}\cr
+Task used for training the learner.}
 
 \item{...}{(\code{any})\cr
 Not used.}

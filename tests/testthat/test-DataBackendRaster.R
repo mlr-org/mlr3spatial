@@ -1,63 +1,337 @@
-test_that("DataBackendRaster works", {
-  backend = DataBackendRaster$new(generate_spat_raster())
+# DataBackendRaster ------------------------------------------------------------
+
+test_that("DataBackendRaster works with a single numeric layer", {
+  stack = create_stack(list(
+    numeric_layer("x_1")),
+  dimension = 10,
+  )
+
+  backend = DataBackendRaster$new(stack)
+
+  # backend
+  expect_class(backend, "DataBackendRaster")
+
+  # active fields
+  expect_names(backend$colnames, identical.to = "x_1")
+  expect_equal(backend$ncol, 1L)
+  expect_equal(backend$rownames, seq(100))
+  expect_equal(backend$nrow, 100L)
+  expect_class(backend$stack, "SpatRaster")
+
+  # stack
+  expect_names(names(backend$stack), identical.to = "x_1")
+
+  # data
+  expect_data_table(backend$data(rows = seq(100), cols = "x_1"), nrows = 100, ncols = 1, col.names = "strict", types = "numeric") # block read
+  expect_names(names(backend$data(rows = seq(100), cols = "x_1")), identical.to = "x_1")
+  expect_data_table(backend$data(rows = seq(50), cols = "x_1"), nrows = 50, ncols = 1, col.names = "strict", types = "numeric") # block read
+  expect_data_table(backend$data(rows = c(1, 50, 100), cols = "x_1"), nrows = 3, ncols = 1, col.names = "strict", types = "numeric") # cell read
+  expect_names(names(backend$data(rows = c(1, 50, 100), cols = "x_1")), identical.to = "x_1")
 
   # head
-  data = backend$head(10L)
-  expect_data_table(data, nrows = 10L, ncols = 5L)
-  expect_names(names(data), identical.to = c("x_1", "x_2", "x_3", "x_4", "y"))
+  expect_data_table(backend$head(n = 10L), nrows = 10, ncols = 1, types = "numeric")
+  expect_names(names(backend$head(n = 10L)), identical.to = "x_1")
 
   # distinct
-  expect_equal(backend$distinct(rows = NULL, cols = "y"), list(y = c("negative", "positive")))
-  data = backend$distinct(rows = 1:100, cols = c("x_1", "y"))
-  expect_names(names(data), identical.to = c("x_1", "y"))
-  expect_numeric(data$x_1)
-  expect_factor(data$y, levels = c("negative", "positive"))
-  # non-factor, all rows
-  data = backend$distinct(rows = NULL, cols = "x_1")
-  expect_names(names(data), identical.to = "x_1")
-  expect_gt(length(data[[names(data)]]), 4898)
-  expect_lte(length(data[[names(data)]]), 4900)
+  expect_list(backend$distinct(rows = 1, cols = "x_1"), len = 1, names = "strict") # slow query
+  expect_numeric(backend$distinct(rows = 1, cols = "x_1")$x_1, len = 1)
 
-  # nrow
-  expect_equal(backend$nrow, 4900)
+  expect_list(backend$distinct(rows = seq(10), cols = "x_1"), len = 1, names = "strict") # slow query
+  expect_numeric(backend$distinct(rows = seq(10), cols = "x_1")$x_1)
 
-  # ncol
-  expect_equal(backend$ncol, 6)
+  expect_list(backend$distinct(rows = seq(100), cols = "x_1"), len = 1, names = "strict") # fast query
+  expect_numeric(backend$distinct(rows = seq(100), cols = "x_1")$x_1)
 
-  stack_classif = terra::rast(nrows = 3, ncols = 4)
-  stack_classif[] = c(1:11, NA)
-  names(stack_classif) = "y"
-  # backend = as_data_backend(stack_classif)
-  expect_equal(backend$distinct(rows = 1:12, cols = "y"),
-    list(y = factor("negative", levels = c("negative", "positive"))))
-
-  # terra does not add NA as a factor level
-  stack_classif = terra::rast(nrows = 2, ncols = 2)
-  stack_classif[] = c(0, 1, NA, 0)
-  names(stack_classif) = "y"
-  value = data.table(ID = c(0, 1), y = c("negative", "positive"))
-  terra::set.cats(stack_classif, layer = "y", value = value)
-  # backend = as_data_backend(stack_classif)
-  expect_equal(levels(backend$distinct(rows = 1:4, cols = "y")[[1]]), c("negative", "positive"))
+  expect_list(backend$distinct(rows = seq(10), cols = "x_2"), len = 0, names = "strict")
 
   # missings
-  stack_classif = terra::rast(nrows = 2, ncols = 2)
-  stack_classif[] = c(0, 1, NA, 0)
-  names(stack_classif) = "y"
-  # backend = as_data_backend(stack_classif)
-  backend$missings(rows = 1:4, cols = "y")
+  expect_equal(backend$missings(rows = seq(10), cols = "x_1"), c("x_1" = 0)) # slow query
+  expect_equal(backend$missings(rows = seq(100), cols = "x_1"), c("x_1" = 0)) # fast query
+  expect_numeric(backend$missings(rows = seq(10), cols = "x_2"), len = 0)
+})
 
-  # data prototyp
-  expect_data_table(backend$data(rows = integer(0), cols = c("x_1", "y")), nrows = 0, ncols = 2)
+test_that("DataBackendRaster works with a single factor layer", {
+  stack = create_stack(list(
+    factor_layer("c_1", levels = c("a", "b"))),
+  dimension = 10,
+  )
 
+  backend = DataBackendRaster$new(stack)
+
+  # backend
+  expect_class(backend, "DataBackendRaster")
+
+  # active fields
+  expect_names(backend$colnames, identical.to = "c_1")
+  expect_equal(backend$ncol, 1L)
+  expect_equal(backend$rownames, seq(100))
+  expect_equal(backend$nrow, 100L)
+  expect_class(backend$stack, "SpatRaster")
+  expect_names(names(backend$stack), identical.to = "c_1")
+
+  # data
+  expect_data_table(backend$data(rows = seq(100), cols = "c_1"), nrows = 100, ncols = 1, col.names = "strict", types = "factor") # block read
+  expect_names(names(backend$data(rows = seq(100), cols = "c_1")), identical.to = "c_1")
+  expect_data_table(backend$data(rows = seq(50), cols = "c_1"), nrows = 50, ncols = 1, col.names = "strict", types = "factor") # block read
+  expect_data_table(backend$data(rows = c(1, 50, 100), cols = "c_1"), nrows = 3, ncols = 1, col.names = "strict", types = "factor") # cell read
+  expect_names(names(backend$data(rows = c(1, 50, 100), cols = "c_1")), identical.to = "c_1")
+
+  # head
+  expect_data_table(backend$head(n = 10L), nrows = 10, ncols = 1, types = "factor")
+  expect_names(names(backend$head(n = 10L)), identical.to = "c_1")
+
+  # distinct
+  expect_list(backend$distinct(rows = 1, cols = "c_1"), len = 1, names = "strict") # slow query
+  expect_equal(backend$distinct(rows = 1, cols = "c_1")$c_1, "a")
+
+  expect_list(backend$distinct(rows = seq(20), cols = "c_1"), len = 1, names = "strict") # slow query
+  expect_equal(backend$distinct(rows = seq(20), cols = "c_1")$c_1, c("a", "b"))
+
+  expect_list(backend$distinct(rows = seq(100), cols = "c_1"), len = 1, names = "strict") # fast query
+  expect_equal(backend$distinct(rows = seq(100), cols = "c_1")$c_1, c("a", "b"))
+  expect_list(backend$distinct(rows = seq(20), cols = "c_2"), len = 0, names = "strict")
+
+  # missings
+  expect_equal(backend$missings(rows = seq(10), cols = "c_1"), c("c_1" = 0)) # slow query
+  expect_equal(backend$missings(rows = seq(100), cols = "c_1"), c("c_1" = 0)) # fast query
+  expect_numeric(backend$missings(rows = seq(10), cols = "c_2"), len = 0)
+})
+
+test_that("DataBackendRaster works with a numeric and a factor layer", {
+  stack = create_stack(list(
+    numeric_layer("x_1"),
+    factor_layer("c_1", levels = c("a", "b"))),
+  dimension = 10,
+  )
+
+  backend = DataBackendRaster$new(stack)
+
+  # backend
+  expect_class(backend, "DataBackendRaster")
+
+  # active fields
+  expect_names(backend$colnames, identical.to = c("x_1", "c_1"))
+  expect_equal(backend$ncol, 2)
+  expect_equal(backend$rownames, seq(100))
+  expect_equal(backend$nrow, 100)
+  expect_class(backend$stack, "SpatRaster")
+  expect_names(names(backend$stack), identical.to = c("x_1", "c_1"))
+
+  # data
+  expect_data_table(backend$data(rows = seq(100), cols = c("x_1", "c_1")), nrows = 100, ncols = 2, col.names = "strict", types = c("numeric", "factor")) # block read
+  expect_names(names(backend$data(rows = seq(100), cols = c("x_1", "c_1"))), identical.to = c("x_1", "c_1"))
+  expect_data_table(backend$data(rows = seq(50), cols = c("x_1", "c_1")), nrows = 50, ncols = 2, col.names = "strict", types = c("numeric", "factor")) # block read
+  expect_data_table(backend$data(rows = c(1, 50, 100), cols = c("x_1", "c_1")), nrows = 3, ncols = 2, col.names = "strict", types = c("numeric", "factor")) # cell read
+  expect_names(names(backend$data(rows = c(1, 50, 100), cols = c("x_1", "c_1"))), identical.to = c("x_1", "c_1"))
+  expect_data_table(backend$data(rows = seq(100), cols = c("x_1", "c_1", "c_2")), nrows = 100, ncols = 2, col.names = "strict", types = c("numeric", "factor")) # ignore cols
+  expect_names(names(backend$data(rows = seq(100), cols = c("x_1", "c_1", "c_2"))), identical.to = c("x_1", "c_1"))
+
+  # head
+  expect_data_table(backend$head(n = 10L), nrows = 10, ncols = 2, types = c("numeric", "factor"))
+  expect_names(names(backend$head(n = 10L)), identical.to = c("x_1", "c_1"))
+
+  # distinct
+  expect_list(backend$distinct(rows = 1, cols = c("x_1", "c_1")), len = 2, names = "strict") # slow query
+  expect_equal(backend$distinct(rows = 1, cols = c("x_1", "c_1"))$c_1, "a")
+  expect_numeric(backend$distinct(rows = 1, cols = c("x_1", "c_1"))$x_1, len = 1)
+
+  expect_list(backend$distinct(rows = seq(20), cols = c("x_1", "c_1")), len = 2, names = "strict") # slow query
+  expect_equal(backend$distinct(rows = seq(20), cols = c("x_1", "c_1"))$c_1, c("a", "b"))
+  expect_numeric(backend$distinct(rows = seq(20), cols = c("x_1", "c_1"))$x_1)
+
+  expect_list(backend$distinct(rows = seq(100), cols = c("x_1", "c_1")), len = 2, names = "strict") # fast query
+  expect_equal(backend$distinct(rows = seq(100), cols = c("x_1", "c_1"))$c_1, c("a", "b"))
+  expect_numeric(backend$distinct(rows = seq(100), cols = c("x_1", "c_1"))$x_1)
+
+  expect_list(backend$distinct(rows = seq(100), cols = c("x_1", "c_1", "c_2")), len = 2, names = "strict")
+  expect_equal(backend$distinct(rows = seq(100), cols = c("x_1", "c_1", "c_2"))$c_1, c("a", "b"))
+  expect_numeric(backend$distinct(rows = seq(100), cols = c("x_1", "c_1", "c_2"))$x_1)
+
+  # missings
+  expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "c_1")), c("x_1" = 0, "c_1" = 0)) # slow query
+
+  expect_equal(backend$missings(rows = seq(100), cols = c("x_1", "c_1")), c("x_1" = 0, "c_1" = 0)) # fast query
+
+  expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "c_1", "c_2")), c("x_1" = 0, "c_1" = 0))
+
+  # task
+  expect_class(as_task_classif(backend, id = "test", target = "c_1"), "TaskClassif")
+})
+
+test_that("DataBackendRaster works with multiple numeric and factor layers", {
+  stack = create_stack(list(
+    numeric_layer("x_1"),
+    numeric_layer("x_2"),
+    factor_layer("c_1", levels = c("a", "b")),
+    factor_layer("c_2", levels = c("a1", "a2", "a3"))),
+  dimension = 10,
+  )
+
+  backend = DataBackendRaster$new(stack)
+
+  # backend
+  expect_class(backend, "DataBackendRaster")
+
+  # active fields
+  expect_names(backend$colnames, identical.to = c("x_1", "x_2", "c_1", "c_2"))
+  expect_equal(backend$ncol, 4)
+  expect_equal(backend$rownames, seq(100))
+  expect_equal(backend$nrow, 100)
+  expect_class(backend$stack, "SpatRaster")
+  expect_names(names(backend$stack), identical.to = c("x_1", "x_2", "c_1", "c_2"))
+
+  # data
+  expect_data_table(backend$data(rows = seq(100), cols = c("x_1", "x_2", "c_1", "c_2")), nrows = 100, ncols = 4, col.names = "strict", types = c("numeric", "factor")) # block read
+  expect_names(names(backend$data(rows = seq(100), cols = c("x_1", "x_2", "c_1", "c_2"))), identical.to = c("x_1", "x_2", "c_1", "c_2"))
+
+  expect_data_table(backend$data(rows = seq(50), cols = c("x_1", "x_2", "c_1", "c_2")), nrows = 50, ncols = 4, col.names = "strict", types = c("numeric", "factor")) # block read
+
+  expect_data_table(backend$data(rows = c(1, 50, 100), cols = c("x_1", "x_2", "c_1", "c_2")), nrows = 3, ncols = 4, col.names = "strict", types = c("numeric", "factor")) # cell read
+  expect_names(names(backend$data(rows = c(1, 50, 100), cols = c("x_1", "x_2", "c_1", "c_2"))), identical.to = c("x_1", "x_2", "c_1", "c_2"))
+
+  expect_data_table(backend$data(rows = seq(100), cols = c("x_1", "x_2", "c_1", "c_2")), nrows = 100, ncols = 4, col.names = "strict", types = c("numeric", "factor")) # ignore cols
+  expect_names(names(backend$data(rows = seq(100), cols = c("x_1", "x_2", "c_1", "c_2"))), identical.to = c("x_1", "x_2", "c_1", "c_2"))
+
+  # head
+  expect_data_table(backend$head(n = 10L), nrows = 10, ncols = 4, types = c("numeric", "factor"))
+  expect_names(names(backend$head(n = 10L)), identical.to = c("x_1", "x_2", "c_1", "c_2"))
+
+  # distinct
+  expect_list(backend$distinct(rows = 1, cols = c("x_1", "x_2", "c_1", "c_2")), len = 4, names = "strict") # slow query
+  expect_equal(backend$distinct(rows = 1, cols = c("x_1", "x_2", "c_1", "c_2"))$c_1, "a")
+  expect_equal(backend$distinct(rows = 1, cols = c("x_1", "x_2", "c_1", "c_2"))$c_2, "a1")
+  expect_numeric(backend$distinct(rows = 1, cols = c("x_1", "x_2", "c_1", "c_2"))$x_1, len = 1)
+  expect_numeric(backend$distinct(rows = 1, cols = c("x_1", "x_2", "c_1", "c_2"))$x_2, len = 1)
+
+  expect_list(backend$distinct(rows = seq(20), cols = c("x_1", "x_2", "c_1", "c_2")), len = 4, names = "strict") # slow query
+  expect_equal(backend$distinct(rows = seq(20), cols = c("x_1", "x_2", "c_1", "c_2"))$c_1, c("a", "b"))
+  expect_equal(backend$distinct(rows = seq(20), cols = c("x_1", "x_2", "c_1", "c_2"))$c_2, c("a1", "a2", "a3"))
+  expect_numeric(backend$distinct(rows = seq(20), cols = c("x_1", "x_2", "c_1", "c_2"))$x_1)
+  expect_numeric(backend$distinct(rows = seq(20), cols = c("x_1", "x_2", "c_1", "c_2"))$x_2)
+
+  expect_list(backend$distinct(rows = seq(100), cols = c("x_1", "x_2", "c_1", "c_2")), len = 4, names = "strict") # fast query
+  expect_equal(backend$distinct(rows = seq(100), cols = c("x_1", "x_2", "c_1", "c_2"))$c_1, c("a", "b"))
+  expect_equal(backend$distinct(rows = seq(100), cols = c("x_1", "x_2", "c_1", "c_2"))$c_2, c("a1", "a2", "a3"))
+  expect_numeric(backend$distinct(rows = seq(100), cols = c("x_1", "x_2", "c_1", "c_2"))$x_1)
+  expect_numeric(backend$distinct(rows = seq(100), cols = c("x_1", "x_2", "c_1", "c_2"))$x_2)
+
+  expect_list(backend$distinct(rows = seq(100), cols = c("x_1", "x_2", "c_1", "c_2", "c3")), len = 4, names = "strict")
+  expect_equal(backend$distinct(rows = seq(100), cols = c("x_1", "x_2", "c_1", "c_2", "c3"))$c_1, c("a", "b"))
+  expect_equal(backend$distinct(rows = seq(100), cols = c("x_1", "x_2", "c_1", "c_2", "c3"))$c_1, c("a", "b"))
+  expect_equal(backend$distinct(rows = seq(100), cols = c("x_1", "x_2", "c_1", "c_2", "c3"))$c_2, c("a1", "a2", "a3"))
+  expect_numeric(backend$distinct(rows = seq(100), cols = c("x_1", "x_2", "c_1", "c_2", "c3"))$x_1)
+  expect_numeric(backend$distinct(rows = seq(100), cols = c("x_1", "x_2", "c_1", "c_2", "c3"))$x_2)
+
+  # missings
+  expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "x_2", "c_1", "c_2")), c("x_1" = 0, "x_2" = 0, "c_1" = 0, "c_2" = 0)) # slow query
+  expect_equal(backend$missings(rows = seq(100), cols = c("x_1", "x_2", "c_1", "c_2")), c("x_1" = 0, "x_2" = 0, "c_1" = 0, "c_2" = 0)) # fast query
+  expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "x_2", "c_1", "c_2", "c_3")), c("x_1" = 0, "x_2" = 0, "c_1" = 0, "c_2" = 0))
+
+  # task
+  expect_class(as_task_classif(backend, id = "test", target = "c_1"), "TaskClassif")
+})
+
+test_that("DataBackendRaster works with a classif train task", {
+  stack = create_stack(list(
+    numeric_layer("x_1"),
+    factor_layer("y", levels = c("a", "b"))),
+  dimension = 10)
+  vector = create_vector(stack, n = 10)
+  task = as_task_classif(vector, id = "test_vector", target = "y")
+
+  expect_error(DataBackendRaster$new(stack, task), "is already a layer")
+  stack$y = NULL
+
+  backend = DataBackendRaster$new(stack, task)
+
+  # backend
+  expect_class(backend, "DataBackendRaster")
+
+  # active fields
+  expect_names(backend$colnames, identical.to = c("x_1", "y"))
+  expect_equal(backend$ncol, 2L)
+  expect_equal(backend$rownames, seq(100))
+  expect_equal(backend$nrow, 100L)
+  expect_class(backend$stack, "SpatRaster")
+
+  # stack
+  expect_names(names(backend$stack), identical.to = "x_1")
+
+  # data
+  expect_data_table(backend$data(rows = seq(100), cols = c("x_1", "y")), nrows = 100, ncols = 2, col.names = "strict", types = c("numeric", "factor")) # block read
+  expect_factor(backend$data(rows = seq(100), cols = c("x_1", "y"))$y, len = 100, levels = c("a", "b"))
+
+  # head
+  expect_data_table(backend$head(n = 10L), nrows = 10, ncols = 2, types = c("numeric", "factor"))
+  expect_names(names(backend$head(n = 10L)), identical.to = c("x_1", "y"))
+
+  # distinct
+  expect_list(backend$distinct(rows = seq(100), cols = c("x_1", "y")), len = 2, names = "strict")
+  expect_equal(backend$distinct(rows = seq(100), cols = c("x_1", "y"))$y, c("a", "b"))
+  expect_numeric(backend$distinct(rows = seq(100), cols = c("x_1", "y"))$x_1)
+
+  # missings
+  expect_equal(backend$missings(rows = seq(100), cols = c("x_1", "y")), c("x_1" = 0, "y" = 100))
+  expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "y")), c("x_1" = 0, "y" = 10))
+
+  # task
+  expect_class(as_task_classif(backend, id = "test", target = "y"), "TaskClassif")
+})
+
+test_that("DataBackendRaster works with a regr train task", {
+  stack = create_stack(list(
+    factor_layer("c_1", levels = c("a", "b")),
+    numeric_layer("y")),
+  dimension = 10)
+  vector = create_vector(stack, n = 10)
+  task = as_task_regr(vector, id = "test_vector", target = "y")
+
+  expect_error(DataBackendRaster$new(stack, task), "is already a layer")
+  stack$y = NULL
+
+  backend = DataBackendRaster$new(stack, task)
+
+  # backend
+  expect_class(backend, "DataBackendRaster")
+
+  # active fields
+  expect_names(backend$colnames, identical.to = c("c_1", "y"))
+  expect_equal(backend$ncol, 2L)
+  expect_equal(backend$rownames, seq(100))
+  expect_equal(backend$nrow, 100L)
+  expect_class(backend$stack, "SpatRaster")
+
+  # stack
+  expect_names(names(backend$stack), identical.to = "c_1")
+
+  # data
+  expect_data_table(backend$data(rows = seq(100), cols = c("c_1", "y")), nrows = 100, ncols = 2, col.names = "strict", types = c("numeric", "factor")) # block read
+  expect_numeric(backend$data(rows = seq(100), cols = c("c_1", "y"))$y, len = 100)
+
+  # head
+  expect_data_table(backend$head(n = 10L), nrows = 10, ncols = 2, types = c("numeric", "factor"))
+  expect_names(names(backend$head(n = 10L)), identical.to = c("c_1", "y"))
+
+  # distinct
+  expect_list(backend$distinct(rows = seq(100), cols = c("c_1", "y")), len = 2, names = "strict")
+  expect_numeric(backend$distinct(rows = seq(100), cols = c("c_1", "y"))$y, len = 0)
+  expect_scalar_na(backend$distinct(rows = seq(100), cols = c("c_1", "y"), na_rm = FALSE)$y)
+  expect_character(backend$distinct(rows = seq(100), cols = c("c_1", "y"))$c_1, len = 2)
+
+  # missings
+  expect_equal(backend$missings(rows = seq(100), cols = c("c_1", "y")), c("c_1" = 0, "y" = 100))
+  expect_equal(backend$missings(rows = seq(10), cols = c("c_1", "y")), c("c_1" = 0, "y" = 10))
+})
+
+test_that("data access works", {
   # data
   # [01] [02] [03] [04]
   # [05] [06] [07] [08]
   # [09] [10] [11] [12]
-  stack_classif = terra::rast(nrows = 3, ncols = 4)
-  stack_classif[] = 1:12
-  names(stack_classif) = "y"
-  backend = DataBackendRaster$new(stack_classif)
+  stack = terra::rast(nrows = 3, ncols = 4)
+  stack[] = 1:12
+  names(stack) = "y"
+  backend = DataBackendRaster$new(stack)
 
   # [x] [x] [x] [x]
   # [ ] [ ] [ ] [ ]
@@ -78,6 +352,150 @@ test_that("DataBackendRaster works", {
   # [ ] [ ] [ ] [x]
   # [ ] [x] [x] [ ]
   expect_equal(backend$data(rows = c(1, 3, 8, 10, 11), cols = "y"), data.table(y = c(1, 3, 8, 10, 11)))
+})
+
+test_that("data prototyp works", {
+  stack = create_stack(list(
+    numeric_layer("x_1"),
+    factor_layer("y", levels = c("a", "b"))),
+  dimension = 10,
+  )
+  backend = DataBackendRaster$new(stack)
+
+  expect_data_table(backend$data(rows = integer(0), cols = c("x_1", "y")), nrows = 0, ncols = 2)
+
+  # fake response
+  stack = create_stack(list(
+    numeric_layer("x_1"),
+    factor_layer("y", levels = c("a", "b"))),
+  dimension = 10)
+  vector = create_vector(stack, n = 10)
+  task = as_task_classif(vector, id = "test_vector", target = "y")
+
+  expect_error(DataBackendRaster$new(stack, task), "is already a layer")
+  stack$y = NULL
+
+  backend = DataBackendRaster$new(stack, task)
+
+  expect_data_table(backend$data(rows = integer(0), cols = c("x_1", "y")), nrows = 0, ncols = 2)
+})
+
+test_that("in memory rasters work", {
+  stack = create_stack(list(
+    numeric_layer("x_1", in_memory = TRUE),
+    factor_layer("c_1", levels = c("a", "b"), in_memory = TRUE)),
+  dimension = 10,
+  )
+
+  backend = DataBackendRaster$new(stack)
+
+  # backend
+  expect_class(backend, "DataBackendRaster")
+  expect_equal(backend$stack@ptr$inMemory, c(FALSE, FALSE))
+  expect_names(names(backend$stack), identical.to = c("x_1", "c_1"))
+
+  # active fields
+  expect_names(backend$colnames, identical.to = c("x_1", "c_1"))
+  expect_equal(backend$ncol, 2)
+  expect_equal(backend$rownames, seq(100))
+  expect_equal(backend$nrow, 100)
+  expect_class(backend$stack, "SpatRaster")
+
+  # data
+  expect_data_table(backend$data(rows = seq(100), cols = c("x_1", "c_1")), nrows = 100, ncols = 2, col.names = "strict", types = c("numeric", "factor")) # block read
+  expect_names(names(backend$data(rows = seq(100), cols = c("x_1", "c_1"))), identical.to = c("x_1", "c_1"))
+  expect_data_table(backend$data(rows = seq(50), cols = c("x_1", "c_1")), nrows = 50, ncols = 2, col.names = "strict", types = c("numeric", "factor")) # block read
+  expect_data_table(backend$data(rows = c(1, 50, 100), cols = c("x_1", "c_1")), nrows = 3, ncols = 2, col.names = "strict", types = c("numeric", "factor")) # cell read
+  expect_names(names(backend$data(rows = c(1, 50, 100), cols = c("x_1", "c_1"))), identical.to = c("x_1", "c_1"))
+  expect_data_table(backend$data(rows = seq(100), cols = c("x_1", "c_1", "c_2")), nrows = 100, ncols = 2, col.names = "strict", types = c("numeric", "factor")) # ignore cols
+  expect_names(names(backend$data(rows = seq(100), cols = c("x_1", "c_1", "c_2"))), identical.to = c("x_1", "c_1"))
+
+  # head
+  expect_data_table(backend$head(n = 10L), nrows = 10, ncols = 2, types = c("numeric", "factor"))
+  expect_names(names(backend$head(n = 10L)), identical.to = c("x_1", "c_1"))
+
+  # distinct
+  expect_list(backend$distinct(rows = 1, cols = c("x_1", "c_1")), len = 2, names = "strict") # slow query
+  expect_equal(backend$distinct(rows = 1, cols = c("x_1", "c_1"))$c_1, "a")
+  expect_numeric(backend$distinct(rows = 1, cols = c("x_1", "c_1"))$x_1, len = 1)
+
+  expect_list(backend$distinct(rows = seq(20), cols = c("x_1", "c_1")), len = 2, names = "strict") # slow query
+  expect_equal(backend$distinct(rows = seq(20), cols = c("x_1", "c_1"))$c_1, c("a", "b"))
+  expect_numeric(backend$distinct(rows = seq(20), cols = c("x_1", "c_1"))$x_1)
+
+  expect_list(backend$distinct(rows = seq(100), cols = c("x_1", "c_1")), len = 2, names = "strict") # fast query
+  expect_equal(backend$distinct(rows = seq(100), cols = c("x_1", "c_1"))$c_1, c("a", "b"))
+  expect_numeric(backend$distinct(rows = seq(100), cols = c("x_1", "c_1"))$x_1)
+
+  expect_list(backend$distinct(rows = seq(100), cols = c("x_1", "c_1", "c_2")), len = 2, names = "strict")
+  expect_equal(backend$distinct(rows = seq(100), cols = c("x_1", "c_1", "c_2"))$c_1, c("a", "b"))
+  expect_numeric(backend$distinct(rows = seq(100), cols = c("x_1", "c_1", "c_2"))$x_1)
+
+  # missings
+  expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "c_1")), c("x_1" = 0, "c_1" = 0)) # slow query
+
+  expect_equal(backend$missings(rows = seq(100), cols = c("x_1", "c_1")), c("x_1" = 0, "c_1" = 0)) # fast query
+
+  expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "c_1", "c_2")), c("x_1" = 0, "c_1" = 0))
+})
+
+test_that("in memory and disk rasters work", {
+  stack = create_stack(list(
+    numeric_layer("x_1", in_memory = TRUE),
+    factor_layer("c_1", levels = c("a", "b"))),
+  dimension = 10,
+  )
+
+  backend = DataBackendRaster$new(stack)
+
+  # backend
+  expect_class(backend, "DataBackendRaster")
+  expect_equal(backend$stack@ptr$inMemory, c(FALSE, FALSE))
+  expect_names(names(backend$stack), identical.to = c("x_1", "c_1"))
+
+  # active fields
+  expect_names(backend$colnames, identical.to = c("x_1", "c_1"))
+  expect_equal(backend$ncol, 2)
+  expect_equal(backend$rownames, seq(100))
+  expect_equal(backend$nrow, 100)
+  expect_class(backend$stack, "SpatRaster")
+
+  # data
+  expect_data_table(backend$data(rows = seq(100), cols = c("x_1", "c_1")), nrows = 100, ncols = 2, col.names = "strict", types = c("numeric", "factor")) # block read
+  expect_names(names(backend$data(rows = seq(100), cols = c("x_1", "c_1"))), identical.to = c("x_1", "c_1"))
+  expect_data_table(backend$data(rows = seq(50), cols = c("x_1", "c_1")), nrows = 50, ncols = 2, col.names = "strict", types = c("numeric", "factor")) # block read
+  expect_data_table(backend$data(rows = c(1, 50, 100), cols = c("x_1", "c_1")), nrows = 3, ncols = 2, col.names = "strict", types = c("numeric", "factor")) # cell read
+  expect_names(names(backend$data(rows = c(1, 50, 100), cols = c("x_1", "c_1"))), identical.to = c("x_1", "c_1"))
+  expect_data_table(backend$data(rows = seq(100), cols = c("x_1", "c_1", "c_2")), nrows = 100, ncols = 2, col.names = "strict", types = c("numeric", "factor")) # ignore cols
+  expect_names(names(backend$data(rows = seq(100), cols = c("x_1", "c_1", "c_2"))), identical.to = c("x_1", "c_1"))
+
+  # head
+  expect_data_table(backend$head(n = 10L), nrows = 10, ncols = 2, types = c("numeric", "factor"))
+  expect_names(names(backend$head(n = 10L)), identical.to = c("x_1", "c_1"))
+
+  # distinct
+  expect_list(backend$distinct(rows = 1, cols = c("x_1", "c_1")), len = 2, names = "strict") # slow query
+  expect_equal(backend$distinct(rows = 1, cols = c("x_1", "c_1"))$c_1, "a")
+  expect_numeric(backend$distinct(rows = 1, cols = c("x_1", "c_1"))$x_1, len = 1)
+
+  expect_list(backend$distinct(rows = seq(20), cols = c("x_1", "c_1")), len = 2, names = "strict") # slow query
+  expect_equal(backend$distinct(rows = seq(20), cols = c("x_1", "c_1"))$c_1, c("a", "b"))
+  expect_numeric(backend$distinct(rows = seq(20), cols = c("x_1", "c_1"))$x_1)
+
+  expect_list(backend$distinct(rows = seq(100), cols = c("x_1", "c_1")), len = 2, names = "strict") # fast query
+  expect_equal(backend$distinct(rows = seq(100), cols = c("x_1", "c_1"))$c_1, c("a", "b"))
+  expect_numeric(backend$distinct(rows = seq(100), cols = c("x_1", "c_1"))$x_1)
+
+  expect_list(backend$distinct(rows = seq(100), cols = c("x_1", "c_1", "c_2")), len = 2, names = "strict")
+  expect_equal(backend$distinct(rows = seq(100), cols = c("x_1", "c_1", "c_2"))$c_1, c("a", "b"))
+  expect_numeric(backend$distinct(rows = seq(100), cols = c("x_1", "c_1", "c_2"))$x_1)
+
+  # missings
+  expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "c_1")), c("x_1" = 0, "c_1" = 0)) # slow query
+
+  expect_equal(backend$missings(rows = seq(100), cols = c("x_1", "c_1")), c("x_1" = 0, "c_1" = 0)) # fast query
+
+  expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "c_1", "c_2")), c("x_1" = 0, "c_1" = 0))
 })
 
 # stars input ------------------------------------------------------------------
