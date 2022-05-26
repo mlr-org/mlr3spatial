@@ -11,6 +11,52 @@ test_that("sequential execution works", {
   expect_class(pred, "SpatRaster")
 })
 
+test_that("sequential execution works in chunks", {
+  skip_if_not_installed("mlr3learners")
+  require_namespaces("mlr3learners")
+
+  # train task
+  stack = create_stack(list(
+    numeric_layer("x_1"),
+    factor_layer("y", levels = c("a", "b"))),
+  layer_size = 10)
+  vector = create_vector(stack, n = 100)
+  task_train = as_task_classif(vector, id = "test_vector", target = "y")
+  learner = lrn("classif.ranger")
+  learner$train(task_train)
+
+  # predict task
+  stack$y = NULL
+  backend = DataBackendRaster$new(stack, task_train)
+  task_predict = as_task_classif(backend, id = "test", target = "y")
+  ras = predict_spatial(task_predict, learner, chunksize = 10L)
+})
+
+test_that("parallel execution works in chunks", {
+  skip_on_os("windows")
+  skip_if_not_installed("mlr3learners")
+  require_namespaces("mlr3learners")
+
+  # train task
+  stack = create_stack(list(
+    numeric_layer("x_1"),
+    factor_layer("y", levels = c("a", "b"))),
+  layer_size = 10)
+  vector = create_vector(stack, n = 100)
+  task_train = as_task_classif(vector, id = "test_vector", target = "y")
+  learner = lrn("classif.ranger")
+  learner$train(task_train)
+
+  # predict task
+  stack$y = NULL
+  backend = DataBackendRaster$new(stack, task_train)
+  task_predict = as_task_classif(backend, id = "test", target = "y")
+  learner$parallel_predict = TRUE
+  with_future("multicore", workers = 2, {
+    ras = predict_spatial(task_predict, learner, chunksize = 10L)
+  })
+})
+
 test_that("output format: stars", {
   skip_if_not_installed("stars")
 

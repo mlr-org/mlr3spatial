@@ -23,7 +23,7 @@ create_stack = function(layers, layer_size = NULL, dimension = NULL) {
   assert_list(layers)
   assert_int(layer_size, null.ok = TRUE)
   assert_int(dimension, null.ok = TRUE)
-  dimension = dimension %??% floor(sqrt(layer_size * 1e+06))
+  dimension = dimension %??% floor(sqrt(layer_size * 1e+06 / 8))
   ids = map_chr(layers, "id")
   assert_character(ids, unique = TRUE)
 
