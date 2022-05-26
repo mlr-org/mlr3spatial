@@ -44,6 +44,9 @@ predict_spatial = function(task, learner, chunksize = 200L, format = "terra",
   assert_int(chunksize)
   stack = task$backend$stack
   start_time = proc.time()[3]
+  learner = switch(learner$task_type,
+    "classif" = LearnerClassifSpatial$new(learner),
+    "regr" = LearnerRegrSpatial$new(learner))
 
 
   if (inherits(task$backend, "DataBackendRaster")) {
@@ -75,19 +78,26 @@ predict_spatial = function(task, learner, chunksize = 200L, format = "terra",
     terra::writeStop(target_raster)
     lg$info("Finished raster prediction in %i seconds", as.integer(proc.time()[3] - start_time))
 
-    target_raster = switch(format,
+    if (learner$task_type == "classif") {
+      levels = task$levels()[[task$target_names]]
+      value = data.table(ID = seq_along(levels), categories = levels)
+      target_raster = terra::categories(target_raster, value = value, index = 2)
+    }
+    target_raster = set_names(target_raster, task$target_names)
+
+    switch(format,
       "terra" = target_raster,
       "stars" = stars::st_as_stars(target_raster),
       "raster" = as(target_raster, "Raster")
     )
-    return(target_raster)
   } else {
     pred = learner$predict(task)
 
     sf_pred = sf::st_as_sf(data.frame(pred = pred$response, geometry = task$backend$geometry))
+
+    if (!is.null(filename)) {
+      sf::st_write(sf_pred, filename, quiet = TRUE)
+    }
+    sf_pred
   }
-  if (!is.null(filename)) {
-    sf::st_write(sf_pred, filename, quiet = TRUE)
-  }
-  return(sf_pred)
 }
