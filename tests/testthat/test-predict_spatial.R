@@ -1,5 +1,49 @@
 # DataBackendRaster ------------------------------------------------------------
 
+test_that("predictions are written to the right cells", {
+  # [1] [2] [2]
+  # [1] [1] [1]
+  # [2] [2] [1]
+  # [2] [2] [2]
+  c_1 = y = c(1, 2, 2, 1, 1, 1, 2, 2, 1, 2, 2, 2)
+  rast = terra::rast(matrix(c_1, ncol = 3, byrow = TRUE))
+  terra::set.names(rast, "c_1")
+
+  # train task
+  task = as_task_regr(data.table(cbind(c_1, y)), id = "test", target = "y")
+
+  learner = LearnerRegrFeature$new()
+  learner$train(task)
+
+  # predict task
+  backend = as_data_backend(rast, train_task = task)
+  task_predict = as_task_regr(backend, id = "test", target = "y")
+
+  # chunk size is 3 out of 12 cells
+  ras = predict_spatial(task_predict, learner, chunksize = 8 * 3 * 1e-6)
+  expect_equal(terra::values(ras)[,1], y)
+
+  # chunk size is 4 out of 12 cells
+  ras = predict_spatial(task_predict, learner, chunksize = 8 * 4 * 1e-6)
+  expect_equal(terra::values(ras)[,1], y)
+
+  # chunk size is 7 out of 12 cells
+  ras = predict_spatial(task_predict, learner, chunksize = 8 * 7 * 1e-6)
+  expect_equal(terra::values(ras)[,1], y)
+
+  # chunk size is 12 out of 12 cells
+  ras = predict_spatial(task_predict, learner, chunksize = 8 * 12 * 1e-6)
+  expect_equal(terra::values(ras)[,1], y)
+
+  # chunk size is 13 out of 12 cells
+  ras = predict_spatial(task_predict, learner, chunksize = 8 * 12 * 1e-6)
+  expect_equal(terra::values(ras)[,1], y)
+
+  # chunk size is 25 out of 12 cells
+  ras = predict_spatial(task_predict, learner, chunksize = 8 * 12 * 1e-6)
+  expect_equal(terra::values(ras)[,1], y)
+})
+
 test_that("sequential execution works", {
   task = generate_raster_task()
   learner = lrn("classif.rpart")
