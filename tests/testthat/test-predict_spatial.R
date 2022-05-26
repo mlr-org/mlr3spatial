@@ -76,46 +76,56 @@ test_that("parallelization (callr) works", {
   })
 })
 
-test_that("NAs in features",{
+test_that("classif prediction with missing values works",{
   skip_if_not_installed("mlr3learners")
   require_namespaces("mlr3learners")
 
+  # train task
   stack = create_stack(list(
       numeric_layer("x_1"),
       factor_layer("y", levels = c("a", "b"))),
     dimension = 10)
   vector = create_vector(stack, n = 10)
-  task = as_task_classif(vector, id = "test_vector", target = "y")
-
-
+  task_train = as_task_classif(vector, id = "test_vector", target = "y")
   learner = lrn("classif.ranger")
-  learner$properties = c(learner$properties, "missings")
-  learner_na = PipeOpLearnerNA$new(learner)
+  learner$train(task_train)
 
-  learner_na$train(list(task))
-
-
+  # predict task
   stack$y = NULL
   stack = add_aoi(stack)
-  backend = DataBackendRaster$new(stack, task)
-  task_raster = as_task_classif(backend, id = "test", target = "y")
+  backend = DataBackendRaster$new(stack, task_train)
+  task_predict = as_task_classif(backend, id = "test", target = "y")
+  ras = predict_spatial(task_predict, learner)
 
-  learner_na$predict(list(task_raster))
+  expect_class(ras, "SpatRaster")
+  expect_true(all(is.na(terra::values(ras[["y"]])[seq(10)])))
+  expect_numeric(terra::values(ras[["y"]])[11:100], any.missing = FALSE, all.missing = FALSE)
+})
 
+test_that("regr prediction with missing values works",{
+  skip_if_not_installed("mlr3learners")
+  require_namespaces("mlr3learners")
 
+  # train task
+  stack = create_stack(list(
+     factor_layer("c_1", levels = c("a", "b")),
+      numeric_layer("y")),
+    dimension = 10)
+  vector = create_vector(stack, n = 10)
+  task_train = as_task_regr(vector, id = "test_vector", target = "y")
+  learner = lrn("regr.ranger")
+  learner$train(task_train)
 
+  # predict task
+  stack$y = NULL
+  stack = add_aoi(stack)
+  backend = DataBackendRaster$new(stack, task_train)
+  task_predict = as_task_regr(backend, id = "test", target = "y")
+  ras = predict_spatial(task_predict, learner)
 
-  learner$train(task)
-
-
-
-
-  pred = predict_spatial(task_raster, learner)
-
-
-
-
-
+  expect_class(ras, "SpatRaster")
+  expect_true(all(is.na(terra::values(ras[["y"]])[seq(10)])))
+  expect_numeric(terra::values(ras[["y"]])[11:100], any.missing = FALSE, all.missing = FALSE)
 })
 
 # DataBackendVector ------------------------------------------------------------
