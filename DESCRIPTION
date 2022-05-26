@@ -30,7 +30,6 @@ Imports:
     methods,
     mlr3misc,
     R6 (>= 2.5.0),
-    sf,
     terra (>= 1.5-21),
     utils
 Suggests:
@@ -47,6 +46,7 @@ Suggests:
     rgdal,
     rmarkdown,
     rpart,
+    sf,
     stars (>= 0.5-5),
     testthat (>= 3.0.0)
 VignetteBuilder:
@@ -55,4 +55,4 @@ Config/testthat/edition: 3
 Config/testthat/parallel: false
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
