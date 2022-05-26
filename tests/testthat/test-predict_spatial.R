@@ -76,7 +76,7 @@ test_that("parallelization (callr) works", {
   })
 })
 
-test_that("classif prediction with missing values works",{
+test_that("classif prediction with missing values works", {
   skip_if_not_installed("mlr3learners")
   require_namespaces("mlr3learners")
 
@@ -102,15 +102,15 @@ test_that("classif prediction with missing values works",{
   expect_numeric(terra::values(ras[["y"]])[11:100], any.missing = FALSE, all.missing = FALSE)
 })
 
-test_that("regr prediction with missing values works",{
+test_that("regr prediction with missing values works", {
   skip_if_not_installed("mlr3learners")
   require_namespaces("mlr3learners")
 
   # train task
   stack = create_stack(list(
-     factor_layer("c_1", levels = c("a", "b")),
-      numeric_layer("y")),
-    dimension = 10)
+    factor_layer("c_1", levels = c("a", "b")),
+    numeric_layer("y")),
+  dimension = 10)
   vector = create_vector(stack, n = 10)
   task_train = as_task_regr(vector, id = "test_vector", target = "y")
   learner = lrn("regr.ranger")
