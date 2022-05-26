@@ -82,9 +82,9 @@ test_that("classif prediction with missing values works",{
 
   # train task
   stack = create_stack(list(
-      numeric_layer("x_1"),
-      factor_layer("y", levels = c("a", "b"))),
-    dimension = 10)
+    numeric_layer("x_1"),
+    factor_layer("y", levels = c("a", "b"))),
+  dimension = 10)
   vector = create_vector(stack, n = 10)
   task_train = as_task_classif(vector, id = "test_vector", target = "y")
   learner = lrn("classif.ranger")
