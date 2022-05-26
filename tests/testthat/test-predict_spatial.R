@@ -76,6 +76,58 @@ test_that("parallelization (callr) works", {
   })
 })
 
+test_that("classif prediction with missing values works", {
+  skip_if_not_installed("mlr3learners")
+  require_namespaces("mlr3learners")
+
+  # train task
+  stack = create_stack(list(
+    numeric_layer("x_1"),
+    factor_layer("y", levels = c("a", "b"))),
+  dimension = 10)
+  vector = create_vector(stack, n = 10)
+  task_train = as_task_classif(vector, id = "test_vector", target = "y")
+  learner = lrn("classif.ranger")
+  learner$train(task_train)
+
+  # predict task
+  stack$y = NULL
+  stack = add_aoi(stack)
+  backend = DataBackendRaster$new(stack, task_train)
+  task_predict = as_task_classif(backend, id = "test", target = "y")
+  ras = predict_spatial(task_predict, learner)
+
+  expect_class(ras, "SpatRaster")
+  expect_true(all(is.na(terra::values(ras[["y"]])[seq(10)])))
+  expect_numeric(terra::values(ras[["y"]])[11:100], any.missing = FALSE, all.missing = FALSE)
+})
+
+test_that("regr prediction with missing values works", {
+  skip_if_not_installed("mlr3learners")
+  require_namespaces("mlr3learners")
+
+  # train task
+  stack = create_stack(list(
+    factor_layer("c_1", levels = c("a", "b")),
+    numeric_layer("y")),
+  dimension = 10)
+  vector = create_vector(stack, n = 10)
+  task_train = as_task_regr(vector, id = "test_vector", target = "y")
+  learner = lrn("regr.ranger")
+  learner$train(task_train)
+
+  # predict task
+  stack$y = NULL
+  stack = add_aoi(stack)
+  backend = DataBackendRaster$new(stack, task_train)
+  task_predict = as_task_regr(backend, id = "test", target = "y")
+  ras = predict_spatial(task_predict, learner)
+
+  expect_class(ras, "SpatRaster")
+  expect_true(all(is.na(terra::values(ras[["y"]])[seq(10)])))
+  expect_numeric(terra::values(ras[["y"]])[11:100], any.missing = FALSE, all.missing = FALSE)
+})
+
 # DataBackendVector ------------------------------------------------------------
 
 test_that("sequential execution works", {

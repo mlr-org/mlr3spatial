@@ -19,10 +19,10 @@ lgr::get_logger("mlr3")$set_threshold("warn")
 lgr::get_logger("mlr3spatial")$set_threshold("warn")
 ```
 
-This benchmark was run on a MacBook Pro 2020 with the following specs
+This benchmark was run on a MacBook Pro 2021 (arm64) with the following specs
 
-- Intel i7-1068NG7 (8) @ 2.30GHz
-- 32 GB DDR4 RAM
+- M1 Pro
+- 32 GB RAM
 
 Note that the differences between the parallel and sequential timings will increase for larger objects as the overhead for starting the parallel workers and collecting the results will decrease.
 

@@ -1,7 +1,7 @@
 # All available hooks: https://pre-commit.com/hooks.html
 repos:
 -   repo: https://github.com/lorenzwalthert/precommit
-    rev: v0.2.2.9011
+    rev: v0.2.2.9015
     hooks:
     # any R project
     -   id: style-files
@@ -20,6 +20,7 @@ repos:
     #     -    R6
     #     -    terra
     #     -    utils
+    #     - stars
     -   id: parsable-R
     -   id: no-browser-statement
     -   id: readme-rmd-rendered
@@ -29,11 +30,11 @@ repos:
     -   id: codemeta-description-updated
     -   id: use-tidy-description
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.1.0
+    rev: v4.2.0
     hooks:
     -   id: check-added-large-files
         args: ['--maxkb=2300']
 
 ci:
-    skip: [roxygenize]
+    # skip: [roxygenize]
     autoupdate_schedule: monthly
