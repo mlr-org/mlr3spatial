@@ -21,27 +21,27 @@ test_that("predictions are written to the right cells", {
 
   # chunk size is 3 out of 12 cells
   ras = predict_spatial(task_predict, learner, chunksize = 8 * 3 * 1e-6)
-  expect_equal(terra::values(ras)[,1], y)
+  expect_equal(terra::values(ras)[, 1], y)
 
   # chunk size is 4 out of 12 cells
   ras = predict_spatial(task_predict, learner, chunksize = 8 * 4 * 1e-6)
-  expect_equal(terra::values(ras)[,1], y)
+  expect_equal(terra::values(ras)[, 1], y)
 
   # chunk size is 7 out of 12 cells
   ras = predict_spatial(task_predict, learner, chunksize = 8 * 7 * 1e-6)
-  expect_equal(terra::values(ras)[,1], y)
+  expect_equal(terra::values(ras)[, 1], y)
 
   # chunk size is 12 out of 12 cells
   ras = predict_spatial(task_predict, learner, chunksize = 8 * 12 * 1e-6)
-  expect_equal(terra::values(ras)[,1], y)
+  expect_equal(terra::values(ras)[, 1], y)
 
   # chunk size is 13 out of 12 cells
   ras = predict_spatial(task_predict, learner, chunksize = 8 * 12 * 1e-6)
-  expect_equal(terra::values(ras)[,1], y)
+  expect_equal(terra::values(ras)[, 1], y)
 
   # chunk size is 25 out of 12 cells
   ras = predict_spatial(task_predict, learner, chunksize = 8 * 12 * 1e-6)
-  expect_equal(terra::values(ras)[,1], y)
+  expect_equal(terra::values(ras)[, 1], y)
 })
 
 test_that("sequential execution works", {
