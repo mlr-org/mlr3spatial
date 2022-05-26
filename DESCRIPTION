@@ -29,7 +29,6 @@ Imports:
     lgr (>= 0.4.2),
     methods,
     mlr3misc,
-    mlr3pipelines,
     R6 (>= 2.5.0),
     terra (>= 1.5-21),
     utils

@@ -2,7 +2,6 @@
 #' @import checkmate
 #' @import mlr3misc
 #' @import mlr3
-#' @import mlr3pipelines
 #' @importFrom R6 R6Class is.R6
 #' @importFrom stats complete.cases
 #' @section Learn mlr3:
