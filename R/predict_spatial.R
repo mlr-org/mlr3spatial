@@ -69,9 +69,9 @@ predict_spatial = function(task, learner, chunksize = 200L, format = "terra",
 
       stack = task$backend$stack
       pred = learner$predict(task, row_ids = cells_seq:((cells_seq + cells_to_read - 1)))
-      terra::writeValues(target_raster, pred$response,
-        terra::rowFromCell(stack, cells_seq),
-        terra::rowFromCell(stack, cells_to_read))
+      terra::writeValues(x = target_raster, v = pred$response,
+        start = terra::rowFromCell(stack, cells_seq), # start row number
+        nrows = terra::rowFromCell(stack, cells_to_read)) # how many rows
       lg$info("Chunk %i of %i finished", n, length(bs$cells_seq))
     })
 
