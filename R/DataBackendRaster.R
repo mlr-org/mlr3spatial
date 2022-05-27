@@ -46,7 +46,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
     #' Creates a backend for a raster objects.
     #'
     #' @template param-data
-    #' @template param-train-task
+    #' @template param-task-train
     #'
     initialize = function(data, task_train = NULL) {
       assert_class(data, "SpatRaster")
@@ -290,7 +290,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
 #'
 #' @template param-data
 #' @template param-primary-key
-#' @template param-train-task
+#' @template param-task-train
 #' @param ... (`any`)\cr
 #'   Not used.
 #'
