@@ -81,7 +81,7 @@ Raster stack.}
 \subsection{Method \code{new()}}{
 Creates a backend for a raster objects.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendRaster$new(data, train_task = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{DataBackendRaster$new(data, task_train = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -90,7 +90,7 @@ Creates a backend for a raster objects.
 \item{\code{data}}{(\link[terra:SpatRaster-class]{terra::SpatRaster})\cr
 The input \link[terra:SpatRaster-class]{terra::SpatRaster}.}
 
-\item{\code{train_task}}{\verb{[mlr3::Task]}\cr
+\item{\code{task_train}}{\verb{[mlr3::Task]}\cr
 Task used for training the learner.}
 }
 \if{html}{\out{</div>}}

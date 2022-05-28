@@ -46,9 +46,9 @@ DataBackendRaster = R6Class("DataBackendRaster",
     #' Creates a backend for a raster objects.
     #'
     #' @template param-data
-    #' @template param-train-task
+    #' @template param-task-train
     #'
-    initialize = function(data, train_task = NULL) {
+    initialize = function(data, task_train = NULL) {
       assert_class(data, "SpatRaster")
 
       # write raster to disk
@@ -74,16 +74,16 @@ DataBackendRaster = R6Class("DataBackendRaster",
       private$.ncol = terra::nlyr(data)
 
       # train task
-      if (!is.null(train_task)) {
-        assert_task(train_task)
-        if (train_task$target_names %in% private$.colnames) stopf("Target of %s is already a layer in data.", format(train_task))
-        private$.colnames = c(private$.colnames, train_task$target_names)
+      if (!is.null(task_train)) {
+        assert_task(task_train)
+        if (task_train$target_names %in% private$.colnames) stopf("Target of %s is already a layer in data.", format(task_train))
+        private$.colnames = c(private$.colnames, task_train$target_names)
         private$.ncol = private$.ncol + 1
-        private$.response = switch(train_task$task_type,
-          "classif" = factor(NA_character_, levels = train_task$levels()[[train_task$target_names]]),
+        private$.response = switch(task_train$task_type,
+          "classif" = factor(NA_character_, levels = task_train$levels()[[task_train$target_names]]),
           "regr" = NA_real_
         )
-        private$.target_names = train_task$target_names
+        private$.target_names = task_train$target_names
       }
       self$data_formats = "data.table"
     },
@@ -290,7 +290,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
 #'
 #' @template param-data
 #' @template param-primary-key
-#' @template param-train-task
+#' @template param-task-train
 #' @param ... (`any`)\cr
 #'   Not used.
 #'
@@ -299,28 +299,28 @@ DataBackendRaster = R6Class("DataBackendRaster",
 #'
 #' @exportS3Method
 #' @export as_data_backend.stars
-as_data_backend.stars = function(data, primary_key = NULL, train_task = NULL, ...) { # nolint
+as_data_backend.stars = function(data, primary_key = NULL, task_train = NULL, ...) { # nolint
   require_namespaces("stars")
   data = as(data, "SpatRaster")
-  DataBackendRaster$new(data, train_task = train_task)
+  DataBackendRaster$new(data, task_train = task_train)
 }
 #' @export as_data_backend.SpatRaster
 #' @exportS3Method
 #' @rdname as_data_backend
-as_data_backend.SpatRaster = function(data, primary_key = NULL, train_task = NULL, ...) { # nolint
-  DataBackendRaster$new(data, train_task = train_task)
+as_data_backend.SpatRaster = function(data, primary_key = NULL, task_train = NULL, ...) { # nolint
+  DataBackendRaster$new(data, task_train = task_train)
 }
 #' @export as_data_backend.RasterBrick
 #' @exportS3Method
 #' @rdname as_data_backend
-as_data_backend.RasterBrick = function(data, primary_key = NULL, train_task = NULL, ...) { # nolint
+as_data_backend.RasterBrick = function(data, primary_key = NULL, task_train = NULL, ...) { # nolint
   data = terra::rast(data)
-  DataBackendRaster$new(data, train_task = train_task)
+  DataBackendRaster$new(data, task_train = task_train)
 }
 #' @export as_data_backend.Raster
 #' @exportS3Method
 #' @rdname as_data_backend
-as_data_backend.Raster = function(data, primary_key = NULL, train_task = NULL, ...) { # nolint
+as_data_backend.Raster = function(data, primary_key = NULL, task_train = NULL, ...) { # nolint
   data = terra::rast(data)
-  DataBackendRaster$new(data, train_task = train_task)
+  DataBackendRaster$new(data, task_train = task_train)
 }

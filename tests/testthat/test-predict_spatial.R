@@ -16,7 +16,7 @@ test_that("predictions are written to the right cells", {
   learner$train(task)
 
   # predict task
-  backend = as_data_backend(rast, train_task = task)
+  backend = as_data_backend(rast, task_train = task)
   task_predict = as_task_regr(backend, id = "test", target = "y")
 
   # chunk size is 3 out of 12 cells
@@ -63,7 +63,7 @@ test_that("sequential execution works in chunks", {
   stack = create_stack(list(
     numeric_layer("x_1"),
     factor_layer("y", levels = c("a", "b"))),
-  layer_size = 10)
+  layer_size = 1)
   vector = create_vector(stack, n = 100)
   task_train = as_task_classif(vector, id = "test_vector", target = "y")
   learner = lrn("classif.ranger")
@@ -73,7 +73,7 @@ test_that("sequential execution works in chunks", {
   stack$y = NULL
   backend = DataBackendRaster$new(stack, task_train)
   task_predict = as_task_classif(backend, id = "test", target = "y")
-  ras = predict_spatial(task_predict, learner, chunksize = 10L)
+  ras = predict_spatial(task_predict, learner, chunksize = 1L)
 })
 
 test_that("parallel execution works in chunks", {
@@ -85,7 +85,7 @@ test_that("parallel execution works in chunks", {
   stack = create_stack(list(
     numeric_layer("x_1"),
     factor_layer("y", levels = c("a", "b"))),
-  layer_size = 10)
+  layer_size = 1)
   vector = create_vector(stack, n = 100)
   task_train = as_task_classif(vector, id = "test_vector", target = "y")
   learner = lrn("classif.ranger")
@@ -97,7 +97,7 @@ test_that("parallel execution works in chunks", {
   task_predict = as_task_classif(backend, id = "test", target = "y")
   learner$parallel_predict = TRUE
   with_future("multicore", workers = 2, {
-    ras = predict_spatial(task_predict, learner, chunksize = 10L)
+    ras = predict_spatial(task_predict, learner, chunksize = 1L)
   })
 })
 

@@ -48,6 +48,7 @@ reference:
     contents:
       - contains("Backend")
       - contains("_backend")
+      - contains("as_task_")
   - title: Prediction
     contents:
       - contains("predict")
