@@ -61,6 +61,7 @@ demo_stack_rasterbrick = function(size = 50, layers = 5) {
     rep(FALSE, ceiling(dimension^2 / 2))), nrow = dimension))
   brick = raster::brick(c(raster_features, list(raster_response)))
   names(brick) = c(paste0("x_", 1:(layers - 1)), "y")
+  raster::crs(brick) = "EPSG:4326"
   brick
 }
 

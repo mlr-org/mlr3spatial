@@ -66,6 +66,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
       private$.data = unique(sources) # nolint
       private$.categories = terra::cats(data)
       private$.layer_names = names(data)
+      private$.crs = terra::crs(data)
 
       # cache default active fields
       private$.rownames = 1:terra::ncell(data)
@@ -257,6 +258,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
         }
       })
       terra::set.names(stack, private$.layer_names)
+      terra::crs(stack) = private$.crs
       stack
     }
   ),
@@ -268,6 +270,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
     # stack
     .categories = NULL,
     .layer_names = NULL,
+    .crs = NULL,
 
     # cache
     .rownames = NULL,
