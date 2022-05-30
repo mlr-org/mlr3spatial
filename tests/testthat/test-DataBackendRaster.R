@@ -21,6 +21,9 @@ test_that("DataBackendRaster works with a single numeric layer", {
   # stack
   expect_names(names(backend$stack), identical.to = "x_1")
 
+  # crs
+  expect_length(terra::crs(backend$stack, describe = TRUE), 5L)
+
   # data
   expect_data_table(backend$data(rows = seq(100), cols = "x_1"), nrows = 100, ncols = 1, col.names = "strict", types = "numeric") # block read
   expect_names(names(backend$data(rows = seq(100), cols = "x_1")), identical.to = "x_1")
@@ -515,6 +518,8 @@ test_that("DataBackendRaster + stars", {
   expect_names(names(data), identical.to = c("band1", "band2"))
   expect_numeric(data$band1)
 
+  expect_length(terra::crs(backend$stack, describe = TRUE), 5L)
+
 })
 
 # brick input ------------------------------------------------------------------
@@ -535,6 +540,8 @@ test_that("DataBackendRaster + raster", {
   expect_names(names(data), identical.to = c("y", "x_2"))
   expect_numeric(data$y)
 
+  expect_length(terra::crs(backend$stack, describe = TRUE), 5L)
+
 })
 
 # raster input -----------------------------------------------------------------
@@ -554,5 +561,8 @@ test_that("DataBackendRaster + raster", {
   data = backend$distinct(rows = 1:5, cols = "y")
   expect_names(names(data), identical.to = "y")
   expect_numeric(data$y)
+
+  # crs
+  expect_length(terra::crs(backend$stack, describe = TRUE), 5L)
 
 })
