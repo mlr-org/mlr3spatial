@@ -28,6 +28,12 @@
     <loc>https://mlr3spatial.mlr-org.com/dev/reference/as_data_backend.html</loc>
   </url>
   <url>
+    <loc>https://mlr3spatial.mlr-org.com/dev/reference/as_task_classif.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3spatial.mlr-org.com/dev/reference/as_task_regr.html</loc>
+  </url>
+  <url>
     <loc>https://mlr3spatial.mlr-org.com/dev/reference/block_size.html</loc>
   </url>
   <url>
