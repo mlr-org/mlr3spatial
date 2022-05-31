@@ -11,7 +11,6 @@
   id = deparse(substitute(x)),
   positive = NULL,
   label = NA_character_,
-  task_train = NULL,
   ...
 )
 
@@ -41,9 +40,6 @@ Level of the positive class. See \link{TaskClassif}.}
 
 \item{label}{(\code{character(1)})\cr
 Label for the new instance.}
-
-\item{task_train}{\verb{[mlr3::Task]}\cr
-Task used for training the learner.}
 
 \item{...}{(any)\cr
 Additional arguments.}

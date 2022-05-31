@@ -13,7 +13,6 @@
   target = NULL,
   id = deparse(substitute(x)),
   label = NA_character_,
-  task_train = NULL,
   ...
 )
 
@@ -22,7 +21,6 @@
   target = NULL,
   id = deparse(substitute(x)),
   label = NA_character_,
-  task_train = NULL,
   ...
 )
 
@@ -31,7 +29,6 @@
   target = NULL,
   id = deparse(substitute(x)),
   label = NA_character_,
-  task_train = NULL,
   ...
 )
 
@@ -40,7 +37,6 @@
   target = NULL,
   id = deparse(substitute(x)),
   label = NA_character_,
-  task_train = NULL,
   ...
 )
 
@@ -49,7 +45,6 @@
   target = NULL,
   id = deparse(substitute(x)),
   label = NA_character_,
-  task_train = NULL,
   ...
 )
 }
@@ -66,9 +61,6 @@ Defaults to the (deparsed and substituted) name of the data argument.}
 
 \item{label}{(\code{character(1)})\cr
 Label for the new instance.}
-
-\item{task_train}{\verb{[mlr3::Task]}\cr
-Task used for training the learner.}
 
 \item{...}{(any)\cr
 Additional arguments.}

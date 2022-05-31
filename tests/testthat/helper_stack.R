@@ -53,7 +53,7 @@ create_stack = function(layers, layer_size = NULL, dimension = NULL) {
   set_names(rast(layers), ids)
 }
 
-create_vector = function(stack, n = 1000) {
+sample_stack = function(stack, n = 1000) {
   # workaround spatSample does not work with categorical layers
   extent = terra::ext(stack)
   layer_factor = names(stack)[terra::is.factor(stack)]
@@ -68,9 +68,14 @@ create_vector = function(stack, n = 1000) {
   vector
 }
 
-add_aoi = function(stack) {
-  val = terra::values(stack[[1]])
-  val[seq(nrow(val) * 0.1)] = NA_real_
-  stack = terra::setValues(stack[[1]], val)
-  stack
+mask_stack = function(stack) {
+  x = (terra::xmax(stack) - terra::xmin(stack)) / 2
+  y = (terra::xmax(stack) - terra::ymin(stack)) / 2
+  point = sf::st_as_sf(sf::st_as_sfc(list(sf::st_point(c(x, y)))))
+  polygon = sf::st_buffer(point, dist = x * 0.8)
+  mask = terra::vect(polygon)
+  terra::crs(mask) = "EPSG:4326"
+  terra::crs(stack) = "EPSG:4326"
+
+  terra::mask(stack, mask)
 }

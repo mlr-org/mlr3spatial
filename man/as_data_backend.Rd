@@ -8,13 +8,13 @@
 \alias{as_data_backend.sf}
 \title{Coerce to spatial DataBackend}
 \usage{
-\method{as_data_backend}{stars}(data, primary_key = NULL, task_train = NULL, ...)
+\method{as_data_backend}{stars}(data, primary_key = NULL, ...)
 
-\method{as_data_backend}{SpatRaster}(data, primary_key = NULL, task_train = NULL, ...)
+\method{as_data_backend}{SpatRaster}(data, primary_key = NULL, ...)
 
-\method{as_data_backend}{RasterBrick}(data, primary_key = NULL, task_train = NULL, ...)
+\method{as_data_backend}{RasterBrick}(data, primary_key = NULL, ...)
 
-\method{as_data_backend}{Raster}(data, primary_key = NULL, task_train = NULL, ...)
+\method{as_data_backend}{Raster}(data, primary_key = NULL, ...)
 
 \method{as_data_backend}{sf}(data, primary_key = NULL, ...)
 }
@@ -24,9 +24,6 @@ The input \link[terra:SpatRaster-class]{terra::SpatRaster}.}
 
 \item{primary_key}{(\code{character(1)} | \code{integer()})\cr
 Name of the primary key column, or integer vector of row ids.}
-
-\item{task_train}{\verb{[mlr3::Task]}\cr
-Task used for training the learner.}
 
 \item{...}{(\code{any})\cr
 Not used.}
