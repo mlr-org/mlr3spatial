@@ -208,7 +208,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
     #' Number of columns (variables).
     ncol = function(rhs) {
       assert_ro_binding(rhs)
-      terra::nlyr(self$stack) + 1
+      terra::nlyr(self$stack)
     },
 
     #' @field stack (`SpatRaster`)\cr
