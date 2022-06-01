@@ -47,6 +47,8 @@
 
 .onLoad = function(libname, pkgname) {
   # nocov start
+  x = getFromNamespace("mlr_tasks", ns = "mlr3")
+  x$add("leipzig", load_task_leipzig)
 
   # setup logger
   assign("lg", lgr::get_logger(pkgname), envir = parent.env(environment()))
