@@ -274,21 +274,6 @@ test_that("data prototyp works", {
   backend = DataBackendRaster$new(stack)
 
   expect_data_table(backend$data(rows = integer(0), cols = c("x_1", "y")), nrows = 0, ncols = 2)
-
-  # fake response
-  stack = create_stack(list(
-    numeric_layer("x_1"),
-    factor_layer("y", levels = c("a", "b"))),
-  dimension = 10)
-  vector = sample_stack(stack, n = 10)
-  task = as_task_classif(vector, id = "test_vector", target = "y")
-
-  expect_error(DataBackendRaster$new(stack, task), "is already a layer")
-  stack$y = NULL
-
-  backend = DataBackendRaster$new(stack, task)
-
-  expect_data_table(backend$data(rows = integer(0), cols = c("x_1", "y")), nrows = 0, ncols = 2)
 })
 
 test_that("in memory rasters work", {

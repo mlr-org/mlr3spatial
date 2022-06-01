@@ -14,12 +14,11 @@ test_that("LearnerRegrSpatial ignores observations with missing values", {
 
   # predict task
   stack$y = NULL
-  stack = add_aoi(stack)
-  backend = DataBackendRaster$new(stack, task_train)
-  task_predict = as_task_regr(backend, id = "test", target = "y")
+  stack = mask_stack(stack)
+  task_predict = as_task_regr(stack, id = "test")
   learner_spatial = LearnerRegrSpatial$new(learner)
   pred = learner_spatial$predict(task_predict)
 
   expect_true(all(is.na(pred$response[seq(10)])))
-  expect_numeric(pred$response[11:100], any.missing = FALSE, all.missing = FALSE)
+  expect_numeric(pred$response, any.missing = TRUE, all.missing = FALSE)
 })

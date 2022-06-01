@@ -1,13 +1,13 @@
-# DataBackendRaster ------------------------------------------------------------
+# raster predict ---------------------------------------------------------------
 
-test_that("predictions are written to the right cells", {
+test_that("predictions are written to raster", {
   # [1] [2] [2]
   # [1] [1] [1]
   # [2] [2] [1]
   # [2] [2] [2]
   c_1 = y = c(1, 2, 2, 1, 1, 1, 2, 2, 1, 2, 2, 2)
-  rast = terra::rast(matrix(c_1, ncol = 3, byrow = TRUE))
-  terra::set.names(rast, "c_1")
+  raster = terra::rast(matrix(c_1, ncol = 3, byrow = TRUE))
+  terra::set.names(raster, "c_1")
 
   # train task
   task = as_task_regr(data.table(cbind(c_1, y)), id = "test", target = "y")
@@ -16,35 +16,34 @@ test_that("predictions are written to the right cells", {
   learner$train(task)
 
   # predict task
-  backend = as_data_backend(rast, task_train = task)
-  task_predict = as_task_regr(backend, id = "test", target = "y")
+  task_predict = as_task_regr(raster, id = "test")
 
   # chunk size is 3 out of 12 cells
-  ras = predict_spatial(task_predict, learner, chunksize = 8 * 3 * 1e-6)
-  expect_equal(terra::values(ras)[, 1], y)
+  raster = predict_spatial(task_predict, learner, chunksize = 8 * 3 * 1e-6)
+  expect_equal(terra::values(raster)[, 1], y)
 
   # chunk size is 4 out of 12 cells
-  ras = predict_spatial(task_predict, learner, chunksize = 8 * 4 * 1e-6)
-  expect_equal(terra::values(ras)[, 1], y)
+  raster = predict_spatial(task_predict, learner, chunksize = 8 * 4 * 1e-6)
+  expect_equal(terra::values(raster)[, 1], y)
 
   # chunk size is 7 out of 12 cells
-  ras = predict_spatial(task_predict, learner, chunksize = 8 * 7 * 1e-6)
-  expect_equal(terra::values(ras)[, 1], y)
+  raster = predict_spatial(task_predict, learner, chunksize = 8 * 7 * 1e-6)
+  expect_equal(terra::values(raster)[, 1], y)
 
   # chunk size is 12 out of 12 cells
-  ras = predict_spatial(task_predict, learner, chunksize = 8 * 12 * 1e-6)
-  expect_equal(terra::values(ras)[, 1], y)
+  raster = predict_spatial(task_predict, learner, chunksize = 8 * 12 * 1e-6)
+  expect_equal(terra::values(raster)[, 1], y)
 
   # chunk size is 13 out of 12 cells
-  ras = predict_spatial(task_predict, learner, chunksize = 8 * 12 * 1e-6)
-  expect_equal(terra::values(ras)[, 1], y)
+  raster = predict_spatial(task_predict, learner, chunksize = 8 * 12 * 1e-6)
+  expect_equal(terra::values(raster)[, 1], y)
 
   # chunk size is 25 out of 12 cells
-  ras = predict_spatial(task_predict, learner, chunksize = 8 * 12 * 1e-6)
-  expect_equal(terra::values(ras)[, 1], y)
+  raster = predict_spatial(task_predict, learner, chunksize = 8 * 12 * 1e-6)
+  expect_equal(terra::values(raster)[, 1], y)
 })
 
-# sequential  ------------------------------------------------------------------
+# sequential raster predict  ---------------------------------------------------
 
 test_that("sequential execution works", {
   # train
@@ -82,7 +81,7 @@ test_that("sequential execution works in chunks", {
   expect_class(ras, "SpatRaster")
 })
 
-# parallel ---------------------------------------------------------------------
+# parallel raster predict ------------------------------------------------------
 
 test_that("parallel execution works with multicore", {
   skip_on_os("windows")
@@ -148,7 +147,7 @@ test_that("parallel execution works with callr", {
   expect_class(ras, "SpatRaster")
 })
 
-# output formats ---------------------------------------------------------------
+# raster output formats --------------------------------------------------------
 
 test_that("stars output works", {
   skip_if_not_installed("stars")
@@ -192,9 +191,9 @@ test_that("raster output works", {
   expect_class(ras, "RasterLayer")
 })
 
-# missing values ---------------------------------------------------------------
+# raster with missing values ---------------------------------------------------
 
-test_that("classif prediction with missing values works", {
+test_that("prediction on classification task works with missing values", {
   skip_if_not_installed("mlr3learners")
   require_namespaces("mlr3learners")
 
@@ -218,7 +217,7 @@ test_that("classif prediction with missing values works", {
   expect_numeric(terra::values(ras[["y"]]), any.missing = TRUE, all.missing = FALSE)
 })
 
-test_that("regr prediction with missing values works", {
+test_that("prediction on regression task works with missing values", {
   skip_if_not_installed("mlr3learners")
   require_namespaces("mlr3learners")
 
@@ -241,7 +240,7 @@ test_that("regr prediction with missing values works", {
   expect_numeric(terra::values(ras[["y"]]), any.missing = TRUE, all.missing = FALSE)
 })
 
-# DataBackendVector ------------------------------------------------------------
+# sequential vector predict  ---------------------------------------------------
 
 test_that("sequential execution works", {
   task = generate_vector_task()
