@@ -4,7 +4,6 @@
 \alias{as_data_backend.stars}
 \alias{as_data_backend.SpatRaster}
 \alias{as_data_backend.RasterBrick}
-\alias{as_data_backend.Raster}
 \alias{as_data_backend.sf}
 \title{Coerce to spatial DataBackend}
 \usage{
@@ -13,8 +12,6 @@
 \method{as_data_backend}{SpatRaster}(data, primary_key = NULL, ...)
 
 \method{as_data_backend}{RasterBrick}(data, primary_key = NULL, ...)
-
-\method{as_data_backend}{Raster}(data, primary_key = NULL, ...)
 
 \method{as_data_backend}{sf}(data, primary_key = NULL, ...)
 }
