@@ -34,13 +34,10 @@ Imports:
     utils
 Suggests:
     bench,
-    e1071,
     future,
     future.callr,
     knitr,
     mlr3learners (>= 0.4.5),
-    mlr3tuning,
-    paradox,
     ranger,
     raster,
     rgdal,
