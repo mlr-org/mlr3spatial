@@ -64,15 +64,3 @@ as_task_regr.RasterBrick = function(x, target = NULL, id = deparse(substitute(x)
     TaskRegr$new(id = id, backend = b, target = target, label = label)
   }
 }
-
-#' @rdname as_task_regr
-#' @export as_task_regr.Raster
-#' @exportS3Method
-as_task_regr.Raster = function(x, target = NULL, id = deparse(substitute(x)), label = NA_character_, ...) {
-  b = as_data_backend(x)
-  if (is.null(target)) {
-    Task$new(id = id, backend = b, task_type = "regr")
-  } else {
-    TaskRegr$new(id = id, backend = b, target = target, label = label)
-  }
-}
