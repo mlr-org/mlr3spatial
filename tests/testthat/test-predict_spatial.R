@@ -59,8 +59,8 @@ test_that("sequential execution works", {
   # predict
   stack$y = NULL
   task_predict = as_task_classif(stack, id = "test")
-  ras = predict_spatial(task_predict, learner, chunksize = 1L)
-  expect_class(ras, "SpatRaster")
+  pred = predict_spatial(task_predict, learner, chunksize = 1L)
+  expect_class(pred, "SpatRaster")
 })
 
 test_that("sequential execution works in chunks", {
@@ -77,8 +77,8 @@ test_that("sequential execution works in chunks", {
   # predict
   stack$y = NULL
   task_predict = as_task_classif(stack, id = "test")
-  ras = predict_spatial(task_predict, learner, chunksize = 1L)
-  expect_class(ras, "SpatRaster")
+  pred = predict_spatial(task_predict, learner, chunksize = 1L)
+  expect_class(pred, "SpatRaster")
 })
 
 # parallel raster predict ------------------------------------------------------
@@ -100,9 +100,9 @@ test_that("parallel execution works with multicore", {
   stack$y = NULL
   task_predict = as_task_classif(stack, id = "test")
   with_future("multicore", workers = 2, {
-    ras = predict_spatial(task_predict, learner, chunksize = 1L)
+    pred = predict_spatial(task_predict, learner, chunksize = 1L)
   })
-  expect_class(ras, "SpatRaster")
+  expect_class(pred, "SpatRaster")
 })
 
 test_that("parallel execution works with multisession", {
@@ -121,9 +121,9 @@ test_that("parallel execution works with multisession", {
   stack$y = NULL
   task_predict = as_task_classif(stack, id = "test")
   with_future("multisession", workers = 2, {
-    ras = predict_spatial(task_predict, learner, chunksize = 1L)
+    pred = predict_spatial(task_predict, learner, chunksize = 1L)
   })
-  expect_class(ras, "SpatRaster")
+  expect_class(pred, "SpatRaster")
 })
 
 test_that("parallel execution works with callr", {
@@ -142,9 +142,9 @@ test_that("parallel execution works with callr", {
   stack$y = NULL
   task_predict = as_task_classif(stack, id = "test")
   with_future(future.callr::callr, workers = 2, {
-    ras = predict_spatial(task_predict, learner, chunksize = 1L)
+    pred = predict_spatial(task_predict, learner, chunksize = 1L)
   })
-  expect_class(ras, "SpatRaster")
+  expect_class(pred, "SpatRaster")
 })
 
 # raster output formats --------------------------------------------------------
@@ -166,8 +166,8 @@ test_that("stars output works", {
   # predict
   stack$y = NULL
   task_predict = as_task_classif(stack, id = "test")
-  ras = predict_spatial(task_predict, learner, chunksize = 1L, format = "stars")
-  expect_class(ras, "stars")
+  pred = predict_spatial(task_predict, learner, chunksize = 1L, format = "stars")
+  expect_class(pred, "stars")
 })
 
 test_that("raster output works", {
@@ -187,8 +187,8 @@ test_that("raster output works", {
   # predict
   stack$y = NULL
   task_predict = as_task_classif(stack, id = "test")
-  ras = predict_spatial(task_predict, learner, chunksize = 1L, format = "raster")
-  expect_class(ras, "RasterLayer")
+  pred = predict_spatial(task_predict, learner, chunksize = 1L, format = "raster")
+  expect_class(pred, "RasterLayer")
 })
 
 # raster with missing values ---------------------------------------------------
@@ -211,10 +211,10 @@ test_that("prediction on classification task works with missing values", {
   stack$y = NULL
   stack = mask_stack(stack)
   task_predict = as_task_classif(stack, id = "test")
-  ras = predict_spatial(task_predict, learner, chunksize = 1L)
-  expect_class(ras, "SpatRaster")
-  expect_true(all(is.na(terra::values(ras[["y"]])[seq(10)])))
-  expect_numeric(terra::values(ras[["y"]]), any.missing = TRUE, all.missing = FALSE)
+  pred = predict_spatial(task_predict, learner, chunksize = 1L)
+  expect_class(pred, "SpatRaster")
+  expect_true(all(is.na(terra::values(pred[["y"]])[seq(10)])))
+  expect_numeric(terra::values(pred[["y"]]), any.missing = TRUE, all.missing = FALSE)
 })
 
 test_that("prediction on regression task works with missing values", {
@@ -235,58 +235,105 @@ test_that("prediction on regression task works with missing values", {
   stack$y = NULL
   stack = mask_stack(stack)
   task_predict = as_task_regr(stack, id = "test")
-  ras = predict_spatial(task_predict, learner, chunksize = 1L)
-  expect_true(all(is.na(terra::values(ras[["y"]])[seq(10)])))
-  expect_numeric(terra::values(ras[["y"]]), any.missing = TRUE, all.missing = FALSE)
+  pred = predict_spatial(task_predict, learner, chunksize = 1L)
+  expect_true(all(is.na(terra::values(pred[["y"]])[seq(10)])))
+  expect_numeric(terra::values(pred[["y"]]), any.missing = TRUE, all.missing = FALSE)
 })
 
 # sequential vector predict  ---------------------------------------------------
 
 test_that("sequential execution works", {
-  task = generate_vector_task()
-  learner = lrn("regr.rpart")
-  row_ids = sample(1:task$nrow, 50)
-  learner$train(task, row_ids = row_ids)
-  pred = predict_spatial(task, learner)
+  # train task
+  stack = create_stack(list(
+    numeric_layer("x_1"),
+    numeric_layer("y")),
+  dimension = 10)
+  vector = sample_stack(stack, n = 10)
+  task_train = as_task_regr(vector, id = "test_vector", target = "y")
+  learner = lrn("regr.ranger")
+  learner$train(task_train)
+
+  # predict task
+  vector$y = NULL
+  task_predict = as_task_regr(vector, id = "test")
+
+  pred = predict_spatial(task_predict, learner)
+
   expect_class(pred, "sf")
+  expect_names(names(pred), identical.to = c("y", "geometry"))
 })
 
-test_that("parallelization (multicore) works", {
+# parallel vector predict ------------------------------------------------------
+
+test_that("parallel execution works with multicore", {
   skip_on_os("windows")
-  # parallel
-  task = generate_vector_task()
-  learner = lrn("regr.rpart")
-  row_ids = sample(1:task$nrow, 50)
-  learner$train(task, row_ids = row_ids)
+  # train task
+  stack = create_stack(list(
+    numeric_layer("x_1"),
+    numeric_layer("y")),
+  dimension = 10)
+  vector = sample_stack(stack, n = 10)
+  task_train = as_task_regr(vector, id = "test_vector", target = "y")
+  learner = lrn("regr.ranger")
   learner$parallel_predict = TRUE
+  learner$train(task_train)
+
+  # predict task
+  vector$y = NULL
+  task_predict = as_task_regr(vector, id = "test")
+
   with_future("multicore", workers = 2, {
-    pred = predict_spatial(task, learner)
-    expect_class(pred, "sf")
+    pred = predict_spatial(task_predict, learner)
   })
+
+  expect_class(pred, "sf")
+  expect_names(names(pred), identical.to = c("y", "geometry"))
 })
 
-test_that("parallelization (multisession) works", {
-  # parallel
-  task = generate_vector_task()
-  learner = lrn("regr.rpart")
-  row_ids = sample(1:task$nrow, 50)
-  learner$train(task, row_ids = row_ids)
+test_that("parallel execution works with multisession", {
+  # train task
+  stack = create_stack(list(
+    numeric_layer("x_1"),
+    numeric_layer("y")),
+  dimension = 10)
+  vector = sample_stack(stack, n = 10)
+  task_train = as_task_regr(vector, id = "test_vector", target = "y")
+  learner = lrn("regr.ranger")
   learner$parallel_predict = TRUE
+  learner$train(task_train)
+
+  # predict task
+  vector$y = NULL
+  task_predict = as_task_regr(vector, id = "test")
+
   with_future("multisession", workers = 2, {
-    pred = predict_spatial(task, learner)
-    expect_class(pred, "sf")
+    pred = predict_spatial(task_predict, learner)
   })
+
+  expect_class(pred, "sf")
+  expect_names(names(pred), identical.to = c("y", "geometry"))
 })
 
-test_that("parallelization (callr) works", {
-  # parallel
-  task = generate_vector_task()
-  learner = lrn("regr.rpart")
-  row_ids = sample(1:task$nrow, 50)
-  learner$train(task, row_ids = row_ids)
+test_that("parallel execution works with callr", {
+  # train task
+  stack = create_stack(list(
+    numeric_layer("x_1"),
+    numeric_layer("y")),
+  dimension = 10)
+  vector = sample_stack(stack, n = 10)
+  task_train = as_task_regr(vector, id = "test_vector", target = "y")
+  learner = lrn("regr.ranger")
   learner$parallel_predict = TRUE
-  with_future(future.callr::callr, workers = 4, {
-    pred = predict_spatial(task, learner)
-    expect_class(pred, "sf")
+  learner$train(task_train)
+
+  # predict task
+  vector$y = NULL
+  task_predict = as_task_regr(vector, id = "test")
+
+  with_future(future.callr::callr, workers = 2, {
+    pred = predict_spatial(task_predict, learner)
   })
+
+  expect_class(pred, "sf")
+  expect_names(names(pred), identical.to = c("y", "geometry"))
 })
