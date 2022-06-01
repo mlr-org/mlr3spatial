@@ -36,8 +36,7 @@
 #' ras = predict_spatial(task, learner)
 #' ras
 #' @export
-predict_spatial = function(task, learner, chunksize = 200L, format = "terra",
-  filename = NULL) {
+predict_spatial = function(task, learner, chunksize = 200L, format = "terra", filename = NULL) {
   assert_multi_class(task$backend, c("DataBackendRaster", "DataBackendVector"))
   assert_learner(learner)
   assert_task(task)
@@ -79,11 +78,11 @@ predict_spatial = function(task, learner, chunksize = 200L, format = "terra",
     lg$info("Finished raster prediction in %i seconds", as.integer(proc.time()[3] - start_time))
 
     if (learner$task_type == "classif") {
-      levels = task$levels()[[task$target_names]]
+      levels = learner$learner$state$train_task$levels()[[learner$learner$state$train_task$target_names]]
       value = data.table(ID = seq_along(levels), categories = levels)
       target_raster = terra::categories(target_raster, value = value, index = 2)
     }
-    target_raster = set_names(target_raster, task$target_names)
+    target_raster = set_names(target_raster, learner$learner$state$train_task$target_names)
 
     switch(format,
       "terra" = target_raster,

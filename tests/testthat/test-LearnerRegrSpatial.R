@@ -7,19 +7,18 @@ test_that("LearnerRegrSpatial ignores observations with missing values", {
     factor_layer("c_1", levels = c("a", "b")),
     numeric_layer("y")),
   dimension = 10)
-  vector = create_vector(stack, n = 10)
+  vector = sample_stack(stack, n = 10)
   task_train = as_task_regr(vector, id = "test_vector", target = "y")
   learner = lrn("regr.ranger")
   learner$train(task_train)
 
   # predict task
   stack$y = NULL
-  stack = add_aoi(stack)
-  backend = DataBackendRaster$new(stack, task_train)
-  task_predict = as_task_regr(backend, id = "test", target = "y")
+  stack = mask_stack(stack)
+  task_predict = as_task_regr(stack, id = "test")
   learner_spatial = LearnerRegrSpatial$new(learner)
   pred = learner_spatial$predict(task_predict)
 
   expect_true(all(is.na(pred$response[seq(10)])))
-  expect_numeric(pred$response[11:100], any.missing = FALSE, all.missing = FALSE)
+  expect_numeric(pred$response, any.missing = TRUE, all.missing = FALSE)
 })
