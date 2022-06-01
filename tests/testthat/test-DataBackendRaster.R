@@ -236,33 +236,33 @@ test_that("DataBackendRaster works with multiple numeric and factor layers", {
 
 test_that("data access works", {
   # data
-  # [01] [02] [03] [04]
-  # [05] [06] [07] [08]
-  # [09] [10] [11] [12]
+  # [13] [14] [15] [16]
+  # [17] [18] [19] [20]
+  # [21] [22] [23] [24]
   stack = terra::rast(nrows = 3, ncols = 4)
-  stack[] = 1:12
+  stack[] = 13:24
   names(stack) = "y"
   backend = DataBackendRaster$new(stack)
 
   # [x] [x] [x] [x]
   # [ ] [ ] [ ] [ ]
   # [ ] [ ] [ ] [ ]
-  expect_equal(backend$data(rows = 1:4, cols = "y"), data.table(y = c(1, 2, 3, 4)))
+  expect_equal(backend$data(rows = 1:4, cols = "y"), data.table(y = c(13, 14, 15, 16)))
 
   # [ ] [ ] [ ] [ ]
   # [ ] [ ] [ ] [ ]
   # [x] [x] [x] [x]
-  expect_equal(backend$data(rows = 9:12, cols = "y"), data.table(y = c(9, 10, 11, 12)))
+  expect_equal(backend$data(rows = 9:12, cols = "y"), data.table(y = c(21, 22, 23, 24)))
 
   # [ ] [ ] [ ] [ ]
   # [ ] [ ] [ ] [x]
   # [x] [x] [ ] [ ]
-  expect_equal(backend$data(rows = 8:10, cols = "y"), data.table(y = c(8, 9, 10)))
+  expect_equal(backend$data(rows = 8:10, cols = "y"), data.table(y = c(20, 21, 22)))
 
   # [x] [ ] [x] [ ]
   # [ ] [ ] [ ] [x]
   # [ ] [x] [x] [ ]
-  expect_equal(backend$data(rows = c(1, 3, 8, 10, 11), cols = "y"), data.table(y = c(1, 3, 8, 10, 11)))
+  expect_equal(backend$data(rows = c(1, 3, 8, 10, 11), cols = "y"), data.table(y = c(13, 15, 20, 22, 23)))
 })
 
 test_that("data prototyp works", {
@@ -433,29 +433,6 @@ test_that("DataBackendRaster + raster", {
   expect_names(names(data), identical.to = c("y", "x_2"))
   expect_numeric(data$y)
 
-  expect_length(terra::crs(backend$stack, describe = TRUE), 5L)
-
-})
-
-# raster input -----------------------------------------------------------------
-
-test_that("DataBackendRaster + raster", {
-  backend = as_data_backend(generate_raster_brick()[[5]])
-
-  # head
-  data = backend$head(10L)
-  expect_data_table(data, nrows = 10L, ncols = 1L)
-  expect_names(names(data), identical.to = "y")
-
-  # distinct
-  # no support for factors when using bricks
-  expect_equal(backend$distinct(rows = 1:1000, cols = "y"),
-    list("y" = c(1, 0)))
-  data = backend$distinct(rows = 1:5, cols = "y")
-  expect_names(names(data), identical.to = "y")
-  expect_numeric(data$y)
-
-  # crs
   expect_length(terra::crs(backend$stack, describe = TRUE), 5L)
 
 })
