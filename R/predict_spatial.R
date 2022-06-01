@@ -92,7 +92,7 @@ predict_spatial = function(task, learner, chunksize = 200L, format = "terra", fi
   } else {
     pred = learner$predict(task)
 
-    sf_pred = sf::st_as_sf(data.frame(pred = pred$response, geometry = task$backend$geometry))
+    sf_pred = set_names(sf::st_as_sf(data.frame(pred$response, task$backend$geometry)), c(learner$learner$state$train_task$target_names, "geometry"))
 
     if (!is.null(filename)) {
       sf::st_write(sf_pred, filename, quiet = TRUE)
