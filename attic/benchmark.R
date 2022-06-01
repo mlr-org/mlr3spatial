@@ -9,7 +9,7 @@ stack = create_stack(list(
   numeric_layer("x_1"),
   factor_layer("y", levels = c("a", "b"))),
 layer_size = 10)
-vector = create_vector(stack, n = 100)
+vector = sample_stack(stack, n = 100)
 task_train = as_task_classif(vector, id = "test_vector", target = "y")
 learner = lrn("classif.ranger")
 learner$train(task_train)
@@ -32,7 +32,7 @@ stack = create_stack(list(
   numeric_layer("x_1"),
   factor_layer("y", levels = c("a", "b"))),
 layer_size = 10)
-vector = create_vector(stack, n = 100)
+vector = sample_stack(stack, n = 100)
 task_train = as_task_classif(vector, id = "test_vector", target = "y")
 learner = lrn("classif.ranger")
 learner$train(task_train)
@@ -67,7 +67,7 @@ stack = create_stack(list(
   numeric_layer("x_1"),
   factor_layer("y", levels = c("a", "b"))),
 layer_size = 10)
-vector = create_vector(stack, n = 100)
+vector = sample_stack(stack, n = 100)
 task_train = as_task_classif(vector, id = "test_vector", target = "y")
 learner = lrn("classif.ranger")
 learner$train(task_train)
@@ -99,7 +99,7 @@ stack = create_stack(list(
   numeric_layer("x_1"),
   factor_layer("y", levels = c("a", "b"))),
 layer_size = 50)
-vector = create_vector(stack, n = 100)
+vector = sample_stack(stack, n = 100)
 task_train = as_task_classif(vector, id = "test_vector", target = "y")
 learner = lrn("classif.ranger")
 learner$train(task_train)
@@ -131,7 +131,7 @@ stack = create_stack(list(
   numeric_layer("x_1"),
   factor_layer("y", levels = c("a", "b"))),
 layer_size = 20)
-vector = create_vector(stack, n = 100)
+vector = sample_stack(stack, n = 100)
 task_train = as_task_classif(vector, id = "test_vector", target = "y")
 learner = lrn("classif.ranger")
 learner$train(task_train)

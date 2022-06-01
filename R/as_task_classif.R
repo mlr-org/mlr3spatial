@@ -14,7 +14,6 @@
 #'   Level of the positive class. See [TaskClassif].
 #' @param label (`character(1)`)\cr
 #'   Label for the new instance.
-#' @template param-task-train
 #' @param ... (any)\cr
 #'   Additional arguments.
 #'
@@ -23,15 +22,23 @@
 #'
 #' @export as_task_classif.sf
 #' @exportS3Method
-as_task_classif.sf = function(x, target = NULL, id = deparse(substitute(x)), positive = NULL, label = NA_character_, task_train = NULL, ...) {
+as_task_classif.sf = function(x, target = NULL, id = deparse(substitute(x)), positive = NULL, label = NA_character_, ...) {
   b = as_data_backend(x)
-  TaskClassif$new(id = id, backend = b, target = target, positive = positive, label = label)
+  if (is.null(target)) {
+    Task$new(id = id, backend = b, task_type = "classif", label = label)
+  } else {
+    TaskClassif$new(id = id, backend = b, target = target, positive = positive, label = label)
+  }
 }
 
 #' @rdname as_task_classif
 #' @export as_task_classif.SpatRaster
 #' @exportS3Method
-as_task_classif.SpatRaster = function(x, target = NULL, id = deparse(substitute(x)), positive = NULL, label = NA_character_, task_train = NULL, ...) {
-  b = as_data_backend(x, task_train = task_train)
-  TaskClassif$new(id = id, backend = b, target = target, positive = positive, label = label)
+as_task_classif.SpatRaster = function(x, target = NULL, id = deparse(substitute(x)), positive = NULL, label = NA_character_, ...) {
+  b = as_data_backend(x)
+  if (is.null(target)) {
+    Task$new(id = id, backend = b, task_type = "classif", label = label)
+  } else {
+    TaskClassif$new(id = id, backend = b, target = target, positive = positive, label = label)
+  }
 }
