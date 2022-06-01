@@ -183,7 +183,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
   ),
 
   active = list(
-  #' @field rownames (`integer()`)\cr
+    #' @field rownames (`integer()`)\cr
     #' Returns vector of all distinct row identifiers, i.e. the contents of the primary key column.
     rownames = function(rhs) {
       assert_ro_binding(rhs)
