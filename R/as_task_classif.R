@@ -34,7 +34,7 @@ as_task_classif.sf = function(x, target = NULL, id = deparse(substitute(x)), pos
 #' @rdname as_task_classif
 #' @export as_task_classif.SpatRaster
 #' @exportS3Method
-as_task_classif.SpatRaster = function(x, target = NULL, id = deparse(substitute(x)), positive = NULL, label = NA_character_, task_train = NULL, ...) {
+as_task_classif.SpatRaster = function(x, target = NULL, id = deparse(substitute(x)), positive = NULL, label = NA_character_, ...) {
   b = as_data_backend(x)
   if (is.null(target)) {
     Task$new(id = id, backend = b, task_type = "classif", label = label)

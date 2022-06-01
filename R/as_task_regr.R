@@ -33,7 +33,7 @@ as_task_regr.sf = function(x, target = NULL, id = deparse(substitute(x)), label 
 #' @export as_task_regr.stars
 #' @exportS3Method
 as_task_regr.stars = function(x, target = NULL, id = deparse(substitute(x)), label = NA_character_, ...) {
-  b = as_data_backend(x, task_train = task_train)
+  b = as_data_backend(x)
   if (is.null(target)) {
     Task$new(id = id, backend = b, task_type = "regr")
   } else {
@@ -45,7 +45,7 @@ as_task_regr.stars = function(x, target = NULL, id = deparse(substitute(x)), lab
 #' @export as_task_regr.SpatRaster
 #' @exportS3Method
 as_task_regr.SpatRaster = function(x, target = NULL, id = deparse(substitute(x)), label = NA_character_, ...) {
-  b = as_data_backend(x, task_train = task_train)
+  b = as_data_backend(x)
   if (is.null(target)) {
     Task$new(id = id, backend = b, task_type = "regr")
   } else {
@@ -57,7 +57,7 @@ as_task_regr.SpatRaster = function(x, target = NULL, id = deparse(substitute(x))
 #' @export as_task_regr.RasterBrick
 #' @exportS3Method
 as_task_regr.RasterBrick = function(x, target = NULL, id = deparse(substitute(x)), label = NA_character_, ...) {
-  b = as_data_backend(x, task_train = task_train)
+  b = as_data_backend(x)
   if (is.null(target)) {
     Task$new(id = id, backend = b, task_type = "regr")
   } else {
@@ -69,7 +69,7 @@ as_task_regr.RasterBrick = function(x, target = NULL, id = deparse(substitute(x)
 #' @export as_task_regr.Raster
 #' @exportS3Method
 as_task_regr.Raster = function(x, target = NULL, id = deparse(substitute(x)), label = NA_character_, ...) {
-  b = as_data_backend(x, task_train = task_train)
+  b = as_data_backend(x)
   if (is.null(target)) {
     Task$new(id = id, backend = b, task_type = "regr")
   } else {

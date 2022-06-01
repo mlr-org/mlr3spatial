@@ -20,7 +20,6 @@
   id = deparse(substitute(x)),
   positive = NULL,
   label = NA_character_,
-  task_train = NULL,
   ...
 )
 }
