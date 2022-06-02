@@ -1,5 +1,5 @@
 test_that("chunk size is 1 out of 8 rows", {
-  raster = create_stack(list(
+  raster = generate_stack(list(
     numeric_layer("x_1")),
   dimension = 8)
 
@@ -9,7 +9,7 @@ test_that("chunk size is 1 out of 8 rows", {
 })
 
 test_that("chunk size is 2 out of 8 rows", {
-  raster = create_stack(list(
+  raster = generate_stack(list(
     numeric_layer("x_1")),
   dimension = 8)
 
@@ -19,7 +19,7 @@ test_that("chunk size is 2 out of 8 rows", {
 })
 
 test_that("chunk size is 1/2 out of 8 rows", {
-  raster = create_stack(list(
+  raster = generate_stack(list(
     numeric_layer("x_1")),
   dimension = 8)
 
@@ -29,7 +29,7 @@ test_that("chunk size is 1/2 out of 8 rows", {
 })
 
 test_that("chunk size is 1 1/2 out of 8 rows", {
-  raster = create_stack(list(
+  raster = generate_stack(list(
     numeric_layer("x_1")),
   dimension = 8)
 
@@ -39,7 +39,7 @@ test_that("chunk size is 1 1/2 out of 8 rows", {
 })
 
 test_that("chunk size is 3 rows out of 8 rows", {
-  raster = create_stack(list(
+  raster = generate_stack(list(
     numeric_layer("x_1")),
   dimension = 8)
 
@@ -49,7 +49,7 @@ test_that("chunk size is 3 rows out of 8 rows", {
 })
 
 test_that("chunk size is 8 out of 8 rows", {
-  raster = create_stack(list(
+  raster = generate_stack(list(
     numeric_layer("x_1")),
   dimension = 8)
 
@@ -59,7 +59,7 @@ test_that("chunk size is 8 out of 8 rows", {
 })
 
 test_that("chunk size is 9 out of 8 rows", {
-  raster = create_stack(list(
+  raster = generate_stack(list(
     numeric_layer("x_1")),
   dimension = 8)
 
@@ -69,7 +69,7 @@ test_that("chunk size is 9 out of 8 rows", {
 })
 
 test_that("chunk size is 16 out of 8 rows", {
-  raster = create_stack(list(
+  raster = generate_stack(list(
     numeric_layer("x_1")),
   dimension = 8)
 

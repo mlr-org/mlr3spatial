@@ -5,6 +5,7 @@
 \alias{as_task_regr.stars}
 \alias{as_task_regr.SpatRaster}
 \alias{as_task_regr.RasterBrick}
+\alias{as_task_regr.RasterStack}
 \title{Convert to a Regression Task}
 \usage{
 \method{as_task_regr}{sf}(
@@ -32,6 +33,14 @@
 )
 
 \method{as_task_regr}{RasterBrick}(
+  x,
+  target = NULL,
+  id = deparse(substitute(x)),
+  label = NA_character_,
+  ...
+)
+
+\method{as_task_regr}{RasterStack}(
   x,
   target = NULL,
   id = deparse(substitute(x)),

@@ -4,7 +4,12 @@
 \alias{generate_stack}
 \title{Generate Raster Stack}
 \usage{
-generate_stack(layers, layer_size = NULL, dimension = NULL)
+generate_stack(
+  layers,
+  layer_size = NULL,
+  dimension = NULL,
+  multi_layer_file = FALSE
+)
 }
 \arguments{
 \item{layers}{(List of \code{\link[=numeric_layer]{numeric_layer()}} and \code{\link[=factor_layer]{factor_layer()}})\cr
@@ -14,7 +19,11 @@ List of layers.}
 Size of a single layer in megabytes.}
 
 \item{dimension}{(\code{integer(1)})\cr
-Dimension of the squared layers.
+Dimension of the squared layers.}
+
+\item{multi_layer_file}{(\code{logical(1)})\cr
+If \code{TRUE}, raster is written to disk as a single multi-layer file.
+Overwrites \code{ìn_memory} argument of \code{numeric_layer()} and \code{factor_layer()}.
 
 \code{layer_size} and \code{dimension} are mutually exclusive.}
 }

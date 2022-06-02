@@ -40,7 +40,6 @@ Suggests:
     mlr3learners (>= 0.4.5),
     paradox,
     ranger,
-    raster,
     rgdal,
     rmarkdown,
     rpart,

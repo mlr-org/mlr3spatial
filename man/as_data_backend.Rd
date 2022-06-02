@@ -4,6 +4,7 @@
 \alias{as_data_backend.stars}
 \alias{as_data_backend.SpatRaster}
 \alias{as_data_backend.RasterBrick}
+\alias{as_data_backend.RasterStack}
 \alias{as_data_backend.sf}
 \title{Coerce to spatial DataBackend}
 \usage{
@@ -13,7 +14,9 @@
 
 \method{as_data_backend}{RasterBrick}(data, primary_key = NULL, ...)
 
-\method{as_data_backend}{sf}(data, primary_key = NULL, ...)
+\method{as_data_backend}{RasterStack}(data, primary_key = NULL, ...)
+
+\method{as_data_backend}{sf}(data, primary_key = NULL, keep_rownames = FALSE, ...)
 }
 \arguments{
 \item{data}{(\link[terra:SpatRaster-class]{terra::SpatRaster})\cr

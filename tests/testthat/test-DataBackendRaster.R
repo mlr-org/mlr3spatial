@@ -1,7 +1,7 @@
-# DataBackendRaster ------------------------------------------------------------
+# DataBackendRaster methods ----------------------------------------------------
 
 test_that("DataBackendRaster works with a single numeric layer", {
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1")),
   dimension = 10,
   )
@@ -54,7 +54,7 @@ test_that("DataBackendRaster works with a single numeric layer", {
 })
 
 test_that("DataBackendRaster works with a single factor layer", {
-  stack = create_stack(list(
+  stack = generate_stack(list(
     factor_layer("c_1", levels = c("a", "b"))),
   dimension = 10,
   )
@@ -101,7 +101,7 @@ test_that("DataBackendRaster works with a single factor layer", {
 })
 
 test_that("DataBackendRaster works with a numeric and a factor layer", {
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     factor_layer("c_1", levels = c("a", "b"))),
   dimension = 10,
@@ -162,7 +162,7 @@ test_that("DataBackendRaster works with a numeric and a factor layer", {
 })
 
 test_that("DataBackendRaster works with multiple numeric and factor layers", {
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     numeric_layer("x_2"),
     factor_layer("c_1", levels = c("a", "b")),
@@ -266,7 +266,7 @@ test_that("data access works", {
 })
 
 test_that("data prototyp works", {
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     factor_layer("y", levels = c("a", "b"))),
   dimension = 10,
@@ -277,7 +277,7 @@ test_that("data prototyp works", {
 })
 
 test_that("in memory rasters work", {
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1", in_memory = TRUE),
     factor_layer("c_1", levels = c("a", "b"), in_memory = TRUE)),
   dimension = 10,
@@ -336,7 +336,7 @@ test_that("in memory rasters work", {
 })
 
 test_that("in memory and disk rasters work", {
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1", in_memory = TRUE),
     factor_layer("c_1", levels = c("a", "b"))),
   dimension = 10,
@@ -394,45 +394,52 @@ test_that("in memory and disk rasters work", {
   expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "c_1", "c_2")), c("x_1" = 0, "c_1" = 0))
 })
 
-# stars input ------------------------------------------------------------------
+# as_data_backend input formats ------------------------------------------------
 
-test_that("DataBackendRaster + stars", {
-  backend = as_data_backend(generate_stars())
-
-  # head
-  data = backend$head(10L)
-  expect_data_table(data, nrows = 10L, ncols = 6L)
-  expect_names(names(data), identical.to = c("band1", "band2", "band3", "band4", "band5", "band6"))
-
-  # distinct
-  expect_equal(backend$distinct(rows = 1:10, cols = "band1"),
-    list("band1" = c(69, 63, 60, 61, 62, 64)))
-  data = backend$distinct(rows = 1:5, cols = c("band1", "band2"))
-  expect_names(names(data), identical.to = c("band1", "band2"))
-  expect_numeric(data$band1)
-
-  expect_length(terra::crs(backend$stack, describe = TRUE), 5L)
-
+test_that("as_data_backend works on SpatRaster objects", {
+  stack = generate_stack(list(
+    numeric_layer("x_1"),
+    numeric_layer("y")),
+  dimension = 10)
+  expect_class(as_data_backend(stack), "DataBackendRaster")
 })
 
-# brick input ------------------------------------------------------------------
+test_that("as_data_backend works on stars objects", {
+  skip_if_not_installed("stars")
+  requireNamespace("stars", quietly = TRUE)
 
-test_that("DataBackendRaster + raster", {
-  backend = as_data_backend(generate_raster_brick())
-
-  # head
-  data = backend$head(10L)
-  expect_data_table(data, nrows = 10L, ncols = 5L)
-  expect_names(names(data), identical.to = c("x_1", "x_2", "x_3", "x_4", "y"))
-
-  # distinct
-  # no support for factors when using bricks
-  expect_equal(backend$distinct(rows = 1:1000, cols = "y"),
-    list("y" = c(1, 0)))
-  data = backend$distinct(rows = 1:5, cols = c("y", "x_2"))
-  expect_names(names(data), identical.to = c("y", "x_2"))
-  expect_numeric(data$y)
-
-  expect_length(terra::crs(backend$stack, describe = TRUE), 5L)
-
+  stack = generate_stack(list(
+    numeric_layer("x_1"),
+    numeric_layer("y")),
+  dimension = 10)
+  stack = invoke(stars::st_as_stars, .x = stack, .opts = allow_partial_matching)
+  expect_class(as_data_backend(stack), "DataBackendRaster")
 })
+
+test_that("as_data_backend works on RasterBrick objects", {
+  skip_if_not_installed("raster")
+  requireNamespace("raster", quietly = TRUE)
+
+  stack = generate_stack(list(
+    numeric_layer("x_1"),
+    numeric_layer("y")),
+  dimension = 10, multi_layer_file = TRUE)
+  stack = raster::brick(stack)
+
+  expect_class(as_data_backend(stack), "DataBackendRaster")
+})
+
+test_that("as_data_backend works on RasterStack objects", {
+  skip_if_not_installed("raster")
+  requireNamespace("raster", quietly = TRUE)
+
+  stack = generate_stack(list(
+    numeric_layer("x_1"),
+    numeric_layer("y")),
+  dimension = 10)
+  stack = invoke(raster::stack, x = stack, .opts = allow_partial_matching)
+  raster::crs(stack) = "EPSG:4326"
+
+  expect_class(as_data_backend(stack, target = "y"), "DataBackendRaster")
+})
+

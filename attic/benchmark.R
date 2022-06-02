@@ -5,7 +5,7 @@ library(tictoc)
 # 10 MB - in memory ------------------------------------------------------------
 
 # train task
-stack = create_stack(list(
+stack = generate_stack(list(
   numeric_layer("x_1"),
   factor_layer("y", levels = c("a", "b"))),
 layer_size = 10)
@@ -28,7 +28,7 @@ toc()
 # 10 MB - terra ----------------------------------------------------------------
 
 # train task
-stack = create_stack(list(
+stack = generate_stack(list(
   numeric_layer("x_1"),
   factor_layer("y", levels = c("a", "b"))),
 layer_size = 10)
@@ -63,7 +63,7 @@ toc()
 # 10 MB - 1 chunk --------------------------------------------------------------
 
 # train task
-stack = create_stack(list(
+stack = generate_stack(list(
   numeric_layer("x_1"),
   factor_layer("y", levels = c("a", "b"))),
 layer_size = 10)
@@ -95,7 +95,7 @@ with_future("multicore", workers = 8, {
 # 50 MB - 5 chunks -------------------------------------------------------------
 
 # train task
-stack = create_stack(list(
+stack = generate_stack(list(
   numeric_layer("x_1"),
   factor_layer("y", levels = c("a", "b"))),
 layer_size = 50)
@@ -127,7 +127,7 @@ with_future("multicore", workers = 8, {
 # 20 MB - 1 chunk --------------------------------------------------------------
 
 # train task
-stack = create_stack(list(
+stack = generate_stack(list(
   numeric_layer("x_1"),
   factor_layer("y", levels = c("a", "b"))),
 layer_size = 20)

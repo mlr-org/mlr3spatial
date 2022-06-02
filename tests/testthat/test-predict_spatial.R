@@ -1,4 +1,4 @@
-# raster predict ---------------------------------------------------------------
+# raster predictions -----------------------------------------------------------
 
 test_that("predictions are written to raster", {
   skip_if_not_installed("paradox")
@@ -48,7 +48,7 @@ test_that("predictions are written to raster", {
 
 test_that("sequential execution works", {
   # train
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     factor_layer("y", levels = c("a", "b"))),
   layer_size = 1)
@@ -66,7 +66,7 @@ test_that("sequential execution works", {
 
 test_that("sequential execution works in chunks", {
   # train
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     factor_layer("y", levels = c("a", "b"))),
   layer_size = 2)
@@ -87,7 +87,7 @@ test_that("sequential execution works in chunks", {
 test_that("parallel execution works with multicore", {
   skip_on_os("windows")
   # train
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     factor_layer("y", levels = c("a", "b"))),
   layer_size = 2)
@@ -108,7 +108,7 @@ test_that("parallel execution works with multicore", {
 
 test_that("parallel execution works with multisession", {
   # train
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     factor_layer("y", levels = c("a", "b"))),
   layer_size = 2)
@@ -129,7 +129,7 @@ test_that("parallel execution works with multisession", {
 
 test_that("parallel execution works with callr", {
   # train
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     factor_layer("y", levels = c("a", "b"))),
   layer_size = 2)
@@ -154,7 +154,7 @@ test_that("stars output works", {
   skip_if_not_installed("stars")
 
   # train
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     numeric_layer("y")),
   layer_size = 2)
@@ -176,7 +176,7 @@ test_that("raster output works", {
   library(raster)
 
   # train
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     numeric_layer("y")),
   layer_size = 2)
@@ -199,7 +199,7 @@ test_that("prediction on classification task works with missing values", {
   require_namespaces("mlr3learners")
 
   # train task
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     factor_layer("y", levels = c("a", "b"))),
   dimension = 10)
@@ -223,7 +223,7 @@ test_that("prediction on regression task works with missing values", {
   require_namespaces("mlr3learners")
 
   # train task
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     numeric_layer("y")),
   dimension = 10)
@@ -243,51 +243,22 @@ test_that("prediction on regression task works with missing values", {
 
 # sequential vector predict  ---------------------------------------------------
 
-test_that("sequential execution works", {
-  task = generate_vector_task()
-  learner = lrn("regr.rpart")
-  row_ids = sample(1:task$nrow, 50)
-  learner$train(task, row_ids = row_ids)
-  pred = predict_spatial(task, learner)
+test_that("spatial_predict works with vector task", {
+  # train
+  stack = generate_stack(list(
+    numeric_layer("x_1"),
+    factor_layer("y", levels = c("a", "b"))),
+  dimension = 10)
+  vector_train = sample_stack(stack, n = 100)
+  task_train = as_task_classif(vector_train, target = "y")
+  learner = lrn("classif.rpart")
+  learner$parallel_predict = TRUE
+  learner$train(task_train)
+
+  # predict
+  vector_predict = sample_stack(stack, n = 1000)
+  vector_predict$y = NULL
+  task_predict = as_task_classif(vector_predict)
+  pred = predict_spatial(task_predict, learner)
   expect_class(pred, "sf")
-})
-
-test_that("parallelization (multicore) works", {
-  skip_on_os("windows")
-  # parallel
-  task = generate_vector_task()
-  learner = lrn("regr.rpart")
-  row_ids = sample(1:task$nrow, 50)
-  learner$train(task, row_ids = row_ids)
-  learner$parallel_predict = TRUE
-  with_future("multicore", workers = 2, {
-    pred = predict_spatial(task, learner)
-    expect_class(pred, "sf")
-  })
-})
-
-test_that("parallelization (multisession) works", {
-  # parallel
-  task = generate_vector_task()
-  learner = lrn("regr.rpart")
-  row_ids = sample(1:task$nrow, 50)
-  learner$train(task, row_ids = row_ids)
-  learner$parallel_predict = TRUE
-  with_future("multisession", workers = 2, {
-    pred = predict_spatial(task, learner)
-    expect_class(pred, "sf")
-  })
-})
-
-test_that("parallelization (callr) works", {
-  # parallel
-  task = generate_vector_task()
-  learner = lrn("regr.rpart")
-  row_ids = sample(1:task$nrow, 50)
-  learner$train(task, row_ids = row_ids)
-  learner$parallel_predict = TRUE
-  with_future(future.callr::callr, workers = 4, {
-    pred = predict_spatial(task, learner)
-    expect_class(pred, "sf")
-  })
 })

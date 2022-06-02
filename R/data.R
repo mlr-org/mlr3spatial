@@ -54,6 +54,9 @@ factor_layer = function(id, levels, in_memory = FALSE) {
 #'   Size of a single layer in megabytes.
 #' @param dimension (`integer(1)`)\cr
 #'   Dimension of the squared layers.
+#' @param multi_layer_file (`logical(1)`)\cr
+#'   If `TRUE`, raster is written to disk as a single multi-layer file.
+#'   Overwrites `ìn_memory` argument of `numeric_layer()` and `factor_layer()`.
 #'
 #' `layer_size` and `dimension` are mutually exclusive.
 #'
@@ -61,13 +64,14 @@ factor_layer = function(id, levels, in_memory = FALSE) {
 #'
 #' @keywords internal
 #' @export
-generate_stack = function(layers, layer_size = NULL, dimension = NULL) {
+generate_stack = function(layers, layer_size = NULL, dimension = NULL, multi_layer_file = FALSE) {
   if (!xor(is.null(layer_size), is.null(dimension))) {
     stop("Either `layer_size` or `dimension` must be provided")
   }
   assert_list(layers)
   assert_int(layer_size, null.ok = TRUE)
   assert_int(dimension, null.ok = TRUE)
+  assert_flag(multi_layer_file)
   dimension = dimension %??% floor(sqrt(layer_size * 1e+06 / 8))
   ids = map_chr(layers, "id")
   assert_character(ids, unique = TRUE)
@@ -76,7 +80,7 @@ generate_stack = function(layers, layer_size = NULL, dimension = NULL) {
     if (layer$type == "numeric") {
       data = matrix(c(stats::rnorm(floor(dimension^2 / 2), 0, 1), stats::rnorm(ceiling(dimension^2 / 2), 1, 1)), nrow = dimension)
       ras = rast(data)
-      if (!layer$in_memory) {
+      if (!layer$in_memory && !multi_layer_file) {
         filename = tempfile(fileext = ".tif")
         writeRaster(ras, filename)
         ras = rast(filename)
@@ -87,7 +91,7 @@ generate_stack = function(layers, layer_size = NULL, dimension = NULL) {
       ras = rast(data)
 
       ras = terra::categories(ras, layer = 1, data.table(ID = seq_along(layer$levels), category = layer$levels))
-      if (!layer$in_memory) {
+      if (!layer$in_memory && !multi_layer_file) {
         filename = tempfile(fileext = ".tif")
         writeRaster(ras, filename)
         ras = rast(filename)
@@ -95,9 +99,12 @@ generate_stack = function(layers, layer_size = NULL, dimension = NULL) {
       ras
     }
   })
+
   stack = rast(layers)
   terra::crs(stack) = "EPSG:4326"
-  set_names(stack, ids)
+  stack = set_names(stack, ids)
+  if (multi_layer_file) stack = terra::writeRaster(stack, filename = tempfile(fileext = ".tif"))
+  stack
 }
 
 #' @title Sample Points in Raster Stack
@@ -150,6 +157,7 @@ mask_stack = function(stack) {
   point = sf::st_as_sf(sf::st_as_sfc(list(sf::st_point(c(x, y)))))
   polygon = sf::st_buffer(point, dist = x * 0.8)
   mask = terra::vect(polygon)
+  terra::crs(mask) = "EPSG:4326"
 
   terra::mask(stack, mask)
 }
