@@ -75,23 +75,18 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.2.9000" id="mlr3spatial-0129000">mlr3spatial 0.1.2.9000<a class="anchor" aria-label="anchor" href="#mlr3spatial-0129000"></a></h2>
-<div class="section level3">
-<h3 id="bug-fixes-0-1-2-9000">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-2-9000"></a></h3>
-<ul><li><p>write result to correct cell</p></li>
-<li><p>test: predictions are written to the right cells</p></li>
-<li><p>renamed geometry column in DataBackendVector (<a href="https://github.com/mlr-org/mlr3spatial/issues/49" class="external-link">#49</a>)</p></li>
-<li><p>The <code>$data()</code> method of <code>DataBackendRaster</code> should not fail anymore when non-adjacent cells are read</p></li>
+<ul><li>feat: <code>data("leipzig")</code> loads an <code>sf</code> object with land cover in Leipzig.</li>
+<li>feat: GeoTIFF and GeoPackage of Leipzig in <code>extdata</code> folder.</li>
+<li>feat: Task <code>leipzig</code> with land cover target.</li>
+<li>refactor: <code>DataBackendVector</code> inherits from <code>DataBackendDataTable</code> now.</li>
+<li>BREAKING CHANGE: <code>DataBackendRaster</code> cannot be created from <code>RasterLayer</code> objects anymore.</li>
+<li>fix: <code>DataBackendVector</code> initialization failed when geometry column had a different name than <code>geometry</code>.</li>
+<li>fix: <code>spatial_predict()</code> returned an unnamed response.</li>
+<li>feat: Add <code><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html" class="external-link">as_task_regr()</a></code> and <code><a href="https://mlr3.mlr-org.com/reference/as_task_classif.html" class="external-link">as_task_classif()</a></code> from spatial objects.</li>
+<li>fix: <code>spatial_predict()</code> wrote predictions to the wrong cell.</li>
+<li>BREAKING CHANGE: Remove <code>demo_raster()</code>, <code>demo_stack_spatraster()</code>, <code>demo_stack_rasterbrick()</code> and <code>demo_rasterbrick()</code> functions.</li>
+<li>feat: Prediction layer contains <code>NA</code> at raster cells with <code>NA</code> values in one or more feature layers.</li>
 </ul></div>
-<div class="section level3">
-<h3 id="features-0-1-2-9000">Features<a class="anchor" aria-label="anchor" href="#features-0-1-2-9000"></a></h3>
-<ul><li><p>add <code>as_task_classif</code> and as_task`_regr (<a href="https://github.com/mlr-org/mlr3spatial/issues/53" class="external-link">#53</a>)</p></li>
-<li><p>add training task to backends without response</p></li>
-<li><p>refactor: compatibility to <a href="https://rspatial.org/terra/" class="external-link">terra</a> update.</p></li>
-</ul></div>
-<div class="section level3">
-<h3 id="documentation-0-1-2-9000">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-1-2-9000"></a></h3>
-<ul><li>update benchmark vignette</li></ul></div>
-</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.2" id="mlr3spatial-012">mlr3spatial 0.1.2<a class="anchor" aria-label="anchor" href="#mlr3spatial-012"></a></h2><p class="text-muted">CRAN release: 2022-03-06</p>
 <ul><li>refactor: stars objects are directly converted to terra objects now.</li></ul></div>
@@ -100,7 +95,7 @@
 <ul><li>fix: compatibility to <code>terra</code> update.</li></ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="mlr3spatial-010">mlr3spatial 0.1.0<a class="anchor" aria-label="anchor" href="#mlr3spatial-010"></a></h2><p class="text-muted">CRAN release: 2021-11-16</p>
-<ul><li>feat: initial release.</li></ul></div>
+<ul><li>First version of mlr3spatial.</li></ul></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
