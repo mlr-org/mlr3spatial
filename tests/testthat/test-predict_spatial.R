@@ -1,6 +1,7 @@
 # raster predict ---------------------------------------------------------------
 
 test_that("predictions are written to raster", {
+  skip_if_not_installed("paradox")
   # [1] [2] [2]
   # [1] [1] [1]
   # [2] [2] [1]

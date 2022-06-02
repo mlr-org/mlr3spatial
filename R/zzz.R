@@ -4,6 +4,8 @@
 #' @import mlr3
 #' @importFrom R6 R6Class is.R6
 #' @importFrom stats complete.cases
+#' @importFrom utils getFromNamespace data
+#'
 #' @section Learn mlr3:
 #' * Book on mlr3: \url{https://mlr3book.mlr-org.com}
 #' * Use cases and examples gallery: \url{https://mlr3gallery.mlr-org.com}
