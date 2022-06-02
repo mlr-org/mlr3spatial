@@ -1,18 +1,20 @@
 #' @title Leipzig Land Cover Task
 #'
-#' @name mlr_tasks_leipzig
+#' @name leipzig
+#' @aliases mlr_tasks_leipzig
 #'
 #' @description
-#' Sentinel-2 spectral bands and NDVI to predict land cover in Leipzig.
+#' Point survey of land cover in Leipzig.
+#' Includes Sentinel-2 spectral bands and NDVI.
 #'
 #' @source
-#' Sentinel-2
+#' Copernicus Sentinel Data (2021). Retrieved from Copernicus Open Access Hub and processed by European Space Agency.
 #'
 #' @docType data
 #' @keywords data
 #' @examples
-#' data("kc_housing", package = "mlr3data")
-#' str(kc_housing)
+#' data("leipzig", package = "mlr3spatial")
+#' print(leipzig)
 NULL
 
 load_task_leipzig = function(id = "leipzig") {
