@@ -39,12 +39,6 @@ They do not support coercing from other backends yet."><meta name="robots" conte
     mlr3book
   </a>
 </li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/benchmark.html">Benchmarking parallel predictions</a>
-  </div>
-</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -101,11 +95,11 @@ They do not support coercing from other backends yet.</p>
 <span class="co"># S3 method for RasterBrick</span>
 <span class="fu">as_data_backend</span><span class="op">(</span><span class="va">data</span>, primary_key <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span>
 
-<span class="co"># S3 method for Raster</span>
+<span class="co"># S3 method for RasterStack</span>
 <span class="fu">as_data_backend</span><span class="op">(</span><span class="va">data</span>, primary_key <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span>
 
 <span class="co"># S3 method for sf</span>
-<span class="fu">as_data_backend</span><span class="op">(</span><span class="va">data</span>, primary_key <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+<span class="fu">as_data_backend</span><span class="op">(</span><span class="va">data</span>, primary_key <span class="op">=</span> <span class="cn">NULL</span>, keep_rownames <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -119,6 +113,12 @@ Name of the primary key column, or integer vector of row ids.</p></dd>
 <dt>...</dt>
 <dd><p>(<code>any</code>)<br>
 Not used.</p></dd>
+<dt>keep_rownames</dt>
+<dd><p>(<code>logical(1)</code> | <code>character(1)</code>)<br>
+If <code>TRUE</code> or a single string, keeps the row names of <code>data</code> as a new column.
+The column is named like the provided string, defaulting to <code>"..rownames"</code> for <code>keep_rownames == TRUE</code>.
+Note that the created column will be used as a regular feature by the task unless you manually change the column role.
+Also see <code><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">data.table::as.data.table()</a></code>.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>

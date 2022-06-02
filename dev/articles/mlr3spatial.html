@@ -62,12 +62,6 @@
     mlr3book
   </a>
 </li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/benchmark.html">Benchmarking parallel predictions</a>
-  </div>
-</li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -181,7 +175,7 @@
 </h4>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ras</span> <span class="op">=</span> <span class="fu"><a href="../reference/predict_spatial.html">predict_spatial</a></span><span class="op">(</span><span class="va">task</span>, <span class="va">learner</span>, format <span class="op">=</span> <span class="st">"stars"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">ras</span><span class="op">)</span> <span class="op">=</span> <span class="st">"cadmium"</span>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">ras</span><span class="op">)</span> <span class="op">=</span> <span class="st">"cadmium"</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">ras</span><span class="op">)</span>
 <span class="co">#&gt; stars object with 2 dimensions and 1 attribute</span>
@@ -196,20 +190,20 @@
 <div class="section level4">
 <h4 id="stars">stars<a class="anchor" aria-label="anchor" href="#stars"></a>
 </h4>
-<p>Since the layers are merged in a {stars} object, one first need to split them up and convert them into a regular data.table. Next, the column names need to be adjusted to match the ones of the training data. Afterwards, the <code>data.frame</code> generic of <code><a href="https://rdrr.io/pkg/raster/man/predict.html" class="external-link">predict()</a></code> can be called. Finally, the predictions need to be injected into a stars object again.</p>
+<p>Since the layers are merged in a {stars} object, one first need to split them up and convert them into a regular data.table. Next, the column names need to be adjusted to match the ones of the training data. Afterwards, the <code>data.frame</code> generic of <code><a href="https://rdrr.io/pkg/terra/man/predict.html" class="external-link">predict()</a></code> can be called. Finally, the predictions need to be injected into a stars object again.</p>
 <p>(All of these steps are happening internally in {mlr3spatial}).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">rpart_learner</span> <span class="op">=</span> <span class="fu">rpart</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rpart/man/rpart.html" class="external-link">rpart</a></span><span class="op">(</span><span class="va">band1</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">task</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span>rows <span class="op">=</span> <span class="va">row_ids</span><span class="op">)</span><span class="op">)</span>
-<span class="va">stars_stack</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/merge.html" class="external-link">split</a></span><span class="op">(</span><span class="va">stack</span>, <span class="st">"band"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">stars_stack</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"X1"</span><span class="op">)</span><span class="op">]</span> <span class="op">=</span> <span class="cn">NULL</span>
+<span class="va">stars_stack</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/split.html" class="external-link">split</a></span><span class="op">(</span><span class="va">stack</span>, <span class="st">"band"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">stars_stack</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"X1"</span><span class="op">)</span><span class="op">]</span> <span class="op">=</span> <span class="cn">NULL</span>
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">stars_stack</span><span class="op">)</span> <span class="op">=</span> <span class="va">task</span><span class="op">$</span><span class="va">feature_names</span>
 
-<span class="va">stars_pred</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">rpart_learner</span>, <span class="va">stars_stack</span><span class="op">)</span>
+<span class="va">stars_pred</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">rpart_learner</span>, <span class="va">stars_stack</span><span class="op">)</span>
 
 <span class="co"># subset stars object to one band only</span>
 <span class="va">stars_pred_ras</span> <span class="op">=</span> <span class="va">stack</span><span class="op">[</span>, , , <span class="fl">1</span><span class="op">]</span>
 <span class="co"># rename the layer name</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">stars_pred_ras</span><span class="op">)</span> <span class="op">=</span> <span class="st">"pred"</span>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">stars_pred_ras</span><span class="op">)</span> <span class="op">=</span> <span class="st">"pred"</span>
 <span class="co"># assign predictions</span>
 <span class="va">stars_pred_ras</span><span class="op">$</span><span class="va">pred</span> <span class="op">=</span> <span class="va">stars_pred</span>
 
@@ -230,7 +224,7 @@
 </h3>
 <p>Now that we have executed two predictions, we would like to verify that these are actually identical.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">stars_pred_ras</span><span class="op">$</span><span class="va">pred</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">ras</span><span class="op">$</span><span class="va">cadmium</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/catalyze.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">stars_pred_ras</span><span class="op">$</span><span class="va">pred</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/pkg/terra/man/catalyze.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">ras</span><span class="op">$</span><span class="va">cadmium</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] TRUE</span></code></pre></div>
 </div>
 <div class="section level3">
@@ -238,7 +232,7 @@
 </h3>
 <p>Finally we can plot the predictions. The color vector is extract from the viridis color palette via <code>dput(viridis::viridis_pal()(5))</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ras</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#440154FF"</span>, <span class="st">"#443A83FF"</span>, <span class="st">"#31688EFF"</span>, <span class="st">"#21908CFF"</span>, <span class="st">"#35B779FF"</span>, <span class="st">"#8FD744FF"</span>, <span class="st">"#FDE725FF"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ras</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#440154FF"</span>, <span class="st">"#443A83FF"</span>, <span class="st">"#31688EFF"</span>, <span class="st">"#21908CFF"</span>, <span class="st">"#35B779FF"</span>, <span class="st">"#8FD744FF"</span>, <span class="st">"#FDE725FF"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="mlr3spatial_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 </div>
 </div>

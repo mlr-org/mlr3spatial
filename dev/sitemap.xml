@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/dev/articles/benchmark.html</loc>
-  </url>
-  <url>
     <loc>https://mlr3spatial.mlr-org.com/dev/articles/index.html</loc>
   </url>
   <url>
@@ -37,22 +34,31 @@
     <loc>https://mlr3spatial.mlr-org.com/dev/reference/block_size.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/dev/reference/demo_raster.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/dev/reference/factor_layer.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/dev/reference/demo_stack_rasterbrick.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3spatial.mlr-org.com/dev/reference/demo_stack_spatraster.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/dev/reference/generate_stack.html</loc>
   </url>
   <url>
     <loc>https://mlr3spatial.mlr-org.com/dev/reference/index.html</loc>
   </url>
   <url>
+    <loc>https://mlr3spatial.mlr-org.com/dev/reference/leipzig.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3spatial.mlr-org.com/dev/reference/mask_stack.html</loc>
+  </url>
+  <url>
     <loc>https://mlr3spatial.mlr-org.com/dev/reference/mlr3spatial-package.html</loc>
   </url>
   <url>
+    <loc>https://mlr3spatial.mlr-org.com/dev/reference/numeric_layer.html</loc>
+  </url>
+  <url>
     <loc>https://mlr3spatial.mlr-org.com/dev/reference/predict_spatial.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3spatial.mlr-org.com/dev/reference/sample_stack.html</loc>
   </url>
   <url>
     <loc>https://mlr3spatial.mlr-org.com/dev/reference/write_raster.html</loc>
