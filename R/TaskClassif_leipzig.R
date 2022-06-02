@@ -13,8 +13,11 @@
 #' @docType data
 #' @keywords data
 #' @examples
+#' if(requireNamespace("sf")) {
+#' library(sf)
 #' data("leipzig", package = "mlr3spatial")
 #' print(leipzig)
+#' }
 NULL
 
 load_task_leipzig = function(id = "leipzig") {
