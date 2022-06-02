@@ -3,7 +3,7 @@ test_that("LearnerClassifSpatial ignores observations with missing values", {
   require_namespaces("mlr3learners")
 
   # train task
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     factor_layer("y", levels = c("a", "b"))),
   dimension = 10)

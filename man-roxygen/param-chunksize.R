@@ -1,4 +1,4 @@
-#' @param chunksize `[integer]`\cr
+#' @param chunksize (`integer(1)`)\cr
 #' The chunksize determines in how many subparts the prediction task will be
 #' split into. The value can be roughly thought of as megabyte of a raster file
 #' on disk. For example, if a prediction on a 1 GB file would be carried out

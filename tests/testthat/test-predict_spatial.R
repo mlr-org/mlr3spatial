@@ -1,6 +1,7 @@
-# raster predict ---------------------------------------------------------------
+# raster predictions -----------------------------------------------------------
 
 test_that("predictions are written to raster", {
+  skip_if_not_installed("paradox")
   # [1] [2] [2]
   # [1] [1] [1]
   # [2] [2] [1]
@@ -47,7 +48,7 @@ test_that("predictions are written to raster", {
 
 test_that("sequential execution works", {
   # train
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     factor_layer("y", levels = c("a", "b"))),
   layer_size = 1)
@@ -65,7 +66,7 @@ test_that("sequential execution works", {
 
 test_that("sequential execution works in chunks", {
   # train
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     factor_layer("y", levels = c("a", "b"))),
   layer_size = 2)
@@ -86,7 +87,7 @@ test_that("sequential execution works in chunks", {
 test_that("parallel execution works with multicore", {
   skip_on_os("windows")
   # train
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     factor_layer("y", levels = c("a", "b"))),
   layer_size = 2)
@@ -107,7 +108,7 @@ test_that("parallel execution works with multicore", {
 
 test_that("parallel execution works with multisession", {
   # train
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     factor_layer("y", levels = c("a", "b"))),
   layer_size = 2)
@@ -128,7 +129,7 @@ test_that("parallel execution works with multisession", {
 
 test_that("parallel execution works with callr", {
   # train
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     factor_layer("y", levels = c("a", "b"))),
   layer_size = 2)
@@ -153,7 +154,7 @@ test_that("stars output works", {
   skip_if_not_installed("stars")
 
   # train
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     numeric_layer("y")),
   layer_size = 2)
@@ -175,7 +176,7 @@ test_that("raster output works", {
   library(raster)
 
   # train
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     numeric_layer("y")),
   layer_size = 2)
@@ -198,7 +199,7 @@ test_that("prediction on classification task works with missing values", {
   require_namespaces("mlr3learners")
 
   # train task
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     factor_layer("y", levels = c("a", "b"))),
   dimension = 10)
@@ -222,7 +223,7 @@ test_that("prediction on regression task works with missing values", {
   require_namespaces("mlr3learners")
 
   # train task
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     numeric_layer("y")),
   dimension = 10)
@@ -242,98 +243,23 @@ test_that("prediction on regression task works with missing values", {
 
 # sequential vector predict  ---------------------------------------------------
 
-test_that("sequential execution works", {
-  # train task
-  stack = create_stack(list(
+test_that("spatial_predict works with vector task", {
+  # train
+  stack = generate_stack(list(
     numeric_layer("x_1"),
-    numeric_layer("y")),
+    factor_layer("y", levels = c("a", "b"))),
   dimension = 10)
-  vector = sample_stack(stack, n = 10)
-  task_train = as_task_regr(vector, id = "test_vector", target = "y")
-  learner = lrn("regr.ranger")
+  vector_train = sample_stack(stack, n = 100)
+  task_train = as_task_classif(vector_train, target = "y")
+  learner = lrn("classif.rpart")
+  learner$parallel_predict = TRUE
   learner$train(task_train)
 
-  # predict task
-  vector$y = NULL
-  task_predict = as_task_regr(vector, id = "test")
-
+  # predict
+  vector_predict = sample_stack(stack, n = 1000)
+  vector_predict$y = NULL
+  task_predict = as_task_classif(vector_predict)
   pred = predict_spatial(task_predict, learner)
-
-  expect_class(pred, "sf")
-  expect_names(names(pred), identical.to = c("y", "geometry"))
-})
-
-# parallel vector predict ------------------------------------------------------
-
-test_that("parallel execution works with multicore", {
-  skip_on_os("windows")
-  # train task
-  stack = create_stack(list(
-    numeric_layer("x_1"),
-    numeric_layer("y")),
-  dimension = 10)
-  vector = sample_stack(stack, n = 10)
-  task_train = as_task_regr(vector, id = "test_vector", target = "y")
-  learner = lrn("regr.ranger")
-  learner$parallel_predict = TRUE
-  learner$train(task_train)
-
-  # predict task
-  vector$y = NULL
-  task_predict = as_task_regr(vector, id = "test")
-
-  with_future("multicore", workers = 2, {
-    pred = predict_spatial(task_predict, learner)
-  })
-
-  expect_class(pred, "sf")
-  expect_names(names(pred), identical.to = c("y", "geometry"))
-})
-
-test_that("parallel execution works with multisession", {
-  # train task
-  stack = create_stack(list(
-    numeric_layer("x_1"),
-    numeric_layer("y")),
-  dimension = 10)
-  vector = sample_stack(stack, n = 10)
-  task_train = as_task_regr(vector, id = "test_vector", target = "y")
-  learner = lrn("regr.ranger")
-  learner$parallel_predict = TRUE
-  learner$train(task_train)
-
-  # predict task
-  vector$y = NULL
-  task_predict = as_task_regr(vector, id = "test")
-
-  with_future("multisession", workers = 2, {
-    pred = predict_spatial(task_predict, learner)
-  })
-
-  expect_class(pred, "sf")
-  expect_names(names(pred), identical.to = c("y", "geometry"))
-})
-
-test_that("parallel execution works with callr", {
-  # train task
-  stack = create_stack(list(
-    numeric_layer("x_1"),
-    numeric_layer("y")),
-  dimension = 10)
-  vector = sample_stack(stack, n = 10)
-  task_train = as_task_regr(vector, id = "test_vector", target = "y")
-  learner = lrn("regr.ranger")
-  learner$parallel_predict = TRUE
-  learner$train(task_train)
-
-  # predict task
-  vector$y = NULL
-  task_predict = as_task_regr(vector, id = "test")
-
-  with_future(future.callr::callr, workers = 2, {
-    pred = predict_spatial(task_predict, learner)
-  })
-
   expect_class(pred, "sf")
   expect_names(names(pred), identical.to = c("y", "geometry"))
 })

@@ -103,7 +103,6 @@ DataBackendRaster = R6Class("DataBackendRaster",
         res[cells[1, 2]:(cells[1, 2] + length(rows) - 1), cols, with = FALSE]
       } else {
         # cell read (e.g. c(1, 3, 5, 6, 10))
-        cells = terra::rowColFromCell(stack, rows)
         as.data.table(terra::extract(stack, rows))[, cols, with = FALSE]
       }
     },
@@ -259,12 +258,14 @@ as_data_backend.stars = function(data, primary_key = NULL, ...) { # nolint
   data = as(data, "SpatRaster")
   DataBackendRaster$new(data)
 }
+
 #' @export as_data_backend.SpatRaster
 #' @exportS3Method
 #' @rdname as_data_backend
 as_data_backend.SpatRaster = function(data, primary_key = NULL, ...) { # nolint
   DataBackendRaster$new(data)
 }
+
 #' @export as_data_backend.RasterBrick
 #' @exportS3Method
 #' @rdname as_data_backend
@@ -272,10 +273,11 @@ as_data_backend.RasterBrick = function(data, primary_key = NULL, ...) { # nolint
   data = terra::rast(data)
   DataBackendRaster$new(data)
 }
-#' @export as_data_backend.Raster
+
+#' @export as_data_backend.RasterStack
 #' @exportS3Method
 #' @rdname as_data_backend
-as_data_backend.Raster = function(data, primary_key = NULL, ...) { # nolint
+as_data_backend.RasterStack = function(data, primary_key = NULL, ...) { # nolint
   data = terra::rast(data)
   DataBackendRaster$new(data)
 }

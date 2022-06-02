@@ -54,3 +54,9 @@ block_size = function(raster, chunksize) {
 
   return(list(cells_seq = cells_seq, cells_to_read = cells_to_read))
 }
+
+allow_partial_matching = list(
+  warnPartialMatchArgs = FALSE,
+  warnPartialMatchAttr = FALSE,
+  warnPartialMatchDollar = FALSE
+)
