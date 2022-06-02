@@ -442,4 +442,3 @@ test_that("as_data_backend works on RasterStack objects", {
 
   expect_class(as_data_backend(stack, target = "y"), "DataBackendRaster")
 })
-
