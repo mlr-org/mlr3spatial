@@ -2,8 +2,10 @@
 % Please edit documentation in R/data.R
 \name{generate_stack}
 \alias{generate_stack}
-\title{Raster Stack}
+\title{Generate Raster Stack}
 \usage{
+generate_stack(layers, layer_size = NULL, dimension = NULL)
+
 generate_stack(layers, layer_size = NULL, dimension = NULL)
 }
 \arguments{
@@ -17,7 +19,19 @@ Size of a single layer in Megabytes.}
 Number of rows and cols.
 
 \code{layer_size} and \code{dimension} are mutually exclusive.}
+
+\item{multi_layer_file}{(\code{logical(1)})\cr
+If \code{TRUE}, raster is written to disk as a single multi-layer file.
+Overwrites \code{ìn_memory} argument of \code{numeric_layer()} and \code{factor_layer()}.
+
+\code{layer_size} and \code{dimension} are mutually exclusive.}
+}
+\value{
+\link[terra:SpatRaster-class]{terra::SpatRaster}
 }
 \description{
+Generates a raster stack.
+
 Generates a square demo \link[terra:SpatRaster-class]{terra::SpatRaster} from a list of layers.
 }
+\keyword{internal}

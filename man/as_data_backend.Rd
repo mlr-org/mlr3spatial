@@ -4,19 +4,19 @@
 \alias{as_data_backend.stars}
 \alias{as_data_backend.SpatRaster}
 \alias{as_data_backend.RasterBrick}
-\alias{as_data_backend.Raster}
+\alias{as_data_backend.RasterStack}
 \alias{as_data_backend.sf}
 \title{Coerce to spatial DataBackend}
 \usage{
-\method{as_data_backend}{stars}(data, primary_key = NULL, train_task = NULL, ...)
+\method{as_data_backend}{stars}(data, primary_key = NULL, ...)
 
-\method{as_data_backend}{SpatRaster}(data, primary_key = NULL, train_task = NULL, ...)
+\method{as_data_backend}{SpatRaster}(data, primary_key = NULL, ...)
 
-\method{as_data_backend}{RasterBrick}(data, primary_key = NULL, train_task = NULL, ...)
+\method{as_data_backend}{RasterBrick}(data, primary_key = NULL, ...)
 
-\method{as_data_backend}{Raster}(data, primary_key = NULL, train_task = NULL, ...)
+\method{as_data_backend}{RasterStack}(data, primary_key = NULL, ...)
 
-\method{as_data_backend}{sf}(data, primary_key = NULL, ...)
+\method{as_data_backend}{sf}(data, primary_key = NULL, keep_rownames = FALSE, ...)
 }
 \arguments{
 \item{data}{(\link[terra:SpatRaster-class]{terra::SpatRaster})\cr
@@ -25,11 +25,14 @@ The input \link[terra:SpatRaster-class]{terra::SpatRaster}.}
 \item{primary_key}{(\code{character(1)} | \code{integer()})\cr
 Name of the primary key column, or integer vector of row ids.}
 
-\item{train_task}{\verb{[mlr3::Task]}\cr
-Task used for training the learner.}
-
 \item{...}{(\code{any})\cr
 Not used.}
+
+\item{keep_rownames}{(\code{logical(1)} | \code{character(1)})\cr
+If \code{TRUE} or a single string, keeps the row names of \code{data} as a new column.
+The column is named like the provided string, defaulting to \code{"..rownames"} for \code{keep_rownames == TRUE}.
+Note that the created column will be used as a regular feature by the task unless you manually change the column role.
+Also see \code{\link[data.table:as.data.table]{data.table::as.data.table()}}.}
 }
 \value{
 \link{DataBackend}.

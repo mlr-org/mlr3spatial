@@ -1,7 +1,7 @@
-# DataBackendRaster ------------------------------------------------------------
+# DataBackendRaster methods ----------------------------------------------------
 
 test_that("DataBackendRaster works with a single numeric layer", {
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1")),
   dimension = 10,
   )
@@ -20,6 +20,9 @@ test_that("DataBackendRaster works with a single numeric layer", {
 
   # stack
   expect_names(names(backend$stack), identical.to = "x_1")
+
+  # crs
+  expect_length(terra::crs(backend$stack, describe = TRUE), 5L)
 
   # data
   expect_data_table(backend$data(rows = seq(100), cols = "x_1"), nrows = 100, ncols = 1, col.names = "strict", types = "numeric") # block read
@@ -51,7 +54,7 @@ test_that("DataBackendRaster works with a single numeric layer", {
 })
 
 test_that("DataBackendRaster works with a single factor layer", {
-  stack = create_stack(list(
+  stack = generate_stack(list(
     factor_layer("c_1", levels = c("a", "b"))),
   dimension = 10,
   )
@@ -98,7 +101,7 @@ test_that("DataBackendRaster works with a single factor layer", {
 })
 
 test_that("DataBackendRaster works with a numeric and a factor layer", {
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     factor_layer("c_1", levels = c("a", "b"))),
   dimension = 10,
@@ -159,7 +162,7 @@ test_that("DataBackendRaster works with a numeric and a factor layer", {
 })
 
 test_that("DataBackendRaster works with multiple numeric and factor layers", {
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     numeric_layer("x_2"),
     factor_layer("c_1", levels = c("a", "b")),
@@ -231,131 +234,39 @@ test_that("DataBackendRaster works with multiple numeric and factor layers", {
   expect_class(as_task_classif(backend, id = "test", target = "c_1"), "TaskClassif")
 })
 
-test_that("DataBackendRaster works with a classif train task", {
-  stack = create_stack(list(
-    numeric_layer("x_1"),
-    factor_layer("y", levels = c("a", "b"))),
-  dimension = 10)
-  vector = create_vector(stack, n = 10)
-  task = as_task_classif(vector, id = "test_vector", target = "y")
-
-  expect_error(DataBackendRaster$new(stack, task), "is already a layer")
-  stack$y = NULL
-
-  backend = DataBackendRaster$new(stack, task)
-
-  # backend
-  expect_class(backend, "DataBackendRaster")
-
-  # active fields
-  expect_names(backend$colnames, identical.to = c("x_1", "y"))
-  expect_equal(backend$ncol, 2L)
-  expect_equal(backend$rownames, seq(100))
-  expect_equal(backend$nrow, 100L)
-  expect_class(backend$stack, "SpatRaster")
-
-  # stack
-  expect_names(names(backend$stack), identical.to = "x_1")
-
-  # data
-  expect_data_table(backend$data(rows = seq(100), cols = c("x_1", "y")), nrows = 100, ncols = 2, col.names = "strict", types = c("numeric", "factor")) # block read
-  expect_factor(backend$data(rows = seq(100), cols = c("x_1", "y"))$y, len = 100, levels = c("a", "b"))
-
-  # head
-  expect_data_table(backend$head(n = 10L), nrows = 10, ncols = 2, types = c("numeric", "factor"))
-  expect_names(names(backend$head(n = 10L)), identical.to = c("x_1", "y"))
-
-  # distinct
-  expect_list(backend$distinct(rows = seq(100), cols = c("x_1", "y")), len = 2, names = "strict")
-  expect_equal(backend$distinct(rows = seq(100), cols = c("x_1", "y"))$y, c("a", "b"))
-  expect_numeric(backend$distinct(rows = seq(100), cols = c("x_1", "y"))$x_1)
-
-  # missings
-  expect_equal(backend$missings(rows = seq(100), cols = c("x_1", "y")), c("x_1" = 0, "y" = 100))
-  expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "y")), c("x_1" = 0, "y" = 10))
-
-  # task
-  expect_class(as_task_classif(backend, id = "test", target = "y"), "TaskClassif")
-})
-
-test_that("DataBackendRaster works with a regr train task", {
-  stack = create_stack(list(
-    factor_layer("c_1", levels = c("a", "b")),
-    numeric_layer("y")),
-  dimension = 10)
-  vector = create_vector(stack, n = 10)
-  task = as_task_regr(vector, id = "test_vector", target = "y")
-
-  expect_error(DataBackendRaster$new(stack, task), "is already a layer")
-  stack$y = NULL
-
-  backend = DataBackendRaster$new(stack, task)
-
-  # backend
-  expect_class(backend, "DataBackendRaster")
-
-  # active fields
-  expect_names(backend$colnames, identical.to = c("c_1", "y"))
-  expect_equal(backend$ncol, 2L)
-  expect_equal(backend$rownames, seq(100))
-  expect_equal(backend$nrow, 100L)
-  expect_class(backend$stack, "SpatRaster")
-
-  # stack
-  expect_names(names(backend$stack), identical.to = "c_1")
-
-  # data
-  expect_data_table(backend$data(rows = seq(100), cols = c("c_1", "y")), nrows = 100, ncols = 2, col.names = "strict", types = c("numeric", "factor")) # block read
-  expect_numeric(backend$data(rows = seq(100), cols = c("c_1", "y"))$y, len = 100)
-
-  # head
-  expect_data_table(backend$head(n = 10L), nrows = 10, ncols = 2, types = c("numeric", "factor"))
-  expect_names(names(backend$head(n = 10L)), identical.to = c("c_1", "y"))
-
-  # distinct
-  expect_list(backend$distinct(rows = seq(100), cols = c("c_1", "y")), len = 2, names = "strict")
-  expect_numeric(backend$distinct(rows = seq(100), cols = c("c_1", "y"))$y, len = 0)
-  expect_scalar_na(backend$distinct(rows = seq(100), cols = c("c_1", "y"), na_rm = FALSE)$y)
-  expect_character(backend$distinct(rows = seq(100), cols = c("c_1", "y"))$c_1, len = 2)
-
-  # missings
-  expect_equal(backend$missings(rows = seq(100), cols = c("c_1", "y")), c("c_1" = 0, "y" = 100))
-  expect_equal(backend$missings(rows = seq(10), cols = c("c_1", "y")), c("c_1" = 0, "y" = 10))
-})
-
 test_that("data access works", {
   # data
-  # [01] [02] [03] [04]
-  # [05] [06] [07] [08]
-  # [09] [10] [11] [12]
+  # [13] [14] [15] [16]
+  # [17] [18] [19] [20]
+  # [21] [22] [23] [24]
   stack = terra::rast(nrows = 3, ncols = 4)
-  stack[] = 1:12
+  stack[] = 13:24
   names(stack) = "y"
   backend = DataBackendRaster$new(stack)
 
   # [x] [x] [x] [x]
   # [ ] [ ] [ ] [ ]
   # [ ] [ ] [ ] [ ]
-  expect_equal(backend$data(rows = 1:4, cols = "y"), data.table(y = c(1, 2, 3, 4)))
+  expect_equal(backend$data(rows = 1:4, cols = "y"), data.table(y = c(13, 14, 15, 16)))
 
   # [ ] [ ] [ ] [ ]
   # [ ] [ ] [ ] [ ]
   # [x] [x] [x] [x]
-  expect_equal(backend$data(rows = 9:12, cols = "y"), data.table(y = c(9, 10, 11, 12)))
+  expect_equal(backend$data(rows = 9:12, cols = "y"), data.table(y = c(21, 22, 23, 24)))
 
   # [ ] [ ] [ ] [ ]
   # [ ] [ ] [ ] [x]
   # [x] [x] [ ] [ ]
-  expect_equal(backend$data(rows = 8:10, cols = "y"), data.table(y = c(8, 9, 10)))
+  expect_equal(backend$data(rows = 8:10, cols = "y"), data.table(y = c(20, 21, 22)))
 
   # [x] [ ] [x] [ ]
   # [ ] [ ] [ ] [x]
   # [ ] [x] [x] [ ]
-  expect_equal(backend$data(rows = c(1, 3, 8, 10, 11), cols = "y"), data.table(y = c(1, 3, 8, 10, 11)))
+  expect_equal(backend$data(rows = c(1, 3, 8, 10, 11), cols = "y"), data.table(y = c(13, 15, 20, 22, 23)))
 })
 
 test_that("data prototyp works", {
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1"),
     factor_layer("y", levels = c("a", "b"))),
   dimension = 10,
@@ -363,25 +274,10 @@ test_that("data prototyp works", {
   backend = DataBackendRaster$new(stack)
 
   expect_data_table(backend$data(rows = integer(0), cols = c("x_1", "y")), nrows = 0, ncols = 2)
-
-  # fake response
-  stack = create_stack(list(
-    numeric_layer("x_1"),
-    factor_layer("y", levels = c("a", "b"))),
-  dimension = 10)
-  vector = create_vector(stack, n = 10)
-  task = as_task_classif(vector, id = "test_vector", target = "y")
-
-  expect_error(DataBackendRaster$new(stack, task), "is already a layer")
-  stack$y = NULL
-
-  backend = DataBackendRaster$new(stack, task)
-
-  expect_data_table(backend$data(rows = integer(0), cols = c("x_1", "y")), nrows = 0, ncols = 2)
 })
 
 test_that("in memory rasters work", {
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1", in_memory = TRUE),
     factor_layer("c_1", levels = c("a", "b"), in_memory = TRUE)),
   dimension = 10,
@@ -440,7 +336,7 @@ test_that("in memory rasters work", {
 })
 
 test_that("in memory and disk rasters work", {
-  stack = create_stack(list(
+  stack = generate_stack(list(
     numeric_layer("x_1", in_memory = TRUE),
     factor_layer("c_1", levels = c("a", "b"))),
   dimension = 10,
@@ -498,61 +394,51 @@ test_that("in memory and disk rasters work", {
   expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "c_1", "c_2")), c("x_1" = 0, "c_1" = 0))
 })
 
-# stars input ------------------------------------------------------------------
+# as_data_backend input formats ------------------------------------------------
 
-test_that("DataBackendRaster + stars", {
-  backend = as_data_backend(generate_stars())
-
-  # head
-  data = backend$head(10L)
-  expect_data_table(data, nrows = 10L, ncols = 6L)
-  expect_names(names(data), identical.to = c("band1", "band2", "band3", "band4", "band5", "band6"))
-
-  # distinct
-  expect_equal(backend$distinct(rows = 1:10, cols = "band1"),
-    list("band1" = c(69, 63, 60, 61, 62, 64)))
-  data = backend$distinct(rows = 1:5, cols = c("band1", "band2"))
-  expect_names(names(data), identical.to = c("band1", "band2"))
-  expect_numeric(data$band1)
-
+test_that("as_data_backend works on SpatRaster objects", {
+  stack = generate_stack(list(
+    numeric_layer("x_1"),
+    numeric_layer("y")),
+  dimension = 10)
+  expect_class(as_data_backend(stack), "DataBackendRaster")
 })
 
-# brick input ------------------------------------------------------------------
+test_that("as_data_backend works on stars objects", {
+  skip_if_not_installed("stars")
+  requireNamespace("stars", quietly = TRUE)
 
-test_that("DataBackendRaster + raster", {
-  backend = as_data_backend(generate_raster_brick())
-
-  # head
-  data = backend$head(10L)
-  expect_data_table(data, nrows = 10L, ncols = 5L)
-  expect_names(names(data), identical.to = c("x_1", "x_2", "x_3", "x_4", "y"))
-
-  # distinct
-  # no support for factors when using bricks
-  expect_equal(backend$distinct(rows = 1:1000, cols = "y"),
-    list("y" = c(1, 0)))
-  data = backend$distinct(rows = 1:5, cols = c("y", "x_2"))
-  expect_names(names(data), identical.to = c("y", "x_2"))
-  expect_numeric(data$y)
-
+  stack = generate_stack(list(
+    numeric_layer("x_1"),
+    numeric_layer("y")),
+  dimension = 10)
+  stack = invoke(stars::st_as_stars, .x = stack, .opts = allow_partial_matching)
+  expect_class(as_data_backend(stack), "DataBackendRaster")
 })
 
-# raster input -----------------------------------------------------------------
+test_that("as_data_backend works on RasterBrick objects", {
+  skip_if_not_installed("raster")
+  requireNamespace("raster", quietly = TRUE)
 
-test_that("DataBackendRaster + raster", {
-  backend = as_data_backend(generate_raster_brick()[[5]])
+  stack = generate_stack(list(
+    numeric_layer("x_1"),
+    numeric_layer("y")),
+  dimension = 10, multi_layer_file = TRUE)
+  stack = raster::brick(stack)
 
-  # head
-  data = backend$head(10L)
-  expect_data_table(data, nrows = 10L, ncols = 1L)
-  expect_names(names(data), identical.to = "y")
+  expect_class(as_data_backend(stack), "DataBackendRaster")
+})
 
-  # distinct
-  # no support for factors when using bricks
-  expect_equal(backend$distinct(rows = 1:1000, cols = "y"),
-    list("y" = c(1, 0)))
-  data = backend$distinct(rows = 1:5, cols = "y")
-  expect_names(names(data), identical.to = "y")
-  expect_numeric(data$y)
+test_that("as_data_backend works on RasterStack objects", {
+  skip_if_not_installed("raster")
+  requireNamespace("raster", quietly = TRUE)
 
+  stack = generate_stack(list(
+    numeric_layer("x_1"),
+    numeric_layer("y")),
+  dimension = 10)
+  stack = invoke(raster::stack, x = stack, .opts = allow_partial_matching)
+  raster::crs(stack) = "EPSG:4326"
+
+  expect_class(as_data_backend(stack, target = "y"), "DataBackendRaster")
 })

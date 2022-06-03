@@ -1,7 +1,7 @@
 Package: mlr3spatial
 Title: Support for Spatial Objects Within the 'mlr3' Ecosystem
-Version: 0.1.2
-Date: 2022-03-07
+Version: 0.1.2.9000
+Date: 2022-05-30
 Authors@R:
     c(person(given = "Marc",
              family = "Becker",
@@ -34,12 +34,10 @@ Imports:
     utils
 Suggests:
     bench,
-    e1071,
     future,
     future.callr,
     knitr,
     mlr3learners (>= 0.4.5),
-    mlr3tuning,
     paradox,
     ranger,
     raster,
@@ -56,3 +54,16 @@ Config/testthat/parallel: false
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
+LazyData: true
+Collate:
+    'DataBackendRaster.R'
+    'DataBackendVector.R'
+    'LearnerClassifSpatial.R'
+    'LearnerRegrSpatial.R'
+    'TaskClassif_leipzig.R'
+    'as_task_classif.R'
+    'as_task_regr.R'
+    'data.R'
+    'helper.R'
+    'predict_spatial.R'
+    'zzz.R'

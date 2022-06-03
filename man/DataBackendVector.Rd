@@ -4,36 +4,14 @@
 \alias{DataBackendVector}
 \title{DataBackend for vector objects}
 \description{
-A \link[mlr3:DataBackend]{mlr3::DataBackend} for vector objects (only package \CRANpkg{sf} is
-supported).
+A \link[mlr3:DataBackend]{mlr3::DataBackend} for vector objects (only package \CRANpkg{sf} is supported).
 }
-\section{Super class}{
-\code{\link[mlr3:DataBackend]{mlr3::DataBackend}} -> \code{DataBackendVector}
-}
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{compact_seq}}{\code{logical(1)}\cr
-If \code{TRUE}, row ids are a natural sequence from 1 to \code{nrow(data)} (determined internally).
-In this case, row lookup uses faster positional indices instead of equi joins.}
-}
-\if{html}{\out{</div>}}
+\section{Super classes}{
+\code{\link[mlr3:DataBackend]{mlr3::DataBackend}} -> \code{\link[mlr3:DataBackendDataTable]{mlr3::DataBackendDataTable}} -> \code{DataBackendVector}
 }
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{rownames}}{(\code{integer()})\cr
-Returns vector of all distinct row identifiers, i.e. the contents of the primary key column.}
-
-\item{\code{colnames}}{(\code{character()})\cr
-Returns vector of all column names, including the primary key column.}
-
-\item{\code{nrow}}{(\code{integer(1)})\cr
-Number of rows (observations).}
-
-\item{\code{ncol}}{(\code{integer(1)})\cr
-Number of columns (variables), including the primary key column.}
-
 \item{\code{geometry}}{(\code{integer(1)})\cr
 Returns the sf geometry.}
 }
@@ -43,17 +21,17 @@ Returns the sf geometry.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-DataBackendVector-new}{\code{DataBackendVector$new()}}
-\item \href{#method-DataBackendVector-data}{\code{DataBackendVector$data()}}
-\item \href{#method-DataBackendVector-head}{\code{DataBackendVector$head()}}
-\item \href{#method-DataBackendVector-distinct}{\code{DataBackendVector$distinct()}}
-\item \href{#method-DataBackendVector-missings}{\code{DataBackendVector$missings()}}
 }
 }
 \if{html}{\out{
-<details open><summary>Inherited methods</summary>
+<details><summary>Inherited methods</summary>
 <ul>
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="format"><a href='../../mlr3/html/DataBackend.html#method-DataBackend-format'><code>mlr3::DataBackend$format()</code></a></li>
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="print"><a href='../../mlr3/html/DataBackend.html#method-DataBackend-print'><code>mlr3::DataBackend$print()</code></a></li>
+<li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackendDataTable" data-id="data"><a href='../../mlr3/html/DataBackendDataTable.html#method-DataBackendDataTable-data'><code>mlr3::DataBackendDataTable$data()</code></a></li>
+<li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackendDataTable" data-id="distinct"><a href='../../mlr3/html/DataBackendDataTable.html#method-DataBackendDataTable-distinct'><code>mlr3::DataBackendDataTable$distinct()</code></a></li>
+<li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackendDataTable" data-id="head"><a href='../../mlr3/html/DataBackendDataTable.html#method-DataBackendDataTable-head'><code>mlr3::DataBackendDataTable$head()</code></a></li>
+<li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackendDataTable" data-id="missings"><a href='../../mlr3/html/DataBackendDataTable.html#method-DataBackendDataTable-missings'><code>mlr3::DataBackendDataTable$missings()</code></a></li>
 </ul>
 </details>
 }}
@@ -61,9 +39,9 @@ Returns the sf geometry.}
 \if{html}{\out{<a id="method-DataBackendVector-new"></a>}}
 \if{latex}{\out{\hypertarget{method-DataBackendVector-new}{}}}
 \subsection{Method \code{new()}}{
-Creates a backend for spatial vector objects.
+Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendVector$new(data, primary_key = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{DataBackendVector$new(data, primary_key)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -76,115 +54,6 @@ A raster object.}
 Name of the primary key column, or integer vector of row ids.}
 }
 \if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-DataBackendVector-data"></a>}}
-\if{latex}{\out{\hypertarget{method-DataBackendVector-data}{}}}
-\subsection{Method \code{data()}}{
-Returns a slice of the data in the specified format.
-Currently, the only supported formats are \code{"data.table"} and \code{"Matrix"}.
-The rows must be addressed as vector of primary key values, columns
-must be referred to via column names.
-Queries for rows with no matching row id and queries for columns with
-no matching column name are silently ignored.
-Rows are guaranteed to be returned in the same order as \code{rows}, columns
-may be returned in an arbitrary order.
-Duplicated row ids result in duplicated rows, duplicated column names
-lead to an exception.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendVector$data(rows, cols, data_format = "data.table")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{rows}}{\code{integer()}\cr
-Row indices.}
-
-\item{\code{cols}}{\code{character()}\cr
-Column names.}
-
-\item{\code{data_format}}{(\code{character(1)})\cr
-Desired data format, e.g. \code{"data.table"} or \code{"Matrix"}.}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-DataBackendVector-head"></a>}}
-\if{latex}{\out{\hypertarget{method-DataBackendVector-head}{}}}
-\subsection{Method \code{head()}}{
-Retrieve the first \code{n} rows.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendVector$head(n = 6L)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{n}}{(\code{integer(1)})\cr
-Number of rows.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\code{\link[data.table:data.table]{data.table::data.table()}} of the first \code{n} rows.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-DataBackendVector-distinct"></a>}}
-\if{latex}{\out{\hypertarget{method-DataBackendVector-distinct}{}}}
-\subsection{Method \code{distinct()}}{
-Returns a named list of vectors of distinct values for each column
-specified. If \code{na_rm} is \code{TRUE}, missing values are removed from the
-returned vectors of distinct values. Non-existing rows and columns are
-silently ignored.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendVector$distinct(rows, cols, na_rm = TRUE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{rows}}{\code{integer()}\cr
-Row indices.}
-
-\item{\code{cols}}{\code{character()}\cr
-Column names.}
-
-\item{\code{na_rm}}{\code{logical(1)}\cr
-Whether to remove NAs or not.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Named \code{list()} of distinct values.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-DataBackendVector-missings"></a>}}
-\if{latex}{\out{\hypertarget{method-DataBackendVector-missings}{}}}
-\subsection{Method \code{missings()}}{
-Returns the number of missing values per column in the specified slice
-of data. Non-existing rows and columns are silently ignored.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendVector$missings(rows, cols)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{rows}}{\code{integer()}\cr
-Row indices.}
-
-\item{\code{cols}}{\code{character()}\cr
-Column names.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Total of missing values per column (named \code{numeric()}).
 }
 }
 }

@@ -41,6 +41,9 @@ reference:
   - title: mlr3spatial
     contents:
       - mlr3spatial-package
+  - title: Task
+    contents:
+      - leipzig
   - title: Demo Data
     contents:
       - contains("demo")
@@ -48,6 +51,7 @@ reference:
     contents:
       - contains("Backend")
       - contains("_backend")
+      - contains("as_task_")
   - title: Prediction
     contents:
       - contains("predict")

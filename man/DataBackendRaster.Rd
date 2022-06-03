@@ -28,15 +28,6 @@ used.
 \section{Super class}{
 \code{\link[mlr3:DataBackend]{mlr3::DataBackend}} -> \code{DataBackendRaster}
 }
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{compact_seq}}{\code{logical(1)}\cr
-If \code{TRUE}, row ids are a natural sequence from 1 to \code{nrow(data)} (determined internally).
-In this case, row lookup uses faster positional indices instead of equi joins.}
-}
-\if{html}{\out{</div>}}
-}
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
@@ -81,7 +72,7 @@ Raster stack.}
 \subsection{Method \code{new()}}{
 Creates a backend for a raster objects.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendRaster$new(data, train_task = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{DataBackendRaster$new(data)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -89,9 +80,6 @@ Creates a backend for a raster objects.
 \describe{
 \item{\code{data}}{(\link[terra:SpatRaster-class]{terra::SpatRaster})\cr
 The input \link[terra:SpatRaster-class]{terra::SpatRaster}.}
-
-\item{\code{train_task}}{\verb{[mlr3::Task]}\cr
-Task used for training the learner.}
 }
 \if{html}{\out{</div>}}
 }
