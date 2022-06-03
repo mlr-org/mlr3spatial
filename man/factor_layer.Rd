@@ -5,17 +5,15 @@
 \title{Factor Layer Generator}
 \usage{
 factor_layer(id, levels, in_memory = FALSE)
-
-factor_layer(id, levels, in_memory = FALSE)
 }
 \arguments{
-\item{id}{\code{character(1)}\cr
+\item{id}{(\code{character(1)})\cr
 Layer id.}
 
-\item{levels}{\code{character()}\cr
-Categories of the layer.}
+\item{levels}{(\code{character()})\cr
+Factor levels.}
 
-\item{in_memory}{\code{logical(1)}\cr
+\item{in_memory}{(\code{logical(1)})\cr
 If \code{FALSE} (default), layer is written to disk.}
 }
 \value{
@@ -23,7 +21,5 @@ Named \code{list()}
 }
 \description{
 Generates a factor layer when passed to \code{\link[=generate_stack]{generate_stack()}}.
-
-Creates a categorical raster layer when passed to \code{create_stack()}.
 }
 \keyword{internal}

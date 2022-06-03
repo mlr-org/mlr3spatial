@@ -5,14 +5,12 @@
 \title{Numeric Layer Generator}
 \usage{
 numeric_layer(id, in_memory = FALSE)
-
-numeric_layer(id, in_memory = FALSE)
 }
 \arguments{
-\item{id}{\code{character(1)}\cr
+\item{id}{(\code{character(1)})\cr
 Layer id.}
 
-\item{in_memory}{\code{logical(1)}\cr
+\item{in_memory}{(\code{logical(1)})\cr
 If \code{FALSE} (default), layer is written to disk.}
 }
 \value{
@@ -20,7 +18,5 @@ Named \code{list()}
 }
 \description{
 Generates a numeric layer when passed to \code{\link[=generate_stack]{generate_stack()}}.
-
-Creates a numeric raster layer when passed to \code{create_stack()}.
 }
 \keyword{internal}
