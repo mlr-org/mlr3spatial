@@ -178,6 +178,19 @@ DataBackendRaster = R6Class("DataBackendRaster",
         data = self$data(rows, cols)
         map_int(data, count_missing)
       }
+    },
+
+    #' @description
+    #' Returns the coordinates of `rows`.
+    #' If `rows` is missing, all coordinates are returned.
+    #'
+    #' @return [data.table::data.table()] of coordinates of `rows`.
+    coordinates = function(rows) {
+      if (missing(rows)) {
+        as.data.table(terra::crds(self$stack, df = TRUE))
+      } else {
+        as.data.table(terra::xyFromCell(rows))
+      }
     }
   ),
 

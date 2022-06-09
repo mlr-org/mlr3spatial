@@ -30,6 +30,7 @@ Imports:
     methods,
     mlr3misc,
     R6 (>= 2.5.0),
+    sf,
     terra (>= 1.5-21),
     utils
 Suggests:
@@ -44,7 +45,6 @@ Suggests:
     rgdal,
     rmarkdown,
     rpart,
-    sf,
     stars (>= 0.5-5),
     testthat (>= 3.0.0)
 VignetteBuilder:
@@ -60,9 +60,12 @@ Collate:
     'DataBackendVector.R'
     'LearnerClassifSpatial.R'
     'LearnerRegrSpatial.R'
+    'TaskRegrST.R'
+    'TaskClassifST.R'
     'TaskClassif_leipzig.R'
-    'as_task_classif.R'
-    'as_task_regr.R'
+    'as_task_classif_st.R'
+    'as_task_regr_st.R'
+    'as_task.R'
     'data.R'
     'helper.R'
     'predict_spatial.R'

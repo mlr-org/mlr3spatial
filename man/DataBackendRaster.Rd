@@ -56,6 +56,7 @@ Raster stack.}
 \item \href{#method-DataBackendRaster-head}{\code{DataBackendRaster$head()}}
 \item \href{#method-DataBackendRaster-distinct}{\code{DataBackendRaster$distinct()}}
 \item \href{#method-DataBackendRaster-missings}{\code{DataBackendRaster$missings()}}
+\item \href{#method-DataBackendRaster-coordinates}{\code{DataBackendRaster$coordinates()}}
 }
 }
 \if{html}{\out{
@@ -200,6 +201,31 @@ Column names.}
 }
 \subsection{Returns}{
 Total of missing values per column (named \code{numeric()}).
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-DataBackendRaster-coordinates"></a>}}
+\if{latex}{\out{\hypertarget{method-DataBackendRaster-coordinates}{}}}
+\subsection{Method \code{coordinates()}}{
+Returns the coordinates of \code{rows}.
+If \code{rows} is missing, all coordinates are returned.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{DataBackendRaster$coordinates(rows)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{rows}}{\code{integer()}\cr
+Row indices. Row indices start with 1 in the upper left corner in the
+raster, increase from left to right and then from top to bottom. The last
+cell is in the bottom right corner and the row index equals the number of
+cells in the raster.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link[data.table:data.table]{data.table::data.table()}} of coordinates of \code{rows}.
 }
 }
 }
