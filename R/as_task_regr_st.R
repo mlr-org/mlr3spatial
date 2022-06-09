@@ -25,7 +25,6 @@
 #'
 #' @return [TaskRegrST]
 #' @export
-#' @export
 as_task_regr_st = function(x, ...) {
   UseMethod("as_task_regr_st")
 }

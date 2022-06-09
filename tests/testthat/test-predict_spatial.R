@@ -59,7 +59,7 @@ test_that("sequential execution works", {
 
   # predict
   stack$y = NULL
-  task_predict = as_task_classif(stack, id = "test")
+  task_predict = as_task(stack, id = "test")
   pred = predict_spatial(task_predict, learner, chunksize = 1L)
   expect_class(pred, "SpatRaster")
 })
@@ -262,4 +262,42 @@ test_that("spatial_predict works with vector task", {
   pred = predict_spatial(task_predict, learner)
   expect_class(pred, "sf")
   expect_names(names(pred), identical.to = c("y", "geometry"))
+})
+
+# predict tasks-----------------------------------------------------------------
+
+test_that("spatial_predict classification works", {
+  # train
+  stack = generate_stack(list(
+    numeric_layer("x_1"),
+    factor_layer("y", levels = c("a", "b"))),
+  layer_size = 1)
+  vector = sample_stack(stack, n = 100)
+  task_train = as_task_classif(vector, id = "test_vector", target = "y")
+  learner = lrn("classif.rpart")
+  learner$train(task_train)
+
+  # predict
+  stack$y = NULL
+  task_predict = as_task(stack, id = "test")
+  pred = predict_spatial(task_predict, learner, chunksize = 1L)
+  expect_class(pred, "SpatRaster")
+})
+
+test_that("spatial_predict regression works", {
+  # train
+  stack = generate_stack(list(
+    numeric_layer("x_1"),
+    numeric_layer("y")),
+  layer_size = 1)
+  vector = sample_stack(stack, n = 100)
+  task_train = as_task_regr(vector, id = "test_vector", target = "y")
+  learner = lrn("regr.rpart")
+  learner$train(task_train)
+
+  # predict
+  stack$y = NULL
+  task_predict = as_task(stack, id = "test")
+  pred = predict_spatial(task_predict, learner, chunksize = 1L)
+  expect_class(pred, "SpatRaster")
 })

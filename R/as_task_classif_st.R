@@ -82,8 +82,8 @@ as_task_classif_st.sf = function(x, target = NULL, id = deparse(substitute(x)), 
 }
 
 #' @rdname as_task_regr_st
-#' @export as_task_regr_st.TaskClassifST
+#' @export as_task_classif_st.TaskRegrST
 #' @exportS3Method
-as_task_regr_st.TaskClassifST = function(x, target = NULL, drop_original_target = FALSE, drop_levels = TRUE, ...) {
-  convert_task(intask = x, target = target, new_type = "regr_st", drop_original_target = FALSE, drop_levels = TRUE)
+as_task_classif_st.TaskRegrST = function(x, target = NULL, drop_original_target = FALSE, drop_levels = TRUE, ...) {
+  convert_task(intask = x, target = target, new_type = "classif_st", drop_original_target = FALSE, drop_levels = TRUE)
 }
