@@ -1,9 +1,7 @@
 #' @title Spatiotemporal Regression Task
 #'
 #' @description
-#' This task specializes [Task] and [TaskSupervised] for spatiotemporal classification problems.
-#' The target column is assumed to be a factor.
-#' The `task_type` is set to `"classif"` and `"spatiotemporal"`.
+#' This task specializes [TaskRegr] for spatiotemporal regression problems.
 #'
 #' A spatial example task is available via `tsk("cookfarm_mlr3")`.
 #'
@@ -44,16 +42,20 @@ TaskRegrST = R6::R6Class("TaskRegrST",
     },
 
     #' @description
-    #'   Coordinates.
-    #' @param rows (`integer()`)\cr
-    #'   Row indices.
-    coordinates = function(rows = NULL) {
-      if (is.null(rows)) rows = seq_len(self$nrow)
-      self$backend$data(rows = rows, cols = self$coordinate_names)
+    #' Returns coordinates of observations.
+    #'
+    #' @param row_ids (`integer()`)\cr
+    #'   Vector of rows indices as subset of `task$row_ids`.
+    #'
+    #' @return [data.table::data.table()]
+    coordinates = function(row_ids = NULL) {
+      if (is.null(row_ids)) row_ids = self$row_ids
+      self$backend$data(rows = row_ids, cols = self$coordinate_names)
     },
 
     #' @description
     #' Print the task.
+    #'
     #' @param ... Arguments passed to the `$print()` method of the superclass.
     print = function(...) {
       super$print(...)
@@ -65,7 +67,7 @@ TaskRegrST = R6::R6Class("TaskRegrST",
   active = list(
 
     #' @field crs (`character(1)`)\cr
-    #'   Coordinate reference system.
+    #'   Returns coordinate reference system of the task.
     crs = function(rhs) {
       if (missing(rhs)) {
         return(self$extra_args$crs)
@@ -74,7 +76,7 @@ TaskRegrST = R6::R6Class("TaskRegrST",
     },
 
     #' @field coordinate_names (`character()`)\cr
-    #'   Coordinate names.
+    #'   Returns coordinate names.
     coordinate_names = function(rhs) {
       if (missing(rhs)) {
         return(self$extra_args$coordinate_names)
@@ -82,7 +84,7 @@ TaskRegrST = R6::R6Class("TaskRegrST",
       self$extra_args$coordinate_names = assert_character(rhs, len = 2, all.missing = FALSE, any.missing = FALSE)
     },
 
-    #' @field coords_as_features (`character()`)\cr
+    #' @field coords_as_features (`logical(1)`)\cr
     #'   If `TRUE`, coordinates are used as features.
     coords_as_features = function(rhs) {
       if (missing(rhs)) {
