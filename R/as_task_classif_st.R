@@ -10,19 +10,10 @@
 #' 3. [sf::sf]: Extracts spatial meta data before construction.
 #' 4. [TaskRegr]: Calls [convert_task()].
 #'
-#' @param x (any)\cr
-#'   Object to convert.
-#' @template param_target
-#' @param id (`character(1)`)\cr
-#'   Id for the new task.
-#'   Defaults to the (deparsed and substituted) name of the data argument.
-#' @template param_positive
+#' @inheritParams mlr3::as_task
 #' @template param_coords_as_features
 #' @template param_crs
 #' @template param_coordinate_names
-#' @template param_label
-#' @param ... (any)\cr
-#'   Additional arguments.
 #'
 #' @return [TaskClassifST]
 #' @export
@@ -82,6 +73,13 @@ as_task_classif_st.sf = function(x, target = NULL, id = deparse(substitute(x)), 
 }
 
 #' @rdname as_task_regr_st
+#'
+#' @param drop_original_target (`logical(1)`)\cr
+#'   If `FALSE` (default), the original target is added as a feature.
+#'   Otherwise the original target is dropped.
+#' @param drop_levels (`logical(1)`)\cr
+#'   If `TRUE` (default), unused levels of the new target variable are dropped.
+#'
 #' @export as_task_classif_st.TaskRegrST
 #' @exportS3Method
 as_task_classif_st.TaskRegrST = function(x, target = NULL, drop_original_target = FALSE, drop_levels = TRUE, ...) {

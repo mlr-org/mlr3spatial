@@ -17,7 +17,7 @@ test_that("predictions are written to raster", {
   learner$train(task)
 
   # predict task
-  task_predict = as_task_regr(raster, id = "test")
+  task_predict = as_task_unsupervised(raster, id = "test")
 
   # chunk size is 3 out of 12 cells
   raster = predict_spatial(task_predict, learner, chunksize = 8 * 3 * 1e-6)
@@ -59,7 +59,7 @@ test_that("sequential execution works", {
 
   # predict
   stack$y = NULL
-  task_predict = as_task(stack, id = "test")
+  task_predict = as_task_unsupervised(stack, id = "test")
   pred = predict_spatial(task_predict, learner, chunksize = 1L)
   expect_class(pred, "SpatRaster")
 })
@@ -77,7 +77,7 @@ test_that("sequential execution works in chunks", {
 
   # predict
   stack$y = NULL
-  task_predict = as_task_classif(stack, id = "test")
+  task_predict = as_task_unsupervised(stack, id = "test")
   pred = predict_spatial(task_predict, learner, chunksize = 1L)
   expect_class(pred, "SpatRaster")
 })
@@ -99,7 +99,7 @@ test_that("parallel execution works with multicore", {
 
   # predict
   stack$y = NULL
-  task_predict = as_task_classif(stack, id = "test")
+  task_predict = as_task_unsupervised(stack, id = "test")
   with_future("multicore", workers = 2, {
     pred = predict_spatial(task_predict, learner, chunksize = 1L)
   })
@@ -120,7 +120,7 @@ test_that("parallel execution works with multisession", {
 
   # predict
   stack$y = NULL
-  task_predict = as_task_classif(stack, id = "test")
+  task_predict = as_task_unsupervised(stack, id = "test")
   with_future("multisession", workers = 2, {
     pred = predict_spatial(task_predict, learner, chunksize = 1L)
   })
@@ -141,7 +141,7 @@ test_that("parallel execution works with callr", {
 
   # predict
   stack$y = NULL
-  task_predict = as_task_classif(stack, id = "test")
+  task_predict = as_task_unsupervised(stack, id = "test")
   with_future(future.callr::callr, workers = 2, {
     pred = predict_spatial(task_predict, learner, chunksize = 1L)
   })
@@ -166,7 +166,7 @@ test_that("stars output works", {
 
   # predict
   stack$y = NULL
-  task_predict = as_task_classif(stack, id = "test")
+  task_predict = as_task_unsupervised(stack, id = "test")
   pred = predict_spatial(task_predict, learner, chunksize = 1L, format = "stars")
   expect_class(pred, "stars")
 })
@@ -187,7 +187,7 @@ test_that("raster output works", {
 
   # predict
   stack$y = NULL
-  task_predict = as_task_classif(stack, id = "test")
+  task_predict = as_task_unsupervised(stack, id = "test")
   pred = predict_spatial(task_predict, learner, chunksize = 1L, format = "raster")
   expect_class(pred, "RasterLayer")
 })
@@ -211,7 +211,7 @@ test_that("prediction on classification task works with missing values", {
   # predict task
   stack$y = NULL
   stack = mask_stack(stack)
-  task_predict = as_task_classif(stack, id = "test")
+  task_predict = as_task_unsupervised(stack, id = "test")
   pred = predict_spatial(task_predict, learner, chunksize = 1L)
   expect_class(pred, "SpatRaster")
   expect_true(all(is.na(terra::values(pred[["y"]])[seq(10)])))
@@ -235,7 +235,7 @@ test_that("prediction on regression task works with missing values", {
   # predict task
   stack$y = NULL
   stack = mask_stack(stack)
-  task_predict = as_task_regr(stack, id = "test")
+  task_predict = as_task_unsupervised(stack, id = "test")
   pred = predict_spatial(task_predict, learner, chunksize = 1L)
   expect_true(all(is.na(terra::values(pred[["y"]])[seq(10)])))
   expect_numeric(terra::values(pred[["y"]]), any.missing = TRUE, all.missing = FALSE)
@@ -258,7 +258,7 @@ test_that("spatial_predict works with vector task", {
   # predict
   vector_predict = sample_stack(stack, n = 1000)
   vector_predict$y = NULL
-  task_predict = as_task_classif(vector_predict)
+  task_predict = as_task_unsupervised(vector_predict)
   pred = predict_spatial(task_predict, learner)
   expect_class(pred, "sf")
   expect_names(names(pred), identical.to = c("y", "geometry"))
@@ -279,7 +279,8 @@ test_that("spatial_predict classification works", {
 
   # predict
   stack$y = NULL
-  task_predict = as_task(stack, id = "test")
+  task_predict = as_task_unsupervised(stack, id = "test")
+  task_predict = TaskUnsupervised$new("test", task_type = "classif", stack)
   pred = predict_spatial(task_predict, learner, chunksize = 1L)
   expect_class(pred, "SpatRaster")
 })
@@ -297,7 +298,7 @@ test_that("spatial_predict regression works", {
 
   # predict
   stack$y = NULL
-  task_predict = as_task(stack, id = "test")
+  task_predict = as_task_unsupervised(stack, id = "test")
   pred = predict_spatial(task_predict, learner, chunksize = 1L)
   expect_class(pred, "SpatRaster")
 })

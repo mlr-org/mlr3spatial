@@ -53,16 +53,8 @@ Object to convert.}
 \item{...}{(any)\cr
 Additional arguments.}
 
-\item{target}{(\code{character(1)})\cr
-Name of the target column.}
-
-\item{id}{(\code{character(1)})\cr
-Id for the new task.
-Defaults to the (deparsed and substituted) name of the data argument.}
-
-\item{positive}{(\code{character(1)})\cr
-Only for binary classification: Name of the positive class.
-The levels of the target columns are reordered accordingly, so that the first element of \verb{$class_names} is the positive class, and the second element is the negative class.}
+\item{clone}{(\code{logical(1)})\cr
+If \code{TRUE}, ensures that the returned object is not the same as the input \code{x}.}
 
 \item{coordinate_names}{(\code{character(1)})\cr
 The column names of the coordinates in the data.}
@@ -73,9 +65,6 @@ WKT2 or EPSG string.}
 
 \item{coords_as_features}{(\code{logical(1)})\cr
 If \code{TRUE}, coordinates are used as features.}
-
-\item{label}{(\code{character(1)})\cr
-Label for the new instance.}
 }
 \value{
 \link{TaskClassifST}

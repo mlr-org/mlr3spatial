@@ -15,7 +15,7 @@ test_that("LearnerClassifSpatial ignores observations with missing values", {
   # predict task
   stack$y = NULL
   stack = mask_stack(stack)
-  task_predict = as_task_classif(stack, id = "test")
+  task_predict = as_task_unsupervised(stack, id = "test")
   learner_spatial = LearnerClassifSpatial$new(learner)
   pred = learner_spatial$predict(task_predict)
 

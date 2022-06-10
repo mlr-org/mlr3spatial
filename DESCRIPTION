@@ -47,6 +47,8 @@ Suggests:
     rpart,
     stars (>= 0.5-5),
     testthat (>= 3.0.0)
+Remotes:
+    mlr-org/mlr3@unsupervised
 VignetteBuilder:
     knitr
 Config/testthat/edition: 3
@@ -65,7 +67,7 @@ Collate:
     'TaskClassif_leipzig.R'
     'as_task_classif_st.R'
     'as_task_regr_st.R'
-    'as_task.R'
+    'as_task_unsupervised.R'
     'data.R'
     'helper.R'
     'predict_spatial.R'

@@ -66,15 +66,18 @@ as_task_regr_st(x, ...)
 \item{x}{(any)\cr
 Object to convert.}
 
-\item{target}{(\code{character(1)})\cr
-Name of the target column.}
+\item{drop_original_target}{(\code{logical(1)})\cr
+If \code{FALSE} (default), the original target is added as a feature.
+Otherwise the original target is dropped.}
+
+\item{drop_levels}{(\code{logical(1)})\cr
+If \code{TRUE} (default), unused levels of the new target variable are dropped.}
 
 \item{...}{(any)\cr
 Additional arguments.}
 
-\item{id}{(\code{character(1)})\cr
-Id for the new task.
-Defaults to the (deparsed and substituted) name of the data argument.}
+\item{clone}{(\code{logical(1)})\cr
+If \code{TRUE}, ensures that the returned object is not the same as the input \code{x}.}
 
 \item{coordinate_names}{(\code{character(1)})\cr
 The column names of the coordinates in the data.}
@@ -85,9 +88,6 @@ WKT2 or EPSG string.}
 
 \item{coords_as_features}{(\code{logical(1)})\cr
 If \code{TRUE}, coordinates are used as features.}
-
-\item{label}{(\code{character(1)})\cr
-Label for the new instance.}
 }
 \value{
 \link{TaskRegrST}

@@ -10,18 +10,10 @@
 #' 3. [sf::sf]: Extracts spatial meta data before construction.
 #' 4. [TaskClassif]: Calls [convert_task()].
 #'
-#' @param x (any)\cr
-#'   Object to convert.
-#' @template param_target
-#' @param id (`character(1)`)\cr
-#'   Id for the new task.
-#'   Defaults to the (deparsed and substituted) name of the data argument.
+#' @inheritParams mlr3::as_task
 #' @template param_coords_as_features
 #' @template param_crs
 #' @template param_coordinate_names
-#' @template param_label
-#' @param ... (any)\cr
-#'   Additional arguments.
 #'
 #' @return [TaskRegrST]
 #' @export
