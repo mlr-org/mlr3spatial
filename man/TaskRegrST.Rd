@@ -25,6 +25,9 @@ Coordinate reference system.}
 
 \item{\code{coordinate_names}}{(\code{character()})\cr
 Coordinate names.}
+
+\item{\code{coords_as_features}}{(\code{character()})\cr
+If \code{TRUE}, coordinates are used as features.}
 }
 \if{html}{\out{</div>}}
 }

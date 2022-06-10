@@ -34,7 +34,6 @@ TaskClassifST = R6::R6Class("TaskClassifST",
       self$crs = crs
       self$coordinate_names = coordinate_names
       walk(coordinate_names, function(x) assert_numeric(self$backend$head(1)[[x]], .var.name = x))
-      self$extra_args$coords_as_features = assert_flag(coords_as_features)
 
       # adjust classif task
       self$task_type = "classif_st"
@@ -42,11 +41,7 @@ TaskClassifST = R6::R6Class("TaskClassifST",
       private$.col_roles = insert_named(private$.col_roles, new_col_roles)
 
       # add coordinates as features
-      if (coords_as_features) {
-        self$set_col_roles(self$coordinate_names, add_to = "coordinate")
-      } else {
-        self$set_col_roles(self$coordinate_names, roles = "coordinate")
-      }
+      self$coords_as_features = assert_flag(coords_as_features)
     },
 
     #' @description
@@ -86,6 +81,20 @@ TaskClassifST = R6::R6Class("TaskClassifST",
         return(self$extra_args$coordinate_names)
       }
       self$extra_args$coordinate_names = assert_character(rhs, len = 2, all.missing = FALSE, any.missing = FALSE)
+    },
+
+    #' @field coords_as_features (`character()`)\cr
+    #'   If `TRUE`, coordinates are used as features.
+    coords_as_features = function(rhs) {
+      if (missing(rhs)) {
+        return(self$extra_args$coords_as_features)
+      }
+
+      if (assert_flag(rhs)) {
+        self$set_col_roles(self$coordinate_names, add_to = "coordinate")
+      } else {
+        self$set_col_roles(self$coordinate_names, roles = "coordinate")
+      }
     }
   )
 )
