@@ -92,7 +92,8 @@ TaskClassifST = R6::R6Class("TaskClassifST",
         return(self$extra_args$coords_as_features)
       }
 
-      if (assert_flag(rhs)) {
+      self$extra_args$coords_as_features = assert_flag(rhs)
+      if (rhs) {
         self$set_col_roles(self$coordinate_names, add_to = "coordinate")
       } else {
         self$set_col_roles(self$coordinate_names, roles = "coordinate")
