@@ -21,8 +21,8 @@
 NULL
 
 load_task_leipzig = function(id = "leipzig") {
-  b = as_data_backend(sf::read_sf(system.file("extdata", "leipzig_points.gpkg", package = "mlr3spatial"), stringsAsFactors = TRUE))
-  task = TaskClassif$new(id, b, target = "land_cover", label = "Leipzig Land Cover")
-  b$hash = task$man = "mlr3::mlr_tasks_leipzig"
+  vector = sf::read_sf(system.file("extdata", "leipzig_points.gpkg", package = "mlr3spatial"), stringsAsFactors = TRUE)
+  task = as_task_classif(vector, id = id, target = "land_cover",  label = "Leipzig Land Cover")
+  task$backend$hash = task$man = "mlr3::mlr_tasks_leipzig"
   task
 }
