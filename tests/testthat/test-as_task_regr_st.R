@@ -1,5 +1,5 @@
 
- test_that("as_task_regr_st works on data.frame objects", {
+test_that("as_task_regr_st works on data.frame objects", {
   stack = generate_stack(list(
     numeric_layer("x_1"),
     numeric_layer("y")),
