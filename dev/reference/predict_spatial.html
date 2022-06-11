@@ -94,9 +94,13 @@
     <dl><dt>task</dt>
 <dd><p>(Task).
 Task with <a href="DataBackendRaster.html">DataBackendRaster</a> or <a href="DataBackendVector.html">DataBackendVector</a>.</p></dd>
+
+
 <dt>learner</dt>
 <dd><p>(Learner).
 Learner with trained model.</p></dd>
+
+
 <dt>chunksize</dt>
 <dd><p>(<code>integer(1)</code>)<br>
 The chunksize determines in how many subparts the prediction task will be
@@ -106,19 +110,26 @@ with <code>chunksize = 100L</code>, the prediction would happen in 10 chunks.</p
 <p>The default of <code>chunksize = 1000L</code> might be a good compromise between speed
 and memory usage. If you find yourself running out of memory, reduce this
 value.</p></dd>
+
+
 <dt>format</dt>
 <dd><p>(<code>character(1)</code>)<br>
 Output class of the resulting object.
 Accepted values are <code>"raster"</code>, <code>"stars"</code> and <code>"terra"</code> if the input is a <a href="DataBackendRaster.html">DataBackendRaster</a>.
 Note that when choosing something else than <code>"terra"</code>, the spatial object is converted into the respective format which might cause overhead both in runtime and memory allocation.
 For a <a href="DataBackendVector.html">DataBackendVector</a>, the output class will always be <a href="https://r-spatial.github.io/sf/reference/sf.html" class="external-link">sf::sf</a>.</p></dd>
+
+
 <dt>filename</dt>
 <dd><p>(<code>character(1)</code>)<br>
 Path where the spatial object should be written to.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Spatial object of class given in argument <code>format</code>.</p>
+    
+
+<p>Spatial object of class given in argument <code>format</code>.</p>
     </div>
 
     <div class="section level2">
@@ -148,7 +159,7 @@ Path where the spatial object should be written to.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
     </footer></div>
