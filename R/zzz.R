@@ -66,7 +66,7 @@
   x$task_properties$classif_st = x$task_properties$classif
   x$task_properties$regr_st = x$task_properties$regr
 
-  x$default_measures$classif_st =  "classif.ce"
+  x$default_measures$classif_st = "classif.ce"
   x$default_measures$regr_st = "regr.mse"
 
   # task
