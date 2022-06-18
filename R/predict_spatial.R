@@ -27,7 +27,7 @@
 #'
 #' # load raster and convert to task
 #' stack = rast(system.file("extdata", "leipzig_raster.tif", package = "mlr3spatial"))
-#' task_predict = as_task_classif(stack, id = "leipzig")
+#' task_predict = as_task_unsupervised(stack, id = "leipzig")
 #'
 #' # predict land cover classes
 #' pred = predict_spatial(task_predict, learner, chunksize = 1L)
@@ -39,7 +39,7 @@ predict_spatial = function(task, learner, chunksize = 200L, format = "terra", fi
   assert_number(chunksize)
   stack = task$backend$stack
   start_time = proc.time()[3]
-  learner = switch(learner$task_type,
+  learner = switch(learner$learner_type,
     "classif" = LearnerClassifSpatial$new(learner),
     "regr" = LearnerRegrSpatial$new(learner))
 
@@ -73,7 +73,7 @@ predict_spatial = function(task, learner, chunksize = 200L, format = "terra", fi
     terra::writeStop(target_raster)
     lg$info("Finished raster prediction in %i seconds", as.integer(proc.time()[3] - start_time))
 
-    if (learner$task_type == "classif") {
+    if (learner$learner_type == "classif") {
       levels = learner$learner$state$train_task$levels()[[learner$learner$state$train_task$target_names]]
       value = data.table(ID = seq_along(levels), categories = levels)
       target_raster = terra::categories(target_raster, value = value, index = 2)

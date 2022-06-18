@@ -2,7 +2,6 @@
 #'
 #' @description
 #' Convert object to a [TaskClassifST].
-#'
 #' This is a S3 generic, specialized for at least the following objects:
 #'
 #' 1. [TaskClassifST]: Ensure the identity.
@@ -10,7 +9,7 @@
 #' 3. [sf::sf]: Extracts spatial meta data before construction.
 #' 4. [TaskRegr]: Calls [convert_task()].
 #'
-#' @inheritParams mlr3::as_task
+#' @inheritParams mlr3::as_task_classif
 #' @template param_coords_as_features
 #' @template param_crs
 #' @template param_coordinate_names
@@ -72,14 +71,7 @@ as_task_classif_st.sf = function(x, target = NULL, id = deparse(substitute(x)), 
   as_task_classif_st(x, target = target, id = id, positive = positive, coords_as_features = coords_as_features, crs = crs, coordinate_names = coordinate_names, label = label)
 }
 
-#' @rdname as_task_regr_st
-#'
-#' @param drop_original_target (`logical(1)`)\cr
-#'   If `FALSE` (default), the original target is added as a feature.
-#'   Otherwise the original target is dropped.
-#' @param drop_levels (`logical(1)`)\cr
-#'   If `TRUE` (default), unused levels of the new target variable are dropped.
-#'
+#' @rdname as_task_classif_st
 #' @export as_task_classif_st.TaskRegrST
 #' @exportS3Method
 as_task_classif_st.TaskRegrST = function(x, target = NULL, drop_original_target = FALSE, drop_levels = TRUE, ...) {

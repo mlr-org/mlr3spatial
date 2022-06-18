@@ -8,7 +8,7 @@ test_that("LearnerClassifSpatial ignores observations with missing values", {
     factor_layer("y", levels = c("a", "b"))),
   dimension = 10)
   vector = sample_stack(stack, n = 10)
-  task_train = as_task_classif(vector, id = "test_vector", target = "y")
+  task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
   learner = lrn("classif.ranger")
   learner$train(task_train)
 

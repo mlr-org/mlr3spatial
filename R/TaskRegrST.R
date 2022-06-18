@@ -25,7 +25,7 @@ TaskRegrST = R6::R6Class("TaskRegrST",
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
-    #' The function [as_task_classif()] provides an alternative way to construct classification tasks.
+    #' The function [as_task_regr_st()] provides an alternative way to construct classification tasks.
     initialize = function(id, backend, target, label = NA_character_, coordinate_names, crs = NA_character_, coords_as_features = FALSE, extra_args = list()) {
       super$initialize(id = id, backend = backend, target = target, extra_args = extra_args)
       self$crs = crs

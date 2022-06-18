@@ -54,7 +54,7 @@ learner$train(task_train)
 
 # load raster and convert to task
 stack = rast(system.file("extdata", "leipzig_raster.tif", package = "mlr3spatial"))
-task_predict = as_task_classif(stack, id = "leipzig")
+task_predict = as_task_unsupervised(stack, id = "leipzig")
 
 # predict land cover classes
 pred = predict_spatial(task_predict, learner, chunksize = 1L)

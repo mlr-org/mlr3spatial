@@ -6,6 +6,7 @@
 \alias{as_task_classif_st.data.frame}
 \alias{as_task_classif_st.DataBackend}
 \alias{as_task_classif_st.sf}
+\alias{as_task_classif_st.TaskRegrST}
 \title{Convert to a Spatiotemporal Classification Task}
 \usage{
 as_task_classif_st(x, ...)
@@ -45,6 +46,14 @@ as_task_classif_st(x, ...)
   label = NA_character_,
   ...
 )
+
+\method{as_task_classif_st}{TaskRegrST}(
+  x,
+  target = NULL,
+  drop_original_target = FALSE,
+  drop_levels = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{(any)\cr
@@ -56,6 +65,16 @@ Additional arguments.}
 \item{clone}{(\code{logical(1)})\cr
 If \code{TRUE}, ensures that the returned object is not the same as the input \code{x}.}
 
+\item{target}{(\code{character(1)})\cr
+Name of the target column.}
+
+\item{id}{(\code{character(1)})\cr
+Id for the new task.
+Defaults to the (deparsed and substituted) name of the data argument.}
+
+\item{positive}{(\code{character(1)})\cr
+Level of the positive class. See \link[mlr3]{TaskClassif}.}
+
 \item{coordinate_names}{(\code{character(1)})\cr
 The column names of the coordinates in the data.}
 
@@ -65,13 +84,22 @@ WKT2 or EPSG string.}
 
 \item{coords_as_features}{(\code{logical(1)})\cr
 If \code{TRUE}, coordinates are used as features.}
+
+\item{label}{(\code{character(1)})\cr
+Label for the new instance.}
+
+\item{drop_original_target}{(\code{logical(1)})\cr
+If \code{FALSE} (default), the original target is added as a feature.
+Otherwise the original target is dropped.}
+
+\item{drop_levels}{(\code{logical(1)})\cr
+If \code{TRUE} (default), unused levels of the new target variable are dropped.}
 }
 \value{
 \link{TaskClassifST}
 }
 \description{
 Convert object to a \link{TaskClassifST}.
-
 This is a S3 generic, specialized for at least the following objects:
 \enumerate{
 \item \link{TaskClassifST}: Ensure the identity.

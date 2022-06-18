@@ -48,7 +48,7 @@ Suggests:
     stars (>= 0.5-5),
     testthat (>= 3.0.0)
 Remotes:
-    mlr-org/mlr3@unsupervised
+    mlr-org/mlr3@task_type
 VignetteBuilder:
     knitr
 Config/testthat/edition: 3

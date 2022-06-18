@@ -2,7 +2,6 @@
 #'
 #' @description
 #' Convert object to a [TaskRegrST].
-#'
 #' This is a S3 generic, specialized for at least the following objects:
 #'
 #' 1. [TaskRegrST]: Ensure the identity.
@@ -10,7 +9,7 @@
 #' 3. [sf::sf]: Extracts spatial meta data before construction.
 #' 4. [TaskClassif]: Calls [convert_task()].
 #'
-#' @inheritParams mlr3::as_task
+#' @inheritParams mlr3::as_task_regr
 #' @template param_coords_as_features
 #' @template param_crs
 #' @template param_coordinate_names
@@ -42,7 +41,7 @@ as_task_regr_st.data.frame = function(x, target, id = deparse(substitute(x)), co
 #' @rdname as_task_regr_st
 #' @export as_task_regr_st.DataBackend
 #' @exportS3Method
-as_task_regr_st.DataBackend = function(x, target, id = deparse(substitute(x)), positive = NULL, coordinate_names, crs, coords_as_features = FALSE, label = NA_character_, ...) {
+as_task_regr_st.DataBackend = function(x, target, id = deparse(substitute(x)), coordinate_names, crs, coords_as_features = FALSE, label = NA_character_, ...) {
   TaskRegrST$new(id = id, backend = x, target = target, coords_as_features = coords_as_features, crs = crs, coordinate_names = coordinate_names, label = label)
 }
 

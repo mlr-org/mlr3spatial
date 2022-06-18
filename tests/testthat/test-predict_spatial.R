@@ -53,7 +53,7 @@ test_that("sequential execution works", {
     factor_layer("y", levels = c("a", "b"))),
   layer_size = 1)
   vector = sample_stack(stack, n = 100)
-  task_train = as_task_classif(vector, id = "test_vector", target = "y")
+  task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
   learner = lrn("classif.rpart")
   learner$train(task_train)
 
@@ -71,7 +71,7 @@ test_that("sequential execution works in chunks", {
     factor_layer("y", levels = c("a", "b"))),
   layer_size = 2)
   vector = sample_stack(stack, n = 100)
-  task_train = as_task_classif(vector, id = "test_vector", target = "y")
+  task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
   learner = lrn("classif.rpart")
   learner$train(task_train)
 
@@ -92,7 +92,7 @@ test_that("parallel execution works with multicore", {
     factor_layer("y", levels = c("a", "b"))),
   layer_size = 2)
   vector = sample_stack(stack, n = 100)
-  task_train = as_task_classif(vector, id = "test_vector", target = "y")
+  task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
   learner = lrn("classif.rpart")
   learner$parallel_predict = TRUE
   learner$train(task_train)
@@ -113,7 +113,7 @@ test_that("parallel execution works with multisession", {
     factor_layer("y", levels = c("a", "b"))),
   layer_size = 2)
   vector = sample_stack(stack, n = 100)
-  task_train = as_task_classif(vector, id = "test_vector", target = "y")
+  task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
   learner = lrn("classif.rpart")
   learner$parallel_predict = TRUE
   learner$train(task_train)
@@ -134,7 +134,7 @@ test_that("parallel execution works with callr", {
     factor_layer("y", levels = c("a", "b"))),
   layer_size = 2)
   vector = sample_stack(stack, n = 100)
-  task_train = as_task_classif(vector, id = "test_vector", target = "y")
+  task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
   learner = lrn("classif.rpart")
   learner$parallel_predict = TRUE
   learner$train(task_train)
@@ -204,7 +204,7 @@ test_that("prediction on classification task works with missing values", {
     factor_layer("y", levels = c("a", "b"))),
   dimension = 10)
   vector = sample_stack(stack, n = 10)
-  task_train = as_task_classif(vector, id = "test_vector", target = "y")
+  task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
   learner = lrn("classif.ranger")
   learner$train(task_train)
 
@@ -250,7 +250,7 @@ test_that("spatial_predict works with vector task", {
     factor_layer("y", levels = c("a", "b"))),
   dimension = 10)
   vector_train = sample_stack(stack, n = 100)
-  task_train = as_task_classif(vector_train, target = "y")
+  task_train = as_task_classif_st(vector_train, target = "y")
   learner = lrn("classif.rpart")
   learner$parallel_predict = TRUE
   learner$train(task_train)
@@ -273,7 +273,7 @@ test_that("spatial_predict classification works", {
     factor_layer("y", levels = c("a", "b"))),
   layer_size = 1)
   vector = sample_stack(stack, n = 100)
-  task_train = as_task_classif(vector, id = "test_vector", target = "y")
+  task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
   learner = lrn("classif.rpart")
   learner$train(task_train)
 

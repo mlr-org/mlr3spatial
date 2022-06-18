@@ -4,9 +4,7 @@
 \alias{TaskClassifST}
 \title{Spatiotemporal Classification Task}
 \description{
-This task specializes \link{Task} and \link{TaskSupervised} for spatiotemporal classification problems.
-The target column is assumed to be a factor.
-The \code{task_type} is set to \code{"classif"} and \code{"spatiotemporal"}.
+This task specializes \link{TaskClassif} for spatiotemporal classification problems.
 
 A spatial example task is available via \code{tsk("ecuador")}.
 
@@ -69,7 +67,7 @@ If \code{TRUE}, coordinates are used as features.}
 \if{latex}{\out{\hypertarget{method-TaskClassifST-new}{}}}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
-The function \code{\link[=as_task_classif]{as_task_classif()}} provides an alternative way to construct classification tasks.
+The function \code{\link[=as_task_classif_st]{as_task_classif_st()}} provides an alternative way to construct classification tasks.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TaskClassifST$new(
   id,

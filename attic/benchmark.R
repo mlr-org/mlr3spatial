@@ -10,7 +10,7 @@ stack = generate_stack(list(
   factor_layer("y", levels = c("a", "b"))),
 layer_size = 10)
 vector = sample_stack(stack, n = 100)
-task_train = as_task_classif(vector, id = "test_vector", target = "y")
+task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
 learner = lrn("classif.ranger")
 learner$train(task_train)
 
@@ -33,26 +33,25 @@ stack = generate_stack(list(
   factor_layer("y", levels = c("a", "b"))),
 layer_size = 10)
 vector = sample_stack(stack, n = 100)
-task_train = as_task_classif(vector, id = "test_vector", target = "y")
+task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
 learner = lrn("classif.ranger")
 learner$train(task_train)
 
 # predict task
 stack$y = NULL
+model = learner$model
 
 predfun = function(model, data) {
-  library(mlr3)
-  library(mlr3learners)
-
-  model$predict_newdata(data)$response
+  library(ranger)
+  predict(model, data)$predictions
 }
 
 tic()
-terra::predict(stack, learner, fun = predfun) # 78 seconds
+terra::predict(stack, model, fun = predfun) # 78 seconds
 toc()
 
 tic()
-terra::predict(stack, learner, fun = predfun, cores = 4) # 36 seconds
+terra::predict(stack, model, fun = predfun, cores = 4) # 36 seconds
 toc()
 
 tic()
@@ -68,14 +67,13 @@ stack = generate_stack(list(
   factor_layer("y", levels = c("a", "b"))),
 layer_size = 10)
 vector = sample_stack(stack, n = 100)
-task_train = as_task_classif(vector, id = "test_vector", target = "y")
+task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
 learner = lrn("classif.ranger")
 learner$train(task_train)
 
 # predict task
 stack$y = NULL
-backend = DataBackendRaster$new(stack, task_train)
-task_predict = as_task_classif(backend, id = "test", target = "y")
+task_predict = as_task_unsupervised(stack, id = "test")
 learner$parallel_predict = TRUE
 
 ras = predict_spatial(task_predict, learner, chunksize = 10L) # 71 seconds
@@ -100,14 +98,13 @@ stack = generate_stack(list(
   factor_layer("y", levels = c("a", "b"))),
 layer_size = 50)
 vector = sample_stack(stack, n = 100)
-task_train = as_task_classif(vector, id = "test_vector", target = "y")
+task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
 learner = lrn("classif.ranger")
 learner$train(task_train)
 
 # predict task
 stack$y = NULL
-backend = DataBackendRaster$new(stack, task_train)
-task_predict = as_task_classif(backend, id = "test", target = "y")
+task_predict = as_task_unsupervised(stack, id = "test")
 learner$parallel_predict = TRUE
 
 ras = predict_spatial(task_predict, learner, chunksize = 10L) # 386 seconds
@@ -132,14 +129,13 @@ stack = generate_stack(list(
   factor_layer("y", levels = c("a", "b"))),
 layer_size = 20)
 vector = sample_stack(stack, n = 100)
-task_train = as_task_classif(vector, id = "test_vector", target = "y")
+task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
 learner = lrn("classif.ranger")
 learner$train(task_train)
 
 # predict task
 stack$y = NULL
-backend = DataBackendRaster$new(stack, task_train)
-task_predict = as_task_classif(backend, id = "test", target = "y")
+task_predict = as_task_unsupervised(stack, id = "test")
 learner$parallel_predict = TRUE
 
 ras = predict_spatial(task_predict, learner, chunksize = 20L) # 221 seconds
