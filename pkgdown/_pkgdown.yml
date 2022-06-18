@@ -51,6 +51,8 @@ reference:
     contents:
       - contains("Backend")
       - contains("_backend")
+  - title: Tasks
+      - contains("Task")
       - contains("as_task_")
   - title: Prediction
     contents:
