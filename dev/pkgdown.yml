@@ -3,7 +3,7 @@ pkgdown: 2.0.5
 pkgdown_sha: ~
 articles:
   mlr3spatial: mlr3spatial.html
-last_built: 2022-07-08T05:09Z
+last_built: 2022-07-09T04:59Z
 urls:
   reference: https://mlr3spatial.mlr-org.com/reference
   article: https://mlr3spatial.mlr-org.com/articles
