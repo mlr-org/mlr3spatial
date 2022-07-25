@@ -112,20 +112,14 @@
 </h2>
 <p>The handling of (large) spatial objects in ML is an error-prone and time consuming task. Users often need to extract the “raw” values from the spatial objects (detaching the spatial metadata), train a model, predict and then recreate the spatial object again. In addition, predictions on large raster files (i.e. multiple GB in size) often leads to memory issues on consumer grade machines. {mlr3spatial} provides</p>
 <ul>
-<li>Spatial tasks (<a href="https://mlr3spatial.mlr-org.com/dev/reference/TaskClassifST.html"><code>TaskClassifST</code></a> and <a href="https://mlr3spatial.mlr-org.com/dev/reference/TaskRegrST.html"><code>TaskRegrST</code></a>) from <a href="https://CRAN.R-project.org/package=sf" class="external-link"><code>sf</code></a> vector objects.</li>
-<li>Predict on spatial raster objects (<a href="https://CRAN.R-project.org/package=terra" class="external-link"><code>terra</code></a>, <a href="https://CRAN.R-project.org/package=raster" class="external-link"><code>raster</code></a>, <a href="https://CRAN.R-project.org/package=stars" class="external-link"><code>stars</code></a>), with optional <strong>parallelization</strong> and <strong>memory awareness</strong>
-</li>
+<li>Spatial tasks (<a href="https://mlr3spatial.mlr-org.com/dev/reference/TaskClassifST.html"><code>TaskClassifST</code></a> and <a href="https://mlr3spatial.mlr-org.com/dev/reference/TaskRegrST.html"><code>TaskRegrST</code></a>) from <a href="https://CRAN.R-project.org/package=sf" class="external-link"><code>sf</code></a> vector objects to train a learner.</li>
+<li>Predict on spatial raster objects (<a href="https://CRAN.R-project.org/package=terra" class="external-link"><code>terra</code></a>, <a href="https://CRAN.R-project.org/package=raster" class="external-link"><code>raster</code></a>, <a href="https://CRAN.R-project.org/package=stars" class="external-link"><code>stars</code></a>), with optional parallelization and memory awareness.</li>
 </ul>
-</div>
-<div class="section level2">
-<h2 id="spatiotemporal-resampling--cross-validation">Spatiotemporal resampling / cross-validation<a class="anchor" aria-label="anchor" href="#spatiotemporal-resampling--cross-validation"></a>
-</h2>
-<p>For spatiotemporal resampling within mlr3 see <a href="https://github.com/mlr-org/mlr3spatiotempcv" class="external-link"><code>mlr3spatiotempcv</code></a>.</p>
 </div>
 <div class="section level2">
 <h2 id="faq">FAQ<a class="anchor" aria-label="anchor" href="#faq"></a>
 </h2>
-<details><summary>Will {mlr3spatial} support spatial learners?</summary><br> Eventually. It is not yet clear whether these would live in {mlr3extralearners} or in {mlr3spatial}. So far there are none yet.</details><details><summary>Why are there two packages, {mlr3spatial} and {mlr3spatiotempcv}?</summary><br> {mlr3spatiotempcv} is solely devoted to resampling techniques. There are quite a few and keeping packages small is one of the development philosophies of the mlr3 framework. Also back in the days when {mlr3spatiotempcv} was developed it was not yet clear how we want to structure additional spatial components such as prediction support for spatial classes and so on.</details>
+<details><summary>Will {mlr3spatial} support spatial learners?</summary><br> Eventually. It is not yet clear whether these would live in {mlr3extralearners} or in {mlr3spatial}. So far there are none yet.</details><details><summary>Why are there two packages, <code>mlr3spatial</code> and <a href="https://github.com/mlr-org/mlr3spatiotempcv" class="external-link"><code>mlr3spatiotempcv</code></a>?</summary><br><a href="https://github.com/mlr-org/mlr3spatiotempcv" class="external-link"><code>mlr3spatiotempcv</code></a> is solely devoted to resampling techniques. There are quite a few and keeping packages small is one of the development philosophies of the mlr3 framework. Also back in the days when <a href="https://github.com/mlr-org/mlr3spatiotempcv" class="external-link"><code>mlr3spatiotempcv</code></a> was developed it was not yet clear how we want to structure additional spatial components such as prediction support for spatial classes and so on.</details>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
