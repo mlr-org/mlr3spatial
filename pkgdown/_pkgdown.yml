@@ -52,7 +52,8 @@ reference:
       - contains("Backend")
       - contains("_backend")
   - title: Tasks
-      - contains("Task")
+      - TaskClassifST
+      - TaskRegrST
       - contains("as_task_")
   - title: Prediction
     contents:
