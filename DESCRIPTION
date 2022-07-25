@@ -31,7 +31,7 @@ Imports:
     mlr3misc,
     R6 (>= 2.5.0),
     sf,
-    terra (>= 1.5-21),
+    terra (>= 1.6-3),
     utils
 Suggests:
     bench,
