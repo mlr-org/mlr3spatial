@@ -2,7 +2,7 @@
 
 * BREAKING CHANGE: `TaskClassifST` and `TaskRegrST` are used to train a learner with spatial data.
 * BREAKING CHANGE: Raster objects cannot be used to create tasks for training anymore.
-* BREAKING CHANGE: `TaskUnsupervised` is used to predict a raster now.
+* BREAKING CHANGE: `TaskUnsupervised` is used to predict rasters now.
 * feat: Add `as_task_regr_st()` and `as_task_classif_st()` from spatial objects.
 * feat: Add `as_task_unsupervised()` from raster objects.
 * feat: Task `leipzig` with land cover target.

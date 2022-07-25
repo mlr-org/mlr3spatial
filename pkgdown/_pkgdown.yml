@@ -41,9 +41,9 @@ reference:
   - title: mlr3spatial
     contents:
       - mlr3spatial-package
-  - title: Tasks
-      - TaskClassifST
-      - TaskRegrST
+  - title: Spatiotemporal Tasks
+    contents:
+      - contains("Task")
       - contains("as_task_")
       - leipzig
   - title: Data Backends
@@ -52,4 +52,4 @@ reference:
       - contains("_backend")
   - title: Prediction
     contents:
-      - contains("predict")
+      - predict_spatial
