@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/dev/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3spatial.mlr-org.com/dev/articles/mlr3spatial.html</loc>
-  </url>
-  <url>
     <loc>https://mlr3spatial.mlr-org.com/dev/authors.html</loc>
   </url>
   <url>
@@ -19,16 +13,19 @@
     <loc>https://mlr3spatial.mlr-org.com/dev/reference/DataBackendRaster.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/dev/reference/DataBackendVector.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/dev/reference/TaskClassifST.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3spatial.mlr-org.com/dev/reference/TaskRegrST.html</loc>
   </url>
   <url>
     <loc>https://mlr3spatial.mlr-org.com/dev/reference/as_data_backend.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/dev/reference/as_task_classif.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/dev/reference/as_task_classif_st.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/dev/reference/as_task_regr.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/dev/reference/as_task_regr_st.html</loc>
   </url>
   <url>
     <loc>https://mlr3spatial.mlr-org.com/dev/reference/block_size.html</loc>

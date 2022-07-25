@@ -75,14 +75,17 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.2.9000" id="mlr3spatial-0129000">mlr3spatial 0.1.2.9000<a class="anchor" aria-label="anchor" href="#mlr3spatial-0129000"></a></h2>
-<ul><li>feat: <code>data("leipzig")</code> loads an <code>sf</code> object with land cover in Leipzig.</li>
-<li>feat: GeoTIFF and GeoPackage of Leipzig in <code>extdata</code> folder.</li>
+<ul><li>BREAKING CHANGE: <code>TaskClassifST</code> and <code>TaskRegrST</code> are used to train a learner with spatial data.</li>
+<li>BREAKING CHANGE: Raster objects cannot be used to create tasks for training anymore.</li>
+<li>BREAKING CHANGE: <code>TaskUnsupervised</code> is used to predict rasters now.</li>
+<li>feat: Add <code><a href="../reference/as_task_regr_st.html">as_task_regr_st()</a></code> and <code><a href="../reference/as_task_classif_st.html">as_task_classif_st()</a></code> from spatial objects.</li>
+<li>feat: Add <code>as_task_unsupervised()</code> from raster objects.</li>
 <li>feat: Task <code>leipzig</code> with land cover target.</li>
-<li>refactor: <code>DataBackendVector</code> inherits from <code>DataBackendDataTable</code> now.</li>
+<li>feat: <code>data("leipzig")</code> loads an <code>sf</code> object with land cover in Leipzig.</li>
+<li>feat: GeoTIFF and GeoPackage of Leipzig in <code>extdata</code> folder.</li>
+<li>refactor: Vector data is handled with <code>DataBackendDataTable</code> now and <code>DataBackendVector</code> is removed.</li>
 <li>BREAKING CHANGE: <code>DataBackendRaster</code> cannot be created from <code>RasterLayer</code> objects anymore.</li>
-<li>fix: <code>DataBackendVector</code> initialization failed when geometry column had a different name than <code>geometry</code>.</li>
 <li>fix: <code>spatial_predict()</code> returned an unnamed response.</li>
-<li>feat: Add <code><a href="https://mlr3.mlr-org.com/reference/as_task_regr.html" class="external-link">as_task_regr()</a></code> and <code><a href="https://mlr3.mlr-org.com/reference/as_task_classif.html" class="external-link">as_task_classif()</a></code> from spatial objects.</li>
 <li>fix: <code>spatial_predict()</code> wrote predictions to the wrong cell.</li>
 <li>BREAKING CHANGE: Remove <code>demo_raster()</code>, <code>demo_stack_spatraster()</code>, <code>demo_stack_rasterbrick()</code> and <code>demo_rasterbrick()</code> functions.</li>
 <li>feat: Prediction layer contains <code>NA</code> at raster cells with <code>NA</code> values in one or more feature layers.</li>
