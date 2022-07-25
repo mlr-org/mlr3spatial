@@ -42,7 +42,7 @@ Path where the spatial object should be written to.}
 Spatial object of class given in argument \code{format}.
 }
 \description{
-This function allows to directly predict mlr3 learners on various spatial objects (see section "Supported Spatial Classes").
+This function allows to directly predict mlr3 learners on various spatial objects.
 }
 \examples{
 library(terra, exclude = "resample")

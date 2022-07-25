@@ -8,7 +8,7 @@ test_that("LearnerRegrSpatial ignores observations with missing values", {
     numeric_layer("y")),
   dimension = 10)
   vector = sample_stack(stack, n = 10)
-  task_train = as_task_regr(vector, id = "test_vector", target = "y")
+  task_train = as_task_regr_st(vector, id = "test_vector", target = "y")
   learner = lrn("regr.ranger")
   learner$train(task_train)
 

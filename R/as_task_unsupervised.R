@@ -9,11 +9,6 @@ as_task_unsupervised.RasterStack = function(x, id = deparse(substitute(x)), labe
 }
 
 #' @export
-as_task_unsupervised.sf = function(x, id = deparse(substitute(x)), label = NA_character_, ...) {
-  TaskUnsupervised$new(id = id, backend = x, label = label)
-}
-
-#' @export
 as_task_unsupervised.SpatRaster = function(x, id = deparse(substitute(x)), label = NA_character_, ...) {
   TaskUnsupervised$new(id = id, backend = x, label = label)
 }

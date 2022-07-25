@@ -160,7 +160,7 @@ test_that("stars output works", {
   layer_size = 2)
   terra::crs(stack) = "EPSG:4326"
   vector = sample_stack(stack, n = 100)
-  task_train = as_task_regr(vector, id = "test_vector", target = "y")
+  task_train = as_task_regr_st(vector, id = "test_vector", target = "y")
   learner = lrn("regr.rpart")
   learner$train(task_train)
 
@@ -181,7 +181,7 @@ test_that("raster output works", {
     numeric_layer("y")),
   layer_size = 2)
   vector = sample_stack(stack, n = 100)
-  task_train = as_task_regr(vector, id = "test_vector", target = "y")
+  task_train = as_task_regr_st(vector, id = "test_vector", target = "y")
   learner = lrn("regr.rpart")
   learner$train(task_train)
 
@@ -228,7 +228,7 @@ test_that("prediction on regression task works with missing values", {
     numeric_layer("y")),
   dimension = 10)
   vector = sample_stack(stack, n = 10)
-  task_train = as_task_regr(vector, id = "test_vector", target = "y")
+  task_train = as_task_regr_st(vector, id = "test_vector", target = "y")
   learner = lrn("regr.ranger")
   learner$train(task_train)
 
@@ -239,66 +239,4 @@ test_that("prediction on regression task works with missing values", {
   pred = predict_spatial(task_predict, learner, chunksize = 1L)
   expect_true(all(is.na(terra::values(pred[["y"]])[seq(10)])))
   expect_numeric(terra::values(pred[["y"]]), any.missing = TRUE, all.missing = FALSE)
-})
-
-# sequential vector predict  ---------------------------------------------------
-
-test_that("spatial_predict works with vector task", {
-  # train
-  stack = generate_stack(list(
-    numeric_layer("x_1"),
-    factor_layer("y", levels = c("a", "b"))),
-  dimension = 10)
-  vector_train = sample_stack(stack, n = 100)
-  task_train = as_task_classif_st(vector_train, target = "y")
-  learner = lrn("classif.rpart")
-  learner$parallel_predict = TRUE
-  learner$train(task_train)
-
-  # predict
-  vector_predict = sample_stack(stack, n = 1000)
-  vector_predict$y = NULL
-  task_predict = as_task_unsupervised(vector_predict)
-  pred = predict_spatial(task_predict, learner)
-  expect_class(pred, "sf")
-  expect_names(names(pred), identical.to = c("y", "geometry"))
-})
-
-# predict tasks-----------------------------------------------------------------
-
-test_that("spatial_predict classification works", {
-  # train
-  stack = generate_stack(list(
-    numeric_layer("x_1"),
-    factor_layer("y", levels = c("a", "b"))),
-  layer_size = 1)
-  vector = sample_stack(stack, n = 100)
-  task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
-  learner = lrn("classif.rpart")
-  learner$train(task_train)
-
-  # predict
-  stack$y = NULL
-  task_predict = as_task_unsupervised(stack, id = "test")
-  task_predict = TaskUnsupervised$new("test", task_type = "classif", stack)
-  pred = predict_spatial(task_predict, learner, chunksize = 1L)
-  expect_class(pred, "SpatRaster")
-})
-
-test_that("spatial_predict regression works", {
-  # train
-  stack = generate_stack(list(
-    numeric_layer("x_1"),
-    numeric_layer("y")),
-  layer_size = 1)
-  vector = sample_stack(stack, n = 100)
-  task_train = as_task_regr(vector, id = "test_vector", target = "y")
-  learner = lrn("regr.rpart")
-  learner$train(task_train)
-
-  # predict
-  stack$y = NULL
-  task_predict = as_task_unsupervised(stack, id = "test")
-  pred = predict_spatial(task_predict, learner, chunksize = 1L)
-  expect_class(pred, "SpatRaster")
 })

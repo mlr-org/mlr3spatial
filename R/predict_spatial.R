@@ -1,7 +1,7 @@
 #' @title Predict on Spatial Objects with mlr3 Learners
 #'
 #' @description
-#' This function allows to directly predict mlr3 learners on various spatial objects (see section "Supported Spatial Classes").
+#' This function allows to directly predict mlr3 learners on various spatial objects.
 #'
 #' @param task ([Task]).
 #'   Task with [DataBackendRaster] or [DataBackendVector].
@@ -33,66 +33,53 @@
 #' pred = predict_spatial(task_predict, learner, chunksize = 1L)
 #' @export
 predict_spatial = function(task, learner, chunksize = 200L, format = "terra", filename = NULL) {
-  assert_multi_class(task$backend, c("DataBackendRaster", "DataBackendVector"))
+  assert_class(task$backend, "DataBackendRaster")
   assert_learner(learner)
   assert_task(task)
   assert_number(chunksize)
   stack = task$backend$stack
   start_time = proc.time()[3]
-  learner = switch(learner$learner_type,
+  learner = switch(learner$task_type,
     "classif" = LearnerClassifSpatial$new(learner),
     "regr" = LearnerRegrSpatial$new(learner))
 
+  # calculate block size
+  bs = block_size(stack, chunksize)
 
-  if (inherits(task$backend, "DataBackendRaster")) {
-
-    # calculate block size
-    bs = block_size(stack, chunksize)
-
-    # initialize target raster
-    if (is.null(filename)) {
-      filename = tempfile(fileext = ".tif")
-    }
-    target_raster = terra::rast(terra::ext(stack), resolution = terra::res(stack), crs = terra::crs(stack))
-    terra::writeStart(target_raster, filename = filename, overwrite = TRUE, datatype = "FLT8S")
-
-    lg$info("Start raster prediction")
-    lg$info("Prediction is executed with a chunksize of %s Megabytes, %i chunk(s) in total, %i values per chunk",
-      as.character(chunksize), length(bs$cells_seq), terra::ncell(task$backend$stack) / length(bs$cells_seq))
-
-    mlr3misc::pmap(list(bs$cells_seq, bs$cells_to_read, seq_along(bs$cells_seq)), function(cells_seq, cells_to_read, n) {
-
-      stack = task$backend$stack
-      pred = learner$predict(task, row_ids = cells_seq:((cells_seq + cells_to_read - 1)))
-      terra::writeValues(x = target_raster, v = pred$response,
-        start = terra::rowFromCell(stack, cells_seq), # start row number
-        nrows = terra::rowFromCell(stack, cells_to_read)) # how many rows
-      lg$info("Chunk %i of %i finished", n, length(bs$cells_seq))
-    })
-
-    terra::writeStop(target_raster)
-    lg$info("Finished raster prediction in %i seconds", as.integer(proc.time()[3] - start_time))
-
-    if (learner$learner_type == "classif") {
-      levels = learner$learner$state$train_task$levels()[[learner$learner$state$train_task$target_names]]
-      value = data.table(ID = seq_along(levels), categories = levels)
-      target_raster = terra::categories(target_raster, value = value, index = 2)
-    }
-    target_raster = set_names(target_raster, learner$learner$state$train_task$target_names)
-
-    switch(format,
-      "terra" = target_raster,
-      "stars" = stars::st_as_stars(target_raster),
-      "raster" = as(target_raster, "Raster")
-    )
-  } else {
-    pred = learner$predict(task)
-
-    sf_pred = set_names(sf::st_as_sf(data.frame(pred$response, task$backend$geometry)), c(learner$learner$state$train_task$target_names, "geometry"))
-
-    if (!is.null(filename)) {
-      sf::st_write(sf_pred, filename, quiet = TRUE)
-    }
-    sf_pred
+  # initialize target raster
+  if (is.null(filename)) {
+    filename = tempfile(fileext = ".tif")
   }
+  target_raster = terra::rast(terra::ext(stack), resolution = terra::res(stack), crs = terra::crs(stack))
+  terra::writeStart(target_raster, filename = filename, overwrite = TRUE, datatype = "FLT8S")
+
+  lg$info("Start raster prediction")
+  lg$info("Prediction is executed with a chunksize of %s Megabytes, %i chunk(s) in total, %i values per chunk",
+    as.character(chunksize), length(bs$cells_seq), terra::ncell(task$backend$stack) / length(bs$cells_seq))
+
+  mlr3misc::pmap(list(bs$cells_seq, bs$cells_to_read, seq_along(bs$cells_seq)), function(cells_seq, cells_to_read, n) {
+
+    stack = task$backend$stack
+    pred = learner$predict(task, row_ids = cells_seq:((cells_seq + cells_to_read - 1)))
+    terra::writeValues(x = target_raster, v = pred$response,
+      start = terra::rowFromCell(stack, cells_seq), # start row number
+      nrows = terra::rowFromCell(stack, cells_to_read)) # how many rows
+    lg$info("Chunk %i of %i finished", n, length(bs$cells_seq))
+  })
+
+  terra::writeStop(target_raster)
+  lg$info("Finished raster prediction in %i seconds", as.integer(proc.time()[3] - start_time))
+
+  if (learner$task_type == "classif") {
+    levels = learner$learner$state$train_task$levels()[[learner$learner$state$train_task$target_names]]
+    value = data.table(ID = seq_along(levels), categories = levels)
+    target_raster = terra::categories(target_raster, value = value, index = 2)
+  }
+  target_raster = set_names(target_raster, learner$learner$state$train_task$target_names)
+
+  switch(format,
+    "terra" = target_raster,
+    "stars" = stars::st_as_stars(target_raster),
+    "raster" = as(target_raster, "Raster")
+  )
 }
