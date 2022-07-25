@@ -28,6 +28,10 @@ TaskClassifST = R6::R6Class("TaskClassifST",
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #' The function [as_task_classif_st()] provides an alternative way to construct classification tasks.
     initialize = function(id, backend, target, positive = NULL, label = NA_character_, coordinate_names, crs = NA_character_, coords_as_features = FALSE, extra_args = list()) {
+      if (inherits(backend, "sf")) {
+        stopf("Creating a task from an sf objects is not supported anymore. Use `as_task_classif_st()` to convert an sf objects into a task.")
+      }
+
       super$initialize(id = id, backend = backend, target = target, positive = positive, extra_args = extra_args)
       self$crs = crs
       self$coordinate_names = coordinate_names

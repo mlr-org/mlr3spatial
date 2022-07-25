@@ -48,18 +48,17 @@ Suggests:
     stars (>= 0.5-5),
     testthat (>= 3.0.0)
 Remotes:
-    mlr-org/mlr3@task_type
+    mlr-org/mlr3@new_tasks
 VignetteBuilder:
     knitr
 Config/testthat/edition: 3
 Config/testthat/parallel: false
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 LazyData: true
 Collate:
     'DataBackendRaster.R'
-    'DataBackendVector.R'
     'LearnerClassifSpatial.R'
     'LearnerRegrSpatial.R'
     'TaskRegrST.R'

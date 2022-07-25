@@ -5,12 +5,11 @@
 * BREAKING CHANGE: `TaskUnsupervised` is used to predict a raster now.
 * feat: Add `as_task_regr_st()` and `as_task_classif_st()` from spatial objects.
 * feat: Add `as_task_unsupervised()` from raster objects.
+* feat: Task `leipzig` with land cover target.
 * feat: `data("leipzig")` loads an `sf` object with land cover in Leipzig.
 * feat: GeoTIFF and GeoPackage of Leipzig in `extdata` folder.
-* feat: Task `leipzig` with land cover target.
-* refactor: `DataBackendVector` inherits from `DataBackendDataTable` now.
+* refactor: Vector data is handled with `DataBackendDataTable` now and `DataBackendVector` is removed.
 * BREAKING CHANGE: `DataBackendRaster` cannot be created from `RasterLayer` objects anymore.
-* fix: `DataBackendVector` initialization failed when geometry column had a different name than `geometry`.
 * fix: `spatial_predict()` returned an unnamed response.
 * fix: `spatial_predict()` wrote predictions to the wrong cell.
 * BREAKING CHANGE: Remove `demo_raster()`, `demo_stack_spatraster()`, `demo_stack_rasterbrick()` and `demo_rasterbrick()` functions.
