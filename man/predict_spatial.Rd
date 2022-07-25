@@ -14,7 +14,7 @@ predict_spatial(
 }
 \arguments{
 \item{task}{(\link{Task}).
-Task with \link{DataBackendRaster} or \link{DataBackendVector}.}
+Task with \link{DataBackendRaster}.}
 
 \item{learner}{(\link{Learner}).
 Learner with trained model.}
@@ -32,8 +32,7 @@ value.}
 \item{format}{(\code{character(1)})\cr
 Output class of the resulting object.
 Accepted values are \code{"raster"}, \code{"stars"} and \code{"terra"} if the input is a \link{DataBackendRaster}.
-Note that when choosing something else than \code{"terra"}, the spatial object is converted into the respective format which might cause overhead both in runtime and memory allocation.
-For a \link{DataBackendVector}, the output class will always be \link[sf:sf]{sf::sf}.}
+Note that when choosing something else than \code{"terra"}, the spatial object is converted into the respective format which might cause overhead both in runtime and memory allocation.}
 
 \item{filename}{(\code{character(1)})\cr
 Path where the spatial object should be written to.}
@@ -42,7 +41,7 @@ Path where the spatial object should be written to.}
 Spatial object of class given in argument \code{format}.
 }
 \description{
-This function allows to directly predict mlr3 learners on various spatial objects (see section "Supported Spatial Classes").
+This function allows to directly predict mlr3 learners on various spatial objects.
 }
 \examples{
 library(terra, exclude = "resample")
@@ -54,7 +53,7 @@ learner$train(task_train)
 
 # load raster and convert to task
 stack = rast(system.file("extdata", "leipzig_raster.tif", package = "mlr3spatial"))
-task_predict = as_task_classif(stack, id = "leipzig")
+task_predict = as_task_unsupervised(stack, id = "leipzig")
 
 # predict land cover classes
 pred = predict_spatial(task_predict, learner, chunksize = 1L)

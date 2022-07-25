@@ -158,7 +158,7 @@ test_that("DataBackendRaster works with a numeric and a factor layer", {
   expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "c_1", "c_2")), c("x_1" = 0, "c_1" = 0))
 
   # task
-  expect_class(as_task_classif(backend, id = "test", target = "c_1"), "TaskClassif")
+  expect_class(as_task_unsupervised(backend, id = "test", target = "c_1"), "TaskUnsupervised")
 })
 
 test_that("DataBackendRaster works with multiple numeric and factor layers", {
@@ -231,7 +231,7 @@ test_that("DataBackendRaster works with multiple numeric and factor layers", {
   expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "x_2", "c_1", "c_2", "c_3")), c("x_1" = 0, "x_2" = 0, "c_1" = 0, "c_2" = 0))
 
   # task
-  expect_class(as_task_classif(backend, id = "test", target = "c_1"), "TaskClassif")
+  expect_class(as_task_unsupervised(backend, id = "test"), "TaskUnsupervised")
 })
 
 test_that("data access works", {

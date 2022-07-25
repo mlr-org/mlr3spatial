@@ -178,6 +178,19 @@ DataBackendRaster = R6Class("DataBackendRaster",
         data = self$data(rows, cols)
         map_int(data, count_missing)
       }
+    },
+
+    #' @description
+    #' Returns the coordinates of `rows`.
+    #' If `rows` is missing, all coordinates are returned.
+    #'
+    #' @return [data.table::data.table()] of coordinates of `rows`.
+    coordinates = function(rows) {
+      if (missing(rows)) {
+        as.data.table(terra::crds(self$stack, df = TRUE))
+      } else {
+        as.data.table(terra::xyFromCell(rows))
+      }
     }
   ),
 
@@ -240,7 +253,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
 #'
 #' @description
 #' Wraps a [DataBackend] around spatial objects.
-#' Currently these S3 methods are only alternative ways for writing `DataBackendRaster$new()` or `DataBackendVector$new()`.
+#' Currently these S3 methods are only alternative ways for writing `DataBackendRaster$new()`.
 #' They do not support coercing from other backends yet.
 #'
 #' @template param-data

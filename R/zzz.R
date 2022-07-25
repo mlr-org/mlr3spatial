@@ -2,6 +2,7 @@
 #' @import checkmate
 #' @import mlr3misc
 #' @import mlr3
+#' @import sf
 #' @importFrom R6 R6Class is.R6
 #' @importFrom stats complete.cases
 #' @importFrom utils getFromNamespace data
@@ -49,11 +50,33 @@
 
 .onLoad = function(libname, pkgname) {
   # nocov start
+
+  # reflections
+  x = getFromNamespace("mlr_reflections", ns = "mlr3")
+
+  x$task_types = x$task_types[!c("regr_st", "classif_st")]
+  x$task_types = setkeyv(rbind(x$task_types, rowwise_table(
+    ~type,        ~package,      ~task,            ~learner,             ~prediction,         ~prediction_data,         ~measure,
+    "regr_st",    "mlr3spatial", "TaskRegrST",     "LearnerRegr",        "PredictionRegr",    "PredictionDataRegr",     "MeasureRegr",
+    "classif_st", "mlr3spatial", "TaskClassifST",  "LearnerClassif",     "PredictionClassif", "PredictionDataClassif",  "MeasureClassif"
+  )), "type")
+
+  x$task_col_roles$classif_st = c(x$task_col_roles$classif, "coordinate")
+  x$task_col_roles$regr_st = c(x$task_col_roles$regr, "coordinate")
+  x$task_col_roles$unsupervised = c(x$task_col_roles$regr, "coordinate")
+
+  x$task_properties$classif_st = x$task_properties$classif
+  x$task_properties$regr_st = x$task_properties$regr
+
+  x$default_measures$classif_st = "classif.ce"
+  x$default_measures$regr_st = "regr.mse"
+
+  # task
   x = getFromNamespace("mlr_tasks", ns = "mlr3")
   x$add("leipzig", load_task_leipzig)
 
   # setup logger
-  assign("lg", lgr::get_logger(pkgname), envir = parent.env(environment()))
+  assign("lg", lgr::get_logger("pkgname"), envir = parent.env(environment()))
   if (Sys.getenv("IN_PKGDOWN") == "true") {
     lg$set_threshold("warn")
   }

@@ -41,17 +41,15 @@ reference:
   - title: mlr3spatial
     contents:
       - mlr3spatial-package
-  - title: Task
+  - title: Spatiotemporal Tasks
     contents:
+      - contains("Task")
+      - contains("as_task_")
       - leipzig
-  - title: Demo Data
-    contents:
-      - contains("demo")
   - title: Data Backends
     contents:
       - contains("Backend")
       - contains("_backend")
-      - contains("as_task_")
   - title: Prediction
     contents:
-      - contains("predict")
+      - predict_spatial

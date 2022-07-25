@@ -17,7 +17,6 @@ In addition, predictions on large raster files (i.e. multiple GB in size) often 
 {mlr3spatial} tries to help here by
 
 - Providing a [`DataBackendRaster`](https://mlr3.mlr-org.com/reference/DataBackend.html) class for {mlr3} which is able to handle various spatial raster classes ([{terra}](https://CRAN.R-project.org/package=terra), [{raster}](https://CRAN.R-project.org/package=raster), [{stars}](https://CRAN.R-project.org/package=stars))
-- Providing a [`DataBackendVector`](https://mlr3.mlr-org.com/reference/DataBackend.html) class for {mlr3} which is able to handle [{sf}](https://CRAN.R-project.org/package=sf) objects
 - Support for enhanced predictions on spatial objects ([{terra}](https://CRAN.R-project.org/package=terra), [{raster}](https://CRAN.R-project.org/package=raster), [{stars}](https://CRAN.R-project.org/package=stars), [{sf}](https://CRAN.R-project.org/package=sf), with optional **parallelization** and **memory awareness**
 
 ## Spatiotemporal resampling / cross-validation
