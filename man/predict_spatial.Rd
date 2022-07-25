@@ -14,7 +14,7 @@ predict_spatial(
 }
 \arguments{
 \item{task}{(\link{Task}).
-Task with \link{DataBackendRaster} or \link{DataBackendVector}.}
+Task with \link{DataBackendRaster}.}
 
 \item{learner}{(\link{Learner}).
 Learner with trained model.}
@@ -32,8 +32,7 @@ value.}
 \item{format}{(\code{character(1)})\cr
 Output class of the resulting object.
 Accepted values are \code{"raster"}, \code{"stars"} and \code{"terra"} if the input is a \link{DataBackendRaster}.
-Note that when choosing something else than \code{"terra"}, the spatial object is converted into the respective format which might cause overhead both in runtime and memory allocation.
-For a \link{DataBackendVector}, the output class will always be \link[sf:sf]{sf::sf}.}
+Note that when choosing something else than \code{"terra"}, the spatial object is converted into the respective format which might cause overhead both in runtime and memory allocation.}
 
 \item{filename}{(\code{character(1)})\cr
 Path where the spatial object should be written to.}

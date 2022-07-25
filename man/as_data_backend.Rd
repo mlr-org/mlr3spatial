@@ -30,6 +30,6 @@ Not used.}
 }
 \description{
 Wraps a \link{DataBackend} around spatial objects.
-Currently these S3 methods are only alternative ways for writing \code{DataBackendRaster$new()} or \code{DataBackendVector$new()}.
+Currently these S3 methods are only alternative ways for writing \code{DataBackendRaster$new()}.
 They do not support coercing from other backends yet.
 }

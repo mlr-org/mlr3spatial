@@ -4,7 +4,7 @@
 #' This function allows to directly predict mlr3 learners on various spatial objects.
 #'
 #' @param task ([Task]).
-#'   Task with [DataBackendRaster] or [DataBackendVector].
+#'   Task with [DataBackendRaster].
 #' @param learner ([Learner]).
 #'   Learner with trained model.
 #' @template param-chunksize
@@ -12,7 +12,6 @@
 #'   Output class of the resulting object.
 #'   Accepted values are `"raster"`, `"stars"` and `"terra"` if the input is a [DataBackendRaster].
 #'   Note that when choosing something else than `"terra"`, the spatial object is converted into the respective format which might cause overhead both in runtime and memory allocation.
-#'   For a [DataBackendVector], the output class will always be [sf::sf].
 #' @param filename (`character(1)`)\cr
 #'   Path where the spatial object should be written to.
 #'
