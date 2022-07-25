@@ -21,16 +21,16 @@ In addition, predictions on large raster files (i.e. multiple GB in size) often 
 ## FAQ
 
 <details>
-  <summary>Will {mlr3spatial} support spatial learners?</summary>
+  <summary>Will mlr3spatial support spatial learners?</summary>
   <br>
- Eventually. It is not yet clear whether these would live in {mlr3extralearners} or in {mlr3spatial}.
+ Eventually. It is not yet clear whether these would live in mlr3extralearners or in {mlr3spatial}.
  So far there are none yet.
 </details>
 
 <details>
-  <summary>Why are there two packages, `mlr3spatial` and [`mlr3spatiotempcv`](https://github.com/mlr-org/mlr3spatiotempcv)?</summary>
+  <summary>Why are there two packages, mlr3spatial and mlr3spatiotempcv?</summary>
   <br>
-  [`mlr3spatiotempcv`](https://github.com/mlr-org/mlr3spatiotempcv) is solely devoted to resampling techniques.
+  mlr3spatiotempcv is solely devoted to resampling techniques.
   There are quite a few and keeping packages small is one of the development philosophies of the mlr3 framework.
-  Also back in the days when [`mlr3spatiotempcv`](https://github.com/mlr-org/mlr3spatiotempcv) was developed it was not yet clear how we want to structure additional spatial components such as prediction support for spatial classes and so on.
+  Also back in the days when mlr3spatiotempcv was developed it was not yet clear how we want to structure additional spatial components such as prediction support for spatial classes and so on.
 </details>
