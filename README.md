@@ -15,12 +15,8 @@ Users often need to extract the "raw" values from the spatial objects (detaching
 In addition, predictions on large raster files (i.e. multiple GB in size) often leads to memory issues on consumer grade machines.
 {mlr3spatial} provides
 
-- Spatial tasks ([`TaskClassifST`](https://mlr3spatial.mlr-org.com/dev/reference/TaskClassifST.html) and [`TaskRegrST`](https://mlr3spatial.mlr-org.com/dev/reference/TaskRegrST.html)) from [`sf`](https://CRAN.R-project.org/package=sf) vector objects.
-- Predict on spatial raster objects ([`terra`](https://CRAN.R-project.org/package=terra), [`raster`](https://CRAN.R-project.org/package=raster), [`stars`](https://CRAN.R-project.org/package=stars)), with optional **parallelization** and **memory awareness**
-
-## Spatiotemporal resampling / cross-validation
-
-For spatiotemporal resampling within mlr3 see [`mlr3spatiotempcv`](https://github.com/mlr-org/mlr3spatiotempcv).
+- Spatial tasks ([`TaskClassifST`](https://mlr3spatial.mlr-org.com/dev/reference/TaskClassifST.html) and [`TaskRegrST`](https://mlr3spatial.mlr-org.com/dev/reference/TaskRegrST.html)) from [`sf`](https://CRAN.R-project.org/package=sf) vector objects to train a learner.
+- Predict on spatial raster objects ([`terra`](https://CRAN.R-project.org/package=terra), [`raster`](https://CRAN.R-project.org/package=raster), [`stars`](https://CRAN.R-project.org/package=stars)), with optional parallelization and memory awareness.
 
 ## FAQ
 
@@ -32,9 +28,9 @@ For spatiotemporal resampling within mlr3 see [`mlr3spatiotempcv`](https://githu
 </details>
 
 <details>
-  <summary>Why are there two packages, {mlr3spatial} and {mlr3spatiotempcv}?</summary>
+  <summary>Why are there two packages, `mlr3spatial` and [`mlr3spatiotempcv`](https://github.com/mlr-org/mlr3spatiotempcv)?</summary>
   <br>
-  {mlr3spatiotempcv} is solely devoted to resampling techniques.
+  [`mlr3spatiotempcv`](https://github.com/mlr-org/mlr3spatiotempcv) is solely devoted to resampling techniques.
   There are quite a few and keeping packages small is one of the development philosophies of the mlr3 framework.
-  Also back in the days when {mlr3spatiotempcv} was developed it was not yet clear how we want to structure additional spatial components such as prediction support for spatial classes and so on.
+  Also back in the days when [`mlr3spatiotempcv`](https://github.com/mlr-org/mlr3spatiotempcv) was developed it was not yet clear how we want to structure additional spatial components such as prediction support for spatial classes and so on.
 </details>
