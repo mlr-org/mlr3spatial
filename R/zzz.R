@@ -54,7 +54,7 @@
   # reflections
   x = getFromNamespace("mlr_reflections", ns = "mlr3")
 
-  x$task_generators = setkeyv(rbind(x$task_generators, rowwise_table(
+  x$task_types = setkeyv(rbind(x$task_types, rowwise_table(
     ~type,        ~package,      ~task,            ~learner,             ~prediction,         ~prediction_data,         ~measure,
     "regr_st",    "mlr3spatial", "TaskRegrST",     "LearnerRegr",        "PredictionRegr",    "PredictionDataRegr",     "MeasureRegr",
     "classif_st", "mlr3spatial", "TaskClassifST",  "LearnerClassif",     "PredictionClassif", "PredictionDataClassif",  "MeasureClassif"
