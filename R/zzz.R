@@ -76,17 +76,10 @@
   x$add("leipzig", load_task_leipzig)
 
   # setup logger
-  lg = lgr::get_logger(pkgname)
-  assign("lg", lg, envir = parent.env(environment()))
-  f = function(event) {
-    event$msg = paste0("[mlr3spatial] ", event$msg)
-    TRUE
-  }
-  lg$set_filters(list(f))
+  assign("lg", lgr::get_logger("mlr3"), envir = parent.env(environment()))
   if (Sys.getenv("IN_PKGDOWN") == "true") {
     lg$set_threshold("warn")
   }
-  mlr_reflections$loggers[["mlr3spatial"]] = lg
 } # nocov end
 
 leanify_package() # nocov
