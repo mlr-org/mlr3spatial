@@ -82,7 +82,7 @@ leipzig_raster = rast(system.file("extdata", "leipzig_raster.tif", package = "ml
 ```
 
 ``` r
-plotRGB(leipzig_raster, r = 3, g = 2, b = 1, scale = 5451, stretch = "lin")
+plotRGB(leipzig_raster, r = 3, g = 2, b = 1, scale = 5451)
 ```
 
 <img src="man/figures/sentinel.png" />
@@ -92,12 +92,11 @@ plotRGB(leipzig_raster, r = 3, g = 2, b = 1, scale = 5451, stretch = "lin")
 task_predict = as_task_unsupervised(leipzig_raster)
 
 # predict land cover map
-
 land_cover = predict_spatial(task_predict, learner)
 ```
 
 ``` r
-plot(land_cover, axes = FALSE)
+plot(land_cover)
 ```
 
 <img src="man/figures/land_cover.png" />
