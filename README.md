@@ -79,10 +79,13 @@ learner$train(task)
 
 # load raster file
 leipzig_raster = rast(system.file("extdata", "leipzig_raster.tif", package = "mlr3spatial"))
+```
+
+``` r
 plotRGB(leipzig_raster, r = 3, g = 2, b = 1, scale = 5451, stretch = "lin")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+<img src="man/figures/sentinel.png" />
 
 ``` r
 # create predict task
@@ -91,7 +94,10 @@ task_predict = as_task_unsupervised(leipzig_raster)
 # predict land cover map
 
 land_cover = predict_spatial(task_predict, learner)
+```
+
+``` r
 plot(land_cover, axes = FALSE)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->
+<img src="man/figures/land_cover.png" />
