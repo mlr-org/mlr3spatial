@@ -21,6 +21,10 @@ mlr3spatial is an extension package for spatial objects within the
   - Built-in toy tasks
     [`leipzig`](https://mlr3spatial.mlr-org.com/dev/reference/leipzig.html).
 
+Check out
+[mlr3spatiotempcv](https://github.com/mlr-org/mlr3spatiotempcv) for
+spatiotemporal resampling within mlr3.
+
 ## Installation
 
 Install the last release from CRAN:
@@ -82,7 +86,7 @@ leipzig_raster = rast(system.file("extdata", "leipzig_raster.tif", package = "ml
 ```
 
 ``` r
-plotRGB(leipzig_raster, r = 3, g = 2, b = 1, scale = 5451)
+plotRGB(leipzig_raster, r = 3, g = 2, b = 1)
 ```
 
 <img src="man/figures/sentinel.png" />
@@ -100,3 +104,25 @@ plot(land_cover)
 ```
 
 <img src="man/figures/land_cover.png" />
+
+## FAQ
+
+<details>
+
+<summary>Will mlr3spatial support spatial learners?</summary> <br>
+Eventually. It is not yet clear whether these would live in
+mlr3extralearners or in {mlr3spatial}. So far there are none yet.
+
+</details>
+
+<details>
+
+<summary>Why are there two packages, mlr3spatial and
+mlr3spatiotempcv?</summary> <br> mlr3spatiotempcv is solely devoted to
+resampling techniques. There are quite a few and keeping packages small
+is one of the development philosophies of the mlr3 framework. Also back
+in the days when mlr3spatiotempcv was developed it was not yet clear how
+we want to structure additional spatial components such as prediction
+support for spatial classes and so on.
+
+</details>
