@@ -13,10 +13,10 @@ Point survey of land cover in Leipzig.
 Includes Sentinel-2 spectral bands and NDVI.
 }
 \examples{
-if(requireNamespace("sf")) {
-library(sf)
-data("leipzig", package = "mlr3spatial")
-print(leipzig)
+if (requireNamespace("sf")) {
+  library(sf)
+  data("leipzig", package = "mlr3spatial")
+  print(leipzig)
 }
 }
 \keyword{data}

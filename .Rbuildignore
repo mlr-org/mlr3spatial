@@ -20,3 +20,4 @@ cran-comments\.md
 ^CRAN-RELEASE$
 ^CRAN-SUBMISSION$
 .editorconfig
+^README\.Rmd$
