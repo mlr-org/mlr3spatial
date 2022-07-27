@@ -83,7 +83,7 @@ This can be changed by setting coords_as_features = TRUE.'><meta name="robots" c
     </div>
 
     <div class="ref-description section level2">
-    <p>This task specializes TaskClassif for spatiotemporal classification problems.</p>
+    <p>This task specializes <a href="https://mlr3.mlr-org.com/reference/TaskClassif.html" class="external-link">TaskClassif</a> for spatiotemporal classification problems.</p>
 <p>A spatial example task is available via <code>tsk("ecuador")</code>.</p>
 <p>The coordinate reference system passed during initialization must match the one which was used during data creation, otherwise offsets of multiple meters may occur.
 By default, coordinates are not used as features.
@@ -143,7 +143,7 @@ If <code>TRUE</code>, coordinates are used as features.</p></dd>
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="TaskClassif" data-id="droplevels"><a href="https://mlr3.mlr-org.com/reference/TaskClassif.html#method-droplevels"><code>mlr3::TaskClassif$droplevels()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="TaskClassif" data-id="truth"><a href="https://mlr3.mlr-org.com/reference/TaskClassif.html#method-truth"><code>mlr3::TaskClassif$truth()</code></a></span></li>
 </ul></details></p><hr><a id="method-TaskClassifST-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+<h3 id="method-new-">Method <code><a href="https://rdrr.io/r/methods/new.html" class="external-link">new()</a></code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Creates a new instance of this <a href="https://r6.r-lib.org/reference/R6Class.html" class="external-link">R6</a> class.
 The function <code><a href="as_task_classif_st.html">as_task_classif_st()</a></code> provides an alternative way to construct classification tasks.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
@@ -168,9 +168,9 @@ Identifier for the new instance.</p></dd>
 
 
 <dt><code>backend</code></dt>
-<dd><p>(DataBackend)<br>
-Either a DataBackend, or any object which is convertible to a DataBackend with <code>as_data_backend()</code>.
-E.g., am <code>sf</code> will be converted to a DataBackendDataTable.</p></dd>
+<dd><p>(<a href="https://mlr3.mlr-org.com/reference/DataBackend.html" class="external-link">DataBackend</a>)<br>
+Either a <a href="https://mlr3.mlr-org.com/reference/DataBackend.html" class="external-link">DataBackend</a>, or any object which is convertible to a <a href="https://mlr3.mlr-org.com/reference/DataBackend.html" class="external-link">DataBackend</a> with <code><a href="https://mlr3.mlr-org.com/reference/as_data_backend.html" class="external-link">as_data_backend()</a></code>.
+E.g., am <code>sf</code> will be converted to a <a href="https://mlr3.mlr-org.com/reference/DataBackendDataTable.html" class="external-link">DataBackendDataTable</a>.</p></dd>
 
 
 <dt><code>target</code></dt>
@@ -207,7 +207,7 @@ If <code>TRUE</code>, coordinates are used as features.</p></dd>
 
 <dt><code>extra_args</code></dt>
 <dd><p>(named <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>)<br>
-Named list of constructor arguments, required for converting task types via <code>convert_task()</code>.</p></dd>
+Named list of constructor arguments, required for converting task types via <code><a href="https://mlr3.mlr-org.com/reference/convert_task.html" class="external-link">convert_task()</a></code>.</p></dd>
 
 
 </dl><p></p></div>

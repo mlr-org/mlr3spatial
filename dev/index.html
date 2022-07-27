@@ -107,19 +107,90 @@
 <div class="page-header"><h1 id="mlr3spatial">mlr3spatial<a class="anchor" aria-label="anchor" href="#mlr3spatial"></a>
 </h1></div>
 <!-- badges: start -->
+<p>Package website: <a href="https://mlr3spatial.mlr-org.com/">release</a> | <a href="https://mlr3spatial.mlr-org.com/dev/">dev</a></p>
+<p>mlr3spatial is an extension package for spatial objects within the <a href="https://mlr3.mlr-org.com" class="external-link">mlr3</a> ecosystem.</p>
 <div class="section level2">
-<h2 id="package-scope">Package scope<a class="anchor" aria-label="anchor" href="#package-scope"></a>
+<h2 id="feature-overview">Feature Overview<a class="anchor" aria-label="anchor" href="#feature-overview"></a>
 </h2>
-<p>The handling of (large) spatial objects in ML is an error-prone and time consuming task. Users often need to extract the “raw” values from the spatial objects (detaching the spatial metadata), train a model, predict and then recreate the spatial object again. In addition, predictions on large raster files (i.e. multiple GB in size) often leads to memory issues on consumer grade machines. {mlr3spatial} provides</p>
 <ul>
-<li>Spatial tasks (<a href="https://mlr3spatial.mlr-org.com/dev/reference/TaskClassifST.html"><code>TaskClassifST</code></a> and <a href="https://mlr3spatial.mlr-org.com/dev/reference/TaskRegrST.html"><code>TaskRegrST</code></a>) from <a href="https://CRAN.R-project.org/package=sf" class="external-link"><code>sf</code></a> vector objects to train a learner.</li>
-<li>Predict on spatial raster objects (<a href="https://CRAN.R-project.org/package=terra" class="external-link"><code>terra</code></a>, <a href="https://CRAN.R-project.org/package=raster" class="external-link"><code>raster</code></a>, <a href="https://CRAN.R-project.org/package=stars" class="external-link"><code>stars</code></a>), with optional parallelization and memory awareness.</li>
+<li>Read training data from <a href="https://CRAN.R-project.org/package=sf" class="external-link">sf</a> objects.</li>
+<li>Predict on raster objects from the packages <a href="https://CRAN.R-project.org/package=terra" class="external-link">terra</a>, <a href="https://CRAN.R-project.org/package=raster" class="external-link">raster</a> and <a href="https://CRAN.R-project.org/package=stars" class="external-link">stars</a>.</li>
+<li>Write model predictions to raster files.</li>
+<li>Predict large raster objects in parallel.</li>
+<li>Read raster objects in chunks to avoid memory issues.</li>
+<li>Built-in toy tasks <a href="https://mlr3spatial.mlr-org.com/dev/reference/leipzig.html"><code>leipzig</code></a>.</li>
 </ul>
+<p>Check out <a href="https://github.com/mlr-org/mlr3spatiotempcv" class="external-link">mlr3spatiotempcv</a> for spatiotemporal resampling within mlr3.</p>
+</div>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>Install the last release from CRAN:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"mlr3spatial"</span><span class="op">)</span></span></code></pre></div>
+<p>Install the development version from GitHub:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"mlr-org/mlr3spatial"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3.mlr-org.com" class="external-link">mlr3</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3spatial.mlr-org.com">mlr3spatial</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span>, exclude <span class="op">=</span> <span class="st">"resample"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># load sample points</span></span>
+<span><span class="va">leipzig_vector</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"leipzig_points.gpkg"</span>, package <span class="op">=</span> <span class="st">"mlr3spatial"</span><span class="op">)</span>, stringsAsFactors <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create land cover task</span></span>
+<span><span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="reference/as_task_classif_st.html">as_task_classif_st</a></span><span class="op">(</span><span class="va">leipzig_vector</span>, target <span class="op">=</span> <span class="st">"land_cover"</span><span class="op">)</span></span>
+<span><span class="va">task</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## &lt;TaskClassifST:leipzig_vector&gt; (97 x 9)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="do">## * Target: land_cover</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="do">## * Properties: multiclass</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="do">## * Features (8):</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   - dbl (8): b02, b03, b04, b06, b07, b08, b11, ndvi</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="do">## * Coordinates:</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="do">##            X       Y</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="do">##  1: 732480.1 5693957</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="do">##  2: 732217.4 5692769</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="do">##  3: 732737.2 5692469</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="do">##  4: 733169.3 5692777</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="do">##  5: 732202.2 5692644</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="do">## ---                 </span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 93: 733018.7 5692342</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 94: 732551.4 5692887</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 95: 732520.4 5692589</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 96: 732542.2 5692204</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 97: 732437.8 5692300</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># load learner</span></span>
+<span><span class="va">learner</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># train the model</span></span>
+<span><span class="va">learner</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># load raster file</span></span>
+<span><span class="va">leipzig_raster</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"leipzig_raster.tif"</span>, package <span class="op">=</span> <span class="st">"mlr3spatial"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plotRGB.html" class="external-link">plotRGB</a></span><span class="op">(</span><span class="va">leipzig_raster</span>, r <span class="op">=</span> <span class="fl">3</span>, g <span class="op">=</span> <span class="fl">2</span>, b <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/sentinel.png"></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># create predict task</span></span>
+<span><span class="va">task_predict</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_unsupervised.html" class="external-link">as_task_unsupervised</a></span><span class="op">(</span><span class="va">leipzig_raster</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># predict land cover map</span></span>
+<span><span class="va">land_cover</span> <span class="op">=</span> <span class="fu"><a href="reference/predict_spatial.html">predict_spatial</a></span><span class="op">(</span><span class="va">task_predict</span>, <span class="va">learner</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">land_cover</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/land_cover.png"></p>
 </div>
 <div class="section level2">
 <h2 id="faq">FAQ<a class="anchor" aria-label="anchor" href="#faq"></a>
 </h2>
-<details><summary>Will mlr3spatial support spatial learners?</summary><br> Eventually. It is not yet clear whether these would live in mlr3extralearners or in {mlr3spatial}. So far there are none yet.</details><details><summary>Why are there two packages, mlr3spatial and mlr3spatiotempcv?</summary><br> mlr3spatiotempcv is solely devoted to resampling techniques. There are quite a few and keeping packages small is one of the development philosophies of the mlr3 framework. Also back in the days when mlr3spatiotempcv was developed it was not yet clear how we want to structure additional spatial components such as prediction support for spatial classes and so on.</details>
+<details><summary>Will mlr3spatial support spatial learners?</summary><p><br> Eventually. It is not yet clear whether these would live in mlr3extralearners or in {mlr3spatial}. So far there are none yet.</p></details><details><summary>Why are there two packages, mlr3spatial and mlr3spatiotempcv?</summary><p><br> mlr3spatiotempcv is solely devoted to resampling techniques. There are quite a few and keeping packages small is one of the development philosophies of the mlr3 framework. Also back in the days when mlr3spatiotempcv was developed it was not yet clear how we want to structure additional spatial components such as prediction support for spatial classes and so on.</p></details>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
