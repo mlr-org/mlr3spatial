@@ -11,6 +11,14 @@ options(datatable.print.class = FALSE, datatable.print.keys = FALSE)
 
 # mlr3spatial
 
+
+<!-- badges: start -->
+[![tic](https://github.com/mlr-org/mlr3spatial/workflows/tic/badge.svg?branch=main)](https://github.com/mlr-org/mlr3spatial/actions)
+[![CRAN status](https://www.r-pkg.org/badges/version/mlr3spatial)](https://CRAN.R-project.org/package=mlr3spatial)
+[![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3)
+[![Mattermost](https://img.shields.io/badge/chat-mattermost-orange.svg)](https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/)
+<!-- badges: end -->
+
 Package website: [release](https://mlr3spatial.mlr-org.com/) | [dev](https://mlr3spatial.mlr-org.com/dev/)
 
 mlr3spatial is an extension package for spatial objects within the [mlr3](https://mlr3.mlr-org.com) ecosystem.
