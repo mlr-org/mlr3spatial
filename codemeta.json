@@ -4,17 +4,17 @@
   "identifier": "mlr3spatial",
   "description": "Extends the 'mlr3' ML framework with methods for spatial objects. Data storage and prediction are supported for packages 'terra', 'raster' and 'stars'.",
   "name": "mlr3spatial: Support for Spatial Objects Within the 'mlr3' Ecosystem",
-  "relatedLink": "https://mlr3spatial.mlr-org.com",
+  "relatedLink": ["https://mlr3spatial.mlr-org.com", "https://CRAN.R-project.org/package=mlr3spatial"],
   "codeRepository": "https://github.com/mlr-org/mlr3spatial",
   "issueTracker": "https://github.com/mlr-org/mlr3spatial/issues",
   "license": "https://spdx.org/licenses/LGPL-3.0",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.2.0 (2022-04-22)",
+  "runtimePlatform": "R version 4.1.2 (2021-11-01)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -58,18 +58,6 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=bench"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "e1071",
-      "name": "e1071",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=e1071"
     },
     {
       "@type": "SoftwareApplication",
@@ -119,18 +107,6 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=mlr3learners"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "mlr3tuning",
-      "name": "mlr3tuning",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=mlr3tuning"
     },
     {
       "@type": "SoftwareApplication",
@@ -206,18 +182,6 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "sf",
-      "name": "sf",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=sf"
-    },
-    {
-      "@type": "SoftwareApplication",
       "identifier": "stars",
       "name": "stars",
       "version": ">= 0.5-5",
@@ -248,7 +212,7 @@
       "@type": "SoftwareApplication",
       "identifier": "mlr3",
       "name": "mlr3",
-      "version": ">= 0.12.0",
+      "version": ">= 0.14.0",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -334,9 +298,21 @@
     },
     "9": {
       "@type": "SoftwareApplication",
+      "identifier": "sf",
+      "name": "sf",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=sf"
+    },
+    "10": {
+      "@type": "SoftwareApplication",
       "identifier": "terra",
       "name": "terra",
-      "version": ">= 1.5-21",
+      "version": ">= 1.6-3",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
@@ -345,12 +321,16 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=terra"
     },
-    "10": {
+    "11": {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils"
     },
     "SystemRequirements": null
   },
-  "fileSize": "170.528KB"
+  "fileSize": "1284.039KB",
+  "releaseNotes": "https://github.com/mlr-org/mlr3spatial/blob/master/NEWS.md",
+  "readme": "https://github.com/mlr-org/mlr3spatial/blob/main/README.md",
+  "contIntegration": "https://github.com/mlr-org/mlr3spatial/actions",
+  "keywords": ["raster-prediction", "spatial", "spatial-modelling", "r", "r-package", "mlr3"]
 }
