@@ -4,15 +4,6 @@
     <loc>https://mlr3spatial.mlr-org.com/404.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/articles/benchmark.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3spatial.mlr-org.com/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3spatial.mlr-org.com/articles/mlr3spatial.html</loc>
-  </url>
-  <url>
     <loc>https://mlr3spatial.mlr-org.com/authors.html</loc>
   </url>
   <url>
@@ -25,37 +16,49 @@
     <loc>https://mlr3spatial.mlr-org.com/reference/DataBackendRaster.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/reference/DataBackendVector.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/reference/TaskClassifST.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3spatial.mlr-org.com/reference/TaskRegrST.html</loc>
   </url>
   <url>
     <loc>https://mlr3spatial.mlr-org.com/reference/as_data_backend.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/reference/as_task_classif.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/reference/as_task_classif_st.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/reference/as_task_regr.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/reference/as_task_regr_st.html</loc>
   </url>
   <url>
     <loc>https://mlr3spatial.mlr-org.com/reference/block_size.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/reference/demo_raster.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/reference/factor_layer.html</loc>
   </url>
   <url>
-    <loc>https://mlr3spatial.mlr-org.com/reference/demo_stack_rasterbrick.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3spatial.mlr-org.com/reference/demo_stack_spatraster.html</loc>
+    <loc>https://mlr3spatial.mlr-org.com/reference/generate_stack.html</loc>
   </url>
   <url>
     <loc>https://mlr3spatial.mlr-org.com/reference/index.html</loc>
   </url>
   <url>
+    <loc>https://mlr3spatial.mlr-org.com/reference/leipzig.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3spatial.mlr-org.com/reference/mask_stack.html</loc>
+  </url>
+  <url>
     <loc>https://mlr3spatial.mlr-org.com/reference/mlr3spatial-package.html</loc>
   </url>
   <url>
+    <loc>https://mlr3spatial.mlr-org.com/reference/numeric_layer.html</loc>
+  </url>
+  <url>
     <loc>https://mlr3spatial.mlr-org.com/reference/predict_spatial.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3spatial.mlr-org.com/reference/sample_stack.html</loc>
   </url>
   <url>
     <loc>https://mlr3spatial.mlr-org.com/reference/write_raster.html</loc>
