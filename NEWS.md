@@ -1,8 +1,10 @@
-# mlr3spatial 0.1.2.9000
+# mlr3spatial 0.2.0
 
 * BREAKING CHANGE: `TaskClassifST` and `TaskRegrST` are used to train a learner with spatial data.
+  The new tasks unify the work with mlr3spatiotempcv.
 * BREAKING CHANGE: Raster objects cannot be used to create tasks for training anymore.
-* BREAKING CHANGE: `TaskUnsupervised` is used to predict rasters now.
+* BREAKING CHANGE: `TaskUnsupervised` is used to predict on rasters objects now.
+  The new task type is more convenient for data without a response.
 * feat: Add `as_task_regr_st()` and `as_task_classif_st()` from spatial objects.
 * feat: Add `as_task_unsupervised()` from raster objects.
 * feat: Task `leipzig` with land cover target.

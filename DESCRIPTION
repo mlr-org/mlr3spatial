@@ -1,7 +1,7 @@
 Package: mlr3spatial
 Title: Support for Spatial Objects Within the 'mlr3' Ecosystem
-Version: 0.1.2.9000
-Date: 2022-05-30
+Version: 0.2.0
+Date: 2022-08-18
 Authors@R:
     c(person(given = "Marc",
              family = "Becker",
@@ -21,7 +21,7 @@ URL: https://mlr3spatial.mlr-org.com,
     https://github.com/mlr-org/mlr3spatial
 BugReports: https://github.com/mlr-org/mlr3spatial/issues
 Depends:
-    mlr3 (>= 0.13.4-9000),
+    mlr3 (>= 0.14.0),
     R (>= 3.1.0)
 Imports:
     checkmate (>= 2.0.0),
@@ -47,8 +47,6 @@ Suggests:
     rpart,
     stars (>= 0.5-5),
     testthat (>= 3.0.0)
-Remotes:
-    mlr-org/mlr3
 Config/testthat/edition: 3
 Config/testthat/parallel: false
 Encoding: UTF-8
