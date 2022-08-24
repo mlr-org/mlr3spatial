@@ -61,9 +61,9 @@
     "classif_st", "mlr3spatial", "TaskClassifST",  "LearnerClassif",     "PredictionClassif", "PredictionDataClassif",  "MeasureClassif"
   )), "type")
 
-  x$task_col_roles$classif_st = c(x$task_col_roles$classif, "coordinate")
-  x$task_col_roles$regr_st = c(x$task_col_roles$regr, "coordinate")
-  x$task_col_roles$unsupervised = c(x$task_col_roles$regr, "coordinate")
+  x$task_col_roles$classif_st = c(x$task_col_roles$classif, c("coordinate", "space", "time"))
+  x$task_col_roles$regr_st = c(x$task_col_roles$regr, c("coordinate", "space", "time"))
+  x$task_col_roles$unsupervised = x$task_col_roles$regr
 
   x$task_properties$classif_st = x$task_properties$classif
   x$task_properties$regr_st = x$task_properties$regr
