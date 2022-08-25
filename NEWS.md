@@ -1,3 +1,7 @@
+# mlr3spatial 0.2.1
+
+* fix: add `"space"` and `"time"` column role from mlr3spatiotempcv
+
 # mlr3spatial 0.2.0
 
 * BREAKING CHANGE: `TaskClassifST` and `TaskRegrST` are used to train a learner with spatial data.
@@ -23,7 +27,7 @@
 
 # mlr3spatial 0.1.1
 
-* fix: compatibility to `terra` update.
+* fix: compatibility to terra update.
 
 # mlr3spatial 0.1.0
 
