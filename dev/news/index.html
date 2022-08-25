@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">mlr3spatial</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.2.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.1.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,11 +73,15 @@
       <small>Source: <a href="https://github.com/mlr-org/mlr3spatial/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2"><h2 class="pkg-version" data-toc-text="0.2.1.9000" id="mlr3spatial-0219000">mlr3spatial 0.2.1.9000<a class="anchor" aria-label="anchor" href="#mlr3spatial-0219000"></a></h2></div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.2.9000" id="mlr3spatial-0129000">mlr3spatial 0.1.2.9000<a class="anchor" aria-label="anchor" href="#mlr3spatial-0129000"></a></h2>
-<ul><li>BREAKING CHANGE: <code>TaskClassifST</code> and <code>TaskRegrST</code> are used to train a learner with spatial data.</li>
+<h2 class="pkg-version" data-toc-text="0.2.1" id="mlr3spatial-021">mlr3spatial 0.2.1<a class="anchor" aria-label="anchor" href="#mlr3spatial-021"></a></h2><p class="text-muted">CRAN release: 2022-08-25</p>
+<ul><li>fix: add <code>"space"</code> and <code>"time"</code> column role from mlr3spatiotempcv</li></ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.0" id="mlr3spatial-020">mlr3spatial 0.2.0<a class="anchor" aria-label="anchor" href="#mlr3spatial-020"></a></h2><p class="text-muted">CRAN release: 2022-08-18</p>
+<ul><li>BREAKING CHANGE: <code>TaskClassifST</code> and <code>TaskRegrST</code> are used to train a learner with spatial data. The new tasks unify the work with mlr3spatiotempcv.</li>
 <li>BREAKING CHANGE: Raster objects cannot be used to create tasks for training anymore.</li>
-<li>BREAKING CHANGE: <code>TaskUnsupervised</code> is used to predict rasters now.</li>
+<li>BREAKING CHANGE: <code>TaskUnsupervised</code> is used to predict on rasters objects now. The new task type is more convenient for data without a response.</li>
 <li>feat: Add <code><a href="../reference/as_task_regr_st.html">as_task_regr_st()</a></code> and <code><a href="../reference/as_task_classif_st.html">as_task_classif_st()</a></code> from spatial objects.</li>
 <li>feat: Add <code><a href="https://mlr3.mlr-org.com/reference/as_task_unsupervised.html" class="external-link">as_task_unsupervised()</a></code> from raster objects.</li>
 <li>feat: Task <code>leipzig</code> with land cover target.</li>
@@ -95,7 +99,7 @@
 <ul><li>refactor: stars objects are directly converted to terra objects now.</li></ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.1" id="mlr3spatial-011">mlr3spatial 0.1.1<a class="anchor" aria-label="anchor" href="#mlr3spatial-011"></a></h2><p class="text-muted">CRAN release: 2022-01-20</p>
-<ul><li>fix: compatibility to <code>terra</code> update.</li></ul></div>
+<ul><li>fix: compatibility to terra update.</li></ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="mlr3spatial-010">mlr3spatial 0.1.0<a class="anchor" aria-label="anchor" href="#mlr3spatial-010"></a></h2><p class="text-muted">CRAN release: 2021-11-16</p>
 <ul><li>First version of mlr3spatial.</li></ul></div>
