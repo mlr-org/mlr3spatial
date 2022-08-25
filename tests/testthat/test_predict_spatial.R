@@ -152,6 +152,7 @@ test_that("parallel execution works with callr", {
 
 test_that("stars output works", {
   skip_if_not_installed("stars")
+  skip_on_os("mac")
 
   # train
   stack = generate_stack(list(
