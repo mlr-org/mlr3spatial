@@ -66,6 +66,12 @@
     mlr3book
   </a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="articles/benchmark.html">Benchmark Parallel Predictions</a>
+  </div>
+</li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -108,19 +114,19 @@
 </h1></div>
 <!-- badges: start -->
 <p>Package website: <a href="https://mlr3spatial.mlr-org.com/">release</a> | <a href="https://mlr3spatial.mlr-org.com/dev/">dev</a></p>
-<p>mlr3spatial is an extension package for spatial objects within the <a href="https://mlr3.mlr-org.com" class="external-link">mlr3</a> ecosystem.</p>
+<p>{mlr3spatial} is an extension package for spatial objects within the <a href="https://mlr3.mlr-org.com" class="external-link">mlr3</a> ecosystem.</p>
 <div class="section level2">
 <h2 id="feature-overview">Feature Overview<a class="anchor" aria-label="anchor" href="#feature-overview"></a>
 </h2>
 <ul>
 <li>Read training data from <a href="https://CRAN.R-project.org/package=sf" class="external-link">sf</a> objects.</li>
-<li>Predict on raster objects from the packages <a href="https://CRAN.R-project.org/package=terra" class="external-link">terra</a>, <a href="https://CRAN.R-project.org/package=raster" class="external-link">raster</a> and <a href="https://CRAN.R-project.org/package=stars" class="external-link">stars</a>.</li>
+<li>Predict on raster objects from the packages <a href="https://CRAN.R-project.org/package=terra" class="external-link">{terra}</a>, <a href="https://CRAN.R-project.org/package=raster" class="external-link">{raster}</a> and <a href="https://CRAN.R-project.org/package=stars" class="external-link">{stars}</a>.</li>
 <li>Write model predictions to raster files.</li>
 <li>Predict large raster objects in parallel.</li>
 <li>Read raster objects in chunks to avoid memory issues.</li>
-<li>Built-in toy tasks <a href="https://mlr3spatial.mlr-org.com/dev/reference/leipzig.html"><code>leipzig</code></a>.</li>
+<li>Built-in toy task <a href="https://mlr3spatial.mlr-org.com/dev/reference/leipzig.html"><code>leipzig</code></a>.</li>
 </ul>
-<p>Check out <a href="https://github.com/mlr-org/mlr3spatiotempcv" class="external-link">mlr3spatiotempcv</a> for spatiotemporal resampling within mlr3.</p>
+<p>Check out <a href="https://github.com/mlr-org/mlr3spatiotempcv" class="external-link">{mlr3spatiotempcv}</a> for spatiotemporal resampling within mlr3.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -142,7 +148,8 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># load sample points</span></span>
-<span><span class="va">leipzig_vector</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"leipzig_points.gpkg"</span>, package <span class="op">=</span> <span class="st">"mlr3spatial"</span><span class="op">)</span>, stringsAsFactors <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">leipzig_vector</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"leipzig_points.gpkg"</span>,</span>
+<span>  package <span class="op">=</span> <span class="st">"mlr3spatial"</span><span class="op">)</span>, stringsAsFactors <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># create land cover task</span></span>
 <span><span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="reference/as_task_classif_st.html">as_task_classif_st</a></span><span class="op">(</span><span class="va">leipzig_vector</span>, target <span class="op">=</span> <span class="st">"land_cover"</span><span class="op">)</span></span>
@@ -166,7 +173,7 @@
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 96: 732542.2 5692204</span></span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 97: 732437.8 5692300</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># load learner</span></span>
+<code class="sourceCode R"><span><span class="co"># create learner</span></span>
 <span><span class="va">learner</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># train the model</span></span>
@@ -178,19 +185,20 @@
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plotRGB.html" class="external-link">plotRGB</a></span><span class="op">(</span><span class="va">leipzig_raster</span>, r <span class="op">=</span> <span class="fl">3</span>, g <span class="op">=</span> <span class="fl">2</span>, b <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/sentinel.png"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># create predict task</span></span>
+<code class="sourceCode R"><span><span class="co"># create prediction task</span></span>
 <span><span class="va">task_predict</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_task_unsupervised.html" class="external-link">as_task_unsupervised</a></span><span class="op">(</span><span class="va">leipzig_raster</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># predict land cover map</span></span>
 <span><span class="va">land_cover</span> <span class="op">=</span> <span class="fu"><a href="reference/predict_spatial.html">predict_spatial</a></span><span class="op">(</span><span class="va">task_predict</span>, <span class="va">learner</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">land_cover</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">land_cover</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#440154FF"</span>, <span class="st">"#443A83FF"</span>, <span class="st">"#31688EFF"</span>,</span>
+<span>  <span class="st">"#21908CFF"</span>, <span class="st">"#35B779FF"</span>, <span class="st">"#8FD744FF"</span>, <span class="st">"#FDE725FF"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/land_cover.png"></p>
 </div>
 <div class="section level2">
 <h2 id="faq">FAQ<a class="anchor" aria-label="anchor" href="#faq"></a>
 </h2>
-<details><summary>Will mlr3spatial support spatial learners?</summary><p><br> Eventually. It is not yet clear whether these would live in mlr3extralearners or in {mlr3spatial}. So far there are none yet.</p></details><details><summary>Why are there two packages, mlr3spatial and mlr3spatiotempcv?</summary><p><br> mlr3spatiotempcv is solely devoted to resampling techniques. There are quite a few and keeping packages small is one of the development philosophies of the mlr3 framework. Also back in the days when mlr3spatiotempcv was developed it was not yet clear how we want to structure additional spatial components such as prediction support for spatial classes and so on.</p></details>
+<details><summary>Will mlr3spatial support spatial learners?</summary><br> Eventually. It is not yet clear whether these would live in mlr3extralearners or in {mlr3spatial}. So far there are none yet.</details><details><summary>Why are there two packages, {mlr3spatial} and {mlr3spatiotempcv}?</summary><br> mlr3spatiotempcv is solely devoted to resampling techniques. There are quite a few and keeping packages small is one of the development philosophies of the mlr3 framework. Also back in the days when mlr3spatiotempcv was developed it was not yet clear how we want to structure additional spatial components such as prediction support for spatial classes and so on.</details>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
