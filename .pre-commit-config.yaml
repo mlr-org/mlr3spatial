@@ -36,5 +36,5 @@ repos:
         args: ['--maxkb=2300']
 
 ci:
-    skip: [roxygenize]
+    # skip: [roxygenize]
     autoupdate_schedule: monthly
