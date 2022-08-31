@@ -25,7 +25,7 @@ repos:
     -   id: no-browser-statement
     -   id: readme-rmd-rendered
     #  R package development
-    -   id: deps-in-desc
+    # -   id: deps-in-desc
         exclude: "attic/demo.r"
     -   id: codemeta-description-updated
     -   id: use-tidy-description
@@ -36,5 +36,5 @@ repos:
         args: ['--maxkb=2300']
 
 ci:
-    # skip: [roxygenize]
+    skip: [roxygenize]
     autoupdate_schedule: monthly
