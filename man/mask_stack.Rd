@@ -9,9 +9,6 @@ mask_stack(stack)
 \arguments{
 \item{stack}{(\link[terra:SpatRaster-class]{terra::SpatRaster})\cr
 Raster stack.}
-
-\item{n}{(\code{integer(1)})\cr
-Number of points.}
 }
 \value{
 \link[terra:SpatRaster-class]{terra::SpatRaster}
