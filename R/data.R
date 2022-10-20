@@ -143,8 +143,6 @@ sample_stack = function(stack, n = 100) {
 #'
 #' @param stack ([terra::SpatRaster])\cr
 #'   Raster stack.
-#' @param n (`integer(1)`)\cr
-#'   Number of points.
 #'
 #' @return [terra::SpatRaster]
 #'

@@ -1,5 +1,9 @@
 # mlr3spatial 0.3.0
 
+* feat: add prediction on vector data to `spatial_predict()`.
+
+# mlr3spatial 0.2.1
+
 * fix: add `"space"` and `"time"` column role from mlr3spatiotempcv
 
 # mlr3spatial 0.2.0

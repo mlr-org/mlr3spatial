@@ -2,7 +2,7 @@
 % Please edit documentation in R/DataBackendRaster.R
 \name{DataBackendRaster}
 \alias{DataBackendRaster}
-\title{DataBackend for raster objects}
+\title{DataBackend for Raster Objects}
 \description{
 \link[mlr3:DataBackend]{mlr3::DataBackend} for \link[terra:SpatRaster-class]{terra::SpatRaster} raster objects.
 

@@ -31,7 +31,7 @@ TaskRegrST = R6::R6Class("TaskRegrST",
         stopf("Creating a task from an sf objects is not supported anymore. Use `as_task_regr_st()` to convert an sf objects into a task.")
       }
 
-      super$initialize(id = id, backend = backend, target = target, extra_args = extra_args)
+      super$initialize(id = id, backend = backend, target = target, label = label, extra_args = extra_args)
       self$crs = crs
       self$coordinate_names = coordinate_names
       walk(coordinate_names, function(x) assert_numeric(self$backend$head(1)[[x]], .var.name = x))

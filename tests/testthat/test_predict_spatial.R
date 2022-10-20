@@ -203,8 +203,8 @@ test_that("prediction on classification task works with missing values", {
   stack = generate_stack(list(
     numeric_layer("x_1"),
     factor_layer("y", levels = c("a", "b"))),
-  dimension = 10)
-  vector = sample_stack(stack, n = 10)
+  dimension = 100)
+  vector = sample_stack(stack, n = 100)
   task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
   learner = lrn("classif.ranger")
   learner$train(task_train)
@@ -215,7 +215,7 @@ test_that("prediction on classification task works with missing values", {
   task_predict = as_task_unsupervised(stack, id = "test")
   pred = predict_spatial(task_predict, learner, chunksize = 1L)
   expect_class(pred, "SpatRaster")
-  expect_true(all(is.na(terra::values(pred[["y"]])[seq(10)])))
+  expect_true(all(is.na(terra::values(pred[["y"]])[seq(100)])))
   expect_numeric(terra::values(pred[["y"]]), any.missing = TRUE, all.missing = FALSE)
 })
 
@@ -240,4 +240,21 @@ test_that("prediction on regression task works with missing values", {
   pred = predict_spatial(task_predict, learner, chunksize = 1L)
   expect_true(all(is.na(terra::values(pred[["y"]])[seq(10)])))
   expect_numeric(terra::values(pred[["y"]]), any.missing = TRUE, all.missing = FALSE)
+})
+
+# vector prediction ------------------------------------------------------------
+
+test_that("prediction are written to sf vector", {
+  task = tsk("leipzig")
+  learner = lrn("classif.rpart")
+  learner$train(task)
+
+  vector = sf::read_sf(system.file("extdata", "leipzig_points.gpkg", package = "mlr3spatial"), stringsAsFactors = TRUE)
+  vector$land_cover = NULL
+  task_predict = as_task_unsupervised(vector)
+  pred = predict_spatial(task_predict, learner)
+  expect_class(pred, "sf")
+  expect_equal(nrow(pred), 97)
+  expect_named(pred, c("land_cover", "geometry"))
+  expect_class(pred$geometry, "sfc")
 })

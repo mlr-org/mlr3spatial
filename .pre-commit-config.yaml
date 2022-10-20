@@ -1,7 +1,7 @@
 # All available hooks: https://pre-commit.com/hooks.html
 repos:
 -   repo: https://github.com/lorenzwalthert/precommit
-    rev: v0.3.2
+    rev: v0.3.2.9003
     hooks:
     # any R project
     -   id: style-files
@@ -25,7 +25,7 @@ repos:
     -   id: no-browser-statement
     -   id: readme-rmd-rendered
     #  R package development
-    -   id: deps-in-desc
+    # -   id: deps-in-desc
         exclude: "attic/demo.r"
     -   id: codemeta-description-updated
     -   id: use-tidy-description

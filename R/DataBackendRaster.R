@@ -1,4 +1,4 @@
-#' @title DataBackend for raster objects
+#' @title DataBackend for Raster Objects
 #'
 #' @description
 #' [mlr3::DataBackend] for [terra::SpatRaster] raster objects.

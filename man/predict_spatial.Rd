@@ -13,8 +13,8 @@ predict_spatial(
 )
 }
 \arguments{
-\item{task}{(\link{Task}).
-Task with \link{DataBackendRaster}.}
+\item{task}{(\link{TaskUnsupervised}).
+Task with \link{DataBackendRaster} or \link{DataBackendVector}.}
 
 \item{learner}{(\link{Learner}).
 Learner with trained model.}
@@ -31,8 +31,9 @@ value.}
 
 \item{format}{(\code{character(1)})\cr
 Output class of the resulting object.
-Accepted values are \code{"raster"}, \code{"stars"} and \code{"terra"} if the input is a \link{DataBackendRaster}.
-Note that when choosing something else than \code{"terra"}, the spatial object is converted into the respective format which might cause overhead both in runtime and memory allocation.}
+Accepted values are \code{"raster"}, \code{"stars"} and \code{"terra"} if the input is a raster.
+Note that when choosing something else than \code{"terra"}, the spatial object is converted into the respective format which might cause overhead both in runtime and memory allocation.
+For vector data only \code{"sf"} is supported.}
 
 \item{filename}{(\code{character(1)})\cr
 Path where the spatial object should be written to.}
