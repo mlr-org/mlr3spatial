@@ -8,7 +8,7 @@
   "codeRepository": "https://github.com/mlr-org/mlr3spatial",
   "issueTracker": "https://github.com/mlr-org/mlr3spatial/issues",
   "license": "https://spdx.org/licenses/LGPL-3.0",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -21,31 +21,6 @@
     "name": "Comprehensive R Archive Network (CRAN)",
     "url": "https://cran.r-project.org"
   },
-  "author": [
-    {
-      "@type": "Person",
-      "givenName": "Marc",
-      "familyName": "Becker",
-      "email": "marcbecker@posteo.de",
-      "@id": "https://orcid.org/0000-0002-8115-0400"
-    },
-    {
-      "@type": "Person",
-      "givenName": "Patrick",
-      "familyName": "Schratz",
-      "email": "patrick.schratz@gmail.com",
-      "@id": "https://orcid.org/0000-0003-0748-6624"
-    }
-  ],
-  "maintainer": [
-    {
-      "@type": "Person",
-      "givenName": "Marc",
-      "familyName": "Becker",
-      "email": "marcbecker@posteo.de",
-      "@id": "https://orcid.org/0000-0002-8115-0400"
-    }
-  ],
   "softwareSuggestions": [
     {
       "@type": "SoftwareApplication",
@@ -328,7 +303,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "1284.201KB",
+  "fileSize": "1343.969KB",
   "releaseNotes": "https://github.com/mlr-org/mlr3spatial/blob/master/NEWS.md",
   "readme": "https://github.com/mlr-org/mlr3spatial/blob/main/README.md",
   "contIntegration": "https://github.com/mlr-org/mlr3spatial/actions",

@@ -1,4 +1,4 @@
-# mlr3spatial 0.2.1.9000
+# mlr3spatial 0.3.0
 
 * feat: add prediction on vector data to `spatial_predict()`.
 
