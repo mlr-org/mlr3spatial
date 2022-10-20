@@ -14,7 +14,7 @@ They do not support coercing from other backends yet."><!-- mathjax --><script s
     
     <a class="navbar-brand me-2" href="../index.html">mlr3spatial</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +38,12 @@ They do not support coercing from other backends yet."><!-- mathjax --><script s
      
     mlr3book
   </a>
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/benchmark.html">Benchmark Parallel Predictions</a>
+  </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -74,7 +80,7 @@ They do not support coercing from other backends yet."><!-- mathjax --><script s
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Coerce to spatial DataBackend</h1>
-      <small class="dont-index">Source: <a href="https://github.com/mlr-org/mlr3spatial/blob/HEAD/R/DataBackendRaster.R" class="external-link"><code>R/DataBackendRaster.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/mlr-org/mlr3spatial/blob/HEAD/R/DataBackendRaster.R" class="external-link"><code>R/DataBackendRaster.R</code></a>, <a href="https://github.com/mlr-org/mlr3spatial/blob/HEAD/R/DataBackendVector.R" class="external-link"><code>R/DataBackendVector.R</code></a></small>
       <div class="d-none name"><code>as_data_backend.Rd</code></div>
     </div>
 
@@ -96,7 +102,10 @@ They do not support coercing from other backends yet.</p>
 <span><span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_data_backend.html" class="external-link">as_data_backend</a></span><span class="op">(</span><span class="va">data</span>, primary_key <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for RasterStack</span></span>
-<span><span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_data_backend.html" class="external-link">as_data_backend</a></span><span class="op">(</span><span class="va">data</span>, primary_key <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_data_backend.html" class="external-link">as_data_backend</a></span><span class="op">(</span><span class="va">data</span>, primary_key <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for sf</span></span>
+<span><span class="fu"><a href="https://mlr3.mlr-org.com/reference/as_data_backend.html" class="external-link">as_data_backend</a></span><span class="op">(</span><span class="va">data</span>, primary_key <span class="op">=</span> <span class="cn">NULL</span>, keep_rownames <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -114,6 +123,14 @@ Name of the primary key column, or integer vector of row ids.</p></dd>
 <dt>...</dt>
 <dd><p>(<code>any</code>)<br>
 Not used.</p></dd>
+
+
+<dt>keep_rownames</dt>
+<dd><p>(<code>logical(1)</code> | <code>character(1)</code>)<br>
+If <code>TRUE</code> or a single string, keeps the row names of <code>data</code> as a new column.
+The column is named like the provided string, defaulting to <code>"..rownames"</code> for <code>keep_rownames == TRUE</code>.
+Note that the created column will be used as a regular feature by the task unless you manually change the column role.
+Also see <code><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">data.table::as.data.table()</a></code>.</p></dd>
 
 </dl></div>
     <div class="section level2">

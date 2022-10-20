@@ -4,6 +4,12 @@
     <loc>https://mlr3spatial.mlr-org.com/404.html</loc>
   </url>
   <url>
+    <loc>https://mlr3spatial.mlr-org.com/articles/benchmark.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3spatial.mlr-org.com/articles/index.html</loc>
+  </url>
+  <url>
     <loc>https://mlr3spatial.mlr-org.com/authors.html</loc>
   </url>
   <url>
@@ -14,6 +20,9 @@
   </url>
   <url>
     <loc>https://mlr3spatial.mlr-org.com/reference/DataBackendRaster.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3spatial.mlr-org.com/reference/DataBackendVector.html</loc>
   </url>
   <url>
     <loc>https://mlr3spatial.mlr-org.com/reference/TaskClassifST.html</loc>

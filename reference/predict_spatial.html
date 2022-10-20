@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">mlr3spatial</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,6 +34,12 @@
      
     mlr3book
   </a>
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/benchmark.html">Benchmark Parallel Predictions</a>
+  </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -92,8 +98,8 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>task</dt>
-<dd><p>(<a href="https://mlr3.mlr-org.com/reference/Task.html" class="external-link">Task</a>).
-Task with <a href="DataBackendRaster.html">DataBackendRaster</a>.</p></dd>
+<dd><p>(<a href="https://mlr3.mlr-org.com/reference/TaskUnsupervised.html" class="external-link">TaskUnsupervised</a>).
+Task with <a href="DataBackendRaster.html">DataBackendRaster</a> or <a href="DataBackendVector.html">DataBackendVector</a>.</p></dd>
 
 
 <dt>learner</dt>
@@ -115,8 +121,9 @@ value.</p></dd>
 <dt>format</dt>
 <dd><p>(<code>character(1)</code>)<br>
 Output class of the resulting object.
-Accepted values are <code>"raster"</code>, <code>"stars"</code> and <code>"terra"</code> if the input is a <a href="DataBackendRaster.html">DataBackendRaster</a>.
-Note that when choosing something else than <code>"terra"</code>, the spatial object is converted into the respective format which might cause overhead both in runtime and memory allocation.</p></dd>
+Accepted values are <code>"raster"</code>, <code>"stars"</code> and <code>"terra"</code> if the input is a raster.
+Note that when choosing something else than <code>"terra"</code>, the spatial object is converted into the respective format which might cause overhead both in runtime and memory allocation.
+For vector data only <code>"sf"</code> is supported.</p></dd>
 
 
 <dt>filename</dt>
@@ -134,7 +141,7 @@ Path where the spatial object should be written to.</p></dd>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span>, exclude <span class="op">=</span> <span class="st">"resample"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> terra 1.6.7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> terra 1.6.17</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># fit rpart on training points</span></span></span>
 <span class="r-in"><span><span class="va">task_train</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">tsk</a></span><span class="op">(</span><span class="st">"leipzig"</span><span class="op">)</span></span></span>
