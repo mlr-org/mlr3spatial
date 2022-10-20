@@ -52,6 +52,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
 Collate:
     'DataBackendRaster.R'
+    'DataBackendVector.R'
     'LearnerClassifSpatial.R'
     'LearnerRegrSpatial.R'
     'TaskRegrST.R'
