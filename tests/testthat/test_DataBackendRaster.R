@@ -424,7 +424,7 @@ test_that("as_data_backend works on RasterBrick objects", {
     numeric_layer("x_1"),
     numeric_layer("y")),
   dimension = 10, multi_layer_file = TRUE)
-  stack = raster::brick(stack)
+  stack = invoke(raster::brick, stack, .opts = allow_partial_matching)
 
   expect_class(as_data_backend(stack), "DataBackendRaster")
 })

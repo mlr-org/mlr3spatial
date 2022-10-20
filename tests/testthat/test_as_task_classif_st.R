@@ -2,7 +2,7 @@ test_that("as_task_classif_st works on data.frame objects", {
   stack = generate_stack(list(
     numeric_layer("x_1"),
     factor_layer("y", levels = c("a", "b"))),
-  dimension = 10)
+  dimension = 100)
   vector = st_as_sf(sample_stack(stack, n = 100))
   data = as.data.frame(vector)
   data$geometry = NULL
@@ -22,7 +22,7 @@ test_that("as_task_classif_st works on DataBackendDataTable objects", {
   stack = generate_stack(list(
     numeric_layer("x_1"),
     factor_layer("y", levels = c("a", "b"))),
-  dimension = 10)
+  dimension = 100)
   vector = st_as_sf(sample_stack(stack, n = 100))
   data = as.data.frame(vector)
   data$geometry = NULL
@@ -43,7 +43,7 @@ test_that("as_task_classif_st works on sf objects", {
   stack = generate_stack(list(
     numeric_layer("x_1"),
     factor_layer("y", levels = c("a", "b"))),
-  dimension = 10)
+  dimension = 100)
   vector = st_as_sf(sample_stack(stack, n = 100))
 
   task = as_task_classif_st(vector, target = "y")
@@ -60,7 +60,7 @@ test_that("as_task_classif_st works on TaskClassifST objects", {
   stack = generate_stack(list(
     numeric_layer("x_1"),
     factor_layer("y", levels = c("a", "b"))),
-  dimension = 10)
+  dimension = 100)
   vector = st_as_sf(sample_stack(stack, n = 100))
 
   task = as_task_classif_st(vector, target = "y")
@@ -79,7 +79,7 @@ test_that("convert from TaskRegrST to TaskClassifST", {
     numeric_layer("x_1"),
     factor_layer("x_2", levels = c("a", "b")),
     numeric_layer("y")),
-  dimension = 10)
+  dimension = 100)
   vector = st_as_sf(sample_stack(stack, n = 100))
 
   task = as_task_regr_st(vector, target = "y")

@@ -5,7 +5,7 @@ test_that("as_task_unsupervised works on stars objects", {
   stack = generate_stack(list(
     numeric_layer("x_1"),
     numeric_layer("y")),
-  dimension = 10)
+  dimension = 100)
   stack = invoke(stars::st_as_stars, .x = stack, .opts = allow_partial_matching)
 
   expect_class(as_task_unsupervised(stack), "TaskUnsupervised")
@@ -15,7 +15,7 @@ test_that("as_task_unsupervised works on SpatRaster objects", {
   stack = generate_stack(list(
     numeric_layer("x_1"),
     numeric_layer("y")),
-  dimension = 10)
+  dimension = 100)
 
   expect_class(as_task_unsupervised(stack), "TaskUnsupervised")
 })
@@ -27,8 +27,8 @@ test_that("as_task_unsupervised works on RasterBrick objects", {
   stack = generate_stack(list(
     numeric_layer("x_1"),
     numeric_layer("y")),
-  dimension = 10, multi_layer_file = TRUE)
-  stack = raster::brick(stack)
+  dimension = 100, multi_layer_file = TRUE)
+  stack = invoke(raster::brick, stack, .opts = allow_partial_matching)
 
   expect_class(as_task_unsupervised(stack), "TaskUnsupervised")
 })
@@ -40,7 +40,7 @@ test_that("as_task_unsupervised works on RasterStack objects", {
   stack = generate_stack(list(
     numeric_layer("x_1"),
     numeric_layer("y")),
-  dimension = 10)
+  dimension = 100)
   stack = invoke(raster::stack, x = stack, .opts = allow_partial_matching)
   raster::crs(stack) = "EPSG:4326"
 

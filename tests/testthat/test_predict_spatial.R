@@ -215,7 +215,7 @@ test_that("prediction on classification task works with missing values", {
   task_predict = as_task_unsupervised(stack, id = "test")
   pred = predict_spatial(task_predict, learner, chunksize = 1L)
   expect_class(pred, "SpatRaster")
-  expect_true(all(is.na(terra::values(pred[["y"]])[seq(100)])))
+  expect_true(all(is.na(terra::values(pred[["y"]])[seq(10)])))
   expect_numeric(terra::values(pred[["y"]]), any.missing = TRUE, all.missing = FALSE)
 })
 
@@ -227,7 +227,7 @@ test_that("prediction on regression task works with missing values", {
   stack = generate_stack(list(
     numeric_layer("x_1"),
     numeric_layer("y")),
-  dimension = 10)
+  dimension = 100)
   vector = sample_stack(stack, n = 10)
   task_train = as_task_regr_st(vector, id = "test_vector", target = "y")
   learner = lrn("regr.ranger")
