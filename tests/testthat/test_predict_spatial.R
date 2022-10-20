@@ -258,4 +258,3 @@ test_that("prediction are written to sf vector", {
   expect_named(pred, c("land_cover", "geometry"))
   expect_class(pred$geometry, "sfc")
 })
-
