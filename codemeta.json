@@ -8,7 +8,7 @@
   "codeRepository": "https://github.com/mlr-org/mlr3spatial",
   "issueTracker": "https://github.com/mlr-org/mlr3spatial/issues",
   "license": "https://spdx.org/licenses/LGPL-3.0",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",

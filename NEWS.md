@@ -1,4 +1,4 @@
-# mlr3spatial 0.2.1
+# mlr3spatial 0.3.0
 
 * fix: add `"space"` and `"time"` column role from mlr3spatiotempcv
 
