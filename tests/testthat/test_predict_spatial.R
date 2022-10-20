@@ -241,3 +241,21 @@ test_that("prediction on regression task works with missing values", {
   expect_true(all(is.na(terra::values(pred[["y"]])[seq(10)])))
   expect_numeric(terra::values(pred[["y"]]), any.missing = TRUE, all.missing = FALSE)
 })
+
+# vector prediction ------------------------------------------------------------
+
+test_that("prediction are written to sf vector", {
+  task = tsk("leipzig")
+  learner = lrn("classif.rpart")
+  learner$train(task)
+
+  vector = sf::read_sf(system.file("extdata", "leipzig_points.gpkg", package = "mlr3spatial"), stringsAsFactors = TRUE)
+  vector$land_cover = NULL
+  task_predict = as_task_unsupervised(vector)
+  pred = predict_spatial(task_predict, learner)
+  expect_class(pred, "sf")
+  expect_equal(nrow(pred), 97)
+  expect_named(pred, c("land_cover", "geometry"))
+  expect_class(pred$geometry, "sfc")
+})
+
