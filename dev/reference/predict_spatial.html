@@ -98,8 +98,8 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>task</dt>
-<dd><p>(<a href="https://mlr3.mlr-org.com/reference/Task.html" class="external-link">Task</a>).
-Task with <a href="DataBackendRaster.html">DataBackendRaster</a>.</p></dd>
+<dd><p>(<a href="https://mlr3.mlr-org.com/reference/TaskUnsupervised.html" class="external-link">TaskUnsupervised</a>).
+Task with <a href="DataBackendRaster.html">DataBackendRaster</a> or <a href="DataBackendVector.html">DataBackendVector</a>.</p></dd>
 
 
 <dt>learner</dt>
@@ -121,8 +121,9 @@ value.</p></dd>
 <dt>format</dt>
 <dd><p>(<code>character(1)</code>)<br>
 Output class of the resulting object.
-Accepted values are <code>"raster"</code>, <code>"stars"</code> and <code>"terra"</code> if the input is a <a href="DataBackendRaster.html">DataBackendRaster</a>.
-Note that when choosing something else than <code>"terra"</code>, the spatial object is converted into the respective format which might cause overhead both in runtime and memory allocation.</p></dd>
+Accepted values are <code>"raster"</code>, <code>"stars"</code> and <code>"terra"</code> if the input is a raster.
+Note that when choosing something else than <code>"terra"</code>, the spatial object is converted into the respective format which might cause overhead both in runtime and memory allocation.
+For vector data only <code>"sf"</code> is supported.</p></dd>
 
 
 <dt>filename</dt>
