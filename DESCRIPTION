@@ -1,6 +1,6 @@
 Package: mlr3spatial
 Title: Support for Spatial Objects Within the 'mlr3' Ecosystem
-Version: 0.3.0
+Version: 0.3.0.9000
 Date: 2022-10-20
 Authors@R:
     c(
@@ -24,7 +24,7 @@ Imports:
     data.table (>= 1.14.0),
     lgr (>= 0.4.2),
     methods,
-    mlr3misc,
+    mlr3misc (>= 0.11.0),
     R6 (>= 2.5.0),
     sf,
     terra (>= 1.6-3),
