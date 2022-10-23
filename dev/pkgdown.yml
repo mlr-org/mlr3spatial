@@ -3,7 +3,7 @@ pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   benchmark: benchmark.html
-last_built: 2022-10-22T04:40Z
+last_built: 2022-10-23T04:42Z
 urls:
   reference: https://mlr3spatial.mlr-org.com/reference
   article: https://mlr3spatial.mlr-org.com/articles
