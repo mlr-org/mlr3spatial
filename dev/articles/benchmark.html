@@ -119,9 +119,23 @@
 
     
     
-<p>This benchmark was run on a MacBook Pro 2021 M1 Pro. If you rerun this result on your machine, your results will differ - both in relative and absolute values and maybe by a lot. This is due to the multicore performance component of your CPU and how efficient the overhead introduced by parallelization is handled (i.e. splitting and combining the chunks).</p>
-<p>{terra} is using a socker-based parallelization by default (which the user cannot change). The equivalent in {future} is <code>plan("multisession")</code>. Using <code>plan(multicore)</code> on UNIX based systems might speed up the {mlr3} approach even more. This might also be a major part of the speedup of the <code>mlr3-all-cores</code> setting.</p>
-<p>Also note that using all available cores does not always result in faster processing. The parallelization overhead can be substantial and for small tasks you might be better of using less cores. Nevertheless, if your processing time is the range of minutes or higher, you might usually be better of using all cores (if possible).</p>
+<p>This benchmark was run on a MacBook Pro 2021 M1 Pro. If you rerun
+this result on your machine, your results will differ - both in relative
+and absolute values and maybe by a lot. This is due to the multicore
+performance component of your CPU and how efficient the overhead
+introduced by parallelization is handled (i.e. splitting and combining
+the chunks).</p>
+<p>{terra} is using a socker-based parallelization by default (which the
+user cannot change). The equivalent in {future} is
+<code>plan("multisession")</code>. Using <code>plan(multicore)</code> on
+UNIX based systems might speed up the {mlr3} approach even more. This
+might also be a major part of the speedup of the
+<code>mlr3-all-cores</code> setting.</p>
+<p>Also note that using all available cores does not always result in
+faster processing. The parallelization overhead can be substantial and
+for small tasks you might be better of using less cores. Nevertheless,
+if your processing time is the range of minutes or higher, you might
+usually be better of using all cores (if possible).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3spatial.mlr-org.com">mlr3spatial</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3learners.mlr-org.com" class="external-link">mlr3learners</a></span><span class="op">)</span></span>
