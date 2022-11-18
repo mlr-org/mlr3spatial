@@ -2,8 +2,7 @@
 # mlr3spatial
 
 <!-- badges: start -->
-
-[![tic](https://github.com/mlr-org/mlr3spatial/workflows/tic/badge.svg?branch=main)](https://github.com/mlr-org/mlr3spatial/actions)
+[![r-cmd-check](https://github.com/mlr-org/mlr3spatial/actions/workflows/r-cmd-check.yml/badge.svg)](https://github.com/mlr-org/mlr3spatial/actions/workflows/r-cmd-check.yml)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/mlr3spatial)](https://CRAN.R-project.org/package=mlr3spatial)
 [![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3)
@@ -77,7 +76,7 @@ task
     ##  3: 732737.2 5692469
     ##  4: 733169.3 5692777
     ##  5: 732202.2 5692644
-    ## ---                 
+    ## ---
     ## 93: 733018.7 5692342
     ## 94: 732551.4 5692887
     ## 95: 732520.4 5692589
