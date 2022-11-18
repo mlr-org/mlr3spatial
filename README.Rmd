@@ -31,7 +31,7 @@ Package website: [release](https://mlr3spatial.mlr-org.com/) | [dev](https://mlr
 
 *mlr3spatial* is the package for spatial objects within the [mlr3](https://mlr3.mlr-org.com) ecosystem.
 The package directly loads data from [sf](https://CRAN.R-project.org/package=sf) objects to train any mlr3 learner.
-The learner can predict on various raster formats ([{terra}](https://CRAN.R-project.org/package=terra), [{raster}](https://CRAN.R-project.org/package=raster) and [{stars}](https://CRAN.R-project.org/package=stars)) and writes the prediction raster to disk.
+The learner can predict on various raster formats ([terra](https://CRAN.R-project.org/package=terra), [raster](https://CRAN.R-project.org/package=raster) and [stars](https://CRAN.R-project.org/package=stars)) and writes the prediction raster to disk.
 mlr3spatial reads large raster objects in chunks to avoid memory issues and predicts the chunks in parallel.
 Check out [mlr3spatiotempcv](https://github.com/mlr-org/mlr3spatiotempcv) for spatiotemporal resampling within mlr3.
 
@@ -101,14 +101,14 @@ plot(land_cover, col = c("#440154FF", "#443A83FF", "#31688EFF",
 <details>
   <summary>Will mlr3spatial support spatial learners?</summary>
   <br>
- Eventually. It is not yet clear whether these would live in mlr3extralearners or in {mlr3spatial}.
+ Eventually. It is not yet clear whether these would live in mlr3extralearners or in mlr3spatial.
  So far there are none yet.
 </details>
 
 <details>
-  <summary>Why are there two packages, {mlr3spatial} and {mlr3spatiotempcv}?</summary>
+  <summary>Why are there two packages, mlr3spatial and mlr3spatiotempcv?</summary>
   <br>
   mlr3spatiotempcv is solely devoted to resampling techniques.
   There are quite a few and keeping packages small is one of the development philosophies of the mlr3 framework.
-  Also back in the days when mlr3spatiotempcv was developed it was not yet clear how we want to structure additional spatial components such as prediction support for spatial classes and so on.
+  Also back in the days when mlr3spatiotempcv was developed, it was not yet clear how we want to structure additional spatial components such as prediction support for spatial classes and so on.
 </details>

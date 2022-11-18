@@ -108,4 +108,4 @@ inst/doc
 cran-comments\.md
 CRAN-RELEASE
 .vscode
-^README\.html$
+README\.html

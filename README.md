@@ -17,9 +17,9 @@ status](https://www.r-pkg.org/badges/version/mlr3spatial)](https://CRAN.R-projec
 [mlr3](https://mlr3.mlr-org.com) ecosystem. The package directly loads
 data from [sf](https://CRAN.R-project.org/package=sf) objects to train
 any mlr3 learner. The learner can predict on various raster formats
-([{terra}](https://CRAN.R-project.org/package=terra),
-[{raster}](https://CRAN.R-project.org/package=raster) and
-[{stars}](https://CRAN.R-project.org/package=stars)) and writes the
+([terra](https://CRAN.R-project.org/package=terra),
+[raster](https://CRAN.R-project.org/package=raster) and
+[stars](https://CRAN.R-project.org/package=stars)) and writes the
 prediction raster to disk. mlr3spatial reads large raster objects in
 chunks to avoid memory issues and predicts the chunks in parallel. Check
 out [mlr3spatiotempcv](https://github.com/mlr-org/mlr3spatiotempcv) for
