@@ -112,23 +112,10 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="mlr3spatial">mlr3spatial<a class="anchor" aria-label="anchor" href="#mlr3spatial"></a>
 </h1></div>
+<p>Package website: <a href="https://mlr3spatial.mlr-org.com/">release</a> | <a href="https://mlr3spatial.mlr-org.com/dev/">dev</a></p>
 <!-- badges: start -->
 
-<p>Package website: <a href="https://mlr3spatial.mlr-org.com/">release</a> | <a href="https://mlr3spatial.mlr-org.com/dev/">dev</a></p>
-<p>{mlr3spatial} is an extension package for spatial objects within the <a href="https://mlr3.mlr-org.com" class="external-link">mlr3</a> ecosystem.</p>
-<div class="section level2">
-<h2 id="feature-overview">Feature Overview<a class="anchor" aria-label="anchor" href="#feature-overview"></a>
-</h2>
-<ul>
-<li>Read training data from <a href="https://CRAN.R-project.org/package=sf" class="external-link">sf</a> objects.</li>
-<li>Predict on raster objects from the packages <a href="https://CRAN.R-project.org/package=terra" class="external-link">{terra}</a>, <a href="https://CRAN.R-project.org/package=raster" class="external-link">{raster}</a> and <a href="https://CRAN.R-project.org/package=stars" class="external-link">{stars}</a>.</li>
-<li>Write model predictions to raster files.</li>
-<li>Predict large raster objects in parallel.</li>
-<li>Read raster objects in chunks to avoid memory issues.</li>
-<li>Built-in toy task <a href="https://mlr3spatial.mlr-org.com/dev/reference/leipzig.html"><code>leipzig</code></a>.</li>
-</ul>
-<p>Check out <a href="https://github.com/mlr-org/mlr3spatiotempcv" class="external-link">{mlr3spatiotempcv}</a> for spatiotemporal resampling within mlr3.</p>
-</div>
+<p><em>mlr3spatial</em> is the package for spatial objects within the <a href="https://mlr3.mlr-org.com" class="external-link">mlr3</a> ecosystem. The package directly loads data from <a href="https://CRAN.R-project.org/package=sf" class="external-link">sf</a> objects to train any mlr3 learner. The learner can predict on various raster formats (<a href="https://CRAN.R-project.org/package=terra" class="external-link">{terra}</a>, <a href="https://CRAN.R-project.org/package=raster" class="external-link">{raster}</a> and <a href="https://CRAN.R-project.org/package=stars" class="external-link">{stars}</a>) and writes the prediction raster to disk. mlr3spatial reads large raster objects in chunks to avoid memory issues and predicts the chunks in parallel. Check out <a href="https://github.com/mlr-org/mlr3spatiotempcv" class="external-link">mlr3spatiotempcv</a> for spatiotemporal resampling within mlr3.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -167,7 +154,7 @@
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="do">##  3: 732737.2 5692469</span></span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="do">##  4: 733169.3 5692777</span></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="do">##  5: 732202.2 5692644</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="do">## ---</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="do">## ---                 </span></span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 93: 733018.7 5692342</span></span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 94: 732551.4 5692887</span></span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 95: 732520.4 5692589</span></span>
@@ -201,10 +188,10 @@
 </h2>
 <details><summary>
 Will mlr3spatial support spatial learners?
-</summary><br> Eventually. It is not yet clear whether these would live in mlr3extralearners or in {mlr3spatial}. So far there are none yet.
+</summary><p><br> Eventually. It is not yet clear whether these would live in mlr3extralearners or in {mlr3spatial}. So far there are none yet.</p>
 </details><details><summary>
 Why are there two packages, {mlr3spatial} and {mlr3spatiotempcv}?
-</summary><br> mlr3spatiotempcv is solely devoted to resampling techniques. There are quite a few and keeping packages small is one of the development philosophies of the mlr3 framework. Also back in the days when mlr3spatiotempcv was developed it was not yet clear how we want to structure additional spatial components such as prediction support for spatial classes and so on.
+</summary><p><br> mlr3spatiotempcv is solely devoted to resampling techniques. There are quite a few and keeping packages small is one of the development philosophies of the mlr3 framework. Also back in the days when mlr3spatiotempcv was developed it was not yet clear how we want to structure additional spatial components such as prediction support for spatial classes and so on.</p>
 </details>
 </div>
 </div>
