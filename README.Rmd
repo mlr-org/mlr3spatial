@@ -3,14 +3,24 @@ output: github_document
 ---
 
 ```{r, include=FALSE}
+library(mlr3)
+library(mlr3spatial)
+library(terra, exclude = "resample")
+library(sf)
+
 lgr::get_logger("mlr3")$set_threshold("warn")
 lgr::get_logger("mlr3spatial")$set_threshold("warn")
 set.seed(1)
-options(datatable.print.class = FALSE, datatable.print.keys = FALSE)
+options(
+    datatable.print.nrows = 10,
+    datatable.print.class = FALSE,
+    datatable.print.keys = FALSE,
+    width = 100)
 ```
 
 # mlr3spatial
 
+Package website: [release](https://mlr3spatial.mlr-org.com/) | [dev](https://mlr3spatial.mlr-org.com/dev/)
 
 <!-- badges: start -->
 [![r-cmd-check](https://github.com/mlr-org/mlr3spatial/actions/workflows/r-cmd-check.yml/badge.svg)](https://github.com/mlr-org/mlr3spatial/actions/workflows/r-cmd-check.yml)
@@ -19,20 +29,11 @@ options(datatable.print.class = FALSE, datatable.print.keys = FALSE)
 [![Mattermost](https://img.shields.io/badge/chat-mattermost-orange.svg)](https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/)
 <!-- badges: end -->
 
-Package website: [release](https://mlr3spatial.mlr-org.com/) | [dev](https://mlr3spatial.mlr-org.com/dev/)
-
-{mlr3spatial} is an extension package for spatial objects within the [mlr3](https://mlr3.mlr-org.com) ecosystem.
-
-## Feature Overview
-
-* Read training data from [sf](https://CRAN.R-project.org/package=sf) objects.
-* Predict on raster objects from the packages [{terra}](https://CRAN.R-project.org/package=terra), [{raster}](https://CRAN.R-project.org/package=raster) and [{stars}](https://CRAN.R-project.org/package=stars).
-* Write model predictions to raster files.
-* Predict large raster objects in parallel.
-* Read raster objects in chunks to avoid memory issues.
-* Built-in toy task [`leipzig`](https://mlr3spatial.mlr-org.com/dev/reference/leipzig.html).
-
-Check out [{mlr3spatiotempcv}](https://github.com/mlr-org/mlr3spatiotempcv) for spatiotemporal resampling within mlr3.
+*mlr3spatial* is the package for spatial objects within the [mlr3](https://mlr3.mlr-org.com) ecosystem.
+The package directly loads data from [sf](https://CRAN.R-project.org/package=sf) objects to train any mlr3 learner.
+The learner can predict on various raster formats ([{terra}](https://CRAN.R-project.org/package=terra), [{raster}](https://CRAN.R-project.org/package=raster) and [{stars}](https://CRAN.R-project.org/package=stars)) and writes the prediction raster to disk.
+mlr3spatial reads large raster objects in chunks to avoid memory issues and predicts the chunks in parallel.
+Check out [mlr3spatiotempcv](https://github.com/mlr-org/mlr3spatiotempcv) for spatiotemporal resampling within mlr3.
 
 ## Installation
 
@@ -49,14 +50,6 @@ remotes::install_github("mlr-org/mlr3spatial")
 ```
 
 ## Example
-
-```{r, include = FALSE}
-# mute load messages
-library(mlr3)
-library(mlr3spatial)
-library(terra, exclude = "resample")
-library(sf)
-```
 
 ```{r}
 library(mlr3)
