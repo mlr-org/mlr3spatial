@@ -18,7 +18,7 @@ options(
     width = 100)
 ```
 
-# mlr3spatial
+# mlr3spatial <img src="man/figures/logo.png" align="right" width = "120" />
 
 Package website: [release](https://mlr3spatial.mlr-org.com/) | [dev](https://mlr3spatial.mlr-org.com/dev/)
 
