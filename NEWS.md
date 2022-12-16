@@ -1,12 +1,14 @@
-# mlr3spatial 0.3.0.9000
+# mlr3spatial 0.3.1
+
+* chore: Remove `rgdal` dependency and require `raster` version 3.6-11.
 
 # mlr3spatial 0.3.0
 
-* feat: add prediction on vector data to `spatial_predict()`.
+* feat: Add prediction on vector data to `spatial_predict()`.
 
 # mlr3spatial 0.2.1
 
-* fix: add `"space"` and `"time"` column role from mlr3spatiotempcv
+* fix: aÁdd `"space"` and `"time"` column role from mlr3spatiotempcv
 
 # mlr3spatial 0.2.0
 
@@ -29,11 +31,11 @@
 
 # mlr3spatial 0.1.2
 
-* refactor: stars objects are directly converted to terra objects now.
+* refactor: Stars objects are directly converted to terra objects now.
 
 # mlr3spatial 0.1.1
 
-* fix: compatibility to terra update.
+* fix: Compatibility to terra update.
 
 # mlr3spatial 0.1.0
 
