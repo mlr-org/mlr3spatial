@@ -1,5 +1,5 @@
 
-# mlr3spatial
+# mlr3spatial <img src="man/figures/logo.png" align="right" width = "120" />
 
 Package website: [release](https://mlr3spatial.mlr-org.com/) |
 [dev](https://mlr3spatial.mlr-org.com/dev/)
@@ -113,18 +113,18 @@ plot(land_cover, col = c("#440154FF", "#443A83FF", "#31688EFF",
 
 <summary>Will mlr3spatial support spatial learners?</summary> <br>
 Eventually. It is not yet clear whether these would live in
-mlr3extralearners or in {mlr3spatial}. So far there are none yet.
+mlr3extralearners or in mlr3spatial. So far there are none yet.
 
 </details>
 
 <details>
 
-<summary>Why are there two packages, {mlr3spatial} and
-{mlr3spatiotempcv}?</summary> <br> mlr3spatiotempcv is solely devoted to
+<summary>Why are there two packages, mlr3spatial and
+mlr3spatiotempcv?</summary> <br> mlr3spatiotempcv is solely devoted to
 resampling techniques. There are quite a few and keeping packages small
 is one of the development philosophies of the mlr3 framework. Also back
-in the days when mlr3spatiotempcv was developed it was not yet clear how
-we want to structure additional spatial components such as prediction
-support for spatial classes and so on.
+in the days when mlr3spatiotempcv was developed, it was not yet clear
+how we want to structure additional spatial components such as
+prediction support for spatial classes and so on.
 
 </details>
