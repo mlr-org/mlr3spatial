@@ -29,7 +29,7 @@ Package website: [release](https://mlr3spatial.mlr-org.com/) | [dev](https://mlr
 [![Mattermost](https://img.shields.io/badge/chat-mattermost-orange.svg)](https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/)
 <!-- badges: end -->
 
-*mlr3spatial* is the package for spatial objects within the [mlr3](https://mlr3.mlr-org.com) ecosystem.
+*mlr3spatial* is the package for spatial objects within the [mlr3](https://mlr-org.com) ecosystem.
 The package directly loads data from [sf](https://CRAN.R-project.org/package=sf) objects to train any mlr3 learner.
 The learner can predict on various raster formats ([terra](https://CRAN.R-project.org/package=terra), [raster](https://CRAN.R-project.org/package=raster) and [stars](https://CRAN.R-project.org/package=stars)) and writes the prediction raster to disk.
 mlr3spatial reads large raster objects in chunks to avoid memory issues and predicts the chunks in parallel.

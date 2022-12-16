@@ -14,9 +14,9 @@ status](https://www.r-pkg.org/badges/version/mlr3spatial)](https://CRAN.R-projec
 <!-- badges: end -->
 
 *mlr3spatial* is the package for spatial objects within the
-[mlr3](https://mlr3.mlr-org.com) ecosystem. The package directly loads
-data from [sf](https://CRAN.R-project.org/package=sf) objects to train
-any mlr3 learner. The learner can predict on various raster formats
+[mlr3](https://mlr-org.com) ecosystem. The package directly loads data
+from [sf](https://CRAN.R-project.org/package=sf) objects to train any
+mlr3 learner. The learner can predict on various raster formats
 ([terra](https://CRAN.R-project.org/package=terra),
 [raster](https://CRAN.R-project.org/package=raster) and
 [stars](https://CRAN.R-project.org/package=stars)) and writes the
