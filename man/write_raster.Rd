@@ -2,7 +2,7 @@
 % Please edit documentation in R/helper.R
 \name{write_raster}
 \alias{write_raster}
-\title{Writes a raster in chunks}
+\title{Write a Raster in Chunks}
 \usage{
 write_raster(data)
 }
@@ -11,6 +11,7 @@ write_raster(data)
 \code{SpatRaster} object.}
 }
 \description{
-Writes square raster to disk in chunks. Internal helper function.
+Writes square raster to disk in chunks.
+Internal helper function.
 }
 \keyword{internal}

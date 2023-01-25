@@ -3,9 +3,6 @@
 #' @description
 #' [mlr3::DataBackend] for [terra::SpatRaster] raster objects.
 #'
-#' The DataBackend can be constructed using the spatial objects listed above.
-#' Internally {terra} is used for processing operations.
-#'
 #' @param rows `integer()`\cr
 #'   Row indices. Row indices start with 1 in the upper left corner in the
 #'   raster, increase from left to right and then from top to bottom. The last
@@ -16,20 +13,16 @@
 #'
 #' @section Read mode:
 #'  There are two different ways the reading of values is performed internally:
-#' * "Block mode" reads complete rows of the raster file and subsets the
-#' requested cells. This mode is faster than "cell mode" if the complete raster
-#' file is iterated over.
+#' * "Block mode" reads complete rows of the raster file and subsets the requested cells.
+#'   This mode is faster than "cell mode" if the complete raster file is iterated over.
 #'
-#' * "Cell mode" reads individual cells. This is faster than "block mode" if
-#' only a few cells are sampled.
+#' * "Cell mode" reads individual cells.
+#'   This is faster than "block mode" if only a few cells are sampled.
 #'
-#' "Block mode" is activated if `$data(rows)` is used with a increasing integer
-#' sequence e.g. `200:300`. If only a single cell is requested, "cell mode" is
-#' used.
+#' "Block mode" is activated if `$data(rows)` is used with a increasing integer sequence e.g. `200:300`.
+#' If only a single cell is requested, "cell mode" is used.
 #'
-#' @importFrom terra writeRaster writeStart writeStop rast cats sources
-#'   intersect readStart readStop rowColFromCell readValues head unique ncell
-#'   nlyr ncol
+#' @importFrom terra writeRaster writeStart writeStop rast cats sources intersect readStart readStop rowColFromCell readValues head unique ncell nlyr ncol
 #' @importFrom utils tail
 #' @importFrom methods as
 #' @export
@@ -38,8 +31,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
   public = list(
 
     #' @description
-    #'
-    #' Creates a backend for a raster objects.
+    #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
     #' @template param-data
     #'
