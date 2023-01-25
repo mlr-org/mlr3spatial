@@ -5,24 +5,19 @@
 \title{DataBackend for Raster Objects}
 \description{
 \link[mlr3:DataBackend]{mlr3::DataBackend} for \link[terra:SpatRaster-class]{terra::SpatRaster} raster objects.
-
-The DataBackend can be constructed using the spatial objects listed above.
-Internally {terra} is used for processing operations.
 }
 \section{Read mode}{
 
 There are two different ways the reading of values is performed internally:
 \itemize{
-\item "Block mode" reads complete rows of the raster file and subsets the
-requested cells. This mode is faster than "cell mode" if the complete raster
-file is iterated over.
-\item "Cell mode" reads individual cells. This is faster than "block mode" if
-only a few cells are sampled.
+\item "Block mode" reads complete rows of the raster file and subsets the requested cells.
+This mode is faster than "cell mode" if the complete raster file is iterated over.
+\item "Cell mode" reads individual cells.
+This is faster than "block mode" if only a few cells are sampled.
 }
 
-"Block mode" is activated if \verb{$data(rows)} is used with a increasing integer
-sequence e.g. \code{200:300}. If only a single cell is requested, "cell mode" is
-used.
+"Block mode" is activated if \verb{$data(rows)} is used with a increasing integer sequence e.g. \code{200:300}.
+If only a single cell is requested, "cell mode" is used.
 }
 
 \section{Super class}{
@@ -71,7 +66,7 @@ Raster stack.}
 \if{html}{\out{<a id="method-DataBackendRaster-new"></a>}}
 \if{latex}{\out{\hypertarget{method-DataBackendRaster-new}{}}}
 \subsection{Method \code{new()}}{
-Creates a backend for a raster objects.
+Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DataBackendRaster$new(data)}\if{html}{\out{</div>}}
 }

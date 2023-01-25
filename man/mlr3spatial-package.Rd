@@ -6,6 +6,8 @@
 \alias{mlr3spatial-package}
 \title{mlr3spatial: Support for Spatial Objects Within the 'mlr3' Ecosystem}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 Extends the 'mlr3' ML framework with methods for spatial objects. Data storage and prediction are supported for packages 'terra', 'raster' and 'stars'.
 }
 \section{Learn mlr3}{

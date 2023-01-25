@@ -14,16 +14,16 @@ status](https://www.r-pkg.org/badges/version/mlr3spatial)](https://CRAN.R-projec
 <!-- badges: end -->
 
 *mlr3spatial* is the package for spatial objects within the
-[mlr3](https://mlr-org.com) ecosystem. The package directly loads data
-from [sf](https://CRAN.R-project.org/package=sf) objects to train any
+[`mlr3`](https://mlr-org.com) ecosystem. The package directly loads data
+from [`sf`](https://CRAN.R-project.org/package=sf) objects to train any
 mlr3 learner. The learner can predict on various raster formats
-([terra](https://CRAN.R-project.org/package=terra),
-[raster](https://CRAN.R-project.org/package=raster) and
-[stars](https://CRAN.R-project.org/package=stars)) and writes the
+([`terra`](https://CRAN.R-project.org/package=terra),
+[`raster`](https://CRAN.R-project.org/package=raster) and
+[`stars`](https://CRAN.R-project.org/package=stars)) and writes the
 prediction raster to disk. mlr3spatial reads large raster objects in
 chunks to avoid memory issues and predicts the chunks in parallel. Check
-out [mlr3spatiotempcv](https://github.com/mlr-org/mlr3spatiotempcv) for
-spatiotemporal resampling within mlr3.
+out [`mlr3spatiotempcv`](https://github.com/mlr-org/mlr3spatiotempcv)
+for spatiotemporal resampling within mlr3.
 
 ## Installation
 
@@ -41,22 +41,36 @@ remotes::install_github("mlr-org/mlr3spatial")
 
 ## Example
 
+Our goal is to map the land cover of the city of Leipzig. The
+`mlr3spatial` package contains a Sentinel-2 scene of the city of Leipzig
+and a point vector with training sites. The Sentinel-2 scene is a 10m
+resolution multispectral image with 7 bands and the NDVI. The points
+represent samples of the four land cover classes: Forest, Pastures,
+Urban and Water. We load the raster with the
+[`terra`](https://CRAN.R-project.org/package=terra) package and the
+vector with the [`sf`](https://CRAN.R-project.org/package=sf) package in
+the R Session.
+
 ``` r
-library(mlr3)
+library(mlr3verse)
 library(mlr3spatial)
 library(terra, exclude = "resample")
 library(sf)
 
-# load sample points
-leipzig_vector = read_sf(system.file("extdata", "leipzig_points.gpkg",
-  package = "mlr3spatial"), stringsAsFactors = TRUE)
+leipzig = read_sf(system.file("extdata", "leipzig_points.gpkg", package = "mlr3spatial"), stringsAsFactors = TRUE)
 
-# create land cover task
-task = as_task_classif_st(leipzig_vector, target = "land_cover")
+leipzig_raster = rast(system.file("extdata", "leipzig_raster.tif", package = "mlr3spatial"))
+```
+
+The function `as_task_classif_st()` converts the `sf::sf` object to a
+spatial classification task.
+
+``` r
+task = as_task_classif_st(leipzig, target = "land_cover")
 task
 ```
 
-    ## <TaskClassifST:leipzig_vector> (97 x 9)
+    ## <TaskClassifST:leipzig> (97 x 9)
     ## * Target: land_cover
     ## * Properties: multiclass
     ## * Features (8):
@@ -75,34 +89,23 @@ task
     ## 96: 732542.2 5692204
     ## 97: 732437.8 5692300
 
-``` r
-# create learner
-learner = lrn("classif.rpart")
-
-# train the model
-learner$train(task)
-
-# load raster file
-leipzig_raster = rast(system.file("extdata", "leipzig_raster.tif", package = "mlr3spatial"))
-```
-
-``` r
-plotRGB(leipzig_raster, r = 3, g = 2, b = 1)
-```
+The points are located in the district of Lindenau and Zentrum-West.
 
 <img src="man/figures/sentinel.png" />
 
-``` r
-# create prediction task
-task_predict = as_task_unsupervised(leipzig_raster)
+Now we train a classification tree on the leipzig task.
 
-# predict land cover map
-land_cover = predict_spatial(task_predict, learner)
+``` r
+learner = lrn("classif.rpart")
+learner$train(task)
 ```
 
+As a last step, we predict the land cover class for the whole area of
+interest. For this, we pass the Sentinel-2 scene and the trained learner
+to the `predict_spatial()` function.
+
 ``` r
-plot(land_cover, col = c("#440154FF", "#443A83FF", "#31688EFF",
-  "#21908CFF", "#35B779FF", "#8FD744FF", "#FDE725FF"))
+land_cover = predict_spatial(leipzig_raster, learner)
 ```
 
 <img src="man/figures/land_cover.png" />

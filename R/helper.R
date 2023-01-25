@@ -1,8 +1,12 @@
-#' Writes a raster in chunks
+#' @title Write a Raster in Chunks
+#'
 #' @description
-#' Writes square raster to disk in chunks. Internal helper function.
+#' Writes square raster to disk in chunks.
+#' Internal helper function.
+#'
 #' @param data `[SpatRaster]`\cr
 #'   `SpatRaster` object.
+#'
 #' @keywords internal
 #' @export
 write_raster = function(data) {
