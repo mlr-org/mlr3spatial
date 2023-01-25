@@ -57,7 +57,7 @@ predict_spatial = function(newdata, learner, chunksize = 200L, format = "terra",
 
     lg$info("Start raster prediction")
     lg$info("Prediction is executed with a chunksize of %s Megabytes, %i chunk(s) in total, %i values per chunk",
-      as.character(chunksize), length(bs$cells_seq), terra::ncell(task$backend$stack) / length(bs$cells_seq))
+      as.character(chunksize), length(bs$cells_seq), ceiling(terra::ncell(task$backend$stack) / length(bs$cells_seq)))
 
     mlr3misc::pmap(list(bs$cells_seq, bs$cells_to_read, seq_along(bs$cells_seq)), function(cells_seq, cells_to_read, n) {
 
