@@ -5,7 +5,7 @@
 \title{Predict on Spatial Objects with mlr3 Learners}
 \usage{
 predict_spatial(
-  task,
+  newdata,
   learner,
   chunksize = 200L,
   format = "terra",
@@ -13,8 +13,8 @@ predict_spatial(
 )
 }
 \arguments{
-\item{task}{(\link{TaskUnsupervised}).
-Task with \link{DataBackendRaster} or \link{DataBackendVector}.}
+\item{newdata}{(\link[terra:SpatRaster-class]{terra::SpatRaster} | \code{stars::stars} | \link[sf:sf]{sf::sf} | \code{raster::RasterStack} | \code{raster::RasterBrick}).
+New data to predict on. All spatial data formats convertible by \code{as_data_backend()} are supported e.g. \link[terra:SpatRaster-class]{terra::SpatRaster} or \link[sf:sf]{sf::sf}.}
 
 \item{learner}{(\link{Learner}).
 Learner with trained model.}
@@ -52,10 +52,9 @@ task_train = tsk("leipzig")
 learner = lrn("classif.rpart")
 learner$train(task_train)
 
-# load raster and convert to task
+# load raster
 stack = rast(system.file("extdata", "leipzig_raster.tif", package = "mlr3spatial"))
-task_predict = as_task_unsupervised(stack, id = "leipzig")
 
 # predict land cover classes
-pred = predict_spatial(task_predict, learner, chunksize = 1L)
+pred = predict_spatial(stack, learner, chunksize = 1L)
 }

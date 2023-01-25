@@ -1,5 +1,8 @@
 # mlr3spatial 0.3.1.9000
 
+* refactor: The data input of `spatial_predict()` accepts `SpatRaster`, `stars` `sf` `RasterStack` and `RasterBrick` objects now.
+  A `TaskUnsupervised` can still be passed but the argument name changed from `task` to `newdata`.
+
 # mlr3spatial 0.3.1
 
 * chore: Remove `rgdal` dependency and require `raster` version 3.6-11.
