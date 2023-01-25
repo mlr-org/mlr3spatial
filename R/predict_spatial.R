@@ -3,8 +3,8 @@
 #' @description
 #' This function allows to directly predict mlr3 learners on various spatial objects.
 #'
-#' @param task ([TaskUnsupervised]).
-#'   Task with [DataBackendRaster] or [DataBackendVector].
+#' @param newdata ([terra::SpatRaster] | [stars::stars] | [sf::sf] | [raster::RasterStack] | [raster::RasterBrick]).
+#'   New data to predict on. All spatial data formats convertible by `as_data_backend()` are supported e.g. [terra::SpatRaster] or [sf::sf].
 #' @param learner ([Learner]).
 #'   Learner with trained model.
 #' @template param-chunksize
@@ -27,13 +27,12 @@
 #'
 #' # load raster and convert to task
 #' stack = rast(system.file("extdata", "leipzig_raster.tif", package = "mlr3spatial"))
-#' task_predict = as_task_unsupervised(stack, id = "leipzig")
 #'
 #' # predict land cover classes
-#' pred = predict_spatial(task_predict, learner, chunksize = 1L)
+#' pred = predict_spatial(stack, learner, chunksize = 1L)
 #' @export
-predict_spatial = function(task, learner, chunksize = 200L, format = "terra", filename = NULL) {
-  assert_task(task)
+predict_spatial = function(newdata, learner, chunksize = 200L, format = "terra", filename = NULL) {
+  task = as_task_unsupervised(newdata)
   assert_multi_class(task$backend, c("DataBackendRaster", "DataBackendVector"))
   assert_learner(learner)
 
