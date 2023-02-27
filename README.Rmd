@@ -35,6 +35,17 @@ The learner can predict on various raster formats ([`terra`](https://CRAN.R-proj
 mlr3spatial reads large raster objects in chunks to avoid memory issues and predicts the chunks in parallel.
 Check out [`mlr3spatiotempcv`](https://github.com/mlr-org/mlr3spatiotempcv) for spatiotemporal resampling within mlr3.
 
+## Resources
+
+There are sections about spatial data in the [mlr3book](https://mlr3book.mlr-org.com).
+
+* Learn how to [predict](https://mlr3book.mlr-org.com/special.html#sec-spatial-prediction) a spatial raster image.
+* Estimate the performance of a model with [spatial cross-validation](https://mlr3book.mlr-org.com/special.html#spatiotemp-cv).
+
+The gallery features articles about spatial data in the mlr3 ecosystem.
+
+* Learn the basics with a [land cover classification](https://mlr-org.com/gallery/technical/2023-02-27-land-cover-classification/) of the city of Leipzig.
+
 ## Installation
 
 Install the last release from CRAN:
