@@ -1,4 +1,6 @@
-# mlr3spatial (development version)
+# mlr3spatial 0.4.1
+
+* refactor: Use the `terra::inMemory()` function instead of `@ptr`.
 
 # mlr3spatial 0.4.0
 
