@@ -36,7 +36,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">mlr3spatial</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.4.0</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.4.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -171,7 +171,7 @@ usually be better of using all cores (if possible).</p>
 <span>  <span class="op">}</span>,</span>
 <span></span>
 <span>  <span class="st">"02-terra-4-cores"</span> <span class="op">=</span> <span class="op">{</span></span>
-<span>    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span>    <span class="va">pred</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">stack</span>, <span class="va">terra_rf</span>, cores <span class="op">=</span> <span class="fl">4</span>, cpkgs <span class="op">=</span> <span class="st">"ranger"</span>,</span>
 <span>      fun <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span><span class="op">$</span><span class="va">predictions</span><span class="op">)</span></span>
 <span>  <span class="op">}</span>,</span>
@@ -182,7 +182,7 @@ usually be better of using all cores (if possible).</p>
 <span>  <span class="op">}</span>,</span>
 <span></span>
 <span>  <span class="st">"04-terra-all-cores"</span> <span class="op">=</span> <span class="op">{</span></span>
-<span>    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span>    <span class="va">pred</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">stack</span>, <span class="va">terra_rf</span>, cores <span class="op">=</span> <span class="fu">parallelly</span><span class="fu">::</span><span class="fu"><a href="https://parallelly.futureverse.org/reference/availableCores.html" class="external-link">availableCores</a></span><span class="op">(</span><span class="op">)</span>, cpkgs <span class="op">=</span> <span class="st">"ranger"</span>,</span>
 <span>      fun <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">...</span><span class="op">)</span><span class="op">$</span><span class="va">predictions</span><span class="op">)</span></span>
 <span>  <span class="op">}</span>,</span>
