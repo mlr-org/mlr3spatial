@@ -287,7 +287,7 @@ test_that("in memory rasters work", {
 
   # backend
   expect_class(backend, "DataBackendRaster")
-  expect_equal(backend$stack@ptr$inMemory, c(FALSE, FALSE))
+  expect_equal(terra::inMemory(backend$stack), c(FALSE, FALSE))
   expect_names(names(backend$stack), identical.to = c("x_1", "c_1"))
 
   # active fields
@@ -346,7 +346,7 @@ test_that("in memory and disk rasters work", {
 
   # backend
   expect_class(backend, "DataBackendRaster")
-  expect_equal(backend$stack@ptr$inMemory, c(FALSE, FALSE))
+  expect_equal(terra::inMemory(backend$stack), c(FALSE, FALSE))
   expect_names(names(backend$stack), identical.to = c("x_1", "c_1"))
 
   # active fields

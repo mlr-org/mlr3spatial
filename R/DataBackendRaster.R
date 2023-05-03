@@ -40,7 +40,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
 
       # write raster to disk
       sources = map_chr(names(data), function(layer) {
-        if (data[layer]@ptr$inMemory) {
+        if (terra::inMemory(data[layer])) {
           filename = tempfile(fileext = ".tif")
           terra::writeRaster(data[layer], filename = filename)
         } else {
