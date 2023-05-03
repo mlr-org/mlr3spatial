@@ -1,7 +1,7 @@
 Package: mlr3spatial
 Title: Support for Spatial Objects Within the 'mlr3' Ecosystem
 Version: 0.4.1
-Date: 2023-02-23
+Date: 2023-05-03
 Authors@R:
     c(
      person("Marc", "Becker", , "marcbecker@posteo.de", role = c("aut", "cre"),
