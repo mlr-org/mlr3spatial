@@ -82,4 +82,9 @@
   }
 } # nocov end
 
+
+.onUnload = function(libpaths) { # nolint
+  mlr3::mlr_tasks$remove("leipzig")
+}
+
 leanify_package() # nocov
