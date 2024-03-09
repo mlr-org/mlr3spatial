@@ -1,7 +1,7 @@
 
 # mlr3spatial <img src="man/figures/logo.png" align="right" width = "120" />
 
-Package website: [release](https://mlr3spatial.mlr-org.com/) |
+Package website: [release](https://mlr3spatial.mlr-org.com/) \|
 [dev](https://mlr3spatial.mlr-org.com/dev/)
 
 <!-- badges: start -->
@@ -30,15 +30,15 @@ for spatiotemporal resampling within mlr3.
 There are sections about spatial data in the
 [mlr3book](https://mlr3book.mlr-org.com).
 
-  - Learn how to
-    [predict](https://mlr3book.mlr-org.com/special.html#sec-spatial-prediction)
+-   Learn how to
+    [predict](https://mlr3book.mlr-org.com/chapters/chapter13/beyond_regression_and_classification.html#sec-spatial-prediction)
     a spatial raster image.
-  - Estimate the performance of a model with [spatial
-    cross-validation](https://mlr3book.mlr-org.com/special.html#spatiotemp-cv).
+-   Estimate the performance of a model with [spatial
+    cross-validation](https://mlr3book.mlr-org.com/chapters/chapter13/beyond_regression_and_classification.html#sec-spatiotemporal).
 
 The gallery features articles about spatial data in the mlr3 ecosystem.
 
-  - Learn the basics with a [land cover
+-   Learn the basics with a [land cover
     classification](https://mlr-org.com/gallery/technical/2023-02-27-land-cover-classification/)
     of the city of Leipzig.
 
@@ -130,21 +130,20 @@ land_cover = predict_spatial(leipzig_raster, learner)
 ## FAQ
 
 <details>
-
-<summary>Will mlr3spatial support spatial learners?</summary> <br>
-Eventually. It is not yet clear whether these would live in
+<summary>
+Will mlr3spatial support spatial learners?
+</summary>
+<br> Eventually. It is not yet clear whether these would live in
 mlr3extralearners or in mlr3spatial. So far there are none yet.
-
 </details>
-
 <details>
-
-<summary>Why are there two packages, mlr3spatial and
-mlr3spatiotempcv?</summary> <br> mlr3spatiotempcv is solely devoted to
-resampling techniques. There are quite a few and keeping packages small
-is one of the development philosophies of the mlr3 framework. Also back
-in the days when mlr3spatiotempcv was developed, it was not yet clear
-how we want to structure additional spatial components such as
-prediction support for spatial classes and so on.
-
+<summary>
+Why are there two packages, mlr3spatial and mlr3spatiotempcv?
+</summary>
+<br> mlr3spatiotempcv is solely devoted to resampling techniques. There
+are quite a few and keeping packages small is one of the development
+philosophies of the mlr3 framework. Also back in the days when
+mlr3spatiotempcv was developed, it was not yet clear how we want to
+structure additional spatial components such as prediction support for
+spatial classes and so on.
 </details>

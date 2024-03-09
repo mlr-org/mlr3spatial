@@ -39,8 +39,8 @@ Check out [`mlr3spatiotempcv`](https://github.com/mlr-org/mlr3spatiotempcv) for 
 
 There are sections about spatial data in the [mlr3book](https://mlr3book.mlr-org.com).
 
-* Learn how to [predict](https://mlr3book.mlr-org.com/special.html#sec-spatial-prediction) a spatial raster image.
-* Estimate the performance of a model with [spatial cross-validation](https://mlr3book.mlr-org.com/special.html#spatiotemp-cv).
+* Learn how to [predict](https://mlr3book.mlr-org.com/chapters/chapter13/beyond_regression_and_classification.html#sec-spatial-prediction) a spatial raster image.
+* Estimate the performance of a model with [spatial cross-validation](https://mlr3book.mlr-org.com/chapters/chapter13/beyond_regression_and_classification.html#sec-spatiotemporal).
 
 The gallery features articles about spatial data in the mlr3 ecosystem.
 
