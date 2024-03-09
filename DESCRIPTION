@@ -37,6 +37,7 @@ Suggests:
     mlr3learners (>= 0.4.5),
     paradox,
     ranger,
+    raster,
     rmarkdown,
     rpart,
     stars (>= 0.5-5),
