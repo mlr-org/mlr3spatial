@@ -1,3 +1,5 @@
+# mlr3spatial (development version)
+
 # mlr3spatial 0.5.0
 
 * compatibility: Work with new paradox version 1.0.0
