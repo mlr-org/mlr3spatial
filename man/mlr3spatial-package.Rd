@@ -64,7 +64,7 @@ likely be removed in a future version of the package. analysis.
 }
 
 \references{
-Becker M, Schratz P (2023).
+Becker M, Schratz P (2024).
 \emph{mlr3spatial: Support for Spatial Objects Within the 'mlr3' Ecosystem}.
 https://mlr3spatial.mlr-org.com,
 https://github.com/mlr-org/mlr3spatial.
