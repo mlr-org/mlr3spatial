@@ -1,7 +1,7 @@
 Package: mlr3spatial
 Title: Support for Spatial Objects Within the 'mlr3' Ecosystem
-Version: 0.4.1.9000
-Date: 2023-05-03
+Version: 0.5.0
+Date: 2024-03-09
 Authors@R:
     c(
      person("Marc", "Becker", , "marcbecker@posteo.de", role = c("aut", "cre"),
@@ -37,7 +37,7 @@ Suggests:
     mlr3learners (>= 0.4.5),
     paradox,
     ranger,
-    raster (>= 3.6-11),
+    raster,
     rmarkdown,
     rpart,
     stars (>= 0.5-5),
@@ -49,7 +49,7 @@ Config/testthat/parallel: false
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Collate:
     'DataBackendRaster.R'
     'DataBackendVector.R'
