@@ -16,10 +16,10 @@
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><link href="deps/Roboto-0.4.5/font.css" rel="stylesheet">
-<link href="deps/JetBrains_Mono-0.4.5/font.css" rel="stylesheet">
-<link href="deps/Roboto_Slab-0.4.5/font.css" rel="stylesheet">
+<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/Roboto-0.4.8/font.css" rel="stylesheet">
+<link href="deps/JetBrains_Mono-0.4.8/font.css" rel="stylesheet">
+<link href="deps/Roboto_Slab-0.4.8/font.css" rel="stylesheet">
 <!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Support for Spatial Objects Within the mlr3 Ecosystem">
@@ -40,7 +40,7 @@
     
     <a class="navbar-brand me-2" href="index.html">mlr3spatial</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.4.1</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.5.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -123,8 +123,8 @@
 </h2>
 <p>There are sections about spatial data in the <a href="https://mlr3book.mlr-org.com" class="external-link">mlr3book</a>.</p>
 <ul>
-<li>Learn how to <a href="https://mlr3book.mlr-org.com/special.html#sec-spatial-prediction" class="external-link">predict</a> a spatial raster image.</li>
-<li>Estimate the performance of a model with <a href="https://mlr3book.mlr-org.com/special.html#spatiotemp-cv" class="external-link">spatial cross-validation</a>.</li>
+<li>Learn how to <a href="https://mlr3book.mlr-org.com/chapters/chapter13/beyond_regression_and_classification.html#sec-spatial-prediction" class="external-link">predict</a> a spatial raster image.</li>
+<li>Estimate the performance of a model with <a href="https://mlr3book.mlr-org.com/chapters/chapter13/beyond_regression_and_classification.html#sec-spatiotemporal" class="external-link">spatial cross-validation</a>.</li>
 </ul>
 <p>The gallery features articles about spatial data in the mlr3 ecosystem.</p>
 <ul>
@@ -153,29 +153,29 @@
 <span></span>
 <span><span class="va">leipzig</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"leipzig_points.gpkg"</span>, package <span class="op">=</span> <span class="st">"mlr3spatial"</span><span class="op">)</span>, stringsAsFactors <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">leipzig_raster</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"leipzig_raster.tif"</span>, package <span class="op">=</span> <span class="st">"mlr3spatial"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">leipzig_raster</span> <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"leipzig_raster.tif"</span>, package <span class="op">=</span> <span class="st">"mlr3spatial"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>The function <code><a href="reference/as_task_classif_st.html">as_task_classif_st()</a></code> converts the <code><a href="https://r-spatial.github.io/sf/reference/sf.html" class="external-link">sf::sf</a></code> object to a spatial classification task.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="reference/as_task_classif_st.html">as_task_classif_st</a></span><span class="op">(</span><span class="va">leipzig</span>, target <span class="op">=</span> <span class="st">"land_cover"</span><span class="op">)</span></span>
 <span><span class="va">task</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## &lt;TaskClassifST:leipzig&gt; (97 x 9)</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="do">## * Target: land_cover</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="do">## * Properties: multiclass</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="do">## * Features (8):</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   - dbl (8): b02, b03, b04, b06, b07, b08, b11, ndvi</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="do">## * Coordinates:</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="do">##            X       Y</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="do">##  1: 732480.1 5693957</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="do">##  2: 732217.4 5692769</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="do">##  3: 732737.2 5692469</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="do">##  4: 733169.3 5692777</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="do">##  5: 732202.2 5692644</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="do">## ---                 </span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 93: 733018.7 5692342</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 94: 732551.4 5692887</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 95: 732520.4 5692589</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 96: 732542.2 5692204</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 97: 732437.8 5692300</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="do">## &lt;TaskClassifST:leipzig&gt; (97 x 9)</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="do">## * Target: land_cover</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="do">## * Properties: multiclass</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="do">## * Features (8):</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="do">##   - dbl (8): b02, b03, b04, b06, b07, b08, b11, ndvi</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="do">## * Coordinates:</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="do">##            X       Y</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="do">##  1: 732480.1 5693957</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="do">##  2: 732217.4 5692769</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="do">##  3: 732737.2 5692469</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="do">##  4: 733169.3 5692777</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="do">##  5: 732202.2 5692644</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="do">## ---                 </span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="do">## 93: 733018.7 5692342</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="do">## 94: 732551.4 5692887</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="do">## 95: 732520.4 5692589</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="do">## 96: 732542.2 5692204</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="do">## 97: 732437.8 5692300</span></span></code></pre></div>
 <p>The points are located in the district of Lindenau and Zentrum-West.</p>
 <p><img src="reference/figures/sentinel.png"></p>
 <p>Now we train a classification tree on the leipzig task.</p>
@@ -192,10 +192,10 @@
 </h2>
 <details><summary>
 Will mlr3spatial support spatial learners?
-</summary><p><br> Eventually. It is not yet clear whether these would live in mlr3extralearners or in mlr3spatial. So far there are none yet.</p>
+</summary><br> Eventually. It is not yet clear whether these would live in mlr3extralearners or in mlr3spatial. So far there are none yet.
 </details><details><summary>
 Why are there two packages, mlr3spatial and mlr3spatiotempcv?
-</summary><p><br> mlr3spatiotempcv is solely devoted to resampling techniques. There are quite a few and keeping packages small is one of the development philosophies of the mlr3 framework. Also back in the days when mlr3spatiotempcv was developed, it was not yet clear how we want to structure additional spatial components such as prediction support for spatial classes and so on.</p>
+</summary><br> mlr3spatiotempcv is solely devoted to resampling techniques. There are quite a few and keeping packages small is one of the development philosophies of the mlr3 framework. Also back in the days when mlr3spatiotempcv was developed, it was not yet clear how we want to structure additional spatial components such as prediction support for spatial classes and so on.
 </details>
 </div>
 </div>
