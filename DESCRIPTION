@@ -1,6 +1,6 @@
 Package: mlr3spatial
 Title: Support for Spatial Objects Within the 'mlr3' Ecosystem
-Version: 0.4.1.9000
+Version: 0.5.0
 Date: 2023-05-03
 Authors@R:
     c(
