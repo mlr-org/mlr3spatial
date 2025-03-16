@@ -75,7 +75,7 @@ predict_spatial = function(newdata, learner, chunksize = 200L, format = "terra",
     if (learner$task_type == "classif") {
       levels = learner$learner$state$train_task$levels()[[learner$learner$state$train_task$target_names]]
       value = data.table(ID = seq_along(levels), categories = levels)
-      target_raster = terra::categories(target_raster, value = value, index = 2)
+      target_raster = terra::categories(target_raster, value = value)
     }
     target_raster = set_names(target_raster, learner$learner$state$train_task$target_names)
 

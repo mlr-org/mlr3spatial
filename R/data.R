@@ -89,7 +89,7 @@ generate_stack = function(layers, layer_size = NULL, dimension = NULL, multi_lay
     } else if (layer$type == "factor") {
       data = matrix(rep(seq_along(layer$levels), each = floor(dimension^2 / length(layer$levels)), length.out = dimension^2), nrow = dimension)
       ras = rast(data)
-      ras = terra::categories(ras, layer = 1, data.table(ID = seq_along(layer$levels), category = layer$levels), index = 2)
+      ras = terra::categories(ras, layer = 1, data.table(ID = seq_along(layer$levels), category = layer$levels))
       if (!layer$in_memory && !multi_layer_file) {
         filename = tempfile(fileext = ".tif")
         writeRaster(ras, filename)
