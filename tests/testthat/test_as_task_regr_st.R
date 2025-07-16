@@ -93,3 +93,15 @@ test_that("convert from TaskClassifST to TaskRegrST", {
   expect_equal(task$col_roles$feature, c("x_1", "y"))
   expect_equal(task$col_roles$coordinate, c("X", "Y"))
 })
+
+test_that("as_task_regr_st throws an error when coordinates are already in the data", {
+  stack = generate_stack(list(
+    numeric_layer("x_1"),
+    numeric_layer("y"),
+    numeric_layer("X"),
+    numeric_layer("Y")),
+  dimension = 100)
+  vector = st_as_sf(sample_stack(stack, n = 100))
+
+  expect_error(as_task_regr_st(vector, target = "y"), "contains columns named 'X' and 'Y' which are reserved for coordinates")
+})

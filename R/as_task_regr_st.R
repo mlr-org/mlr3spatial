@@ -55,6 +55,10 @@ as_task_regr_st.sf = function(x, target = NULL, id = deparse(substitute(x)), coo
     stop("Simple feature may not contain geometries of type '%s'", str_collapse(setdiff(geometries, "POINT")))
   }
 
+  if (any(c("X", "Y") %in% colnames(x))) {
+    stopf("Data contains columns named 'X' and 'Y' which are reserved for coordinates. The sf object might contain coordinates in the geometry column and the `X` and `Y` columns. Please remove or rename them before converting to a task.")
+  }
+
   # extract spatial meta data
   crs = sf::st_crs(x)$wkt
   coordinates = as.data.frame(sf::st_coordinates(x))
