@@ -4,7 +4,7 @@
 \alias{TaskClassifST}
 \title{Spatiotemporal Classification Task}
 \description{
-This task specializes \link{TaskClassif} for spatiotemporal classification problems.
+This task specializes \link[mlr3:TaskClassif]{mlr3::TaskClassif} for spatiotemporal classification problems.
 
 A spatial example task is available via \code{tsk("ecuador")}.
 
@@ -89,9 +89,9 @@ The function \code{\link[=as_task_classif_st]{as_task_classif_st()}} provides an
 \item{\code{id}}{(\code{character(1)})\cr
 Identifier for the new instance.}
 
-\item{\code{backend}}{(\link{DataBackend})\cr
-Either a \link{DataBackend}, or any object which is convertible to a \link{DataBackend} with \code{as_data_backend()}.
-E.g., am \code{sf} will be converted to a \link{DataBackendDataTable}.}
+\item{\code{backend}}{(\link[mlr3:DataBackend]{mlr3::DataBackend})\cr
+Either a \link[mlr3:DataBackend]{mlr3::DataBackend}, or any object which is convertible to a \link[mlr3:DataBackend]{mlr3::DataBackend} with \code{mlr3::as_data_backend()}.
+E.g., am \code{sf} will be converted to a \link[mlr3:DataBackendDataTable]{mlr3::DataBackendDataTable}.}
 
 \item{\code{target}}{(\code{character(1)})\cr
 Name of the target column.}
@@ -115,7 +115,7 @@ If \code{TRUE}, coordinates are used as features.
 This is a shortcut for \code{task$set_col_roles(c("x", "y"), role = "feature")} with the assumption that the coordinates in the data are named "x" and "y".}
 
 \item{\code{extra_args}}{(named \code{list()})\cr
-Named list of constructor arguments, required for converting task types via \code{\link[=convert_task]{convert_task()}}.}
+Named list of constructor arguments, required for converting task types via \code{\link[mlr3:convert_task]{mlr3::convert_task()}}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -132,7 +132,7 @@ Returns coordinates of observations.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{row_ids}}{(\code{integer()})\cr
+\item{\code{row_ids}}{(\code{integer()})\data
 Vector of rows indices as subset of \code{task$row_ids}.}
 }
 \if{html}{\out{</div>}}

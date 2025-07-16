@@ -5,7 +5,7 @@
 #'
 #' @param newdata ([terra::SpatRaster] | `stars::stars` | [sf::sf] | `raster::RasterStack` | `raster::RasterBrick`).
 #'   New data to predict on. All spatial data formats convertible by `as_data_backend()` are supported e.g. [terra::SpatRaster] or [sf::sf].
-#' @param learner ([Learner]).
+#' @param learner ([mlr3::Learner]).
 #'   Learner with trained model.
 #' @template param-chunksize
 #' @param format (`character(1)`)\cr

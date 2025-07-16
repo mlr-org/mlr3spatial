@@ -100,6 +100,6 @@ This is a S3 generic, specialized for at least the following objects:
 \item \link{TaskRegrST}: Ensure the identity.
 \item \code{\link[=data.frame]{data.frame()}} and \link{DataBackend}: Provides an alternative to the constructor of \link{TaskRegrST}.
 \item \link[sf:sf]{sf::sf}: Extracts spatial meta data before construction.
-\item \link{TaskClassif}: Calls \code{\link[=convert_task]{convert_task()}}.
+\item \link[mlr3:TaskClassif]{mlr3::TaskClassif}: Calls \code{\link[mlr3:convert_task]{mlr3::convert_task()}}.
 }
 }
