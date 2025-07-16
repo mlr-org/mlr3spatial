@@ -244,7 +244,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
 #' @title Coerce to spatial DataBackend
 #'
 #' @description
-#' Wraps a [DataBackend] around spatial objects.
+#' Wraps a [mlr3::DataBackend] around spatial objects.
 #' Currently these S3 methods are only alternative ways for writing `DataBackendRaster$new()`.
 #' They do not support coercing from other backends yet.
 #'
@@ -253,7 +253,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
 #' @param ... (`any`)\cr
 #'   Not used.
 #'
-#' @return [DataBackend].
+#' @return [mlr3::DataBackend].
 #' @rdname as_data_backend
 #'
 #' @exportS3Method
