@@ -49,7 +49,7 @@ TaskClassifST = R6::R6Class("TaskClassifST",
     #' @description
     #' Returns coordinates of observations.
     #'
-    #' @param row_ids (`integer()`)\data
+    #' @param row_ids (`integer()`)
     #'   Vector of rows indices as subset of `task$row_ids`.
     #'
     #' @return [data.table::data.table()]

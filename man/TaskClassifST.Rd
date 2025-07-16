@@ -132,7 +132,7 @@ Returns coordinates of observations.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{row_ids}}{(\code{integer()})\data
+\item{\code{row_ids}}{(\code{integer()})
 Vector of rows indices as subset of \code{task$row_ids}.}
 }
 \if{html}{\out{</div>}}
