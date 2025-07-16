@@ -2,8 +2,6 @@
 
 * fix: Throw an error when `X` and `Y` columns are present in an sf object
 
-* fix: Throw an error when `X` and `Y` columns are present in an sf object
-
 # mlr3spatial 0.5.0
 
 * compatibility: Work with new paradox version 1.0.0
