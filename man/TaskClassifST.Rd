@@ -44,6 +44,7 @@ If \code{TRUE}, coordinates are used as features.}
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="add_strata"><a href='../../mlr3/html/Task.html#method-Task-add_strata'><code>mlr3::Task$add_strata()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="cbind"><a href='../../mlr3/html/Task.html#method-Task-cbind'><code>mlr3::Task$cbind()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="data"><a href='../../mlr3/html/Task.html#method-Task-data'><code>mlr3::Task$data()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="divide"><a href='../../mlr3/html/Task.html#method-Task-divide'><code>mlr3::Task$divide()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="filter"><a href='../../mlr3/html/Task.html#method-Task-filter'><code>mlr3::Task$filter()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="format"><a href='../../mlr3/html/Task.html#method-Task-format'><code>mlr3::Task$format()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="formula"><a href='../../mlr3/html/Task.html#method-Task-formula'><code>mlr3::Task$formula()</code></a></span></li>
@@ -110,7 +111,8 @@ Coordinate reference system.
 WKT2 or EPSG string.}
 
 \item{\code{coords_as_features}}{(\code{logical(1)})\cr
-If \code{TRUE}, coordinates are used as features.}
+If \code{TRUE}, coordinates are used as features.
+This is a shortcut for \code{task$set_col_roles(c("x", "y"), role = "feature")} with the assumption that the coordinates in the data are named "x" and "y".}
 
 \item{\code{extra_args}}{(named \code{list()})\cr
 Named list of constructor arguments, required for converting task types via \code{\link[=convert_task]{convert_task()}}.}
