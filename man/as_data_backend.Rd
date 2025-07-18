@@ -35,10 +35,10 @@ Note that the created column will be used as a regular feature by the task unles
 Also see \code{\link[data.table:as.data.table]{data.table::as.data.table()}}.}
 }
 \value{
-\link{DataBackend}.
+\link[mlr3:DataBackend]{mlr3::DataBackend}.
 }
 \description{
-Wraps a \link{DataBackend} around spatial objects.
+Wraps a \link[mlr3:DataBackend]{mlr3::DataBackend} around spatial objects.
 Currently these S3 methods are only alternative ways for writing \code{DataBackendRaster$new()}.
 They do not support coercing from other backends yet.
 }
