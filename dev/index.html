@@ -32,7 +32,7 @@
 
     <a class="navbar-brand me-2" href="index.html">mlr3spatial</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.5.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.6.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -112,24 +112,25 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="reference/as_task_classif_st.html">as_task_classif_st</a></span><span class="op">(</span><span class="va">leipzig</span>, target <span class="op">=</span> <span class="st">"land_cover"</span><span class="op">)</span></span>
 <span><span class="va">task</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="do">## &lt;TaskClassifST:leipzig&gt; (97 x 9)</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="do">## * Target: land_cover</span></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="do">## * Properties: multiclass</span></span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="do">## * Features (8):</span></span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="do">##   - dbl (8): b02, b03, b04, b06, b07, b08, b11, ndvi</span></span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="do">## * Coordinates:</span></span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="do">##            X       Y</span></span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="do">##  1: 732480.1 5693957</span></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="do">##  2: 732217.4 5692769</span></span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="do">##  3: 732737.2 5692469</span></span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="do">##  4: 733169.3 5692777</span></span>
-<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="do">##  5: 732202.2 5692644</span></span>
-<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="do">## ---                 </span></span>
-<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="do">## 93: 733018.7 5692342</span></span>
-<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="do">## 94: 732551.4 5692887</span></span>
-<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="do">## 95: 732520.4 5692589</span></span>
-<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="do">## 96: 732542.2 5692204</span></span>
-<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="do">## 97: 732437.8 5692300</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="do">## ── &lt;TaskClassifST&gt; (97x9) ──────────────────────────────────────────────────────────────────────────</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="do">## • Target: land_cover</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="do">## • Properties: multiclass</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="do">## • Features (8):</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="do">##   • dbl (8): b02, b03, b04, b06, b07, b08, b11, ndvi</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="do">## * Coordinates:</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="do">##            X       Y</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="do">##  1: 732480.1 5693957</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="do">##  2: 732217.4 5692769</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="do">##  3: 732737.2 5692469</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="do">##  4: 733169.3 5692777</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="do">##  5: 732202.2 5692644</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="do">## ---                 </span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="do">## 93: 733018.7 5692342</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="do">## 94: 732551.4 5692887</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="do">## 95: 732520.4 5692589</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="do">## 96: 732542.2 5692204</span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="do">## 97: 732437.8 5692300</span></span></code></pre></div>
 <p>The points are located in the district of Lindenau and Zentrum-West.</p>
 <p><img src="reference/figures/sentinel.png"></p>
 <p>Now we train a classification tree on the leipzig task.</p>
@@ -139,6 +140,8 @@
 <p>As a last step, we predict the land cover class for the whole area of interest. For this, we pass the Sentinel-2 scene and the trained learner to the <code><a href="reference/predict_spatial.html">predict_spatial()</a></code> function.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">land_cover</span> <span class="op">=</span> <span class="fu"><a href="reference/predict_spatial.html">predict_spatial</a></span><span class="op">(</span><span class="va">leipzig_raster</span>, <span class="va">learner</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="do">## Warning in warn_deprecated("DataBackend$data_formats"): DataBackend$data_formats is deprecated and</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="do">## will be removed in the future.</span></span></code></pre></div>
 <p><img src="reference/figures/land_cover.png"></p>
 </div>
 <div class="section level2">
@@ -191,7 +194,6 @@ Why are there two packages, mlr3spatial and mlr3spatiotempcv?
 <ul class="list-unstyled">
 <li><a href="https://github.com/mlr-org/mlr3spatial/actions/workflows/r-cmd-check.yml" class="external-link"><img src="https://github.com/mlr-org/mlr3spatial/actions/workflows/r-cmd-check.yml/badge.svg" alt="r-cmd-check"></a></li>
 <li><a href="https://CRAN.R-project.org/package=mlr3spatial" class="external-link"><img src="https://www.r-pkg.org/badges/version/mlr3spatial" alt="CRAN status"></a></li>
-<li><a href="https://stackoverflow.com/questions/tagged/mlr3" class="external-link"><img src="https://img.shields.io/badge/stackoverflow-mlr3-orange.svg" alt="StackOverflow"></a></li>
 <li><a href="https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/" class="external-link"><img src="https://img.shields.io/badge/chat-mattermost-orange.svg" alt="Mattermost"></a></li>
 </ul>
 </div>
