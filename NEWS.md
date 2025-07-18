@@ -1,3 +1,5 @@
+# mlr3spatial (development version)
+
 # mlr3spatial 0.6.0
 
 * fix: Throw an error when `X` and `Y` columns are present in an sf object
