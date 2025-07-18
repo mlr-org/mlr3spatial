@@ -4,7 +4,7 @@
 \alias{TaskRegrST}
 \title{Spatiotemporal Regression Task}
 \description{
-This task specializes \link{TaskRegr} for spatiotemporal regression problems.
+This task specializes \link[mlr3:TaskRegr]{mlr3::TaskRegr} for spatiotemporal regression problems.
 
 A spatial example task is available via \code{tsk("cookfarm_mlr3")}.
 
@@ -88,9 +88,9 @@ The function \code{\link[=as_task_regr_st]{as_task_regr_st()}} provides an alter
 \item{\code{id}}{(\code{character(1)})\cr
 Identifier for the new instance.}
 
-\item{\code{backend}}{(\link{DataBackend})\cr
-Either a \link{DataBackend}, or any object which is convertible to a \link{DataBackend} with \code{as_data_backend()}.
-E.g., am \code{sf} will be converted to a \link{DataBackendDataTable}.}
+\item{\code{backend}}{(\link[mlr3:DataBackend]{mlr3::DataBackend})\cr
+Either a \link[mlr3:DataBackend]{mlr3::DataBackend}, or any object which is convertible to a \link[mlr3:DataBackend]{mlr3::DataBackend} with \code{mlr3::as_data_backend()}.
+E.g., am \code{sf} will be converted to a \link[mlr3:DataBackendDataTable]{mlr3::DataBackendDataTable}.}
 
 \item{\code{target}}{(\code{character(1)})\cr
 Name of the target column.}
@@ -110,7 +110,7 @@ If \code{TRUE}, coordinates are used as features.
 This is a shortcut for \code{task$set_col_roles(c("x", "y"), role = "feature")} with the assumption that the coordinates in the data are named "x" and "y".}
 
 \item{\code{extra_args}}{(named \code{list()})\cr
-Named list of constructor arguments, required for converting task types via \code{\link[=convert_task]{convert_task()}}.}
+Named list of constructor arguments, required for converting task types via \code{\link[mlr3:convert_task]{mlr3::convert_task()}}.}
 }
 \if{html}{\out{</div>}}
 }

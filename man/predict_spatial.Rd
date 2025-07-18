@@ -16,7 +16,7 @@ predict_spatial(
 \item{newdata}{(\link[terra:SpatRaster-class]{terra::SpatRaster} | \code{stars::stars} | \link[sf:sf]{sf::sf} | \code{raster::RasterStack} | \code{raster::RasterBrick}).
 New data to predict on. All spatial data formats convertible by \code{as_data_backend()} are supported e.g. \link[terra:SpatRaster-class]{terra::SpatRaster} or \link[sf:sf]{sf::sf}.}
 
-\item{learner}{(\link{Learner}).
+\item{learner}{(\link[mlr3:Learner]{mlr3::Learner}).
 Learner with trained model.}
 
 \item{chunksize}{(\code{integer(1)})\cr

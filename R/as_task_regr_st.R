@@ -5,9 +5,9 @@
 #' This is a S3 generic, specialized for at least the following objects:
 #'
 #' 1. [TaskRegrST]: Ensure the identity.
-#' 2. [data.frame()] and [DataBackend]: Provides an alternative to the constructor of [TaskRegrST].
+#' 2. [data.frame()] and [mlr3::DataBackend]: Provides an alternative to the constructor of [TaskRegrST].
 #' 3. [sf::sf]: Extracts spatial meta data before construction.
-#' 4. [TaskClassif]: Calls [convert_task()].
+#' 4. [mlr3::TaskClassif]: Calls [mlr3::convert_task()].
 #'
 #' @inheritParams mlr3::as_task_regr
 #' @template param_coords_as_features

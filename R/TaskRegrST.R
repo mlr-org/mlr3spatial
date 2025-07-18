@@ -1,7 +1,7 @@
 #' @title Spatiotemporal Regression Task
 #'
 #' @description
-#' This task specializes [TaskRegr] for spatiotemporal regression problems.
+#' This task specializes [mlr3::TaskRegr] for spatiotemporal regression problems.
 #'
 #' A spatial example task is available via `tsk("cookfarm_mlr3")`.
 #'

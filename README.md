@@ -9,7 +9,6 @@ Package website: [release](https://mlr3spatial.mlr-org.com/) \|
 [![r-cmd-check](https://github.com/mlr-org/mlr3spatial/actions/workflows/r-cmd-check.yml/badge.svg)](https://github.com/mlr-org/mlr3spatial/actions/workflows/r-cmd-check.yml)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/mlr3spatial)](https://CRAN.R-project.org/package=mlr3spatial)
-[![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3)
 [![Mattermost](https://img.shields.io/badge/chat-mattermost-orange.svg)](https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/)
 <!-- badges: end -->
 
@@ -30,17 +29,17 @@ for spatiotemporal resampling within mlr3.
 There are sections about spatial data in the
 [mlr3book](https://mlr3book.mlr-org.com).
 
--   Learn how to
-    [predict](https://mlr3book.mlr-org.com/chapters/chapter13/beyond_regression_and_classification.html#sec-spatial-prediction)
-    a spatial raster image.
--   Estimate the performance of a model with [spatial
-    cross-validation](https://mlr3book.mlr-org.com/chapters/chapter13/beyond_regression_and_classification.html#sec-spatiotemporal).
+- Learn how to
+  [predict](https://mlr3book.mlr-org.com/chapters/chapter13/beyond_regression_and_classification.html#sec-spatial-prediction)
+  a spatial raster image.
+- Estimate the performance of a model with [spatial
+  cross-validation](https://mlr3book.mlr-org.com/chapters/chapter13/beyond_regression_and_classification.html#sec-spatiotemporal).
 
 The gallery features articles about spatial data in the mlr3 ecosystem.
 
--   Learn the basics with a [land cover
-    classification](https://mlr-org.com/gallery/technical/2023-02-27-land-cover-classification/)
-    of the city of Leipzig.
+- Learn the basics with a [land cover
+  classification](https://mlr-org.com/gallery/technical/2023-02-27-land-cover-classification/)
+  of the city of Leipzig.
 
 ## Installation
 
@@ -87,11 +86,12 @@ task = as_task_classif_st(leipzig, target = "land_cover")
 task
 ```
 
-    ## <TaskClassifST:leipzig> (97 x 9)
-    ## * Target: land_cover
-    ## * Properties: multiclass
-    ## * Features (8):
-    ##   - dbl (8): b02, b03, b04, b06, b07, b08, b11, ndvi
+    ## 
+    ## ── <TaskClassifST> (97x9) ──────────────────────────────────────────────────────────────────────────
+    ## • Target: land_cover
+    ## • Properties: multiclass
+    ## • Features (8):
+    ##   • dbl (8): b02, b03, b04, b06, b07, b08, b11, ndvi
     ## * Coordinates:
     ##            X       Y
     ##  1: 732480.1 5693957
@@ -124,6 +124,9 @@ to the `predict_spatial()` function.
 ``` r
 land_cover = predict_spatial(leipzig_raster, learner)
 ```
+
+    ## Warning in warn_deprecated("DataBackend$data_formats"): DataBackend$data_formats is deprecated and
+    ## will be removed in the future.
 
 <img src="man/figures/land_cover.png" />
 

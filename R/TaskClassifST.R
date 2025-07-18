@@ -1,7 +1,7 @@
 #' @title Spatiotemporal Classification Task
 #'
 #' @description
-#' This task specializes [TaskClassif] for spatiotemporal classification problems.
+#' This task specializes [mlr3::TaskClassif] for spatiotemporal classification problems.
 #'
 #' A spatial example task is available via `tsk("ecuador")`.
 #'
@@ -49,7 +49,7 @@ TaskClassifST = R6::R6Class("TaskClassifST",
     #' @description
     #' Returns coordinates of observations.
     #'
-    #' @param row_ids (`integer()`)\cr
+    #' @param row_ids (`integer()`)
     #'   Vector of rows indices as subset of `task$row_ids`.
     #'
     #' @return [data.table::data.table()]
