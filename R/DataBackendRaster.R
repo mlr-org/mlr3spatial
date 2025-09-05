@@ -69,10 +69,7 @@ DataBackendRaster = R6Class("DataBackendRaster",
     #' Rows are guaranteed to be returned in the same order as `rows`, columns
     #' may be returned in an arbitrary order. Duplicated row ids result in
     #' duplicated rows, duplicated column names lead to an exception.
-    #'
-    #' @param data_format (`character(1)`)\cr
-    #'   Desired data format. Currently only `"data.table"` supported.
-    data = function(rows, cols, data_format = "data.table") {
+    data = function(rows, cols) {
       stack = self$stack
       if (is.null(rows)) rows = numeric(0)
       rows = assert_integerish(rows, coerce = TRUE, null.ok = TRUE)

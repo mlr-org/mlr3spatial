@@ -17,7 +17,7 @@ URL: https://mlr3spatial.mlr-org.com,
     https://github.com/mlr-org/mlr3spatial
 BugReports: https://github.com/mlr-org/mlr3spatial/issues
 Depends:
-    mlr3 (>= 0.14.0),
+    mlr3 (>= 1.1.0.9000),
     R (>= 3.1.0)
 Imports:
     checkmate (>= 2.0.0),
@@ -49,7 +49,7 @@ Config/testthat/parallel: false
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Collate:
     'DataBackendRaster.R'
     'DataBackendVector.R'
