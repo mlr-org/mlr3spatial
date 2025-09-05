@@ -54,8 +54,6 @@ DataBackendRaster = R6Class("DataBackendRaster",
       private$.categories = terra::cats(data)
       private$.layer_names = names(data)
       private$.crs = terra::crs(data)
-
-      self$data_formats = "data.table"
     },
 
     #' @description
@@ -74,7 +72,6 @@ DataBackendRaster = R6Class("DataBackendRaster",
       if (is.null(rows)) rows = numeric(0)
       rows = assert_integerish(rows, coerce = TRUE, null.ok = TRUE)
       assert_names(cols, type = "unique")
-      assert_choice(data_format, self$data_formats)
       cols = intersect(cols, private$.layer_names)
 
       if (!length(cols)) {

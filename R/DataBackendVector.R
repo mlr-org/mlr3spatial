@@ -18,7 +18,6 @@ DataBackendVector = R6::R6Class("DataBackendVector",
     #'   Name of the primary key column, or integer vector of row ids.
     initialize = function(data, primary_key) {
       assert_class(data, "sf")
-      self$data_formats = "data.table"
 
       # store geometry
       sf_column = attr(data, "sf_column")
