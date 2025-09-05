@@ -12,50 +12,50 @@ expect_backend = function(b) {
   rn1 = head(rn, 1L)
   pk = b$primary_key
 
-  x = b$data(rows = rn, cols = pk, data_format = "data.table")
+  x = b$data(rows = rn, cols = pk)
   checkmate::expect_data_table(x, ncols = 1L, nrows = n, col.names = "unique")
   x = x[[1L]]
   checkmate::expect_integerish(x, len = n, unique = TRUE)
 
-  x = b$data(rows = rn, cols = setdiff(cn, pk)[1L], data_format = "data.table")
+  x = b$data(rows = rn, cols = setdiff(cn, pk)[1L])
   checkmate::expect_data_table(x, ncols = 1L, nrows = n, col.names = "unique")
   x = x[[1L]]
   checkmate::expect_atomic_vector(x, len = n)
 
   # extra cols are ignored
-  x = b$data(rows = rn1, cols = c(cn[1L], "_not_existing_"), data_format = "data.table")
+  x = b$data(rows = rn1, cols = c(cn[1L], "_not_existing_"))
   checkmate::expect_data_table(x, nrows = length(rn1), ncols = 1L)
 
   # zero cols matching
-  x = b$data(rows = rn1, cols = "_not_existing_", data_format = "data.table")
+  x = b$data(rows = rn1, cols = "_not_existing_")
   checkmate::expect_data_table(x, nrows = 0L, ncols = 0L)
 
   # extra rows are ignored
   query_rows = c(rn1, if (is.integer(rn)) -1L else "_not_existing_")
-  x = b$data(query_rows, cols = cn[1L], data_format = "data.table")
+  x = b$data(query_rows, cols = cn[1L])
   checkmate::expect_data_table(x, nrows = length(rn1), ncols = 1L)
 
   # zero rows matching
   query_rows = if (is.integer(rn)) -1L else "_not_existing_"
-  x = b$data(rows = query_rows, cols = cn[1L], data_format = "data.table")
+  x = b$data(rows = query_rows, cols = cn[1L])
   checkmate::expect_data_table(x, nrows = 0L, ncols = 1L)
 
   # rows are duplicated
-  x = b$data(rows = rep(rn1, 2L), cols = b$colnames, data_format = "data.table")
+  x = b$data(rows = rep(rn1, 2L), cols = b$colnames)
   checkmate::expect_data_table(x, nrows = 2L * length(rn1), ncols = p)
 
   # cols are returned in the right order
   j = rev(cn)
-  x = b$data(rows = rn1, cols = j, data_format = "data.table")
+  x = b$data(rows = rn1, cols = j)
   testthat::expect_equal(j, colnames(x))
 
   # rows are returned in the right order
   i = sample(rn, min(n, 10L))
-  x = b$data(rows = i, cols = b$primary_key, data_format = "data.table")
+  x = b$data(rows = i, cols = b$primary_key)
   testthat::expect_equal(i, x[[1L]])
 
   # duplicated cols raise exception
-  testthat::expect_error(b$data(rows = rn1, cols = rep(cn[1L], 2L), data_format = "data.table"), "unique")
+  testthat::expect_error(b$data(rows = rn1, cols = rep(cn[1L], 2L)), "unique")
 
   # $head()
   checkmate::expect_data_table(b$head(.Machine$integer.max), nrows = n, ncols = p)
