@@ -43,7 +43,7 @@ Suggests:
     stars (>= 0.5-5),
     testthat (>= 3.0.0)
 Remotes:
-    mlr-org/mlr3@option_col_roles
+    mlr-org/mlr3
 VignetteBuilder:
     knitr
 Config/testthat/edition: 3
