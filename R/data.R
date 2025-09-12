@@ -43,6 +43,24 @@ factor_layer = function(id, levels, in_memory = FALSE) {
   list(id = id, type = "factor", levels = levels, in_memory = in_memory)
 }
 
+#' @title Weights Layer Generator
+#'
+#' @description
+#' Generates a weights layer when passed to [generate_stack()].
+#'
+#' @param id (`character(1)`)\cr
+#'   Layer id.
+#' @param in_memory (`logical(1)`)\cr
+#'   If `FALSE` (default), layer is written to disk.
+#'
+#' @keywords internal
+#' @export
+weights_layer = function(id, in_memory = FALSE) {
+  assert_string(id)
+  assert_flag(in_memory)
+  list(id = id, type = "weights", in_memory = in_memory)
+}
+
 #' @title Generate Raster Stack
 #'
 #' @description
@@ -90,6 +108,15 @@ generate_stack = function(layers, layer_size = NULL, dimension = NULL, multi_lay
       data = matrix(rep(seq_along(layer$levels), each = floor(dimension^2 / length(layer$levels)), length.out = dimension^2), nrow = dimension)
       ras = rast(data)
       ras = terra::categories(ras, layer = 1, data.table(ID = seq_along(layer$levels), category = layer$levels))
+      if (!layer$in_memory && !multi_layer_file) {
+        filename = tempfile(fileext = ".tif")
+        writeRaster(ras, filename)
+        ras = rast(filename)
+      }
+      ras
+    } else if (layer$type == "weights") {
+      data = matrix(runif(dimension^2, 0, 1), nrow = dimension)
+      ras = rast(data)
       if (!layer$in_memory && !multi_layer_file) {
         filename = tempfile(fileext = ".tif")
         writeRaster(ras, filename)

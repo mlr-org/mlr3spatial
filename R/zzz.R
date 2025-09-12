@@ -71,6 +71,9 @@
   x$default_measures$classif_st = "classif.ce"
   x$default_measures$regr_st = "regr.mse"
 
+  x$task_col_roles_optional_newdata$classif_st = c(x$task_col_roles_optional_newdata$classif, c("coordinate", "space", "time"))
+  x$task_col_roles_optional_newdata$regr_st = c(x$task_col_roles_optional_newdata$regr, c("coordinate", "space", "time"))
+
   # task
   x = getFromNamespace("mlr_tasks", ns = "mlr3")
   x$add("leipzig", load_task_leipzig)
