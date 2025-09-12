@@ -1,4 +1,6 @@
-# mlr3spatial (development version)
+# mlr3spatial 0.6.1
+
+* compatibility: mlr3 1.2.0 removed the data format argument
 
 # mlr3spatial 0.6.0
 
