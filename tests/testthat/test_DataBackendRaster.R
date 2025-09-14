@@ -273,7 +273,7 @@ test_that("data prototyp works", {
   )
   backend = DataBackendRaster$new(stack)
 
-  expect_data_table(backend$data(rows = integer(0), cols = c("x_1", "y")), nrows = 0, ncols = 2)
+  suppressWarnings(expect_data_table(backend$data(rows = integer(0), cols = c("x_1", "y")), nrows = 0, ncols = 2))
 })
 
 test_that("in memory rasters work", {
