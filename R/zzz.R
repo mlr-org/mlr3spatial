@@ -4,7 +4,7 @@
 #' @import mlr3
 #' @import sf
 #' @importFrom R6 R6Class is.R6
-#' @importFrom stats complete.cases
+#' @importFrom stats complete.cases runif
 #' @importFrom utils getFromNamespace data
 #'
 #' @section Learn mlr3:

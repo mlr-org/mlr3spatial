@@ -1,4 +1,7 @@
-# mlr3spatial (development version)
+# mlr3spatial 0.6.1
+
+* compatibility: mlr3 1.2.0 removed the data format argument
+* fix: `$predict_newdata()` and `predict_spatial()` work without optional column roles like `coordinate` now.
 
 # mlr3spatial 0.6.0
 
