@@ -9,7 +9,8 @@ predict_spatial(
   learner,
   chunksize = 200L,
   format = "terra",
-  filename = NULL
+  filename = NULL,
+  predict_type = "response"
 )
 }
 \arguments{
@@ -37,6 +38,10 @@ For vector data only \code{"sf"} is supported.}
 
 \item{filename}{(\code{character(1)})\cr
 Path where the spatial object should be written to.}
+
+\item{predict_type}{(\code{character(1)})\cr
+Type of prediction to return.
+Accepted values are \code{"response"} and \code{"prob"}.}
 }
 \value{
 Spatial object of class given in argument \code{format}.
