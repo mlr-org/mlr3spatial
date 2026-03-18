@@ -23,32 +23,79 @@ as_task_classif_st = function(x, ...) {
 #' @rdname as_task_classif_st
 #' @export as_task_classif_st.TaskClassifST
 #' @exportS3Method
-as_task_classif_st.TaskClassifST = function(x, clone = FALSE, ...) { # nolint
+#nolint next
+as_task_classif_st.TaskClassifST = function(x, clone = FALSE, ...) {
   if (clone) x$clone() else x
 }
 
 #' @rdname as_task_classif_st
 #' @export as_task_classif_st.data.frame
 #' @exportS3Method
-as_task_classif_st.data.frame = function(x, target, id = deparse(substitute(x)), positive = NULL, coordinate_names, crs = NA_character_, coords_as_features = FALSE, label = NA_character_, ...) {
+as_task_classif_st.data.frame = function(
+  x,
+  target,
+  id = deparse(substitute(x)),
+  positive = NULL,
+  coordinate_names,
+  crs = NA_character_,
+  coords_as_features = FALSE,
+  label = NA_character_,
+  ...
+) {
   ii = which(map_lgl(keep(x, is.double), anyInfinite))
   if (length(ii)) {
     warningf("Detected columns with unsupported Inf values in data: %s", str_collapse(names(ii)))
   }
-  TaskClassifST$new(id = id, backend = x, target = target, positive = positive, coords_as_features = coords_as_features, crs = crs, coordinate_names = coordinate_names, label = label)
+  TaskClassifST$new(
+    id = id,
+    backend = x,
+    target = target,
+    positive = positive,
+    coords_as_features = coords_as_features,
+    crs = crs,
+    coordinate_names = coordinate_names,
+    label = label
+  )
 }
 
 #' @rdname as_task_classif_st
 #' @export as_task_classif_st.DataBackend
 #' @exportS3Method
-as_task_classif_st.DataBackend = function(x, target, id = deparse(substitute(x)), positive = NULL, coordinate_names, crs, coords_as_features = FALSE, label = NA_character_, ...) {
-  TaskClassifST$new(id = id, backend = x, target = target, positive = positive, coords_as_features = coords_as_features, crs = crs, coordinate_names = coordinate_names, label = label)
+as_task_classif_st.DataBackend = function(
+  x,
+  target,
+  id = deparse(substitute(x)),
+  positive = NULL,
+  coordinate_names,
+  crs,
+  coords_as_features = FALSE,
+  label = NA_character_,
+  ...
+) {
+  TaskClassifST$new(
+    id = id,
+    backend = x,
+    target = target,
+    positive = positive,
+    coords_as_features = coords_as_features,
+    crs = crs,
+    coordinate_names = coordinate_names,
+    label = label
+  )
 }
 
 #' @rdname as_task_classif_st
 #' @export as_task_classif_st.sf
 #' @exportS3Method
-as_task_classif_st.sf = function(x, target = NULL, id = deparse(substitute(x)), positive = NULL, coords_as_features = FALSE, label = NA_character_, ...) {
+as_task_classif_st.sf = function(
+  x,
+  target = NULL,
+  id = deparse(substitute(x)),
+  positive = NULL,
+  coords_as_features = FALSE,
+  label = NA_character_,
+  ...
+) {
   id = as.character(id)
   geometries = as.character(unique(sf::st_geometry_type(x)))
   if (!test_names(geometries, identical.to = "POINT")) {
@@ -56,9 +103,14 @@ as_task_classif_st.sf = function(x, target = NULL, id = deparse(substitute(x)), 
   }
 
   if (any(c("X", "Y") %in% colnames(x))) {
-    stopf("Data contains columns named 'X' and 'Y' which are reserved for coordinates. The sf object might contain coordinates in the geometry column and the `X` and `Y` columns. Please remove or rename them before converting to a task.")
+    stopf(
+      paste(
+        "Data contains columns named 'X' and 'Y' which are reserved for coordinates.",
+        "The sf object might contain coordinates in the geometry column and the `X` and `Y` columns.",
+        "Please remove or rename them before converting to a task."
+      )
+    )
   }
-
 
   # extract spatial meta data
   crs = sf::st_crs(x)$wkt
@@ -73,7 +125,16 @@ as_task_classif_st.sf = function(x, target = NULL, id = deparse(substitute(x)), 
   # add coordinates
   x = cbind(x, coordinates)
 
-  as_task_classif_st(x, target = target, id = id, positive = positive, coords_as_features = coords_as_features, crs = crs, coordinate_names = coordinate_names, label = label)
+  as_task_classif_st(
+    x,
+    target = target,
+    id = id,
+    positive = positive,
+    coords_as_features = coords_as_features,
+    crs = crs,
+    coordinate_names = coordinate_names,
+    label = label
+  )
 }
 
 #' @rdname as_task_classif_st

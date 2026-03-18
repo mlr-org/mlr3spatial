@@ -19,9 +19,15 @@ write_raster = function(data) {
   terra::writeStart(target_raster, filename = filename)
   # write values in chunks
   mlr3misc::pmap(list(bs$cells_seq, bs$cells_to_read), function(row, nrows) {
-    terra::writeValues(target_raster,
-      data[seq_len((terra::rowFromCell(target_raster, row)) + terra::rowFromCell(target_raster, nrows) - 1),
-        seq_len(terra::nrow(data))], terra::rowFromCell(target_raster, row), terra::rowFromCell(target_raster, nrows))
+    terra::writeValues(
+      target_raster,
+      data[
+        seq_len((terra::rowFromCell(target_raster, row)) + terra::rowFromCell(target_raster, nrows) - 1),
+        seq_len(terra::nrow(data))
+      ],
+      terra::rowFromCell(target_raster, row),
+      terra::rowFromCell(target_raster, nrows)
+    )
   })
   terra::writeStop(target_raster)
   terra::rast(filename)
@@ -56,7 +62,7 @@ block_size = function(raster, chunksize) {
   # adapt last write
   cells_to_read[length(cells_to_read)] = terra::ncell(raster) - cells_seq[length(cells_seq)] + 1
 
-  return(list(cells_seq = cells_seq, cells_to_read = cells_to_read))
+  list(cells_seq = cells_seq, cells_to_read = cells_to_read)
 }
 
 allow_partial_matching = list(

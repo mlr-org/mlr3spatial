@@ -96,7 +96,10 @@ generate_stack = function(layers, layer_size = NULL, dimension = NULL, multi_lay
 
   layers = map(layers, function(layer) {
     if (layer$type == "numeric") {
-      data = matrix(c(stats::rnorm(floor(dimension^2 / 2), 0, 1), stats::rnorm(ceiling(dimension^2 / 2), 1, 1)), nrow = dimension)
+      data = matrix(
+        c(stats::rnorm(floor(dimension^2 / 2), 0, 1), stats::rnorm(ceiling(dimension^2 / 2), 1, 1)),
+        nrow = dimension
+      )
       ras = rast(data)
       terra::crs(ras) = "EPSG:4326"
       if (!layer$in_memory && !multi_layer_file) {
@@ -106,7 +109,10 @@ generate_stack = function(layers, layer_size = NULL, dimension = NULL, multi_lay
       }
       ras
     } else if (layer$type == "factor") {
-      data = matrix(rep(seq_along(layer$levels), each = floor(dimension^2 / length(layer$levels)), length.out = dimension^2), nrow = dimension)
+      data = matrix(
+        rep(seq_along(layer$levels), each = floor(dimension^2 / length(layer$levels)), length.out = dimension^2),
+        nrow = dimension
+      )
       ras = rast(data)
       terra::crs(ras) = "EPSG:4326"
       ras = terra::categories(ras, layer = 1, data.table(ID = seq_along(layer$levels), category = layer$levels))
@@ -132,7 +138,9 @@ generate_stack = function(layers, layer_size = NULL, dimension = NULL, multi_lay
   stack = rast(layers)
   terra::crs(stack) = "EPSG:4326"
   stack = set_names(stack, ids)
-  if (multi_layer_file) stack = terra::writeRaster(stack, filename = tempfile(fileext = ".tif"))
+  if (multi_layer_file) {
+    stack = terra::writeRaster(stack, filename = tempfile(fileext = ".tif"))
+  }
   stack
 }
 

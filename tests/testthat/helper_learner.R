@@ -1,5 +1,7 @@
 # Predicts first feature in task
-LearnerRegrFeature = R6Class("LearnerRegrFeature", inherit = LearnerRegr,
+LearnerRegrFeature = R6Class(
+  "LearnerRegrFeature",
+  inherit = LearnerRegr,
   public = list(
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.

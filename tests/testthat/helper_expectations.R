@@ -1,7 +1,10 @@
 expect_backend = function(b) {
-  checkmate::expect_r6(b, cloneable = FALSE,
+  checkmate::expect_r6(
+    b,
+    cloneable = FALSE,
     public = c("nrow", "ncol", "colnames", "rownames", "head", "data", "hash"),
-    private = c(".data", ".hash", ".calculate_hash"))
+    private = c(".data", ".hash", ".calculate_hash")
+  )
   checkmate::expect_subset(b$data_formats, mlr3::mlr_reflections$data_formats, empty.ok = FALSE)
   testthat::expect_output(print(b), "^<DataBackend")
 
