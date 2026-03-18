@@ -23,32 +23,74 @@ as_task_regr_st = function(x, ...) {
 #' @rdname as_task_regr_st
 #' @export as_task_regr_st.TaskRegrST
 #' @exportS3Method
-as_task_regr_st.TaskRegrST = function(x, clone = FALSE, ...) { # nolint
+#nolint next
+as_task_regr_st.TaskRegrST = function(x, clone = FALSE, ...) {
   if (clone) x$clone() else x
 }
 
 #' @rdname as_task_regr_st
 #' @export as_task_regr_st.data.frame
 #' @exportS3Method
-as_task_regr_st.data.frame = function(x, target, id = deparse(substitute(x)), coordinate_names, crs = NA_character_, coords_as_features = FALSE, label = NA_character_, ...) {
+as_task_regr_st.data.frame = function(
+  x,
+  target,
+  id = deparse(substitute(x)),
+  coordinate_names,
+  crs = NA_character_,
+  coords_as_features = FALSE,
+  label = NA_character_,
+  ...
+) {
   ii = which(map_lgl(keep(x, is.double), anyInfinite))
   if (length(ii)) {
     warningf("Detected columns with unsupported Inf values in data: %s", str_collapse(names(ii)))
   }
-  TaskRegrST$new(id = id, backend = x, target = target, coords_as_features = coords_as_features, crs = crs, coordinate_names = coordinate_names, label = label)
+  TaskRegrST$new(
+    id = id,
+    backend = x,
+    target = target,
+    coords_as_features = coords_as_features,
+    crs = crs,
+    coordinate_names = coordinate_names,
+    label = label
+  )
 }
 
 #' @rdname as_task_regr_st
 #' @export as_task_regr_st.DataBackend
 #' @exportS3Method
-as_task_regr_st.DataBackend = function(x, target, id = deparse(substitute(x)), coordinate_names, crs, coords_as_features = FALSE, label = NA_character_, ...) {
-  TaskRegrST$new(id = id, backend = x, target = target, coords_as_features = coords_as_features, crs = crs, coordinate_names = coordinate_names, label = label)
+as_task_regr_st.DataBackend = function(
+  x,
+  target,
+  id = deparse(substitute(x)),
+  coordinate_names,
+  crs,
+  coords_as_features = FALSE,
+  label = NA_character_,
+  ...
+) {
+  TaskRegrST$new(
+    id = id,
+    backend = x,
+    target = target,
+    coords_as_features = coords_as_features,
+    crs = crs,
+    coordinate_names = coordinate_names,
+    label = label
+  )
 }
 
 #' @rdname as_task_regr_st
 #' @export as_task_regr_st.sf
 #' @exportS3Method
-as_task_regr_st.sf = function(x, target = NULL, id = deparse(substitute(x)), coords_as_features = FALSE, label = NA_character_, ...) {
+as_task_regr_st.sf = function(
+  x,
+  target = NULL,
+  id = deparse(substitute(x)),
+  coords_as_features = FALSE,
+  label = NA_character_,
+  ...
+) {
   id = as.character(id)
   geometries = as.character(unique(sf::st_geometry_type(x)))
   if (!test_names(geometries, identical.to = "POINT")) {
@@ -56,7 +98,13 @@ as_task_regr_st.sf = function(x, target = NULL, id = deparse(substitute(x)), coo
   }
 
   if (any(c("X", "Y") %in% colnames(x))) {
-    stopf("Data contains columns named 'X' and 'Y' which are reserved for coordinates. The sf object might contain coordinates in the geometry column and the `X` and `Y` columns. Please remove or rename them before converting to a task.")
+    stopf(
+      paste(
+        "Data contains columns named 'X' and 'Y' which are reserved for coordinates.",
+        "The sf object might contain coordinates in the geometry column and the `X` and `Y` columns.",
+        "Please remove or rename them before converting to a task."
+      )
+    )
   }
 
   # extract spatial meta data
@@ -72,7 +120,15 @@ as_task_regr_st.sf = function(x, target = NULL, id = deparse(substitute(x)), coo
   # add coordinates
   x = cbind(x, coordinates)
 
-  as_task_regr_st(x, target = target, id = id, coords_as_features = coords_as_features, crs = crs, coordinate_names = coordinate_names, label = label)
+  as_task_regr_st(
+    x,
+    target = target,
+    id = id,
+    coords_as_features = coords_as_features,
+    crs = crs,
+    coordinate_names = coordinate_names,
+    label = label
+  )
 }
 
 #' @rdname as_task_regr_st

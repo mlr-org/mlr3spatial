@@ -3,10 +3,13 @@ test_that("LearnerRegrSpatial ignores observations with missing values", {
   require_namespaces("mlr3learners")
 
   # train task
-  stack = generate_stack(list(
-    factor_layer("c_1", levels = c("a", "b")),
-    numeric_layer("y")),
-  dimension = 100)
+  stack = generate_stack(
+    list(
+      factor_layer("c_1", levels = c("a", "b")),
+      numeric_layer("y")
+    ),
+    dimension = 100
+  )
   vector = sample_stack(stack, n = 100)
   task_train = as_task_regr_st(vector, id = "test_vector", target = "y")
   learner = lrn("regr.ranger")

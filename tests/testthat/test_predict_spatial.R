@@ -48,10 +48,13 @@ test_that("predictions are written to raster", {
 
 test_that("sequential execution works", {
   # train
-  stack = generate_stack(list(
-    numeric_layer("x_1"),
-    factor_layer("y", levels = c("a", "b"))),
-  layer_size = 1)
+  stack = generate_stack(
+    list(
+      numeric_layer("x_1"),
+      factor_layer("y", levels = c("a", "b"))
+    ),
+    layer_size = 1
+  )
   vector = sample_stack(stack, n = 100)
   task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
   learner = lrn("classif.rpart")
@@ -66,10 +69,13 @@ test_that("sequential execution works", {
 
 test_that("sequential execution works in chunks", {
   # train
-  stack = generate_stack(list(
-    numeric_layer("x_1"),
-    factor_layer("y", levels = c("a", "b"))),
-  layer_size = 2)
+  stack = generate_stack(
+    list(
+      numeric_layer("x_1"),
+      factor_layer("y", levels = c("a", "b"))
+    ),
+    layer_size = 2
+  )
   vector = sample_stack(stack, n = 100)
   task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
   learner = lrn("classif.rpart")
@@ -87,10 +93,13 @@ test_that("sequential execution works in chunks", {
 test_that("parallel execution works with multicore", {
   skip_on_os("windows")
   # train
-  stack = generate_stack(list(
-    numeric_layer("x_1"),
-    factor_layer("y", levels = c("a", "b"))),
-  layer_size = 2)
+  stack = generate_stack(
+    list(
+      numeric_layer("x_1"),
+      factor_layer("y", levels = c("a", "b"))
+    ),
+    layer_size = 2
+  )
   vector = sample_stack(stack, n = 100)
   task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
   learner = lrn("classif.rpart")
@@ -108,10 +117,13 @@ test_that("parallel execution works with multicore", {
 
 test_that("parallel execution works with multisession", {
   # train
-  stack = generate_stack(list(
-    numeric_layer("x_1"),
-    factor_layer("y", levels = c("a", "b"))),
-  layer_size = 2)
+  stack = generate_stack(
+    list(
+      numeric_layer("x_1"),
+      factor_layer("y", levels = c("a", "b"))
+    ),
+    layer_size = 2
+  )
   vector = sample_stack(stack, n = 100)
   task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
   learner = lrn("classif.rpart")
@@ -129,10 +141,13 @@ test_that("parallel execution works with multisession", {
 
 test_that("parallel execution works with callr", {
   # train
-  stack = generate_stack(list(
-    numeric_layer("x_1"),
-    factor_layer("y", levels = c("a", "b"))),
-  layer_size = 2)
+  stack = generate_stack(
+    list(
+      numeric_layer("x_1"),
+      factor_layer("y", levels = c("a", "b"))
+    ),
+    layer_size = 2
+  )
   vector = sample_stack(stack, n = 100)
   task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
   learner = lrn("classif.rpart")
@@ -155,10 +170,13 @@ test_that("stars output works", {
   skip_on_os("mac")
 
   # train
-  stack = generate_stack(list(
-    numeric_layer("x_1"),
-    numeric_layer("y")),
-  layer_size = 2)
+  stack = generate_stack(
+    list(
+      numeric_layer("x_1"),
+      numeric_layer("y")
+    ),
+    layer_size = 2
+  )
   terra::crs(stack) = "EPSG:4326"
   vector = sample_stack(stack, n = 100)
   task_train = as_task_regr_st(vector, id = "test_vector", target = "y")
@@ -177,10 +195,13 @@ test_that("raster output works", {
   library(raster)
 
   # train
-  stack = generate_stack(list(
-    numeric_layer("x_1"),
-    numeric_layer("y")),
-  layer_size = 2)
+  stack = generate_stack(
+    list(
+      numeric_layer("x_1"),
+      numeric_layer("y")
+    ),
+    layer_size = 2
+  )
   vector = sample_stack(stack, n = 100)
   task_train = as_task_regr_st(vector, id = "test_vector", target = "y")
   learner = lrn("regr.rpart")
@@ -200,10 +221,13 @@ test_that("prediction on classification task works with missing values", {
   require_namespaces("mlr3learners")
 
   # train task
-  stack = generate_stack(list(
-    numeric_layer("x_1"),
-    factor_layer("y", levels = c("a", "b"))),
-  dimension = 100)
+  stack = generate_stack(
+    list(
+      numeric_layer("x_1"),
+      factor_layer("y", levels = c("a", "b"))
+    ),
+    dimension = 100
+  )
   vector = sample_stack(stack, n = 100)
   task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
   learner = lrn("classif.ranger")
@@ -224,10 +248,13 @@ test_that("prediction on regression task works with missing values", {
   require_namespaces("mlr3learners")
 
   # train task
-  stack = generate_stack(list(
-    numeric_layer("x_1"),
-    numeric_layer("y")),
-  dimension = 100)
+  stack = generate_stack(
+    list(
+      numeric_layer("x_1"),
+      numeric_layer("y")
+    ),
+    dimension = 100
+  )
   vector = sample_stack(stack, n = 10)
   task_train = as_task_regr_st(vector, id = "test_vector", target = "y")
   learner = lrn("regr.ranger")

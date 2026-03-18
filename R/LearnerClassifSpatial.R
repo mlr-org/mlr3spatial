@@ -1,4 +1,5 @@
-LearnerClassifSpatial = R6::R6Class("LearnerClassifSpatial",
+LearnerClassifSpatial = R6::R6Class(
+  "LearnerClassifSpatial",
   inherit = LearnerClassif,
   public = list(
     learner = NULL,

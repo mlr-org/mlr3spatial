@@ -4,14 +4,17 @@
 #' This function allows to directly predict mlr3 learners on various spatial objects.
 #'
 #' @param newdata ([terra::SpatRaster] | `stars::stars` | [sf::sf] | `raster::RasterStack` | `raster::RasterBrick`).
-#'   New data to predict on. All spatial data formats convertible by `as_data_backend()` are supported e.g. [terra::SpatRaster] or [sf::sf].
+#'   New data to predict on.
+#'   All spatial data formats convertible by `as_data_backend()` are supported e.g. [terra::SpatRaster] or [sf::sf].
 #' @param learner ([mlr3::Learner]).
 #'   Learner with trained model.
 #' @template param-chunksize
 #' @param format (`character(1)`)\cr
 #'   Output class of the resulting object.
 #'   Accepted values are `"raster"`, `"stars"` and `"terra"` if the input is a raster.
-#'   Note that when choosing something else than `"terra"`, the spatial object is converted into the respective format which might cause overhead both in runtime and memory allocation.
+#'   Note that when choosing something else than `"terra"`,
+#'   the spatial object is converted into the respective format
+#'   which might cause overhead both in runtime and memory allocation.
 #'   For vector data only `"sf"` is supported.
 #' @param filename (`character(1)`)\cr
 #'   Path where the spatial object should be written to.
@@ -44,9 +47,11 @@ predict_spatial = function(newdata, learner, chunksize = 200L, format = "terra",
 
     stack = task$backend$stack
     start_time = proc.time()[3]
-    learner = switch(learner$task_type,
+    learner = switch(
+      learner$task_type,
       "classif" = LearnerClassifSpatial$new(learner),
-      "regr" = LearnerRegrSpatial$new(learner))
+      "regr" = LearnerRegrSpatial$new(learner)
+    )
 
     # calculate block size
     bs = block_size(stack, chunksize)
@@ -56,18 +61,27 @@ predict_spatial = function(newdata, learner, chunksize = 200L, format = "terra",
     terra::writeStart(target_raster, filename = filename, overwrite = TRUE, datatype = "FLT8S")
 
     lg$info("Start raster prediction")
-    lg$info("Prediction is executed with a chunksize of %s Megabytes, %i chunk(s) in total, %i values per chunk",
-      as.character(chunksize), length(bs$cells_seq), ceiling(terra::ncell(task$backend$stack) / length(bs$cells_seq)))
+    lg$info(
+      "Prediction is executed with a chunksize of %s Megabytes, %i chunk(s) in total, %i values per chunk",
+      as.character(chunksize),
+      length(bs$cells_seq),
+      ceiling(terra::ncell(task$backend$stack) / length(bs$cells_seq))
+    )
 
-    mlr3misc::pmap(list(bs$cells_seq, bs$cells_to_read, seq_along(bs$cells_seq)), function(cells_seq, cells_to_read, n) {
-
-      stack = task$backend$stack
-      pred = learner$predict(task, row_ids = cells_seq:((cells_seq + cells_to_read - 1)))
-      terra::writeValues(x = target_raster, v = pred$response,
-        start = terra::rowFromCell(stack, cells_seq), # start row number
-        nrows = terra::rowFromCell(stack, cells_to_read)) # how many rows
-      lg$info("Chunk %i of %i finished", n, length(bs$cells_seq))
-    })
+    mlr3misc::pmap(
+      list(bs$cells_seq, bs$cells_to_read, seq_along(bs$cells_seq)),
+      function(cells_seq, cells_to_read, n) {
+        stack = task$backend$stack
+        pred = learner$predict(task, row_ids = cells_seq:((cells_seq + cells_to_read - 1)))
+        terra::writeValues(
+          x = target_raster,
+          v = pred$response,
+          start = terra::rowFromCell(stack, cells_seq), # start row number
+          nrows = terra::rowFromCell(stack, cells_to_read)
+        ) # how many rows
+        lg$info("Chunk %i of %i finished", n, length(bs$cells_seq))
+      }
+    )
 
     terra::writeStop(target_raster)
     lg$info("Finished raster prediction in %i seconds", as.integer(proc.time()[3] - start_time))
@@ -79,18 +93,26 @@ predict_spatial = function(newdata, learner, chunksize = 200L, format = "terra",
     }
     target_raster = set_names(target_raster, learner$learner$state$train_task$target_names)
 
-    switch(format,
+    switch(
+      format,
       "terra" = target_raster,
       "stars" = stars::st_as_stars(target_raster),
       "raster" = as(target_raster, "Raster")
     )
   } else {
     assert_string(format, "sf")
-    if (!is.null(filename)) assert_path_for_output(filename)
+    if (!is.null(filename)) {
+      assert_path_for_output(filename)
+    }
     pred = learner$predict(task)
-    vector = set_names(sf::st_as_sf(data.frame(pred$response, task$backend$sfc)), c(learner$state$train_task$target_names, "geometry"))
+    vector = set_names(
+      sf::st_as_sf(data.frame(pred$response, task$backend$sfc)),
+      c(learner$state$train_task$target_names, "geometry")
+    )
 
-    if (!is.null(filename)) sf::st_write(vector, filename, quiet = TRUE)
+    if (!is.null(filename)) {
+      sf::st_write(vector, filename, quiet = TRUE)
+    }
     vector
   }
 }

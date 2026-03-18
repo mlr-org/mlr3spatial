@@ -1,4 +1,5 @@
-LearnerRegrSpatial = R6::R6Class("LearnerRegrSpatial",
+LearnerRegrSpatial = R6::R6Class(
+  "LearnerRegrSpatial",
   inherit = LearnerRegr,
   public = list(
     learner = NULL,

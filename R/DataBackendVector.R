@@ -4,11 +4,11 @@
 #' [mlr3::DataBackend] for [sf::sf] vector objects.
 #'
 #' @export
-DataBackendVector = R6::R6Class("DataBackendVector",
+DataBackendVector = R6::R6Class(
+  "DataBackendVector",
   inherit = mlr3::DataBackendDataTable,
   cloneable = FALSE,
   public = list(
-
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
@@ -49,12 +49,14 @@ DataBackendVector = R6::R6Class("DataBackendVector",
 #' @param keep_rownames (`logical(1)` | `character(1)`)\cr
 #'   If `TRUE` or a single string, keeps the row names of `data` as a new column.
 #'   The column is named like the provided string, defaulting to `"..rownames"` for `keep_rownames == TRUE`.
-#'   Note that the created column will be used as a regular feature by the task unless you manually change the column role.
+#'   Note that the created column will be used as a regular feature by the task
+#'   unless you manually change the column role.
 #'   Also see [data.table::as.data.table()].
 #' @rdname as_data_backend
 #' @exportS3Method
 #' @export as_data_backend.sf
-as_data_backend.sf = function(data, primary_key = NULL, keep_rownames = FALSE, ...) { # nolint
+#nolint next
+as_data_backend.sf = function(data, primary_key = NULL, keep_rownames = FALSE, ...) {
   assert_class(data, "sf")
   assert_data_frame(data, min.cols = 1L, col.names = "unique")
 

@@ -5,7 +5,8 @@
 #'
 #' A spatial example task is available via `tsk("ecuador")`.
 #'
-#' The coordinate reference system passed during initialization must match the one which was used during data creation, otherwise offsets of multiple meters may occur.
+#' The coordinate reference system passed during initialization must match the one which was used during data creation,
+#' otherwise offsets of multiple meters may occur.
 #' By default, coordinates are not used as features.
 #' This can be changed by setting `coords_as_features = TRUE`.
 #'
@@ -20,26 +21,51 @@
 #' @template param_extra_args
 #'
 #' @export
-TaskClassifST = R6::R6Class("TaskClassifST",
+TaskClassifST = R6::R6Class(
+  "TaskClassifST",
   inherit = TaskClassif,
   public = list(
-
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #' The function [as_task_classif_st()] provides an alternative way to construct classification tasks.
-    initialize = function(id, backend, target, positive = NULL, label = NA_character_, coordinate_names, crs = NA_character_, coords_as_features = FALSE, extra_args = list()) {
+    initialize = function(
+      id,
+      backend,
+      target,
+      positive = NULL,
+      label = NA_character_,
+      coordinate_names,
+      crs = NA_character_,
+      coords_as_features = FALSE,
+      extra_args = list()
+    ) {
       if (inherits(backend, "sf")) {
-        stopf("Creating a task from an sf objects is not supported anymore. Use `as_task_classif_st()` to convert an sf objects into a task.")
+        stopf(
+          paste(
+            "Creating a task from an sf objects is not supported anymore.",
+            "Use `as_task_classif_st()` to convert an sf objects into a task."
+          )
+        )
       }
 
-      super$initialize(id = id, backend = backend, target = target, label = label, positive = positive, extra_args = extra_args)
+      super$initialize(
+        id = id,
+        backend = backend,
+        target = target,
+        label = label,
+        positive = positive,
+        extra_args = extra_args
+      )
       self$crs = crs
       self$coordinate_names = coordinate_names
       walk(coordinate_names, function(x) assert_numeric(self$backend$head(1)[[x]], .var.name = x))
 
       # adjust classif task
       self$task_type = "classif_st"
-      new_col_roles = named_list(setdiff(mlr_reflections$task_col_roles[["classif_st"]], names(private$.col_roles)), character(0))
+      new_col_roles = named_list(
+        setdiff(mlr_reflections$task_col_roles[["classif_st"]], names(private$.col_roles)),
+        character(0)
+      )
       private$.col_roles = insert_named(private$.col_roles, new_col_roles)
 
       # add coordinates as features
@@ -54,7 +80,9 @@ TaskClassifST = R6::R6Class("TaskClassifST",
     #'
     #' @return [data.table::data.table()]
     coordinates = function(row_ids = NULL) {
-      if (is.null(row_ids)) row_ids = self$row_ids
+      if (is.null(row_ids)) {
+        row_ids = self$row_ids
+      }
       self$backend$data(rows = row_ids, cols = self$coordinate_names)
     },
 
@@ -70,7 +98,6 @@ TaskClassifST = R6::R6Class("TaskClassifST",
   ),
 
   active = list(
-
     #' @field crs (`character(1)`)\cr
     #'   Returns coordinate reference system of task.
     crs = function(rhs) {

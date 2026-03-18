@@ -1,9 +1,11 @@
-
 test_that("as_task_regr_st works on data.frame objects", {
-  stack = generate_stack(list(
-    numeric_layer("x_1"),
-    numeric_layer("y")),
-  dimension = 100)
+  stack = generate_stack(
+    list(
+      numeric_layer("x_1"),
+      numeric_layer("y")
+    ),
+    dimension = 100
+  )
   vector = st_as_sf(sample_stack(stack, n = 100))
   data = as.data.frame(vector)
   data$geometry = NULL
@@ -20,10 +22,13 @@ test_that("as_task_regr_st works on data.frame objects", {
 })
 
 test_that("as_task_regr_st works on DataBackendDataTable objects", {
-  stack = generate_stack(list(
-    numeric_layer("x_1"),
-    numeric_layer("y")),
-  dimension = 100)
+  stack = generate_stack(
+    list(
+      numeric_layer("x_1"),
+      numeric_layer("y")
+    ),
+    dimension = 100
+  )
   vector = st_as_sf(sample_stack(stack, n = 100))
   data = as.data.frame(vector)
   data$geometry = NULL
@@ -41,10 +46,13 @@ test_that("as_task_regr_st works on DataBackendDataTable objects", {
 })
 
 test_that("as_task_regr_st works on sf objects", {
-  stack = generate_stack(list(
-    numeric_layer("x_1"),
-    numeric_layer("y")),
-  dimension = 100)
+  stack = generate_stack(
+    list(
+      numeric_layer("x_1"),
+      numeric_layer("y")
+    ),
+    dimension = 100
+  )
   vector = st_as_sf(sample_stack(stack, n = 100))
 
   task = as_task_regr_st(vector, target = "y")
@@ -58,10 +66,13 @@ test_that("as_task_regr_st works on sf objects", {
 })
 
 test_that("as_task_regr_st works on TaskRegrST objects", {
-  stack = generate_stack(list(
-    numeric_layer("x_1"),
-    numeric_layer("y")),
-  dimension = 100)
+  stack = generate_stack(
+    list(
+      numeric_layer("x_1"),
+      numeric_layer("y")
+    ),
+    dimension = 100
+  )
   vector = st_as_sf(sample_stack(stack, n = 100))
 
   task = as_task_regr_st(vector, target = "y")
@@ -76,11 +87,14 @@ test_that("as_task_regr_st works on TaskRegrST objects", {
 })
 
 test_that("convert from TaskClassifST to TaskRegrST", {
-  stack = generate_stack(list(
-    numeric_layer("x_1"),
-    numeric_layer("x_2"),
-    factor_layer("y", levels = c("a", "b"))),
-  dimension = 100)
+  stack = generate_stack(
+    list(
+      numeric_layer("x_1"),
+      numeric_layer("x_2"),
+      factor_layer("y", levels = c("a", "b"))
+    ),
+    dimension = 100
+  )
   vector = st_as_sf(sample_stack(stack, n = 100))
 
   task = as_task_classif_st(vector, target = "y")
@@ -95,13 +109,19 @@ test_that("convert from TaskClassifST to TaskRegrST", {
 })
 
 test_that("as_task_regr_st throws an error when coordinates are already in the data", {
-  stack = generate_stack(list(
-    numeric_layer("x_1"),
-    numeric_layer("y"),
-    numeric_layer("X"),
-    numeric_layer("Y")),
-  dimension = 100)
+  stack = generate_stack(
+    list(
+      numeric_layer("x_1"),
+      numeric_layer("y"),
+      numeric_layer("X"),
+      numeric_layer("Y")
+    ),
+    dimension = 100
+  )
   vector = st_as_sf(sample_stack(stack, n = 100))
 
-  expect_error(as_task_regr_st(vector, target = "y"), "contains columns named 'X' and 'Y' which are reserved for coordinates")
+  expect_error(
+    as_task_regr_st(vector, target = "y"),
+    "contains columns named 'X' and 'Y' which are reserved for coordinates"
+  )
 })

@@ -3,10 +3,13 @@ test_that("LearnerClassifSpatial ignores observations with missing values", {
   require_namespaces("mlr3learners")
 
   # train task
-  stack = generate_stack(list(
-    numeric_layer("x_1"),
-    factor_layer("y", levels = c("a", "b"))),
-  dimension = 100)
+  stack = generate_stack(
+    list(
+      numeric_layer("x_1"),
+      factor_layer("y", levels = c("a", "b"))
+    ),
+    dimension = 100
+  )
   vector = sample_stack(stack, n = 100)
   task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
   learner = lrn("classif.ranger")
@@ -24,11 +27,14 @@ test_that("LearnerClassifSpatial ignores observations with missing values", {
 })
 
 test_that("LearnerClassifSpatial predicts newdata without optional column roles", {
-  stack = generate_stack(list(
-    numeric_layer("x_1"),
-    weights_layer("weights"),
-    factor_layer("y", levels = c("a", "b"))),
-  dimension = 100)
+  stack = generate_stack(
+    list(
+      numeric_layer("x_1"),
+      weights_layer("weights"),
+      factor_layer("y", levels = c("a", "b"))
+    ),
+    dimension = 100
+  )
   vector = sample_stack(stack, n = 100)
   task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
   task_train$set_col_roles("weights", roles = "weights_learner")
