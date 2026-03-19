@@ -21,6 +21,7 @@
 #'
 #' @return Spatial object of class given in argument `format`.
 #' @examples
+#' if (requireNamespace("tibble", quietly = TRUE)) {
 #' library(terra, exclude = "resample")
 #'
 #' # fit rpart on training points
@@ -33,6 +34,7 @@
 #'
 #' # predict land cover classes
 #' pred = predict_spatial(stack, learner, chunksize = 1L)
+#' }
 #' @export
 predict_spatial = function(newdata, learner, chunksize = 200L, format = "terra", filename = NULL) {
   task = as_task_unsupervised(newdata)

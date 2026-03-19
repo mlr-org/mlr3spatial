@@ -14,7 +14,8 @@ predict_spatial(
 }
 \arguments{
 \item{newdata}{(\link[terra:SpatRaster-class]{terra::SpatRaster} | \code{stars::stars} | \link[sf:sf]{sf::sf} | \code{raster::RasterStack} | \code{raster::RasterBrick}).
-New data to predict on. All spatial data formats convertible by \code{as_data_backend()} are supported e.g. \link[terra:SpatRaster-class]{terra::SpatRaster} or \link[sf:sf]{sf::sf}.}
+New data to predict on.
+All spatial data formats convertible by \code{as_data_backend()} are supported e.g. \link[terra:SpatRaster-class]{terra::SpatRaster} or \link[sf:sf]{sf::sf}.}
 
 \item{learner}{(\link[mlr3:Learner]{mlr3::Learner}).
 Learner with trained model.}
@@ -32,7 +33,9 @@ value.}
 \item{format}{(\code{character(1)})\cr
 Output class of the resulting object.
 Accepted values are \code{"raster"}, \code{"stars"} and \code{"terra"} if the input is a raster.
-Note that when choosing something else than \code{"terra"}, the spatial object is converted into the respective format which might cause overhead both in runtime and memory allocation.
+Note that when choosing something else than \code{"terra"},
+the spatial object is converted into the respective format
+which might cause overhead both in runtime and memory allocation.
 For vector data only \code{"sf"} is supported.}
 
 \item{filename}{(\code{character(1)})\cr
@@ -45,6 +48,7 @@ Spatial object of class given in argument \code{format}.
 This function allows to directly predict mlr3 learners on various spatial objects.
 }
 \examples{
+if (requireNamespace("tibble", quietly = TRUE)) {
 library(terra, exclude = "resample")
 
 # fit rpart on training points
@@ -57,4 +61,5 @@ stack = rast(system.file("extdata", "leipzig_raster.tif", package = "mlr3spatial
 
 # predict land cover classes
 pred = predict_spatial(stack, learner, chunksize = 1L)
+}
 }
