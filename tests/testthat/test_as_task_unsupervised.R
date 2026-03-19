@@ -61,6 +61,7 @@ test_that("as_task_unsupervised works on RasterStack objects", {
 })
 
 test_that("as_task_unsupervised works on sf objects", {
+  skip_if_not_installed("tibble")
   vector = sf::read_sf(system.file("extdata", "leipzig_points.gpkg", package = "mlr3spatial"), stringsAsFactors = TRUE)
   vector$land_cover = NULL
 

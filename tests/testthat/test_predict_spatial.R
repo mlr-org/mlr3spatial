@@ -140,6 +140,7 @@ test_that("parallel execution works with multisession", {
 })
 
 test_that("parallel execution works with callr", {
+  skip_if_not_installed("future.callr")
   # train
   stack = generate_stack(
     list(
@@ -272,6 +273,7 @@ test_that("prediction on regression task works with missing values", {
 # vector prediction ------------------------------------------------------------
 
 test_that("prediction are written to sf vector", {
+  skip_if_not_installed("tibble")
   task = tsk("leipzig")
   learner = lrn("classif.rpart")
   learner$train(task)

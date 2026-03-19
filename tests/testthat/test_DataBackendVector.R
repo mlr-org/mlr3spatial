@@ -1,4 +1,5 @@
 test_that("DataBackendVector works", {
+  skip_if_not_installed("tibble")
   vector = sf::read_sf(system.file("extdata", "leipzig_points.gpkg", package = "mlr3spatial"), stringsAsFactors = TRUE)
   primary_key = "..row_id"
   vector[[primary_key]] = seq_row(vector)
@@ -9,6 +10,7 @@ test_that("DataBackendVector works", {
 })
 
 test_that("as_data_backend.sf works", {
+  skip_if_not_installed("tibble")
   vector = sf::read_sf(system.file("extdata", "leipzig_points.gpkg", package = "mlr3spatial"), stringsAsFactors = TRUE)
   backend = as_data_backend(vector)
 
