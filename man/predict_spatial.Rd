@@ -48,7 +48,6 @@ Spatial object of class given in argument \code{format}.
 This function allows to directly predict mlr3 learners on various spatial objects.
 }
 \examples{
-if (requireNamespace("tibble", quietly = TRUE)) {
 library(terra, exclude = "resample")
 
 # fit rpart on training points
@@ -61,5 +60,4 @@ stack = rast(system.file("extdata", "leipzig_raster.tif", package = "mlr3spatial
 
 # predict land cover classes
 pred = predict_spatial(stack, learner, chunksize = 1L)
-}
 }
