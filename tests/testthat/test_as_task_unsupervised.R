@@ -61,7 +61,7 @@ test_that("as_task_unsupervised works on RasterStack objects", {
 })
 
 test_that("as_task_unsupervised works on sf objects", {
-  vector = sf::read_sf(system.file("extdata", "leipzig_points.gpkg", package = "mlr3spatial"), stringsAsFactors = TRUE)
+  vector = sf::st_read(system.file("extdata", "leipzig_points.gpkg", package = "mlr3spatial"), stringsAsFactors = TRUE, quiet = TRUE)
   vector$land_cover = NULL
 
   expect_class(as_task_unsupervised(vector), "TaskUnsupervised")

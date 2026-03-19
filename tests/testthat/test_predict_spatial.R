@@ -140,6 +140,7 @@ test_that("parallel execution works with multisession", {
 })
 
 test_that("parallel execution works with callr", {
+  skip_if_not_installed("future.callr")
   # train
   stack = generate_stack(
     list(
@@ -276,7 +277,7 @@ test_that("prediction are written to sf vector", {
   learner = lrn("classif.rpart")
   learner$train(task)
 
-  vector = sf::read_sf(system.file("extdata", "leipzig_points.gpkg", package = "mlr3spatial"), stringsAsFactors = TRUE)
+  vector = sf::st_read(system.file("extdata", "leipzig_points.gpkg", package = "mlr3spatial"), stringsAsFactors = TRUE, quiet = TRUE)
   vector$land_cover = NULL
   task_predict = as_task_unsupervised(vector)
   pred = predict_spatial(task_predict, learner)
