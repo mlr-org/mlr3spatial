@@ -59,7 +59,8 @@
 
 <dl><dt id="arg-newdata">newdata<a class="anchor" aria-label="anchor" href="#arg-newdata"></a></dt>
 <dd><p>(<a href="https://rspatial.github.io/terra/reference/SpatRaster-class.html" class="external-link">terra::SpatRaster</a> | <code>stars::stars</code> | <a href="https://r-spatial.github.io/sf/reference/sf.html" class="external-link">sf::sf</a> | <code>raster::RasterStack</code> | <code>raster::RasterBrick</code>).
-New data to predict on. All spatial data formats convertible by <code><a href="https://mlr3.mlr-org.com/reference/as_data_backend.html" class="external-link">as_data_backend()</a></code> are supported e.g. <a href="https://rspatial.github.io/terra/reference/SpatRaster-class.html" class="external-link">terra::SpatRaster</a> or <a href="https://r-spatial.github.io/sf/reference/sf.html" class="external-link">sf::sf</a>.</p></dd>
+New data to predict on.
+All spatial data formats convertible by <code><a href="https://mlr3.mlr-org.com/reference/as_data_backend.html" class="external-link">as_data_backend()</a></code> are supported e.g. <a href="https://rspatial.github.io/terra/reference/SpatRaster-class.html" class="external-link">terra::SpatRaster</a> or <a href="https://r-spatial.github.io/sf/reference/sf.html" class="external-link">sf::sf</a>.</p></dd>
 
 
 <dt id="arg-learner">learner<a class="anchor" aria-label="anchor" href="#arg-learner"></a></dt>
@@ -82,7 +83,9 @@ value.</p></dd>
 <dd><p>(<code>character(1)</code>)<br>
 Output class of the resulting object.
 Accepted values are <code>"raster"</code>, <code>"stars"</code> and <code>"terra"</code> if the input is a raster.
-Note that when choosing something else than <code>"terra"</code>, the spatial object is converted into the respective format which might cause overhead both in runtime and memory allocation.
+Note that when choosing something else than <code>"terra"</code>,
+the spatial object is converted into the respective format
+which might cause overhead both in runtime and memory allocation.
 For vector data only <code>"sf"</code> is supported.</p></dd>
 
 
