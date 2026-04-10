@@ -70,7 +70,7 @@ Spatial object of class given in argument `format`.
 
 ``` r
 library(terra, exclude = "resample")
-#> terra 1.9.1
+#> terra 1.9.11
 
 # fit rpart on training points
 task_train = tsk("leipzig")
