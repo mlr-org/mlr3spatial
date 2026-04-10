@@ -8,7 +8,8 @@ This task specializes \link[mlr3:TaskClassif]{mlr3::TaskClassif} for spatiotempo
 
 A spatial example task is available via \code{tsk("ecuador")}.
 
-The coordinate reference system passed during initialization must match the one which was used during data creation, otherwise offsets of multiple meters may occur.
+The coordinate reference system passed during initialization must match the one which was used during data creation,
+otherwise offsets of multiple meters may occur.
 By default, coordinates are not used as features.
 This can be changed by setting \code{coords_as_features = TRUE}.
 }

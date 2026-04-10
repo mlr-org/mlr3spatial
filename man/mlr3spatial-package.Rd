@@ -66,7 +66,7 @@ likely be removed in a future version of the package. analysis.
 \references{
 Becker M, Schratz P (2025).
 \emph{mlr3spatial: Support for Spatial Objects Within the 'mlr3' Ecosystem}.
-R package version 0.6.1, \url{https://mlr3spatial.mlr-org.com}.
+R package version 0.6.1.9000, \url{https://mlr3spatial.mlr-org.com}.
 }
 \seealso{
 Useful links:
