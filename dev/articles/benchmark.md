@@ -20,6 +20,7 @@ if your processing time is the range of minutes or higher, you might
 usually be better of using all cores (if possible).
 
 ``` r
+
 library(mlr3spatial)
 library(mlr3learners)
 library(future)
@@ -28,6 +29,7 @@ library(future)
 ## Preparations
 
 ``` r
+
 stack = generate_stack(list(
   numeric_layer("x_1"),
   factor_layer("y", levels = c("a", "b"))),
@@ -39,10 +41,12 @@ learner$train(task_train)
 ```
 
 ``` r
+
 terra_rf = ranger::ranger(y ~ ., data = task_train$data(), num.threads = 1)
 ```
 
 ``` r
+
 stack$y = NULL
 task_predict = as_task_unsupervised(stack, id = "test")
 learner$parallel_predict = TRUE
@@ -51,6 +55,7 @@ learner$parallel_predict = TRUE
 ## Benchmark
 
 ``` r
+
 bm = bench::mark(
 
   "01-mlr3-4-cores" = {
@@ -95,6 +100,7 @@ print(bm)
 ```
 
 ``` r
+
 library(ggplot2)
 autoplot(bm, type = "ridge")
 #> Picking joint bandwidth of 0.00417

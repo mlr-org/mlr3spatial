@@ -37,12 +37,14 @@ The gallery features articles about spatial data in the mlr3 ecosystem.
 Install the last release from CRAN:
 
 ``` r
+
 install.packages("mlr3spatial")
 ```
 
 Install the development version from GitHub:
 
 ``` r
+
 remotes::install_github("mlr-org/mlr3spatial")
 ```
 
@@ -59,6 +61,7 @@ vector with the [`sf`](https://CRAN.R-project.org/package=sf) package in
 the R Session.
 
 ``` r
+
 library(mlr3verse)
 library(mlr3spatial)
 library(terra, exclude = "resample")
@@ -76,6 +79,7 @@ converts the
 spatial classification task.
 
 ``` r
+
 task = as_task_classif_st(leipzig, target = "land_cover")
 task
 ```
@@ -109,6 +113,7 @@ The points are located in the district of Lindenau and Zentrum-West.
 Now we train a classification tree on the leipzig task.
 
 ``` r
+
 learner = lrn("classif.rpart")
 learner$train(task)
 ```
@@ -120,6 +125,7 @@ to the
 function.
 
 ``` r
+
 land_cover = predict_spatial(leipzig_raster, learner)
 ```
 
