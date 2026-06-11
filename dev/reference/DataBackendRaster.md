@@ -58,7 +58,7 @@ integer sequence e.g. `200:300`. If only a single cell is requested,
 
 ### Public methods
 
-- [`DataBackendRaster$new()`](#method-DataBackendRaster-new)
+- [`DataBackendRaster$new()`](#method-DataBackendRaster-initialize)
 
 - [`DataBackendRaster$data()`](#method-DataBackendRaster-data)
 
@@ -77,7 +77,7 @@ Inherited methods
 
 ------------------------------------------------------------------------
 
-### Method [`new()`](https://rdrr.io/r/methods/new.html)
+### `DataBackendRaster$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -96,7 +96,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method [`data()`](https://rdrr.io/r/utils/data.html)
+### `DataBackendRaster$data()`
 
 Returns a slice of the raster in the specified format. Currently, the
 only supported formats is `"data.table"`.
@@ -131,7 +131,7 @@ duplicated rows, duplicated column names lead to an exception.
 
 ------------------------------------------------------------------------
 
-### Method [`head()`](https://rspatial.github.io/terra/reference/headtail.html)
+### `DataBackendRaster$head()`
 
 Retrieve the first `n` rows.
 
@@ -153,7 +153,7 @@ of the first `n` rows.
 
 ------------------------------------------------------------------------
 
-### Method `distinct()`
+### `DataBackendRaster$distinct()`
 
 Returns a named list of vectors of distinct values for each column
 specified. If `na_rm` is `TRUE`, missing values are removed from the
@@ -190,7 +190,7 @@ Named [`list()`](https://rdrr.io/r/base/list.html) of distinct values.
 
 ------------------------------------------------------------------------
 
-### Method `missings()`
+### `DataBackendRaster$missings()`
 
 Returns the number of missing values per column in the specified slice
 of data. Non-existing rows and columns are silently ignored.
@@ -221,7 +221,7 @@ Total of missing values per column (named
 
 ------------------------------------------------------------------------
 
-### Method `coordinates()`
+### `DataBackendRaster$coordinates()`
 
 Returns the coordinates of `rows`. If `rows` is missing, all coordinates
 are returned.

@@ -22,7 +22,7 @@ objects.
 
 ### Public methods
 
-- [`DataBackendVector$new()`](#method-DataBackendVector-new)
+- [`DataBackendVector$new()`](#method-DataBackendVector-initialize)
 
 Inherited methods
 
@@ -35,7 +35,7 @@ Inherited methods
 
 ------------------------------------------------------------------------
 
-### Method [`new()`](https://rdrr.io/r/methods/new.html)
+### `DataBackendVector$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.

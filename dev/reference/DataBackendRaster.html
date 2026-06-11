@@ -65,22 +65,22 @@ If only a single cell is requested, "cell mode" is used.</p>
 Returns vector of all distinct row identifiers, i.e. the contents of the primary key column.</p></dd>
 
 
-<dt><code>colnames</code></dt>
+    <dt><code>colnames</code></dt>
 <dd><p>(<code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>)<br>
 Returns vector of all column names.</p></dd>
 
 
-<dt><code>nrow</code></dt>
+    <dt><code>nrow</code></dt>
 <dd><p>(<code>integer(1)</code>)<br>
 Number of rows (observations).</p></dd>
 
 
-<dt><code>ncol</code></dt>
+    <dt><code>ncol</code></dt>
 <dd><p>(<code>integer(1)</code>)<br>
 Number of columns (variables).</p></dd>
 
 
-<dt><code>stack</code></dt>
+    <dt><code>stack</code></dt>
 <dd><p>(<code>SpatRaster</code>)<br>
 Raster stack.</p></dd>
 
@@ -92,23 +92,20 @@ Raster stack.</p></dd>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-DataBackendRaster-new"><code>DataBackendRaster$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-DataBackendRaster-initialize"><code>DataBackendRaster$new()</code></a></p></li>
 <li><p><a href="#method-DataBackendRaster-data"><code>DataBackendRaster$data()</code></a></p></li>
 <li><p><a href="#method-DataBackendRaster-head"><code>DataBackendRaster$head()</code></a></p></li>
 <li><p><a href="#method-DataBackendRaster-distinct"><code>DataBackendRaster$distinct()</code></a></p></li>
 <li><p><a href="#method-DataBackendRaster-missings"><code>DataBackendRaster$missings()</code></a></p></li>
 <li><p><a href="#method-DataBackendRaster-coordinates"><code>DataBackendRaster$coordinates()</code></a></p></li>
 </ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="format"><a href="https://mlr3.mlr-org.com/reference/DataBackend.html#method-format"><code>mlr3::DataBackend$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="print"><a href="https://mlr3.mlr-org.com/reference/DataBackend.html#method-print"><code>mlr3::DataBackend$print()</code></a></span></li>
-</ul></details></p><hr><a id="method-DataBackendRaster-new"></a><div class="section">
-<h3 id="method-new-">Method <code><a href="https://rdrr.io/r/methods/new.html" class="external-link">new()</a></code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="print"><a href="https://mlr3.mlr-org.com/reference/DataBackend.html#method-print"><code>mlr3::DataBackend$print()</code></a></span></li>
+</ul></details></p><hr><a id="method-DataBackendRaster-initialize"></a><div class="section">
+<h3 id="databackendraster-new-"><code>DataBackendRaster$new()</code><a class="anchor" aria-label="anchor" href="#databackendraster-new-"></a></h3>
 <p>Creates a new instance of this <a href="https://r6.r-lib.org/reference/R6Class.html" class="external-link">R6</a> class.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/DataBackendRaster.html">DataBackendRaster</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>data</code></dt>
 <dd><p>(<a href="https://rspatial.github.io/terra/reference/SpatRaster-class.html" class="external-link">terra::SpatRaster</a>)<br>
@@ -118,8 +115,10 @@ The input <a href="https://rspatial.github.io/terra/reference/SpatRaster-class.h
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-DataBackendRaster-data"></a><div class="section">
-<h3 id="method-data-">Method <code><a href="https://rdrr.io/r/utils/data.html" class="external-link">data()</a></code><a class="anchor" aria-label="anchor" href="#method-data-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-DataBackendRaster-data"></a><div class="section">
+<h3 id="databackendraster-data-"><code>DataBackendRaster$data()</code><a class="anchor" aria-label="anchor" href="#databackendraster-data-"></a></h3>
 <p>Returns a slice of the raster in the specified format.
 Currently, the only supported formats is <code>"data.table"</code>.</p>
 <p>The rows must be addressed as vector of cells indices, columns must be
@@ -130,9 +129,7 @@ may be returned in an arbitrary order. Duplicated row ids result in
 duplicated rows, duplicated column names lead to an exception.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataBackendRaster</span><span class="op">$</span><span class="fu">data</span><span class="op">(</span><span class="va">rows</span>, <span class="va">cols</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>rows</code></dt>
 <dd><p><code><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer()</a></code><br>
@@ -141,8 +138,7 @@ raster, increase from left to right and then from top to bottom. The last
 cell is in the bottom right corner and the row index equals the number of
 cells in the raster.</p></dd>
 
-
-<dt><code>cols</code></dt>
+      <dt><code>cols</code></dt>
 <dd><p><code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code><br>
 Column names.</p></dd>
 
@@ -150,14 +146,14 @@ Column names.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-DataBackendRaster-head"></a><div class="section">
-<h3 id="method-head-">Method <code><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head()</a></code><a class="anchor" aria-label="anchor" href="#method-head-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-DataBackendRaster-head"></a><div class="section">
+<h3 id="databackendraster-head-"><code>DataBackendRaster$head()</code><a class="anchor" aria-label="anchor" href="#databackendraster-head-"></a></h3>
 <p>Retrieve the first <code>n</code> rows.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataBackendRaster</span><span class="op">$</span><span class="fu">head</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">6L</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>n</code></dt>
 <dd><p>(<code>integer(1)</code>)<br>
@@ -165,23 +161,22 @@ Number of rows.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p><code><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table::data.table()</a></code> of the first <code>n</code> rows.</p>
 </div>
 
-</div><p></p><hr><a id="method-DataBackendRaster-distinct"></a><div class="section">
-<h3 id="method-distinct-">Method <code>distinct()</code><a class="anchor" aria-label="anchor" href="#method-distinct-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-DataBackendRaster-distinct"></a><div class="section">
+<h3 id="databackendraster-distinct-"><code>DataBackendRaster$distinct()</code><a class="anchor" aria-label="anchor" href="#databackendraster-distinct-"></a></h3>
 <p>Returns a named list of vectors of distinct values for each column
 specified. If <code>na_rm</code> is <code>TRUE</code>, missing values are removed from the
 returned vectors of distinct values. Non-existing rows and columns are
 silently ignored.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataBackendRaster</span><span class="op">$</span><span class="fu">distinct</span><span class="op">(</span><span class="va">rows</span>, <span class="va">cols</span>, na_rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>rows</code></dt>
 <dd><p><code><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer()</a></code><br>
@@ -190,33 +185,30 @@ raster, increase from left to right and then from top to bottom. The last
 cell is in the bottom right corner and the row index equals the number of
 cells in the raster.</p></dd>
 
-
-<dt><code>cols</code></dt>
+      <dt><code>cols</code></dt>
 <dd><p><code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code><br>
 Column names.</p></dd>
 
-
-<dt><code>na_rm</code></dt>
+      <dt><code>na_rm</code></dt>
 <dd><p><code>logical(1)</code><br>
 Whether to remove NAs or not.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>Named <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code> of distinct values.</p>
 </div>
 
-</div><p></p><hr><a id="method-DataBackendRaster-missings"></a><div class="section">
-<h3 id="method-missings-">Method <code>missings()</code><a class="anchor" aria-label="anchor" href="#method-missings-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-DataBackendRaster-missings"></a><div class="section">
+<h3 id="databackendraster-missings-"><code>DataBackendRaster$missings()</code><a class="anchor" aria-label="anchor" href="#databackendraster-missings-"></a></h3>
 <p>Returns the number of missing values per column in the specified slice
 of data. Non-existing rows and columns are silently ignored.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataBackendRaster</span><span class="op">$</span><span class="fu">missings</span><span class="op">(</span><span class="va">rows</span>, <span class="va">cols</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>rows</code></dt>
 <dd><p><code><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer()</a></code><br>
@@ -225,28 +217,26 @@ raster, increase from left to right and then from top to bottom. The last
 cell is in the bottom right corner and the row index equals the number of
 cells in the raster.</p></dd>
 
-
-<dt><code>cols</code></dt>
+      <dt><code>cols</code></dt>
 <dd><p><code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code><br>
 Column names.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>Total of missing values per column (named <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code>).</p>
 </div>
 
-</div><p></p><hr><a id="method-DataBackendRaster-coordinates"></a><div class="section">
-<h3 id="method-coordinates-">Method <code>coordinates()</code><a class="anchor" aria-label="anchor" href="#method-coordinates-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-DataBackendRaster-coordinates"></a><div class="section">
+<h3 id="databackendraster-coordinates-"><code>DataBackendRaster$coordinates()</code><a class="anchor" aria-label="anchor" href="#databackendraster-coordinates-"></a></h3>
 <p>Returns the coordinates of <code>rows</code>.
 If <code>rows</code> is missing, all coordinates are returned.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">DataBackendRaster</span><span class="op">$</span><span class="fu">coordinates</span><span class="op">(</span><span class="va">rows</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>rows</code></dt>
 <dd><p><code><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer()</a></code><br>
@@ -257,13 +247,13 @@ cells in the raster.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p><code><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table::data.table()</a></code> of coordinates of <code>rows</code>.</p>
 </div>
 
 </div>
+
 
     </div>
 

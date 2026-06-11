@@ -39,7 +39,7 @@ features. This can be changed by setting `coords_as_features = TRUE`.
 
 ### Public methods
 
-- [`TaskRegrST$new()`](#method-TaskRegrST-new)
+- [`TaskRegrST$new()`](#method-TaskRegrST-initialize)
 
 - [`TaskRegrST$coordinates()`](#method-TaskRegrST-coordinates)
 
@@ -72,7 +72,7 @@ Inherited methods
 
 ------------------------------------------------------------------------
 
-### Method [`new()`](https://rdrr.io/r/methods/new.html)
+### `TaskRegrST$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class. The function
@@ -147,7 +147,7 @@ provides an alternative way to construct classification tasks.
 
 ------------------------------------------------------------------------
 
-### Method `coordinates()`
+### `TaskRegrST$coordinates()`
 
 Returns coordinates of observations.
 
@@ -168,7 +168,7 @@ Returns coordinates of observations.
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `TaskRegrST$print()`
 
 Print the task.
 
@@ -184,7 +184,7 @@ Print the task.
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `TaskRegrST$clone()`
 
 The objects of this class are cloneable with this method.
 

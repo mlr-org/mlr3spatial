@@ -40,7 +40,7 @@ features. This can be changed by setting `coords_as_features = TRUE`.
 
 ### Public methods
 
-- [`TaskClassifST$new()`](#method-TaskClassifST-new)
+- [`TaskClassifST$new()`](#method-TaskClassifST-initialize)
 
 - [`TaskClassifST$coordinates()`](#method-TaskClassifST-coordinates)
 
@@ -73,7 +73,7 @@ Inherited methods
 
 ------------------------------------------------------------------------
 
-### Method [`new()`](https://rdrr.io/r/methods/new.html)
+### `TaskClassifST$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class. The function
@@ -157,7 +157,7 @@ provides an alternative way to construct classification tasks.
 
 ------------------------------------------------------------------------
 
-### Method `coordinates()`
+### `TaskClassifST$coordinates()`
 
 Returns coordinates of observations.
 
@@ -178,7 +178,7 @@ Returns coordinates of observations.
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `TaskClassifST$print()`
 
 Print the task.
 
@@ -194,7 +194,7 @@ Print the task.
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `TaskClassifST$clone()`
 
 The objects of this class are cloneable with this method.
 
