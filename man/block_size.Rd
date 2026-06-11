@@ -7,7 +7,7 @@
 block_size(raster, chunksize)
 }
 \arguments{
-\item{raster}{(\link[terra:SpatRaster-class]{terra::SpatRaster})\cr
+\item{raster}{(\link[terra:SpatRaster]{terra::SpatRaster})\cr
 Raster to be split into chunks.}
 
 \item{chunksize}{(\code{integer(1)})\cr

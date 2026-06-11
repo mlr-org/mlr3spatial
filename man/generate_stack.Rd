@@ -28,7 +28,7 @@ Overwrites \code{ìn_memory} argument of \code{numeric_layer()} and \code{factor
 \code{layer_size} and \code{dimension} are mutually exclusive.}
 }
 \value{
-\link[terra:SpatRaster-class]{terra::SpatRaster}
+\link[terra:SpatRaster]{terra::SpatRaster}
 }
 \description{
 Generates a raster stack.

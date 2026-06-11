@@ -4,7 +4,7 @@
 \alias{DataBackendRaster}
 \title{DataBackend for Raster Objects}
 \description{
-\link[mlr3:DataBackend]{mlr3::DataBackend} for \link[terra:SpatRaster-class]{terra::SpatRaster} raster objects.
+\link[mlr3:DataBackend]{mlr3::DataBackend} for \link[terra:SpatRaster]{terra::SpatRaster} raster objects.
 }
 \section{Read mode}{
 
@@ -24,67 +24,67 @@ If only a single cell is requested, "cell mode" is used.
 \code{\link[mlr3:DataBackend]{mlr3::DataBackend}} -> \code{DataBackendRaster}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{rownames}}{(\code{integer()})\cr
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{rownames}}{(\code{integer()})\cr
 Returns vector of all distinct row identifiers, i.e. the contents of the primary key column.}
 
-\item{\code{colnames}}{(\code{character()})\cr
+    \item{\code{colnames}}{(\code{character()})\cr
 Returns vector of all column names.}
 
-\item{\code{nrow}}{(\code{integer(1)})\cr
+    \item{\code{nrow}}{(\code{integer(1)})\cr
 Number of rows (observations).}
 
-\item{\code{ncol}}{(\code{integer(1)})\cr
+    \item{\code{ncol}}{(\code{integer(1)})\cr
 Number of columns (variables).}
 
-\item{\code{stack}}{(\code{SpatRaster})\cr
+    \item{\code{stack}}{(\code{SpatRaster})\cr
 Raster stack.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-DataBackendRaster-new}{\code{DataBackendRaster$new()}}
-\item \href{#method-DataBackendRaster-data}{\code{DataBackendRaster$data()}}
-\item \href{#method-DataBackendRaster-head}{\code{DataBackendRaster$head()}}
-\item \href{#method-DataBackendRaster-distinct}{\code{DataBackendRaster$distinct()}}
-\item \href{#method-DataBackendRaster-missings}{\code{DataBackendRaster$missings()}}
-\item \href{#method-DataBackendRaster-coordinates}{\code{DataBackendRaster$coordinates()}}
+  \itemize{
+    \item \href{#method-DataBackendRaster-initialize}{\code{DataBackendRaster$new()}}
+    \item \href{#method-DataBackendRaster-data}{\code{DataBackendRaster$data()}}
+    \item \href{#method-DataBackendRaster-head}{\code{DataBackendRaster$head()}}
+    \item \href{#method-DataBackendRaster-distinct}{\code{DataBackendRaster$distinct()}}
+    \item \href{#method-DataBackendRaster-missings}{\code{DataBackendRaster$missings()}}
+    \item \href{#method-DataBackendRaster-coordinates}{\code{DataBackendRaster$coordinates()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="format"><a href='../../mlr3/html/DataBackend.html#method-DataBackend-format'><code>mlr3::DataBackend$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="print"><a href='../../mlr3/html/DataBackend.html#method-DataBackend-print'><code>mlr3::DataBackend$print()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="format"><a href='../../mlr3/html/DataBackend.html#method-DataBackend-format'><code>mlr3::DataBackend$format()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="DataBackend" data-id="print"><a href='../../mlr3/html/DataBackend.html#method-DataBackend-print'><code>mlr3::DataBackend$print()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-DataBackendRaster-new"></a>}}
-\if{latex}{\out{\hypertarget{method-DataBackendRaster-new}{}}}
-\subsection{Method \code{new()}}{
-Creates a new instance of this \link[R6:R6Class]{R6} class.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendRaster$new(data)}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-DataBackendRaster-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-DataBackendRaster-initialize}{}}}
+\subsection{\code{DataBackendRaster$new()}}{
+  Creates a new instance of this \link[R6:R6Class]{R6} class.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{DataBackendRaster$new(data)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{data}}{(\link[terra:SpatRaster]{terra::SpatRaster})\cr
+The input \link[terra:SpatRaster]{terra::SpatRaster}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{data}}{(\link[terra:SpatRaster-class]{terra::SpatRaster})\cr
-The input \link[terra:SpatRaster-class]{terra::SpatRaster}.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataBackendRaster-data"></a>}}
 \if{latex}{\out{\hypertarget{method-DataBackendRaster-data}{}}}
-\subsection{Method \code{data()}}{
-Returns a slice of the raster in the specified format.
+\subsection{\code{DataBackendRaster$data()}}{
+  Returns a slice of the raster in the specified format.
 Currently, the only supported formats is \code{"data.table"}.
 
 The rows must be addressed as vector of cells indices, columns must be
@@ -94,130 +94,136 @@ queries for columns with no matching column name are silently ignored.
 Rows are guaranteed to be returned in the same order as \code{rows}, columns
 may be returned in an arbitrary order. Duplicated row ids result in
 duplicated rows, duplicated column names lead to an exception.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendRaster$data(rows, cols)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{rows}}{\code{integer()}\cr
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{DataBackendRaster$data(rows, cols)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{rows}}{\code{integer()}\cr
 Row indices. Row indices start with 1 in the upper left corner in the
 raster, increase from left to right and then from top to bottom. The last
 cell is in the bottom right corner and the row index equals the number of
 cells in the raster.}
-
-\item{\code{cols}}{\code{character()}\cr
+      \item{\code{cols}}{\code{character()}\cr
 Column names.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataBackendRaster-head"></a>}}
 \if{latex}{\out{\hypertarget{method-DataBackendRaster-head}{}}}
-\subsection{Method \code{head()}}{
-Retrieve the first \code{n} rows.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendRaster$head(n = 6L)}\if{html}{\out{</div>}}
+\subsection{\code{DataBackendRaster$head()}}{
+  Retrieve the first \code{n} rows.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{DataBackendRaster$head(n = 6L)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{n}}{(\code{integer(1)})\cr
+Number of rows.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \code{\link[data.table:data.table]{data.table::data.table()}} of the first \code{n} rows.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{n}}{(\code{integer(1)})\cr
-Number of rows.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\code{\link[data.table:data.table]{data.table::data.table()}} of the first \code{n} rows.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataBackendRaster-distinct"></a>}}
 \if{latex}{\out{\hypertarget{method-DataBackendRaster-distinct}{}}}
-\subsection{Method \code{distinct()}}{
-Returns a named list of vectors of distinct values for each column
+\subsection{\code{DataBackendRaster$distinct()}}{
+  Returns a named list of vectors of distinct values for each column
 specified. If \code{na_rm} is \code{TRUE}, missing values are removed from the
 returned vectors of distinct values. Non-existing rows and columns are
 silently ignored.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendRaster$distinct(rows, cols, na_rm = TRUE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{rows}}{\code{integer()}\cr
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{DataBackendRaster$distinct(rows, cols, na_rm = TRUE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{rows}}{\code{integer()}\cr
 Row indices. Row indices start with 1 in the upper left corner in the
 raster, increase from left to right and then from top to bottom. The last
 cell is in the bottom right corner and the row index equals the number of
 cells in the raster.}
-
-\item{\code{cols}}{\code{character()}\cr
+      \item{\code{cols}}{\code{character()}\cr
 Column names.}
-
-\item{\code{na_rm}}{\code{logical(1)}\cr
+      \item{\code{na_rm}}{\code{logical(1)}\cr
 Whether to remove NAs or not.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Named \code{list()} of distinct values.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Named \code{list()} of distinct values.
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataBackendRaster-missings"></a>}}
 \if{latex}{\out{\hypertarget{method-DataBackendRaster-missings}{}}}
-\subsection{Method \code{missings()}}{
-Returns the number of missing values per column in the specified slice
+\subsection{\code{DataBackendRaster$missings()}}{
+  Returns the number of missing values per column in the specified slice
 of data. Non-existing rows and columns are silently ignored.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendRaster$missings(rows, cols)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{rows}}{\code{integer()}\cr
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{DataBackendRaster$missings(rows, cols)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{rows}}{\code{integer()}\cr
 Row indices. Row indices start with 1 in the upper left corner in the
 raster, increase from left to right and then from top to bottom. The last
 cell is in the bottom right corner and the row index equals the number of
 cells in the raster.}
-
-\item{\code{cols}}{\code{character()}\cr
+      \item{\code{cols}}{\code{character()}\cr
 Column names.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Total of missing values per column (named \code{numeric()}).
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Total of missing values per column (named \code{numeric()}).
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DataBackendRaster-coordinates"></a>}}
 \if{latex}{\out{\hypertarget{method-DataBackendRaster-coordinates}{}}}
-\subsection{Method \code{coordinates()}}{
-Returns the coordinates of \code{rows}.
+\subsection{\code{DataBackendRaster$coordinates()}}{
+  Returns the coordinates of \code{rows}.
 If \code{rows} is missing, all coordinates are returned.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DataBackendRaster$coordinates(rows)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{rows}}{\code{integer()}\cr
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{DataBackendRaster$coordinates(rows)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{rows}}{\code{integer()}\cr
 Row indices. Row indices start with 1 in the upper left corner in the
 raster, increase from left to right and then from top to bottom. The last
 cell is in the bottom right corner and the row index equals the number of
 cells in the raster.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \code{\link[data.table:data.table]{data.table::data.table()}} of coordinates of \code{rows}.
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\code{\link[data.table:data.table]{data.table::data.table()}} of coordinates of \code{rows}.
-}
-}
+
 }

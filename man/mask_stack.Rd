@@ -7,11 +7,11 @@
 mask_stack(stack)
 }
 \arguments{
-\item{stack}{(\link[terra:SpatRaster-class]{terra::SpatRaster})\cr
+\item{stack}{(\link[terra:SpatRaster]{terra::SpatRaster})\cr
 Raster stack.}
 }
 \value{
-\link[terra:SpatRaster-class]{terra::SpatRaster}
+\link[terra:SpatRaster]{terra::SpatRaster}
 }
 \description{
 Masks stack to a circular area of interest.
