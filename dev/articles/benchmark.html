@@ -80,7 +80,7 @@ and absolute values and maybe by a lot. This is due to the multicore
 performance component of your CPU and how efficient the overhead
 introduced by parallelization is handled (i.e. splitting and combining
 the chunks).</p>
-<p>{terra} is using a socker-based parallelization by default (which the
+<p>{terra} is using a socket-based parallelization by default (which the
 user cannot change). The equivalent in {future} is
 <code>plan("multisession")</code>. Using <code>plan(multicore)</code> on
 UNIX based systems might speed up the {mlr3} approach even more. This

@@ -7,7 +7,7 @@ performance component of your CPU and how efficient the overhead
 introduced by parallelization is handled (i.e. splitting and combining
 the chunks).
 
-{terra} is using a socker-based parallelization by default (which the
+{terra} is using a socket-based parallelization by default (which the
 user cannot change). The equivalent in {future} is
 `plan("multisession")`. Using `plan(multicore)` on UNIX based systems
 might speed up the {mlr3} approach even more. This might also be a major
