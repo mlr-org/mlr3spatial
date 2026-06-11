@@ -19,8 +19,8 @@
 \method{as_data_backend}{sf}(data, primary_key = NULL, keep_rownames = FALSE, ...)
 }
 \arguments{
-\item{data}{(\link[terra:SpatRaster-class]{terra::SpatRaster})\cr
-The input \link[terra:SpatRaster-class]{terra::SpatRaster}.}
+\item{data}{(\link[terra:SpatRaster]{terra::SpatRaster})\cr
+The input \link[terra:SpatRaster]{terra::SpatRaster}.}
 
 \item{primary_key}{(\code{character(1)} | \code{integer()})\cr
 Name of the primary key column, or integer vector of row ids.}

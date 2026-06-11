@@ -7,7 +7,7 @@
 sample_stack(stack, n = 100)
 }
 \arguments{
-\item{stack}{(\link[terra:SpatRaster-class]{terra::SpatRaster})\cr
+\item{stack}{(\link[terra:SpatRaster]{terra::SpatRaster})\cr
 Raster stack.}
 
 \item{n}{(\code{integer(1)})\cr

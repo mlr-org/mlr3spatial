@@ -17,62 +17,61 @@ This can be changed by setting \code{coords_as_features = TRUE}.
 \code{\link[mlr3:Task]{mlr3::Task}} -> \code{\link[mlr3:TaskSupervised]{mlr3::TaskSupervised}} -> \code{\link[mlr3:TaskClassif]{mlr3::TaskClassif}} -> \code{TaskClassifST}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{crs}}{(\code{character(1)})\cr
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{crs}}{(\code{character(1)})\cr
 Returns coordinate reference system of task.}
 
-\item{\code{coordinate_names}}{(\code{character()})\cr
+    \item{\code{coordinate_names}}{(\code{character()})\cr
 Returns coordinate names.}
 
-\item{\code{coords_as_features}}{(\code{logical(1)})\cr
+    \item{\code{coords_as_features}}{(\code{logical(1)})\cr
 If \code{TRUE}, coordinates are used as features.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-TaskClassifST-new}{\code{TaskClassifST$new()}}
-\item \href{#method-TaskClassifST-coordinates}{\code{TaskClassifST$coordinates()}}
-\item \href{#method-TaskClassifST-print}{\code{TaskClassifST$print()}}
-\item \href{#method-TaskClassifST-clone}{\code{TaskClassifST$clone()}}
+  \itemize{
+    \item \href{#method-TaskClassifST-initialize}{\code{TaskClassifST$new()}}
+    \item \href{#method-TaskClassifST-coordinates}{\code{TaskClassifST$coordinates()}}
+    \item \href{#method-TaskClassifST-print}{\code{TaskClassifST$print()}}
+    \item \href{#method-TaskClassifST-clone}{\code{TaskClassifST$clone()}}
+  }
 }
-}
-\if{html}{\out{
-<details><summary>Inherited methods</summary>
+\if{html}{\out{<details><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="add_strata"><a href='../../mlr3/html/Task.html#method-Task-add_strata'><code>mlr3::Task$add_strata()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="cbind"><a href='../../mlr3/html/Task.html#method-Task-cbind'><code>mlr3::Task$cbind()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="data"><a href='../../mlr3/html/Task.html#method-Task-data'><code>mlr3::Task$data()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="divide"><a href='../../mlr3/html/Task.html#method-Task-divide'><code>mlr3::Task$divide()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="filter"><a href='../../mlr3/html/Task.html#method-Task-filter'><code>mlr3::Task$filter()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="format"><a href='../../mlr3/html/Task.html#method-Task-format'><code>mlr3::Task$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="formula"><a href='../../mlr3/html/Task.html#method-Task-formula'><code>mlr3::Task$formula()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="head"><a href='../../mlr3/html/Task.html#method-Task-head'><code>mlr3::Task$head()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="help"><a href='../../mlr3/html/Task.html#method-Task-help'><code>mlr3::Task$help()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="levels"><a href='../../mlr3/html/Task.html#method-Task-levels'><code>mlr3::Task$levels()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="materialize_view"><a href='../../mlr3/html/Task.html#method-Task-materialize_view'><code>mlr3::Task$materialize_view()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="missings"><a href='../../mlr3/html/Task.html#method-Task-missings'><code>mlr3::Task$missings()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="rbind"><a href='../../mlr3/html/Task.html#method-Task-rbind'><code>mlr3::Task$rbind()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="rename"><a href='../../mlr3/html/Task.html#method-Task-rename'><code>mlr3::Task$rename()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="select"><a href='../../mlr3/html/Task.html#method-Task-select'><code>mlr3::Task$select()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="set_col_roles"><a href='../../mlr3/html/Task.html#method-Task-set_col_roles'><code>mlr3::Task$set_col_roles()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="set_levels"><a href='../../mlr3/html/Task.html#method-Task-set_levels'><code>mlr3::Task$set_levels()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="set_row_roles"><a href='../../mlr3/html/Task.html#method-Task-set_row_roles'><code>mlr3::Task$set_row_roles()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="TaskClassif" data-id="droplevels"><a href='../../mlr3/html/TaskClassif.html#method-TaskClassif-droplevels'><code>mlr3::TaskClassif$droplevels()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="TaskClassif" data-id="truth"><a href='../../mlr3/html/TaskClassif.html#method-TaskClassif-truth'><code>mlr3::TaskClassif$truth()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="add_strata"><a href='../../mlr3/html/Task.html#method-Task-add_strata'><code>mlr3::Task$add_strata()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="cbind"><a href='../../mlr3/html/Task.html#method-Task-cbind'><code>mlr3::Task$cbind()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="data"><a href='../../mlr3/html/Task.html#method-Task-data'><code>mlr3::Task$data()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="divide"><a href='../../mlr3/html/Task.html#method-Task-divide'><code>mlr3::Task$divide()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="filter"><a href='../../mlr3/html/Task.html#method-Task-filter'><code>mlr3::Task$filter()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="format"><a href='../../mlr3/html/Task.html#method-Task-format'><code>mlr3::Task$format()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="formula"><a href='../../mlr3/html/Task.html#method-Task-formula'><code>mlr3::Task$formula()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="head"><a href='../../mlr3/html/Task.html#method-Task-head'><code>mlr3::Task$head()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="help"><a href='../../mlr3/html/Task.html#method-Task-help'><code>mlr3::Task$help()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="levels"><a href='../../mlr3/html/Task.html#method-Task-levels'><code>mlr3::Task$levels()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="materialize_view"><a href='../../mlr3/html/Task.html#method-Task-materialize_view'><code>mlr3::Task$materialize_view()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="missings"><a href='../../mlr3/html/Task.html#method-Task-missings'><code>mlr3::Task$missings()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="rbind"><a href='../../mlr3/html/Task.html#method-Task-rbind'><code>mlr3::Task$rbind()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="rename"><a href='../../mlr3/html/Task.html#method-Task-rename'><code>mlr3::Task$rename()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="select"><a href='../../mlr3/html/Task.html#method-Task-select'><code>mlr3::Task$select()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="set_col_roles"><a href='../../mlr3/html/Task.html#method-Task-set_col_roles'><code>mlr3::Task$set_col_roles()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="set_levels"><a href='../../mlr3/html/Task.html#method-Task-set_levels'><code>mlr3::Task$set_levels()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Task" data-id="set_row_roles"><a href='../../mlr3/html/Task.html#method-Task-set_row_roles'><code>mlr3::Task$set_row_roles()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="TaskClassif" data-id="droplevels"><a href='../../mlr3/html/TaskClassif.html#method-TaskClassif-droplevels'><code>mlr3::TaskClassif$droplevels()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="TaskClassif" data-id="truth"><a href='../../mlr3/html/TaskClassif.html#method-TaskClassif-truth'><code>mlr3::TaskClassif$truth()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TaskClassifST-new"></a>}}
-\if{latex}{\out{\hypertarget{method-TaskClassifST-new}{}}}
-\subsection{Method \code{new()}}{
-Creates a new instance of this \link[R6:R6Class]{R6} class.
+\if{html}{\out{<a id="method-TaskClassifST-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-TaskClassifST-initialize}{}}}
+\subsection{\code{TaskClassifST$new()}}{
+  Creates a new instance of this \link[R6:R6Class]{R6} class.
 The function \code{\link[=as_task_classif_st]{as_task_classif_st()}} provides an alternative way to construct classification tasks.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TaskClassifST$new(
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{TaskClassifST$new(
   id,
   backend,
   target,
@@ -82,99 +81,98 @@ The function \code{\link[=as_task_classif_st]{as_task_classif_st()}} provides an
   crs = NA_character_,
   coords_as_features = FALSE,
   extra_args = list()
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{id}}{(\code{character(1)})\cr
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{id}}{(\code{character(1)})\cr
 Identifier for the new instance.}
-
-\item{\code{backend}}{(\link[mlr3:DataBackend]{mlr3::DataBackend})\cr
+      \item{\code{backend}}{(\link[mlr3:DataBackend]{mlr3::DataBackend})\cr
 Either a \link[mlr3:DataBackend]{mlr3::DataBackend}, or any object which is convertible to a \link[mlr3:DataBackend]{mlr3::DataBackend} with \code{mlr3::as_data_backend()}.
 E.g., am \code{sf} will be converted to a \link[mlr3:DataBackendDataTable]{mlr3::DataBackendDataTable}.}
-
-\item{\code{target}}{(\code{character(1)})\cr
+      \item{\code{target}}{(\code{character(1)})\cr
 Name of the target column.}
-
-\item{\code{positive}}{(\code{character(1)})\cr
+      \item{\code{positive}}{(\code{character(1)})\cr
 Only for binary classification: Name of the positive class.
 The levels of the target columns are reordered accordingly, so that the first element of \verb{$class_names} is the positive class, and the second element is the negative class.}
-
-\item{\code{label}}{(\code{character(1)})\cr
+      \item{\code{label}}{(\code{character(1)})\cr
 Label for the new instance.}
-
-\item{\code{coordinate_names}}{(\code{character(1)})\cr
+      \item{\code{coordinate_names}}{(\code{character(1)})\cr
 The column names of the coordinates in the data.}
-
-\item{\code{crs}}{(\code{character(1)})\cr
+      \item{\code{crs}}{(\code{character(1)})\cr
 Coordinate reference system.
 WKT2 or EPSG string.}
-
-\item{\code{coords_as_features}}{(\code{logical(1)})\cr
+      \item{\code{coords_as_features}}{(\code{logical(1)})\cr
 If \code{TRUE}, coordinates are used as features.
 This is a shortcut for \code{task$set_col_roles(c("x", "y"), role = "feature")} with the assumption that the coordinates in the data are named "x" and "y".}
-
-\item{\code{extra_args}}{(named \code{list()})\cr
+      \item{\code{extra_args}}{(named \code{list()})\cr
 Named list of constructor arguments, required for converting task types via \code{\link[mlr3:convert_task]{mlr3::convert_task()}}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TaskClassifST-coordinates"></a>}}
 \if{latex}{\out{\hypertarget{method-TaskClassifST-coordinates}{}}}
-\subsection{Method \code{coordinates()}}{
-Returns coordinates of observations.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TaskClassifST$coordinates(row_ids = NULL)}\if{html}{\out{</div>}}
+\subsection{\code{TaskClassifST$coordinates()}}{
+  Returns coordinates of observations.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{TaskClassifST$coordinates(row_ids = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{row_ids}}{(\code{integer()})
+Vector of rows indices as subset of \code{task$row_ids}.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \code{\link[data.table:data.table]{data.table::data.table()}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{row_ids}}{(\code{integer()})
-Vector of rows indices as subset of \code{task$row_ids}.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\code{\link[data.table:data.table]{data.table::data.table()}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TaskClassifST-print"></a>}}
 \if{latex}{\out{\hypertarget{method-TaskClassifST-print}{}}}
-\subsection{Method \code{print()}}{
-Print the task.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TaskClassifST$print(...)}\if{html}{\out{</div>}}
+\subsection{\code{TaskClassifST$print()}}{
+  Print the task.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{TaskClassifST$print(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{Arguments passed to the \verb{$print()} method of the superclass.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{Arguments passed to the \verb{$print()} method of the superclass.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TaskClassifST-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-TaskClassifST-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TaskClassifST$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{TaskClassifST$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{TaskClassifST$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

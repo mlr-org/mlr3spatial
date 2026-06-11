@@ -49,7 +49,6 @@ Config/testthat/parallel: false
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 Collate:
     'DataBackendRaster.R'
     'DataBackendVector.R'
@@ -65,3 +64,4 @@ Collate:
     'helper.R'
     'predict_spatial.R'
     'zzz.R'
+Config/roxygen2/version: 8.0.0.9000
