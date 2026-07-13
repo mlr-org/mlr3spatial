@@ -7,7 +7,7 @@ LearnerRegrSpatial = R6::R6Class(
     initialize = function(learner) {
       self$learner = assert_learner(learner)
       super$initialize(
-        id = "regr.ranger",
+        id = learner$id,
         param_set = learner$param_set,
         predict_types = learner$predict_types,
         feature_types = learner$feature_types,
