@@ -15,6 +15,7 @@ LearnerClassifSpatial = R6::R6Class(
         packages = learner$packages,
         man = "mlr3learners::mlr_learners_classif.spatial"
       )
+      self$predict_type = learner$predict_type
     },
 
     predict = function(task, row_ids = NULL) {
@@ -26,6 +27,11 @@ LearnerClassifSpatial = R6::R6Class(
       pred$data$row_ids = seq_len(nrow(data))
       pred$data$response = response
       pred$data$truth = rep(NaN, nrow(data))
+      if (self$learner$predict_type == "prob") {
+        prob = matrix(NaN, nrow = nrow(data), ncol = ncol(pred$data$prob), dimnames = list(NULL, colnames(pred$data$prob)))
+        prob[ids, ] = pred$data$prob
+        pred$data$prob = prob
+      }
       pred
     }
   )

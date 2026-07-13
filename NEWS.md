@@ -1,5 +1,7 @@
 # mlr3spatial (development version)
 
+* feat: `predict_spatial()` supports probability predictions now. Train a classification learner with `predict_type = "prob"` to get one raster layer or one vector column per class (#88, #89).
+
 # mlr3spatial 0.6.1
 
 * compatibility: mlr3 1.2.0 removed the data format argument

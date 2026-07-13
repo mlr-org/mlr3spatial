@@ -19,6 +19,11 @@
 #' @param filename (`character(1)`)\cr
 #'   Path where the spatial object should be written to.
 #'
+#' @details
+#' The type of the prediction is taken from the `$predict_type` of the `learner`.
+#' For classification learners with `predict_type = "prob"`,
+#' the probability of each class is returned e.g. as a raster layer per class or as a column per class in an sf object.
+#'
 #' @return Spatial object of class given in argument `format`.
 #' @examples
 #' library(terra, exclude = "resample")
@@ -32,6 +37,11 @@
 #' stack = rast(system.file("extdata", "leipzig_raster.tif", package = "mlr3spatial"))
 #'
 #' # predict land cover classes
+#' pred = predict_spatial(stack, learner, chunksize = 1L)
+#'
+#' # predict land cover probabilities
+#' learner = lrn("classif.rpart", predict_type = "prob")
+#' learner$train(task_train)
 #' pred = predict_spatial(stack, learner, chunksize = 1L)
 #' @export
 predict_spatial = function(newdata, learner, chunksize = 200L, format = "terra", filename = NULL) {
@@ -53,11 +63,21 @@ predict_spatial = function(newdata, learner, chunksize = 200L, format = "terra",
       "regr" = LearnerRegrSpatial$new(learner)
     )
 
+    predict_prob = learner$predict_type == "prob"
+    levels = if (learner$task_type == "classif") {
+      learner$learner$state$train_task$levels()[[learner$learner$state$train_task$target_names]]
+    }
+
     # calculate block size
     bs = block_size(stack, chunksize)
 
-    # initialize target raster
-    target_raster = terra::rast(terra::ext(stack), resolution = terra::res(stack), crs = terra::crs(stack))
+    # initialize target raster with one layer per class when predicting probabilities
+    target_raster = terra::rast(
+      terra::ext(stack),
+      resolution = terra::res(stack),
+      crs = terra::crs(stack),
+      nlyrs = if (predict_prob) length(levels) else 1L
+    )
     terra::writeStart(target_raster, filename = filename, overwrite = TRUE, datatype = "FLT8S")
 
     lg$info("Start raster prediction")
@@ -75,7 +95,7 @@ predict_spatial = function(newdata, learner, chunksize = 200L, format = "terra",
         pred = learner$predict(task, row_ids = cells_seq:((cells_seq + cells_to_read - 1)))
         terra::writeValues(
           x = target_raster,
-          v = pred$response,
+          v = if (predict_prob) pred$prob[, levels, drop = FALSE] else pred$response,
           start = terra::rowFromCell(stack, cells_seq), # start row number
           nrows = terra::rowFromCell(stack, cells_to_read)
         ) # how many rows
@@ -86,12 +106,14 @@ predict_spatial = function(newdata, learner, chunksize = 200L, format = "terra",
     terra::writeStop(target_raster)
     lg$info("Finished raster prediction in %i seconds", as.integer(proc.time()[3] - start_time))
 
-    if (learner$task_type == "classif") {
-      levels = learner$learner$state$train_task$levels()[[learner$learner$state$train_task$target_names]]
+    if (learner$task_type == "classif" && !predict_prob) {
       value = data.table(ID = seq_along(levels), categories = levels)
       target_raster = terra::categories(target_raster, value = value)
     }
-    target_raster = set_names(target_raster, learner$learner$state$train_task$target_names)
+    target_raster = set_names(
+      target_raster,
+      if (predict_prob) levels else learner$learner$state$train_task$target_names
+    )
 
     switch(
       format,
@@ -104,11 +126,18 @@ predict_spatial = function(newdata, learner, chunksize = 200L, format = "terra",
     if (!is.null(filename)) {
       assert_path_for_output(filename)
     }
-    pred = learner$predict(task)
-    vector = set_names(
-      sf::st_as_sf(data.frame(pred$response, task$backend$sfc)),
-      c(learner$state$train_task$target_names, "geometry")
-    )
+    pred = learner$predict_newdata(task$data())
+    vector = if (learner$predict_type == "prob") {
+      set_names(
+        sf::st_as_sf(data.frame(pred$prob, task$backend$sfc)),
+        c(colnames(pred$prob), "geometry")
+      )
+    } else {
+      set_names(
+        sf::st_as_sf(data.frame(pred$response, task$backend$sfc)),
+        c(learner$state$train_task$target_names, "geometry")
+      )
+    }
 
     if (!is.null(filename)) {
       sf::st_write(vector, filename, quiet = TRUE)

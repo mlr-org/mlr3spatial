@@ -26,6 +26,34 @@ test_that("LearnerClassifSpatial ignores observations with missing values", {
   expect_numeric(pred$response, any.missing = TRUE, all.missing = FALSE)
 })
 
+test_that("LearnerClassifSpatial returns probabilities for observations with missing values", {
+  # train task
+  stack = generate_stack(
+    list(
+      numeric_layer("x_1"),
+      factor_layer("y", levels = c("a", "b"))
+    ),
+    dimension = 100
+  )
+  vector = sample_stack(stack, n = 100)
+  task_train = as_task_classif_st(vector, id = "test_vector", target = "y")
+  learner = lrn("classif.rpart", predict_type = "prob")
+  learner$train(task_train)
+
+  # predict task
+  stack$y = NULL
+  stack = mask_stack(stack)
+  task_predict = as_task_unsupervised(stack, id = "test")
+  learner_spatial = LearnerClassifSpatial$new(learner)
+  pred = learner_spatial$predict(task_predict)
+
+  expect_equal(learner_spatial$predict_type, "prob")
+  expect_equal(colnames(pred$prob), c("a", "b"))
+  expect_equal(nrow(pred$prob), task_predict$nrow)
+  expect_true(all(is.na(pred$prob[seq(100), ])))
+  expect_matrix(pred$prob, any.missing = TRUE, all.missing = FALSE)
+})
+
 test_that("LearnerClassifSpatial predicts newdata without optional column roles", {
   stack = generate_stack(
     list(
