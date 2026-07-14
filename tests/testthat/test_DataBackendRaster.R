@@ -560,6 +560,30 @@ test_that("in memory and disk rasters work", {
   expect_equal(backend$missings(rows = seq(10), cols = c("x_1", "c_1", "c_2")), c("x_1" = 0, "c_1" = 0))
 })
 
+test_that("layers with partially matching names work", {
+  stack = generate_stack(
+    list(
+      numeric_layer("x_1", in_memory = TRUE),
+      numeric_layer("x_12", in_memory = TRUE)
+    ),
+    dimension = 10,
+  )
+
+  backend = DataBackendRaster$new(stack)
+
+  expect_class(backend, "DataBackendRaster")
+  expect_names(backend$colnames, identical.to = c("x_1", "x_12"))
+
+  data = backend$data(rows = seq(100), cols = c("x_1", "x_12"))
+  values = terra::values(stack)
+  expect_equal(data$x_1, unname(values[, "x_1"]), tolerance = 1e-7)
+  expect_equal(data$x_12, unname(values[, "x_12"]), tolerance = 1e-7)
+
+  distinct = backend$distinct(rows = seq(100), cols = c("x_1", "x_12")) # fast query
+  expect_equal(sort(distinct$x_1), sort(unique(data$x_1)))
+  expect_equal(sort(distinct$x_12), sort(unique(data$x_12)))
+})
+
 # as_data_backend input formats ------------------------------------------------
 
 test_that("as_data_backend works on SpatRaster objects", {
