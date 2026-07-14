@@ -22,8 +22,7 @@
 #' "Block mode" is activated if `$data(rows)` is used with a increasing integer sequence e.g. `200:300`.
 #' If only a single cell is requested, "cell mode" is used.
 #'
-#' @importFrom terra writeRaster writeStart writeStop rast cats sources intersect readStart readStop
-#'   rowColFromCell readValues head unique ncell nlyr ncol
+#' @importFrom terra writeRaster writeStart writeStop rast cats sources intersect readStart readStop rowColFromCell readValues head unique ncell nlyr ncol
 #' @importFrom utils tail
 #' @importFrom methods as
 #' @export

@@ -43,9 +43,6 @@
 #' are relaxed, allowing non-ascii characters in column names. This is an
 #' experimental and temporal option to pave the way for text analysis, and will
 #' likely be removed in a future version of the package. analysis.
-#'
-#' @references
-#' `r tools::toRd(citation("mlr3spatial"))`
 "_PACKAGE"
 
 .onLoad = function(libname, pkgname) {
