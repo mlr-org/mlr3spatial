@@ -41,12 +41,13 @@ DataBackendRaster = R6Class(
       assert_class(data, "SpatRaster")
 
       # write raster to disk
-      sources = map_chr(names(data), function(layer) {
-        if (terra::inMemory(data[layer])) {
+      sources = map_chr(seq_len(terra::nlyr(data)), function(i) {
+        layer = data[[i]]
+        if (terra::inMemory(layer)) {
           filename = tempfile(fileext = ".tif")
-          terra::writeRaster(data[layer], filename = filename)
+          terra::writeRaster(layer, filename = filename)
         } else {
-          filename = terra::sources(data[layer])
+          filename = terra::sources(layer)
         }
         filename
       })
@@ -136,10 +137,10 @@ DataBackendRaster = R6Class(
         stack = terra::subset(self$stack, cols)
         set_names(
           map(cols, function(layer) {
-            if (terra::is.factor(stack[layer])) {
-              terra::cats(stack[layer])[[1]][, 2]
+            if (terra::is.factor(stack[[layer]])) {
+              terra::cats(stack[[layer]])[[1]][, 2]
             } else {
-              terra::unique(stack["x_1"])[[1]]
+              terra::unique(stack[[layer]])[[1]]
             }
           }),
           cols
