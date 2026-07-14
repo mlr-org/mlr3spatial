@@ -1,4 +1,4 @@
-# mlr3spatial (development version)
+# mlr3spatial 0.7.0
 
 * fix: `DataBackendRaster` no longer errors with `[names<-] incorrect number of names` when a subset of layers is read from a shared multi-band source file.
 * fix: `DataBackendRaster` no longer errors when raster layers have partially matching names, e.g. `predict_spatial()` failed with layers named `"test_name"` and `"test_name2"` (#94).
