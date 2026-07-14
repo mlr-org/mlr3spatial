@@ -66,6 +66,13 @@ predict_spatial(
 
 Spatial object of class given in argument `format`.
 
+## Details
+
+The type of the prediction is taken from the `$predict_type` of the
+`learner`. For classification learners with `predict_type = "prob"`, the
+probability of each class is returned e.g. as a raster layer per class
+or as a column per class in an sf object.
+
 ## Examples
 
 ``` r
@@ -81,5 +88,10 @@ learner$train(task_train)
 stack = rast(system.file("extdata", "leipzig_raster.tif", package = "mlr3spatial"))
 
 # predict land cover classes
+pred = predict_spatial(stack, learner, chunksize = 1L)
+
+# predict land cover probabilities
+learner = lrn("classif.rpart", predict_type = "prob")
+learner$train(task_train)
 pred = predict_spatial(stack, learner, chunksize = 1L)
 ```
