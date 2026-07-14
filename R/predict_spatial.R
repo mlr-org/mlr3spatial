@@ -26,6 +26,7 @@
 #'
 #' @return Spatial object of class given in argument `format`.
 #' @examples
+#' \dontshow{data.table::setDTthreads(1)}
 #' library(terra, exclude = "resample")
 #'
 #' # fit rpart on training points
