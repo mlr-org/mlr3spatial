@@ -18,7 +18,7 @@ Within the mlr3 Ecosystem*.
 [doi:10.5281/zenodo.16089931](https://doi.org/10.5281/zenodo.16089931).
 <https://doi.org/10.5281/zenodo.16089931>.
 
-    @Manual{,
+    @Manual{becker2026mlr3spatial,
       title = {mlr3spatial: Support for Spatial Objects Within the mlr3 Ecosystem},
       url = {https://doi.org/10.5281/zenodo.16089931},
       author = {Marc Becker and Patrick Schratz},
