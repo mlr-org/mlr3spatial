@@ -40,21 +40,22 @@ DataBackendRaster = R6Class(
     initialize = function(data) {
       assert_class(data, "SpatRaster")
 
-      # write raster to disk
-      sources = map_chr(seq_len(terra::nlyr(data)), function(i) {
+      # record the source file and band index within that source for each layer
+      # in-memory layers are written to individual files that hold a single band
+      layers = map(seq_len(terra::nlyr(data)), function(i) {
         layer = data[[i]]
         if (terra::inMemory(layer)) {
           filename = tempfile(fileext = ".tif")
           terra::writeRaster(layer, filename = filename)
+          list(source = filename, band = 1L)
         } else {
-          filename = terra::sources(layer)
+          src = terra::sources(layer, bands = TRUE)
+          list(source = src$source, band = as.integer(src$bands))
         }
-        filename
       })
 
-      # stack
-      #nolint next
-      private$.data = unique(sources)
+      private$.sources = map_chr(layers, "source")
+      private$.bands = map_int(layers, "band")
       private$.categories = terra::cats(data)
       private$.layer_names = names(data)
       private$.crs = terra::crs(data)
@@ -228,7 +229,12 @@ DataBackendRaster = R6Class(
     #' Raster stack.
     stack = function(rhs) {
       assert_ro_binding(rhs)
-      stack = terra::rast(private$.data)
+      # reconstruct the stack from the unique sources and select the recorded
+      # bands so that layers reading from a shared multi-band file are not lost
+      sources = unique(private$.sources)
+      nlyrs = map_dbl(sources, function(s) terra::nlyr(terra::rast(s)))
+      offset = c(0, cumsum(nlyrs))[match(private$.sources, sources)]
+      stack = terra::rast(sources)[[offset + private$.bands]]
       iwalk(private$.categories, function(category, n) {
         if (!is.null(category)) {
           terra::set.cats(stack, layer = n, value = category)
@@ -244,6 +250,8 @@ DataBackendRaster = R6Class(
     .calculate_hash = function() {
       mlr3misc::calculate_hash(self$stack)
     },
+    .sources = NULL,
+    .bands = NULL,
     .categories = NULL,
     .layer_names = NULL,
     .crs = NULL

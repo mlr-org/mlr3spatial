@@ -584,6 +584,30 @@ test_that("layers with partially matching names work", {
   expect_equal(sort(distinct$x_12), sort(unique(data$x_12)))
 })
 
+test_that("subset of layers from a shared multi-band file works", {
+  stack = generate_stack(
+    list(
+      numeric_layer("x_1"),
+      numeric_layer("x_2"),
+      numeric_layer("x_3")
+    ),
+    dimension = 10,
+    multi_layer_file = TRUE
+  )
+  stack = stack[[c(3, 1)]]
+
+  backend = DataBackendRaster$new(stack)
+
+  expect_class(backend, "DataBackendRaster")
+  expect_names(names(backend$stack), identical.to = c("x_3", "x_1"))
+  expect_names(backend$colnames, identical.to = c("x_3", "x_1"))
+
+  data = backend$data(rows = seq(100), cols = c("x_3", "x_1"))
+  values = terra::values(stack)
+  expect_equal(data$x_3, unname(values[, "x_3"]), tolerance = 1e-7)
+  expect_equal(data$x_1, unname(values[, "x_1"]), tolerance = 1e-7)
+})
+
 # as_data_backend input formats ------------------------------------------------
 
 test_that("as_data_backend works on SpatRaster objects", {
