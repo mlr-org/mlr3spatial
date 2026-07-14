@@ -53,6 +53,7 @@ For classification learners with \code{predict_type = "prob"},
 the probability of each class is returned e.g. as a raster layer per class or as a column per class in an sf object.
 }
 \examples{
+\dontshow{data.table::setDTthreads(1)}
 library(terra, exclude = "resample")
 
 # fit rpart on training points
