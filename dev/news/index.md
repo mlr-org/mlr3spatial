@@ -2,6 +2,11 @@
 
 ## mlr3spatial (development version)
 
+- fix: `DataBackendRaster` no longer errors when raster layers have
+  partially matching names,
+  e.g. [`predict_spatial()`](https://mlr3spatial.mlr-org.com/dev/reference/predict_spatial.md)
+  failed with layers named `"test_name"` and `"test_name2"`
+  ([\#94](https://github.com/mlr-org/mlr3spatial/issues/94)).
 - feat:
   [`predict_spatial()`](https://mlr3spatial.mlr-org.com/dev/reference/predict_spatial.md)
   supports probability predictions now. Train a classification learner
