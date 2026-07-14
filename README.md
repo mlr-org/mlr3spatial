@@ -7,6 +7,7 @@ Package website: [release](https://mlr3spatial.mlr-org.com/) \|
 <!-- badges: start -->
 
 [![r-cmd-check](https://github.com/mlr-org/mlr3spatial/actions/workflows/r-cmd-check.yml/badge.svg)](https://github.com/mlr-org/mlr3spatial/actions/workflows/r-cmd-check.yml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.16089931.svg)](https://doi.org/10.5281/zenodo.16089931)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/mlr3spatial)](https://CRAN.R-project.org/package=mlr3spatial)
 [![Mattermost](https://img.shields.io/badge/chat-mattermost-orange.svg)](https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/)
@@ -92,6 +93,7 @@ task
     ## • Properties: multiclass
     ## • Features (8):
     ##   • dbl (8): b02, b03, b04, b06, b07, b08, b11, ndvi
+    ## • Target classes: urban (37%), forest (29%), pasture (21%), water (13%)
     ## * Coordinates:
     ##            X       Y
     ##  1: 732480.1 5693957
@@ -124,9 +126,6 @@ to the `predict_spatial()` function.
 ``` r
 land_cover = predict_spatial(leipzig_raster, learner)
 ```
-
-    ## Warning in warn_deprecated("DataBackend$data_formats"): DataBackend$data_formats is deprecated and
-    ## will be removed in the future.
 
 <img src="man/figures/land_cover.png" />
 
