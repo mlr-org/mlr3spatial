@@ -149,3 +149,19 @@ mlr3spatiotempcv was developed, it was not yet clear how we want to
 structure additional spatial components such as prediction support for
 spatial classes and so on.
 </details>
+
+## Citation
+
+If you use mlr3spatial in your work, please cite it.
+
+> Becker M, Schratz P (2026). *mlr3spatial: Support for Spatial Objects
+> Within the mlr3 Ecosystem*. <doi:10.5281/zenodo.16089931>,
+> <https://doi.org/10.5281/zenodo.16089931>.
+
+    @Manual{becker2026mlr3spatial,
+      title = {mlr3spatial: Support for Spatial Objects Within the mlr3 Ecosystem},
+      url = {https://doi.org/10.5281/zenodo.16089931},
+      author = {Marc Becker and Patrick Schratz},
+      year = {2026},
+      doi = {10.5281/zenodo.16089931},
+    }
