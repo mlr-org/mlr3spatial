@@ -91,6 +91,7 @@ task
 ## • Properties: multiclass
 ## • Features (8):
 ##   • dbl (8): b02, b03, b04, b06, b07, b08, b11, ndvi
+## • Target classes: urban (37%), forest (29%), pasture (21%), water (13%)
 ## * Coordinates:
 ##            X       Y
 ##  1: 732480.1 5693957
@@ -127,11 +128,6 @@ function.
 ``` r
 
 land_cover = predict_spatial(leipzig_raster, learner)
-```
-
-``` R
-## Warning in warn_deprecated("DataBackend$data_formats"): DataBackend$data_formats is deprecated and
-## will be removed in the future.
 ```
 
 ![](reference/figures/land_cover.png)

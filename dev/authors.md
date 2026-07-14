@@ -11,16 +11,17 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/mlr-org/mlr3spatial/blob/main/DESCRIPTION)
+[`inst/CITATION`](https://github.com/mlr-org/mlr3spatial/blob/main/inst/CITATION)
 
 Becker M, Schratz P (2026). *mlr3spatial: Support for Spatial Objects
-Within the 'mlr3' Ecosystem*. R package version 0.7.0.9000,
-<https://mlr3spatial.mlr-org.com>.
+Within the mlr3 Ecosystem*.
+[doi:10.5281/zenodo.16089931](https://doi.org/10.5281/zenodo.16089931).
+<https://doi.org/10.5281/zenodo.16089931>.
 
     @Manual{,
-      title = {mlr3spatial: Support for Spatial Objects Within the 'mlr3' Ecosystem},
+      title = {mlr3spatial: Support for Spatial Objects Within the mlr3 Ecosystem},
+      url = {https://doi.org/10.5281/zenodo.16089931},
       author = {Marc Becker and Patrick Schratz},
       year = {2026},
-      note = {R package version 0.7.0.9000},
-      url = {https://mlr3spatial.mlr-org.com},
+      doi = {10.5281/zenodo.16089931},
     }
