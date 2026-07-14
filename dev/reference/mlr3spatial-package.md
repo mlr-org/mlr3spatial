@@ -84,12 +84,6 @@ storage and prediction are supported for packages 'terra', 'raster' and
   analysis, and will likely be removed in a future version of the
   package. analysis.
 
-## References
-
-Becker M, Schratz P (2025). *mlr3spatial: Support for Spatial Objects
-Within the 'mlr3' Ecosystem*. R package version 0.6.1.9000,
-<https://mlr3spatial.mlr-org.com>.
-
 ## See also
 
 Useful links:

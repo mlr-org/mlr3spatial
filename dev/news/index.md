@@ -2,6 +2,10 @@
 
 ## mlr3spatial (development version)
 
+## mlr3spatial 0.7.0
+
+CRAN release: 2026-07-14
+
 - fix: `DataBackendRaster` no longer errors with
   `[names<-] incorrect number of names` when a subset of layers is read
   from a shared multi-band source file.
