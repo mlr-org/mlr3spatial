@@ -55,27 +55,35 @@ import(data.table)
 import(mlr3)
 import(mlr3misc)
 import(sf)
-importFrom(R6,R6Class)
-importFrom(R6,is.R6)
+importFrom(R6,
+  R6Class,
+  is.R6
+)
 importFrom(methods,as)
-importFrom(stats,complete.cases)
-importFrom(stats,runif)
-importFrom(terra,cats)
-importFrom(terra,head)
-importFrom(terra,intersect)
-importFrom(terra,ncell)
-importFrom(terra,ncol)
-importFrom(terra,nlyr)
-importFrom(terra,rast)
-importFrom(terra,readStart)
-importFrom(terra,readStop)
-importFrom(terra,readValues)
-importFrom(terra,rowColFromCell)
-importFrom(terra,sources)
-importFrom(terra,unique)
-importFrom(terra,writeRaster)
-importFrom(terra,writeStart)
-importFrom(terra,writeStop)
-importFrom(utils,data)
-importFrom(utils,getFromNamespace)
-importFrom(utils,tail)
+importFrom(stats,
+  complete.cases,
+  runif
+)
+importFrom(terra,
+  cats,
+  head,
+  intersect,
+  ncell,
+  ncol,
+  nlyr,
+  rast,
+  readStart,
+  readStop,
+  readValues,
+  rowColFromCell,
+  sources,
+  unique,
+  writeRaster,
+  writeStart,
+  writeStop
+)
+importFrom(utils,
+  data,
+  getFromNamespace,
+  tail
+)
