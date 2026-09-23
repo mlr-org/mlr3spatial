@@ -77,7 +77,7 @@ or as a column per class in an sf object.
 
 ``` r
 library(terra, exclude = "resample")
-#> terra 1.9.34
+#> terra 1.9.50
 
 # fit rpart on training points
 task_train = tsk("leipzig")
